@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="UTF-8">
+    <title>设汇家商家管理系统</title>
+    <link rel="stylesheet" href="/css/login.css">
+    <link href="/layui/css/layui.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+
+<div class="container">
+    <div class="right"> </div>
+    <div class="left">
+        <div class="header">
+            <h2 class="animation a1">设汇家商家管理系统 V1.0.1</h2>
+            <h4 class="animation a2">使用账户及密码登入你的帐户</h4>
+        </div>
+        <div class="form">
+            <input id="username" type="text" class="form-field animation a3" placeholder="账户">
+            <input id="password" type="password" class="form-field animation a4" placeholder="密码">
+            <p style="font-size: 10px;color: #545b62;">没有认证商家？<a style="color: #c69500;font-size: 12px;text-decoration:none;" href="auth">去认证</a></p>
+            <button class="animation a6" id="login">登录</button>
+        </div>
+        <div class='header'>
+            <h5 class="animation a5" style="margin-top: 20px;">&copy;苏州设汇家</h5>
+        </div>
+    </div>
+
+</div>
+
+<script src="/js/jquery-3.3.1.min.js" ></script>
+<script src="/js/jquery.cookie.min.js" type="text/javascript"></script>
+<script src="/layui/layui.js" type="text/javascript"></script>
+<script>
+    if( $.cookie("ACCESS_TOKEN")!=undefined){
+        window.location.href="/index";
+    }
+    layui.use('layer', function () {
+        //非空验证
+        $('#login').click(function () {
+            var login = $('#username').val();
+            var pwd = $('#password').val();
+            // var code = $('.ValidateNum').val();
+            if (login == '') {
+                alert('请输入您的账号');
+                return false;
+            } else if (pwd == '') {
+
+                alert('请输入密码');
+                return false;
+            } else {
+                $.ajax({
+                    type: 'POST',
+                    url : "/user/pe?password="+pwd,
+                    processData: false,
+                    contentType: false,
+                }).done(function(result) {
+                pwd=result.data;
+                    //登陆
+                    var settings = {
+                        "async": true,
+                        "crossDomain": true,
+                        "url": "/user/login",
+                        "method": "POST",
+                        "headers": {
+                            "Content-Type": "application/json",
+                            "cache-control": "no-cache",
+                            "Postman-Token": "d70bd28b-ff25-46ef-9dd3-20de37945efe"
+                        },
+                        "processData": false,
+                        "data": JSON.stringify({
+                            "username":login,
+                            "password":pwd,
+                            "login_type":"password"
+                        })
+                    }
+
+                    $.ajax(settings).done(function (response) {
+                        if (response.status==200) {
+                            var token = response.data.access_token||response.data.value;
+                            $.cookie("ACCESS_TOKEN","", {expires: -1,path:"/",domain:"anoax.com"});
+                            $.cookie("ACCESS_TOKEN", token, {expires: 7,path:"/",domain:"anoax.com"});
+                            $.cookie("ACCESS_TOKEN", token,{expires: 7,path:"/"});
+                            setTimeout(function () {
+                                window.location.href="/index";
+                            }, 1000);
+                        }else{
+                            var msgalert = '登录失败！帐号或密码错误';
+                            var index = layer.alert(msgalert, { icon: 5, time: 4000, offset: 't', closeBtn: 0, title: '友情提示', btn: [], anim: 2, shade: 0 });
+                            layer.style(index, {
+                                color: '#777'
+                            });
+                        }
+                        //跳转页面
+                    });
+                });
+
+            }
+            return false;
+        })
+    })
+</script>
+</body>
+</html>

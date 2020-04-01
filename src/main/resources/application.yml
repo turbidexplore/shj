@@ -1,0 +1,90 @@
+server:
+  port: 10002
+spring:
+  application:
+    name: explore
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML5
+    encoding: UTF-8
+    enabled: true
+  mvc:
+    static-path-pattern: /**
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/, classpath:/static/, classpath:/public/
+  servlet:
+    multipart:
+      maxFileSize: 100MB
+      maxRequestSize: 100MB
+      enabled: true
+  datasource:
+    url: jdbc:mysql://anoax.com:3306/jxkj?useUnicode=true&characterEncoding=utf8
+    type: com.alibaba.druid.pool.DruidDataSource
+    username: anoax
+    password: zhangan@28
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  cache:
+    type: REDIS
+    cache-names: redis_cache , ehcache
+    redis:
+      time-to-live: 60000
+  redis:
+    database: 0
+    host: anoax.com
+    port: 6379
+    password: zhangan@28
+    jedis:
+      pool:
+        max-active: 8
+        max-idle: 8
+        max-wait: -1ms
+        min-idle: 0
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        max-wait: -1ms
+        min-idle: 0
+    shutdown-timeout: 100ms
+  data:
+    mongodb:
+      host: anoax.com
+      port: 27017
+      database: anoax_database
+      username: anoax
+      password: zhangan28
+      repositories: true
+  mail:
+    host: smtp.exmail.qq.com
+    account: a@anoax.com
+    from: a@anoax.com
+    pass: GSyGZkN5TdLB4KMi
+    port: 465
+    protocol: smtp
+security:
+  oauth2:
+    resource:
+      jwt:
+        key-value: auth.turbidexplore.com
+com:
+  turbid:
+    upload-path:
+      images: /home/alex/images/
+    #腾讯云存储服务
+    tencentoss:
+      qcloud_file_accesskey: AKIDe5JJ4ZDaKo35vV7Ilz74rRr2hMnyReQx
+      qcloud_file_secretkey: RLE4f0A5mDOiqkOozuaI0XqujKflYI0U
+      #上海存储区
+      qcloud_file_region: ap-chengdu
+      #正式环境的桶 1
+      qcloud_file_bucket: anoax-1258088094
+    sms:
+      appid: 1400284009
+      appkey: 39932b40c6bbdad0ca10da22888660b0
+      smsSign: 浑浊探索
