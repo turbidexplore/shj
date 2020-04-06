@@ -7,9 +7,8 @@
     <meta name="description" content="A high-quality &amp; free Bootstrap admin dashboard template pack that comes with lots of templates and components.">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="/styles/all.css" rel="stylesheet">
-    <link rel="stylesheet" href="/styles/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link rel="stylesheet" id="main-stylesheet" data-version="1.1.0" href="/styles/shards-dashboards.1.1.0.min.css">
-    <link rel="stylesheet" href="/styles/extras.1.1.0.min.css">
+    <link rel="stylesheet" href="/styles/bootstrap.min.css" >
+    <link rel="stylesheet" href="/styles/shards-dashboards.1.1.0.min.css">
     <link rel="stylesheet" href="/layui/css/layui.css">
     <style>
 
@@ -176,7 +175,7 @@
                 <div class="card card-small mb-4 pt-3">
                       <div class="card-header border-bottom text-center">
                         <div class="mb-3 mx-auto">
-                          <img src="http://iph.href.lu/1600x1000?text=身份证正面" alt="User Avatar" width="240" id="idcardpositiveimg"> </div>
+                          <img src="https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/public/202004021610593523840642784547502.jpg" alt="User Avatar" width="240" id="idcardpositiveimg"> </div>
                         <a href="javascript:;" class="file">上传身份证正面
                           <input type="file" id="idcardpositive"  />
                         </a>
@@ -184,7 +183,7 @@
 
                       <div class="card-header border-bottom text-center">
                         <div class="mb-3 mx-auto">
-                          <img src="http://iph.href.lu/1600x1000?text=身份证反面" alt="User Avatar" width="240" id="idcardreverseimg"> </div>
+                          <img src="https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/public/202004021612128178511606060969560.jpg" alt="User Avatar" width="240" id="idcardreverseimg"> </div>
                         <a href="javascript:;" class="file"> 上传身份证反面<input type="file" id="idcardreverse"  /></a>
 
                       </div>
@@ -198,10 +197,10 @@
       </div>
     </div>
     <script src="/js/jquery-3.2.1.min.js"></script>
-      <script src="/layui/layui.js"></script>
+    <script src="/layui/layui.js"></script>
     <script src="/scripts/popper.min.js"></script>
     <script src="/scripts/bootstrap.min.js"></script>
-    <script src="/scripts/shards.min.js"></script>
+    <script src="/scripts/shards-dashboards.1.1.0.min.js"></script>
 
   <script>
 
@@ -445,11 +444,11 @@
           layui.use("layer",function() {
             layer.msg('请输入联系人地址');
           });return false;
-        } else if ($("#idcardpositiveimg").attr('src') == "http://iph.href.lu/1600x1000?text=身份证正面" ) {
+        } else if ($("#idcardpositiveimg").attr('src') == "https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/public/202004021610593523840642784547502.jpg" ) {
           layui.use("layer",function() {
             layer.msg('请输入上传身份证正面');
           });return false;
-        } else if ($("#idcardreverseimg").attr('src') == "http://iph.href.lu/1600x1000?text=身份证反面") {
+        } else if ($("#idcardreverseimg").attr('src') == "https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/public/202004021612128178511606060969560.jpg") {
           layui.use("layer",function() {
             layer.msg('请输入上传身份证反面');
           });return false;

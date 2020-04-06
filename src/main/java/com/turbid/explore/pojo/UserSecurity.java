@@ -1,6 +1,7 @@
 package com.turbid.explore.pojo;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.turbid.explore.utils.Validation;
 import lombok.Data;
 
@@ -14,7 +15,10 @@ import javax.validation.constraints.Pattern;
 @Data
 @Entity
 @Table(name = "user_security")
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer"})
 public class UserSecurity extends BaseEntity {
+    public UserSecurity() {
+    }
 
     //密码
     @Column(name = "password",length = 255)

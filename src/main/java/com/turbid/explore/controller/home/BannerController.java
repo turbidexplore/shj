@@ -3,6 +3,7 @@ package com.turbid.explore.controller.home;
 import com.turbid.explore.pojo.Banner;
 import com.turbid.explore.pojo.FileInfo;
 import com.turbid.explore.utils.Info;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
@@ -10,13 +11,13 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Api(description = "banner支付接口")
 @RestController
 @RequestMapping("/banner")
 @CrossOrigin
 public class BannerController {
 
-    @ApiOperation(value = "Banner", notes="Banner")
+    @ApiOperation(value = "Banner列表", notes="Banner列表")
     @GetMapping(value = "/list")
     public Mono<Info> list() {
         List<Banner> bannerList =new ArrayList<>();

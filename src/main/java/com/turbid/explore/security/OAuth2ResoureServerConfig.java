@@ -13,7 +13,7 @@ public class OAuth2ResoureServerConfig extends ResourceServerConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.cors().disable().csrf().disable().authorizeRequests()
+        http.cors().disable().headers().frameOptions().disable().and().csrf().disable().authorizeRequests()
                 .anyRequest().permitAll();
     }
 

@@ -805,7 +805,8 @@ a cite {
     border-radius: 2px;
     -webkit-transition: .1s linear;
     transition: .1s linear;
-    box-sizing: border-box !important
+    box-sizing: border-box !important;
+    margin-bottom: 5px;
 }
 
 .layui-form-checkbox:hover {

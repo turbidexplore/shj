@@ -1,5 +1,7 @@
 package com.turbid.explore.service.user;
 
+import com.turbid.explore.pojo.UserBasic;
+import com.turbid.explore.pojo.UserSecurity;
 import org.springframework.stereotype.Service;
 
 /**
@@ -7,4 +9,6 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public interface UserBasicService {
+
+    void save(UserBasic userBasic);
 }

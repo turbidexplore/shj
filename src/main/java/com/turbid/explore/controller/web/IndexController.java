@@ -52,4 +52,24 @@ public class IndexController {
         return "manage/auth";
     }
 
+    @RequestMapping("/manage/index")
+    public String manageindex(){
+        return "manage/index";
+    }
+
+    @RequestMapping("/manage/content")
+    public String content(){
+        return "manage/content";
+    }
+
+    @RequestMapping("/manage/nativecontent")
+    public String nativecontent(){
+        return "/manage/nativecontent";
+    }
+
+    @RequestMapping("/manage/usercenter")
+    public String usercenter(){
+        return "/manage/usercenter";
+    }
+
 }

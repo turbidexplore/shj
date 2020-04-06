@@ -6,7 +6,7 @@ import com.github.qcloudsms.SmsSingleSender;
 import com.github.qcloudsms.SmsSingleSenderResult;
 import com.github.qcloudsms.httpclient.HTTPException;
 import com.turbid.explore.pojo.Message;
-import com.turbid.explore.repository.message.MessageRepository;
+import com.turbid.explore.repository.MessageRepository;
 import com.turbid.explore.service.message.SMSService;
 import com.turbid.explore.utils.CodeLib;
 import org.json.JSONException;

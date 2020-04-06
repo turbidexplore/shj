@@ -29,13 +29,13 @@ public class SwaggerApp {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 //页面标题
-                .title("Spring Boot 使用 Swagger2 构建RESTful API")
+                .title("设汇家API接口")
                 //创建人
-                .contact(new Contact("Bryan", "http://blog.bianxh.top/", ""))
+                .contact(new Contact("设汇家", "api.jxdecor.com", ""))
                 //版本号
                 .version("1.0")
                 //描述
-                .description("API 描述")
+                .description("API 基本路径192.168.101.6:10002")
                 .build();
     }
 }

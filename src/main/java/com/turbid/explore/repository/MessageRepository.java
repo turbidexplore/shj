@@ -1,4 +1,4 @@
-package com.turbid.explore.repository.message;
+package com.turbid.explore.repository;
 
 
 import com.turbid.explore.pojo.Message;

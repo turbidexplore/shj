@@ -1,4 +1,4 @@
-package com.turbid.explore.repository.user;
+package com.turbid.explore.repository;
 
 import com.turbid.explore.pojo.UserAuth;
 import org.springframework.data.jpa.repository.JpaRepository;

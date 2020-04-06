@@ -32,7 +32,7 @@ public class UserSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
-        http.cors().disable().csrf().disable().authorizeRequests().anyRequest().permitAll();
+        http.cors().disable().headers().frameOptions().disable().and().csrf().disable().authorizeRequests().anyRequest().permitAll();
     }
 
     @Override

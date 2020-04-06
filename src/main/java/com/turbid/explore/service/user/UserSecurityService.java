@@ -1,5 +1,6 @@
 package com.turbid.explore.service.user;
 
+import com.turbid.explore.pojo.UserSecurity;
 import org.springframework.stereotype.Service;
 
 /**
@@ -7,4 +8,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public interface UserSecurityService {
+     void save(UserSecurity userSecurity);
+     UserSecurity findByPhone(String phone);
+     int findByPhoneCount(String phone);
 }
