@@ -1,7 +1,7 @@
 package com.turbid.explore.service.user.impl;
 
 import com.turbid.explore.pojo.UserSecurity;
-import com.turbid.explore.repository.user.UserSecurityRepository;
+import com.turbid.explore.repository.UserSecurityRepository;
 import com.turbid.explore.service.user.UserSecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ public class UserSecurityServiceImpl implements UserSecurityService {
     private UserSecurityRepository userSecurityRepository;
 
     public void save(UserSecurity userSecurity){
-        userSecurityRepository.save(userSecurity);
+        userSecurityRepository.saveAndFlush(userSecurity);
     }
 
     public UserSecurity findByPhone(String phone){

@@ -1,4 +1,4 @@
-package com.turbid.explore.repository.user;
+package com.turbid.explore.repository;
 
 
 import com.turbid.explore.pojo.UserBasic;

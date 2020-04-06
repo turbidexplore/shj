@@ -1,9 +1,7 @@
 package com.turbid.explore.pojo;
 
 import lombok.Data;
-
 import javax.persistence.*;
-
 
 /**
  * 文件类

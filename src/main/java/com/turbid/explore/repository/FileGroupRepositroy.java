@@ -1,4 +1,4 @@
-package com.turbid.explore.repository.file;
+package com.turbid.explore.repository;
 
 import com.turbid.explore.pojo.FileGroup;
 import org.springframework.data.jpa.repository.JpaRepository;

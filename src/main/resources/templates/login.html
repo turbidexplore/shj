@@ -34,7 +34,7 @@
 <script src="/layui/layui.js" type="text/javascript"></script>
 <script>
     if( $.cookie("ACCESS_TOKEN")!=undefined){
-        window.location.href="/index";
+        window.location.href="/manage/index";
     }
     layui.use('layer', function () {
         //非空验证
@@ -46,7 +46,6 @@
                 alert('请输入您的账号');
                 return false;
             } else if (pwd == '') {
-
                 alert('请输入密码');
                 return false;
             } else {
@@ -83,7 +82,7 @@
                             $.cookie("ACCESS_TOKEN", token, {expires: 7,path:"/",domain:"anoax.com"});
                             $.cookie("ACCESS_TOKEN", token,{expires: 7,path:"/"});
                             setTimeout(function () {
-                                window.location.href="/index";
+                                window.location.href="/manage/index";
                             }, 1000);
                         }else{
                             var msgalert = '登录失败！帐号或密码错误';

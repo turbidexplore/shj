@@ -1,6 +1,5 @@
 package com.turbid.explore.pojo;
 
-import com.turbid.explore.pojo.BaseEntity;
 import com.turbid.explore.utils.Validation;
 import lombok.Data;
 
@@ -13,6 +12,9 @@ import javax.validation.constraints.Pattern;
 @Entity
 @Table(name = "message")
 public class Message extends BaseEntity {
+
+    public Message() {
+    }
 
     //授权码
     @Column(name = "authcode",length = 10)
@@ -32,6 +34,5 @@ public class Message extends BaseEntity {
         this.authcode = authcode;
         this.mebile = mebile;
         this.email = email;
-
     }
 }
