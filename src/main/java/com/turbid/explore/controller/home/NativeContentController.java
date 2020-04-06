@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import java.security.Principal;
+import java.util.List;
 
 @Api(description = "内容接口")
 @RestController
@@ -30,7 +31,12 @@ public class NativeContentController {
     @PostMapping(value = "/add")
     public Mono<Info> add(Principal principal,@RequestBody NativeContent nativeContent) {
         nativeContent.setUserSecurity(userSecurityService.findByPhone(principal.getName()));
-        nativeContent.setFirstimage(CodeLib.listImgSrc(nativeContent.getContent()).get(0));
+        List<String> imgs= CodeLib.listImgSrc(nativeContent.getContent());
+        if(imgs.size()>0) {
+            nativeContent.setFirstimage(imgs.get(0));
+        }else {
+            nativeContent.setFirstimage("");
+        }
         nativeContentService.save(nativeContent);
         return Mono.just(Info.SUCCESS(null));
     }

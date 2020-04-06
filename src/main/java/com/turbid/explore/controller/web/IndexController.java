@@ -72,4 +72,20 @@ public class IndexController {
         return "/manage/usercenter";
     }
 
+    @RequestMapping("/privacyprotocol")
+    public String privacyprotocol(){
+        return "privacyprotocol";
+    }
+
+    @RequestMapping("/disclaimer")
+    public String disclaimer(){
+        return "disclaimer";
+    }
+
+    @RequestMapping("/business")
+    public String business(){
+        return "business";
+    }
+
+
 }
