@@ -1,12 +1,7 @@
 package com.turbid.explore.pojo;
-
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.turbid.explore.utils.Validation;
 import lombok.Data;
-
 import javax.persistence.*;
-import javax.validation.constraints.Pattern;
 
 
 /**
@@ -24,9 +19,11 @@ public class UserSecurity extends BaseEntity {
     @Column(name = "password",length = 255)
     private String password;
 
+    //密码 0设计师，1经销商，2工厂，3设计公司，4地产商，5其他
+    @Column(name = "type",length = 255)
+    private Integer type;
 
     //手机号码
-    @Pattern(regexp = Validation.PHONE,message = "手机格式不合法")
     @Column(name = "phonenumber",length = 11)
     private String phonenumber;
 

@@ -8,7 +8,7 @@ import com.github.qcloudsms.httpclient.HTTPException;
 import com.turbid.explore.pojo.Message;
 import com.turbid.explore.repository.MessageRepository;
 import com.turbid.explore.service.message.SMSService;
-import com.turbid.explore.utils.CodeLib;
+import com.turbid.explore.tools.CodeLib;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

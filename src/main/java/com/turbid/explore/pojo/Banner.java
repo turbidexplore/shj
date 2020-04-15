@@ -2,10 +2,7 @@ package com.turbid.explore.pojo;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Data
 @Entity
@@ -16,4 +13,10 @@ public class Banner  extends BaseEntity {
     @OneToOne(targetEntity = FileInfo.class)
     @JoinColumn(name = "fileinfo_id",referencedColumnName = "code")
     private FileInfo fileInfo;
+
+    @Column(name = "type",length = 255)
+    private String type;
+
+    @Column(name = "url",length = 255)
+    private String url;
 }

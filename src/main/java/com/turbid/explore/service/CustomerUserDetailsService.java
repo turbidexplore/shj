@@ -32,10 +32,12 @@ public class CustomerUserDetailsService implements UserDetailsService {
         HttpServletRequest servletRequest =  requestAttributes.getRequest();
         String login_type= servletRequest.getParameter("login_type").trim();
         String password="";
-        if(login_type=="password"||login_type.equals("password")){
-            password=userSecurityService.findByPhone(username).getPassword();
-        }else if(login_type=="sms"||login_type.equals("sms")){
-            password=checkService.findCodeByPhone(username);
+        if(0<userSecurityService.findByPhoneCount(username)){
+            if(login_type=="password"||login_type.equals("password")){
+                password=userSecurityService.findByPhone(username).getPassword();
+            }else if(login_type=="sms"||login_type.equals("sms")){
+                password=checkService.findCodeByPhone(username);
+            }
         }
         return new org.springframework.security.core.userdetails.User(username,passwordEncoder.encode(password),true,true,true,true, AuthorityUtils.NO_AUTHORITIES);
     }

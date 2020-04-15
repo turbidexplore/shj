@@ -1,12 +1,10 @@
 package com.turbid.explore.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.turbid.explore.utils.CodeLib;
+import com.turbid.explore.tools.CodeLib;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.List;
 
 @Data

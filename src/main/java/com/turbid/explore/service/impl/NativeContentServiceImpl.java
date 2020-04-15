@@ -1,7 +1,6 @@
 package com.turbid.explore.service.impl;
 
 import com.turbid.explore.pojo.NativeContent;
-import com.turbid.explore.pojo.Needs;
 import com.turbid.explore.repository.NativeContentRepositroy;
 import com.turbid.explore.service.NativeContentService;
 import org.springframework.beans.factory.annotation.Autowired;

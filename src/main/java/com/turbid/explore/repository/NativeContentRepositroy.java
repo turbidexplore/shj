@@ -1,7 +1,6 @@
 package com.turbid.explore.repository;
 
 import com.turbid.explore.pojo.NativeContent;
-import com.turbid.explore.pojo.Needs;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

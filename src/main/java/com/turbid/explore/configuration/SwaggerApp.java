@@ -20,7 +20,7 @@ public class SwaggerApp {
                 .apiInfo(apiInfo())
                 .select()
                 //为当前包路径
-                .apis(RequestHandlerSelectors.basePackage("com.turbid.explore.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.turbid.explore.controller.home"))
                 .paths(PathSelectors.any())
                 .build();
 //        return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class)).build();
@@ -31,11 +31,11 @@ public class SwaggerApp {
                 //页面标题
                 .title("设汇家API接口")
                 //创建人
-                .contact(new Contact("设汇家", "api.jxdecor.com", ""))
+                .contact(new Contact("设汇家", "deslibs.com", ""))
                 //版本号
                 .version("1.0")
                 //描述
-                .description("API 基本路径192.168.101.6:10002")
+                .description("API 基本路径deslibs.com")
                 .build();
     }
 }

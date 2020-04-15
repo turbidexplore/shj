@@ -1,4 +1,4 @@
-package com.turbid.explore.utils;
+package com.turbid.explore.tools;
 
 import lombok.Data;
 

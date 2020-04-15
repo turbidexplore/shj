@@ -1,4 +1,4 @@
-package com.turbid.explore.service.file.impl;
+package com.turbid.explore.service.impl;
 
 import com.qcloud.cos.COSClient;
 import com.qcloud.cos.model.PutObjectRequest;
@@ -8,8 +8,8 @@ import com.turbid.explore.pojo.FileGroup;
 import com.turbid.explore.pojo.FileInfo;
 import com.turbid.explore.repository.FileGroupRepositroy;
 import com.turbid.explore.repository.FileInfoRepositroy;
-import com.turbid.explore.service.file.FileService;
-import com.turbid.explore.utils.CodeLib;
+import com.turbid.explore.service.FileService;
+import com.turbid.explore.tools.CodeLib;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

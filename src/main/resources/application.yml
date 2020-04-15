@@ -20,10 +20,10 @@ spring:
       maxRequestSize: 100MB
       enabled: true
   datasource:
-    url: jdbc:mysql://anoax.com:3306/jxkj?useUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://47.96.88.206:3306/jxkj?useUnicode=true&characterEncoding=utf8
     type: com.alibaba.druid.pool.DruidDataSource
-    username: anoax
-    password: zhangan@28
+    username: root
+    password: shj123
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
@@ -36,9 +36,9 @@ spring:
       time-to-live: 60000
   redis:
     database: 0
-    host: anoax.com
-    port: 6379
-    password: zhangan@28
+    host: 47.96.88.206
+    port: 6378
+    password: shj@321
     jedis:
       pool:
         max-active: 8

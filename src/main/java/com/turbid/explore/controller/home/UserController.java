@@ -8,8 +8,8 @@ import com.turbid.explore.service.message.impl.SMSServiceImpl;
 import com.turbid.explore.service.user.UserAuthService;
 import com.turbid.explore.service.user.UserBasicService;
 import com.turbid.explore.service.user.UserSecurityService;
-import com.turbid.explore.utils.CodeLib;
-import com.turbid.explore.utils.Info;
+import com.turbid.explore.tools.CodeLib;
+import com.turbid.explore.tools.Info;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -58,6 +58,7 @@ public class UserController {
                    UserSecurity userSecurity = new UserSecurity();
                    userSecurity.setPassword(jo.getString("password"));
                    userSecurity.setPhonenumber(jo.getString("username"));
+                   userSecurity.setType(jo.getInteger("type"));
                    UserBasic userBasic=new UserBasic();
                    userBasic.setNikename(CodeLib.getNikeName(stringRedisTemplate));
                    userBasic.setHeadportrait( CodeLib.getHeadimg());
@@ -67,6 +68,7 @@ public class UserController {
                    userBasic.setCity(info.getString("city"));
                    userBasicService.save(userBasic);
                    userSecurity.setUserBasic(userBasic);
+
                    userSecurityService.save(userSecurity);
                    return Mono.just(Info.SUCCESS(null));
                }else {

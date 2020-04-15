@@ -2,7 +2,7 @@ package com.turbid.explore.controller.home;
 
 import com.turbid.explore.pojo.Banner;
 import com.turbid.explore.pojo.FileInfo;
-import com.turbid.explore.utils.Info;
+import com.turbid.explore.tools.Info;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +11,7 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.List;
 
-@Api(description = "banner支付接口")
+@Api(description = "banner接口")
 @RestController
 @RequestMapping("/banner")
 @CrossOrigin
