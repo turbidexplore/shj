@@ -231,7 +231,6 @@ public class UserController {
             }else {
                 return false;
             }
-
         } catch (ParseException e) {
             e.printStackTrace();
             return false;
