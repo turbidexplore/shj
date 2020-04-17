@@ -133,4 +133,51 @@ public class BaseController {
     }
 
 
+    @ApiOperation(value = "获取案例主题", notes="获取案例主题")
+    @GetMapping(value = "/casesubject")
+    public Mono<Info> casesubject()  {
+        return Mono.just(Info.SUCCESS(new String[]{"民宿空间","酒店空间","品牌酒店",
+                "餐饮空间","住宅空间","办公空间","商业空间","玩乐健康","文化博物","建筑环境","景观绿化","平面布局","空间概念","摄影交流","手绘交流"}));
+    }
+
+    @ApiOperation(value = "获取品牌馆信息", notes="获取品牌馆信息")
+    @GetMapping(value = "/brandgroup")
+    public Mono<Info> brandgroup()  {
+        List<Map<String,String>> list=new ArrayList<>();
+        Map<String,String> map =new HashMap<>();
+        map.put("name","");
+        map.put("logo","");
+        list.add(map);
+        map=new HashMap<>();
+        map.put("name","");
+        map.put("logo","");
+        list.add(map);
+        map=new HashMap<>();
+        map.put("name","");
+        map.put("logo","");
+        list.add(map);
+        map=new HashMap<>();
+        map.put("name","");
+        map.put("logo","");
+        list.add(map);
+        map=new HashMap<>();
+        map.put("name","");
+        map.put("logo","");
+        list.add(map);
+        map=new HashMap<>();
+        map.put("name","");
+        map.put("logo","");
+        list.add(map);
+        map=new HashMap<>();
+        map.put("name","");
+        map.put("logo","");
+        list.add(map);
+
+        return Mono.just(Info.SUCCESS(list));
+    }
+
+
+
+
+
 }

@@ -5,6 +5,7 @@ import com.turbid.explore.tools.CodeLib;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Data
@@ -43,9 +44,18 @@ public class NativeContent extends BaseEntity{
     @OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
     private List<Comment> comments;
 
+    private String addftime;
+
+    public String getAddftime() {
+        return CodeLib.getFriendlyTime(this.getCreate_time(),true);
+    }
+
     private String addtime;
 
     public String getAddtime() {
-        return CodeLib.getStandardDate(this.getCreate_time().getTimeInMillis());
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateStr = sdf.format(this.getCreate_time().getTime());
+        return dateStr;
     }
 }

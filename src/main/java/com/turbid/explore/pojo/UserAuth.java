@@ -70,6 +70,14 @@ public class UserAuth extends BaseEntity {
     @Column(name = "status",nullable = false,length = 1)
     private Integer status;
 
+    //保证金
+    @Column(name = "margin",length = 10)
+    private Integer margin;
+
+    //vip有效期
+    @Column(name = "vipday",length = 32)
+    private String vipday;
+
 
 
 

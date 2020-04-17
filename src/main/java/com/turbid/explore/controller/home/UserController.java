@@ -26,6 +26,11 @@ import org.springframework.web.client.RestTemplate;
 import reactor.core.publisher.Mono;
 
 import java.security.Principal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Api(description = "用户操作接口")
 @RestController
@@ -194,8 +199,45 @@ public class UserController {
 
     @ApiOperation(value = "获取用户信息", notes="通过token获取用户信息")
     @PostMapping(value = "/userinfo")
-    public Mono<Info> check(Principal principal)  {
-        return Mono.just(Info.SUCCESS(userSecurityService.findByPhone(principal.getName())));
+    public Mono<Info> userinfo(Principal principal)  {
+        UserSecurity userSecurity=new UserSecurity();
+        userSecurity.setUserBasic(userSecurityService.findByPhone(principal.getName()).getUserBasic());
+        return Mono.just(Info.SUCCESS(userSecurity));
+    }
+
+    @ApiOperation(value = "获取用户认证信息", notes="获取用户认证信息")
+    @PostMapping(value = "/authinfo")
+    public Mono<Info> authinfo(Principal principal)  {
+
+        UserSecurity userSecurity=userSecurityService.findByPhone(principal.getName());
+        Map<String,Object> map=new HashMap<>();
+        if(null!=userSecurity.getUserAuth()) {
+            map.put("isauth", userSecurity.getUserAuth().getStatus());
+            map.put("margin",userSecurity.getUserAuth().getMargin());
+            map.put("vipday",userSecurity.getUserAuth().getVipday());
+            map.put("isvip",isvip(userSecurity.getUserAuth().getVipday()));
+        }
+        map.put("usertype",userSecurity.getType());
+        return Mono.just(Info.SUCCESS(map));
+    }
+
+    public boolean isvip(String day){
+        if(day==null||day==""){
+            return false;
+        }
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");//注意月份是MM
+        try {
+            Date date = simpleDateFormat.parse(day);
+            if(date.getTime()>new Date().getTime()){
+                return true;
+            }else {
+                return false;
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
 

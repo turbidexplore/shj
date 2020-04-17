@@ -1,13 +1,17 @@
 package com.turbid.explore.pojo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.turbid.explore.tools.CodeLib;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
 
 @Data
 @Entity
 @Table(name = "projectneeds")
 @ApiModel(description= "产品需求实体")
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer"})
 public class ProjectNeeds extends BaseEntity{
 
     @ApiModelProperty(value = "订单号")
@@ -42,6 +46,10 @@ public class ProjectNeeds extends BaseEntity{
     @Column(name = "url",length = 5000)
     private String url;
 
+    @ApiModelProperty(value = "结束时间")
+    @Column(name = "overtime")
+    private String overtime;
+
     @ApiModelProperty(value = "实效")
     @Column(name = "timeout")
     private Integer timeout;
@@ -65,8 +73,26 @@ public class ProjectNeeds extends BaseEntity{
     @ApiModelProperty(value = "发布者")
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="usercode")
-    UserSecurity userSecurity;
+    private UserSecurity userSecurity;
 
+
+    private String addftime;
+
+    public String getAddftime() {
+        return CodeLib.getFriendlyTime(super.getCreate_time(),true);
+    }
+
+    private String addtime;
+
+    public String getAddtime() {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateStr = sdf.format(this.getCreate_time().getTime());
+        return dateStr;
+    }
+
+    public ProjectNeeds() {
+    }
 
 
 }

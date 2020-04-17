@@ -363,17 +363,24 @@ public class PayController {
     }
 
 
+    @ApiOperation(value = "微信web支付", notes="微信web支付")
+    @ResponseBody
+    @PostMapping("/ali/wechatpayorder")
+    public Mono<Info> wechatpayorder(@RequestBody WebpayBo webpayBo){
+        try {
+          Map<String,String> map=  doXMLParse(SendPayment(webpayBo.getBody(),webpayBo.getOut_trade_no(),Double.valueOf(webpayBo.getTotal_amount()),webpayBo.getProduct_code()));
+            return Mono.just(Info.SUCCESS(map.get("mweb_url")+"&redirect_url=https%3A%2F%2Fanoax.com"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Mono.just(null);
+
+    }
 
 
     /** 微信支付 *************************/
 
 
-
-
-    public static void main(String[] args) throws Exception {
-        System.out.println(SendPayment("苹果","20172323120106113324",1,"1"));
-        doXMLParse(SendPayment("苹果","20172323120106113324",1,"1"));
-    }
 
     /*
      * 发起支付请求

@@ -9,10 +9,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class CodeLib {
 
@@ -33,7 +30,7 @@ public class CodeLib {
     }
 
 
-    private static String[] headimg = new String[]{"https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/public/2020040214512610203253965845083531.png"};
+    private static String[] headimg = new String[]{"https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/public/2020040214512610203253965845083531.png","",""};
 
     private static String[] code=new String[]{
             "0","1","2","3","4","5","6","7","8","9",
@@ -374,6 +371,271 @@ public class CodeLib {
         }
         return sb.toString();
     }
+
+
+    public static String getFriendlyTime(Date date,boolean isAf) {
+
+        if (date ==null) {
+
+            return "";
+
+        }
+
+        SimpleDateFormat dateFormat;
+
+        int ct = (int) ((System.currentTimeMillis() - date.getTime()) /1000);
+
+        if (isAf) {
+
+            if (ct <0) {
+
+                if (ct < -86400) {//86400 * 30
+
+                    int day = ct / (-86400);
+
+                    if (day ==1) {
+
+                        return "后天 " +new SimpleDateFormat("HH:mm").format(date);
+
+                    }
+
+                    if (date.getYear() ==new Date().getYear()) {
+
+                        dateFormat =new SimpleDateFormat("MM-dd HH:mm");
+
+                    }else {
+
+                        dateFormat =new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+                    }
+
+                    return dateFormat.format(date);
+
+                }
+
+                if (!isSameDate(new Date(), date)) {//判断跨天
+
+                    return "明天 " +new SimpleDateFormat("HH:mm").format(date);
+
+                }
+
+                if (-86400 < ct && ct < -3600) {
+
+                    return String.format("%d小时后  %s", ct / -3600,new SimpleDateFormat("HH:mm").format(date));
+
+                }
+
+                if (-3600 < ct && ct < -61) {
+
+                    return String.format("%d分钟后  %s", Math.max(ct / -60,3),new SimpleDateFormat("HH:mm").format(date));
+
+                }
+
+                if (-61 < ct && ct <0) {
+
+                    return String.format("即将到点  %s",new SimpleDateFormat("HH:mm").format(date));
+
+                }
+
+            }
+
+        }
+
+        if (ct <61) {//1分钟内
+
+            return "刚刚";
+
+        }
+
+        dateFormat =new SimpleDateFormat("HH:mm");
+
+        if (isSameDate(new Date(), date)) {//
+
+            if (ct <3600) {//1小时内
+
+                return String.format("%d分钟前", Math.max(ct /60,3));
+
+            }
+
+            if (ct >=3600 && ct <86400) {//当天超过一小时显示
+
+                return dateFormat.format(date);
+
+            }
+
+        }else {
+
+//不是当天时进入
+
+            if (ct <86400) {
+
+                return "昨天 " + dateFormat.format(date);
+
+            }
+
+            if (ct >=86400 && ct <259200) {//86400 * 3 (三天)
+
+                int day = ct /86400;
+
+                if (!isSameDate(addDay(new Date(), -day), date)) {//判断时间匹配日期
+
+                    day = day +1;
+
+                }
+
+                if (day ==1) {
+
+                    return "昨天 " + dateFormat.format(date);
+
+                }else {
+
+                    dateFormat =new SimpleDateFormat("MM-dd HH:mm");
+
+                    return dateFormat.format(date);
+
+                }
+
+            }
+
+        }
+
+        if (date.getYear() ==new Date().getYear()) {
+
+            dateFormat =new SimpleDateFormat("MM-dd HH:mm");
+
+        }else {
+
+            dateFormat =new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+        }
+
+        return dateFormat.format(date);
+
+    }
+
+/**
+
+ * 是否两个时间是否为同一天
+
+ *
+
+     * @param date1,date2 两个对比时间
+
+ */
+
+    private static boolean isSameDate(Date date1, Date date2) {
+
+        Calendar cal1 = Calendar.getInstance();
+
+        cal1.setTime(date1);
+
+        Calendar cal2 = Calendar.getInstance();
+
+        cal2.setTime(date2);
+
+        boolean isSameYear = cal1.get(Calendar.YEAR) == cal2
+
+                .get(Calendar.YEAR);
+
+        boolean isSameMonth = isSameYear
+
+                && cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH);
+
+        boolean isSameDate = isSameMonth
+
+                && cal1.get(Calendar.DAY_OF_MONTH) == cal2
+
+                .get(Calendar.DAY_OF_MONTH);
+
+        return isSameDate;
+
+    }
+
+/**
+
+ * 天数增加
+
+ *
+
+     * @param date 时间
+
+     * @param day  增加天数 可为负整数、正整数
+
+ *            例如-1 相当于减少一天
+
+ *            1 相当于增加一天
+
+ */
+
+    public static Date addDay(Date date,int day) {
+
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.setTime(date);
+
+        calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) + day);
+
+        return calendar.getTime();
+
+    }
+
+/**
+
+ * 月数增加
+
+ *
+
+     * @param date  时间
+
+     * @param month 增加月数 可为负整数、正整数
+
+ *              例如-1 相当于减少一月
+
+ *              1 相当于增加一月
+
+ */
+
+    public static Date addMonth(Date date,int month) {
+
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.setTime(date);
+
+        calendar.add(Calendar.MONTH, month);
+
+        return calendar.getTime();
+
+    }
+
+/**
+
+ * 年数增加
+
+ *
+
+     * @param date 时间
+
+     * @param year 增加年数 可为负整数、正整数
+
+ *            例如-1 相当于减少一年
+
+ *            1 相当于增加一年
+
+ */
+
+    public static Date addYear(Date date,int year) {
+
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.setTime(date);
+
+        calendar.add(Calendar.YEAR, year);
+
+        return calendar.getTime();
+
+    }
+
+
 
 
 

@@ -16,11 +16,11 @@ import javax.persistence.QueryHint;
 public interface ProjectNeedsRepositroy extends JpaRepository<ProjectNeeds,String> {
 
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
-    @Query("SELECT n from ProjectNeeds n where n.type=:type and (n.style like %:style% or :style is null ) and (n.category like %:category% or :category is null) ")
+    @Query("SELECT n from ProjectNeeds n where n.type=:type and n.status=0 and (n.style like %:style% or :style is null ) and (n.category like %:category% or :category is null) ")
     Page<ProjectNeeds> listByPage(Pageable pageable, @Param("style") String style, @Param("category") String category, @Param("type") String type);
 
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
-    @Query("SELECT n from ProjectNeeds n where n.userSecurity.phonenumber=:name and n.status=:status and n.type =:type ")
-    Page<ProjectNeeds> getMyNeeds(Pageable pageable, @Param("name") String name,@Param("status") Integer status,@Param("type")String type);
+    @Query("SELECT n from ProjectNeeds n where n.userSecurity.phonenumber=:name and n.status=:status  ")
+    Page<ProjectNeeds> getMyNeeds(Pageable pageable, @Param("name") String name,@Param("status") Integer status);
 
 }

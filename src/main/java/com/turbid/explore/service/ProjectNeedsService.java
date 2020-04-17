@@ -14,7 +14,7 @@ public interface ProjectNeedsService {
 
     ProjectNeeds getNeedsByCode(String code);
 
-    List<ProjectNeeds> getMyNeeds(String name, Integer integer, Integer page,String type);
+    List<ProjectNeeds> getMyNeeds(String name,  Integer page,Integer status);
 
 
 }
