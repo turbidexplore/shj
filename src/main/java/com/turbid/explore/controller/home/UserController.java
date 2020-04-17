@@ -200,9 +200,7 @@ public class UserController {
     @ApiOperation(value = "获取用户信息", notes="通过token获取用户信息")
     @PostMapping(value = "/userinfo")
     public Mono<Info> userinfo(Principal principal)  {
-        UserSecurity userSecurity=new UserSecurity();
-        userSecurity.setUserBasic(userSecurityService.findByPhone(principal.getName()).getUserBasic());
-        return Mono.just(Info.SUCCESS(userSecurity));
+        return Mono.just(Info.SUCCESS(userSecurityService.findByPhone(principal.getName())));
     }
 
     @ApiOperation(value = "获取用户认证信息", notes="获取用户认证信息")
