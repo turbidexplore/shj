@@ -1,8 +1,8 @@
-package com.turbid.explore.service.message.impl;
+package com.turbid.explore.service.impl;
 
 import com.sun.mail.util.MailSSLSocketFactory;
 import com.turbid.explore.repository.MessageRepository;
-import com.turbid.explore.service.message.MailService;
+import com.turbid.explore.service.MailService;
 import com.turbid.explore.tools.CodeLib;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

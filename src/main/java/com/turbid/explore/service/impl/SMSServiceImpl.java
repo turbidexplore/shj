@@ -1,4 +1,4 @@
-package com.turbid.explore.service.message.impl;
+package com.turbid.explore.service.impl;
 
 import com.github.qcloudsms.SmsMultiSender;
 import com.github.qcloudsms.SmsMultiSenderResult;
@@ -7,7 +7,7 @@ import com.github.qcloudsms.SmsSingleSenderResult;
 import com.github.qcloudsms.httpclient.HTTPException;
 import com.turbid.explore.pojo.Message;
 import com.turbid.explore.repository.MessageRepository;
-import com.turbid.explore.service.message.SMSService;
+import com.turbid.explore.service.SMSService;
 import com.turbid.explore.tools.CodeLib;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,8 +1,8 @@
-package com.turbid.explore.service.user.impl;
+package com.turbid.explore.service.impl;
 
 import com.turbid.explore.pojo.UserBasic;
 import com.turbid.explore.repository.UserBasicRepository;
-import com.turbid.explore.service.user.UserBasicService;
+import com.turbid.explore.service.UserBasicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

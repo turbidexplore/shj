@@ -13,4 +13,6 @@ public interface CaseService {
     List<Case> listByPage(Integer page, String subject, String label, String search);
 
     List<Case> mycases(Integer page, String name);
+
+    Case caseByCode(String code);
 }

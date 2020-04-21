@@ -1,8 +1,8 @@
-package com.turbid.explore.service.user.impl;
+package com.turbid.explore.service.impl;
 
 import com.turbid.explore.pojo.UserAuth;
 import com.turbid.explore.repository.UserAuthRepository;
-import com.turbid.explore.service.user.UserAuthService;
+import com.turbid.explore.service.UserAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

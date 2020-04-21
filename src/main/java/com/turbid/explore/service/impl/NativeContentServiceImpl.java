@@ -21,8 +21,8 @@ public class NativeContentServiceImpl implements NativeContentService {
     private Integer size=15;
 
     @Override
-    public void save(NativeContent nativeContent) {
-        nativeContentRepositroy.save(nativeContent);
+    public NativeContent save(NativeContent nativeContent) {
+       return nativeContentRepositroy.save(nativeContent);
     }
 
     @Override
@@ -37,5 +37,10 @@ public class NativeContentServiceImpl implements NativeContentService {
         Pageable pageable = new PageRequest(page,size, Sort.Direction.DESC,"create_time");
         Page<NativeContent> pages=  nativeContentRepositroy.listByPage(pageable,username);
         return pages.getContent();
+    }
+
+    @Override
+    public NativeContent newsByCode(String code) {
+        return nativeContentRepositroy.newsByCode(code);
     }
 }

@@ -1,8 +1,8 @@
-package com.turbid.explore.service.user.impl;
+package com.turbid.explore.service.impl;
 
 import com.turbid.explore.pojo.UserSecurity;
 import com.turbid.explore.repository.UserSecurityRepository;
-import com.turbid.explore.service.user.UserSecurityService;
+import com.turbid.explore.service.UserSecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

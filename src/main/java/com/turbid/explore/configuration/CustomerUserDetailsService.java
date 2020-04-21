@@ -1,7 +1,7 @@
-package com.turbid.explore.service;
+package com.turbid.explore.configuration;
 
-import com.turbid.explore.service.message.CheckService;
-import com.turbid.explore.service.user.impl.UserSecurityServiceImpl;
+import com.turbid.explore.service.CheckService;
+import com.turbid.explore.service.impl.UserSecurityServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;

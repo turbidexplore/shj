@@ -1,4 +1,4 @@
-package com.turbid.explore.service.message;
+package com.turbid.explore.service;
 
 import org.springframework.stereotype.Service;
 

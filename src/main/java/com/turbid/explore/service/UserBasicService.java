@@ -1,4 +1,4 @@
-package com.turbid.explore.service.user;
+package com.turbid.explore.service;
 
 import com.turbid.explore.pojo.UserBasic;
 import com.turbid.explore.pojo.UserSecurity;

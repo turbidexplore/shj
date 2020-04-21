@@ -30,7 +30,7 @@ public class CodeLib {
     }
 
 
-    private static String[] headimg = new String[]{"https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/public/2020040214512610203253965845083531.png","",""};
+    private static String[] headimg = new String[]{"https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/%E9%BB%98%E8%AE%A4%E5%A4%B4%E5%83%8F.png"};
 
     private static String[] code=new String[]{
             "0","1","2","3","4","5","6","7","8","9",

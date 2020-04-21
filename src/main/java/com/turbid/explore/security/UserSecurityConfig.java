@@ -1,5 +1,5 @@
 package com.turbid.explore.security;
-import com.turbid.explore.service.CustomerUserDetailsService;
+import com.turbid.explore.configuration.CustomerUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

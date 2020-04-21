@@ -21,4 +21,7 @@ public interface CaseRepositroy extends JpaRepository<Case,String> {
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
     @Query("SELECT c from Case c where c.userSecurity.phonenumber=:name ")
     Page<Case> mycases(Pageable pageable, @Param("name") String name);
+
+    @Query("select c from Case c where c.code=:code")
+    Case caseByCode(@Param("code") String code);
 }

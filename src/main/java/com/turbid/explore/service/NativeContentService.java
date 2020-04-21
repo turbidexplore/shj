@@ -7,9 +7,11 @@ import java.util.List;
 
 @Service
 public interface NativeContentService {
-    void save(NativeContent nativeContent);
+    NativeContent save(NativeContent nativeContent);
 
     List<NativeContent> listByPage(Integer page);
 
     List<NativeContent> listByPage(Integer page,String username);
+
+    NativeContent newsByCode(String code);
 }

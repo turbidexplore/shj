@@ -1,8 +1,9 @@
 package com.turbid.explore.controller.home;
 
+import com.turbid.explore.pojo.Case;
 import com.turbid.explore.pojo.NativeContent;
 import com.turbid.explore.service.NativeContentService;
-import com.turbid.explore.service.user.UserSecurityService;
+import com.turbid.explore.service.UserSecurityService;
 import com.turbid.explore.tools.CodeLib;
 import com.turbid.explore.tools.Info;
 import io.swagger.annotations.Api;
@@ -14,7 +15,7 @@ import reactor.core.publisher.Mono;
 import java.security.Principal;
 import java.util.List;
 
-@Api(description = "内容接口")
+@Api(description = "灵感相关接口")
 @RestController
 @RequestMapping("/nativecontent")
 @CrossOrigin
@@ -31,7 +32,11 @@ public class NativeContentController {
     public Mono<Info> add(Principal principal,@RequestBody NativeContent nativeContent) {
         nativeContent.setUserSecurity(userSecurityService.findByPhone(principal.getName()));
         List<String> imgs= CodeLib.listImgSrc(nativeContent.getContent());
-        if(imgs.size()>0) {
+        if(imgs.size()>2) {
+            nativeContent.setFirstimage(imgs.get(0)+","+imgs.get(1)+","+imgs.get(2));
+        }else if(imgs.size()>1){
+            nativeContent.setFirstimage(imgs.get(0)+","+imgs.get(1));
+        }else if(imgs.size()>0){
             nativeContent.setFirstimage(imgs.get(0));
         }else {
             nativeContent.setFirstimage("");
@@ -55,6 +60,31 @@ public class NativeContentController {
     public Mono<Info> mynews(Principal principal, @RequestParam(name = "page")Integer page) {
         try {
             return Mono.just(Info.SUCCESS(nativeContentService.listByPage(page,principal.getName())));
+        }catch (Exception e){
+            return Mono.just(Info.SUCCESS(e.getMessage()));
+        }
+    }
+
+    @ApiOperation(value = "查看软文", notes="查看软文")
+    @GetMapping(value = "/newsByCode")
+    public Mono<Info> newsByCode(Principal principal, @RequestParam(name = "code")String code) {
+        try {
+          NativeContent nativeContent=  nativeContentService.newsByCode(code);
+          nativeContent.getSees().add(userSecurityService.findByPhone(principal.getName()));
+            return Mono.just(Info.SUCCESS(nativeContentService.save(nativeContent)));
+        }catch (Exception e){
+            return Mono.just(Info.SUCCESS(e.getMessage()));
+        }
+    }
+
+    @ApiOperation(value = "点赞", notes="点赞")
+    @PostMapping(value = "/star")
+    public Mono<Info> star(Principal principal,@RequestParam(name = "code")String code) {
+        try {
+            NativeContent nativeContent=  nativeContentService.newsByCode(code);
+            nativeContent.getStars().add(userSecurityService.findByPhone(principal.getName()));
+            nativeContentService.save(nativeContent);
+            return Mono.just(Info.SUCCESS(""));
         }catch (Exception e){
             return Mono.just(Info.SUCCESS(e.getMessage()));
         }

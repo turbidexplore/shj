@@ -1,7 +1,7 @@
-package com.turbid.explore.service.message.impl;
+package com.turbid.explore.service.impl;
 
 import com.turbid.explore.repository.MessageRepository;
-import com.turbid.explore.service.message.CheckService;
+import com.turbid.explore.service.CheckService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

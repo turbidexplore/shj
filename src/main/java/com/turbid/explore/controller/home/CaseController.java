@@ -1,11 +1,8 @@
 package com.turbid.explore.controller.home;
 
 import com.turbid.explore.pojo.Case;
-import com.turbid.explore.pojo.ProjectNeeds;
-import com.turbid.explore.pojo.UserSecurity;
 import com.turbid.explore.service.CaseService;
-import com.turbid.explore.service.user.UserSecurityService;
-import com.turbid.explore.tools.CodeLib;
+import com.turbid.explore.service.UserSecurityService;
 import com.turbid.explore.tools.Info;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -52,6 +49,32 @@ public class CaseController {
     public Mono<Info> mycases(Principal principal,@RequestParam(name = "page")Integer page) {
         try {
             return Mono.just(Info.SUCCESS(caseService.mycases(page,principal.getName())));
+        }catch (Exception e){
+            return Mono.just(Info.SUCCESS(e.getMessage()));
+        }
+    }
+
+    @ApiOperation(value = "查询案例信息", notes="查询案例信息")
+    @PostMapping(value = "/caseByCode")
+    public Mono<Info> caseByCode(Principal principal,@RequestParam(name = "code")String code) {
+        try {
+           Case obj= caseService.caseByCode(code);
+           obj.getBrowsers().add(userSecurityService.findByPhone(principal.getName()));
+           caseService.save(obj);
+            return Mono.just(Info.SUCCESS(obj));
+        }catch (Exception e){
+            return Mono.just(Info.SUCCESS(e.getMessage()));
+        }
+    }
+
+    @ApiOperation(value = "点赞", notes="点赞")
+    @PostMapping(value = "/star")
+    public Mono<Info> star(Principal principal,@RequestParam(name = "code")String code) {
+        try {
+            Case obj= caseService.caseByCode(code);
+            obj.getStars().add(userSecurityService.findByPhone(principal.getName()));
+            caseService.save(obj);
+            return Mono.just(Info.SUCCESS(""));
         }catch (Exception e){
             return Mono.just(Info.SUCCESS(e.getMessage()));
         }

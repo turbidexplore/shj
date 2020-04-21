@@ -4,7 +4,7 @@ import com.turbid.explore.pojo.NeedsRelation;
 import com.turbid.explore.pojo.ProjectNeeds;
 import com.turbid.explore.repository.NeedsRelationRepositroy;
 import com.turbid.explore.service.ProjectNeedsService;
-import com.turbid.explore.service.user.UserSecurityService;
+import com.turbid.explore.service.UserSecurityService;
 import com.turbid.explore.tools.CodeLib;
 import com.turbid.explore.tools.Info;
 import io.swagger.annotations.Api;
@@ -41,11 +41,9 @@ public class ProjectNeedsController {
     @ApiOperation(value = "修改需求", notes="修改需求")
     @PutMapping(value = "/updateneeds")
     public Mono<Info> updateneeds(Principal principal, @RequestBody ProjectNeeds projectNeeds) {
-        if(principal.getName()!=projectNeeds.getUserSecurity().getPhonenumber()){
+        if(!principal.getName().equals(projectNeeds.getUserSecurity().getPhonenumber())){
             return Mono.just(Info.ERROR("您没有修改该需求的权限！"));
         }
-
-        System.out.println(projectNeeds.getCreate_time());
         return Mono.just(Info.SUCCESS(projectNeedsService.save(projectNeeds)));
     }
 
@@ -53,7 +51,7 @@ public class ProjectNeedsController {
     @DeleteMapping(value = "/colseneeds")
     public Mono<Info> colseneeds(Principal principal, @RequestParam("code")String code) {
         ProjectNeeds projectNeeds=  projectNeedsService.getNeedsByCode(code);
-        if(principal.getName()!=projectNeeds.getUserSecurity().getPhonenumber()){
+        if(!principal.getName().equals(projectNeeds.getUserSecurity().getPhonenumber())){
             return Mono.just(Info.ERROR("您没有修改该需求的权限！"));
         }
         projectNeeds.setStatus(1);

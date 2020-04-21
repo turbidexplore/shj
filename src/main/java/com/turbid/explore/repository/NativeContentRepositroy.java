@@ -21,4 +21,7 @@ public interface NativeContentRepositroy extends JpaRepository<NativeContent,Str
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
     @Query("SELECT n from NativeContent n where n.userSecurity.phonenumber= :username ")
     Page<NativeContent> listByPage(Pageable pageable, @Param(value = "username")String username);
+
+    @Query("SELECT n from NativeContent n where n.code=:code ")
+    NativeContent newsByCode(@Param("code") String code);
 }

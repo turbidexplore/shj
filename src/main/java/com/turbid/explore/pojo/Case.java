@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Entity
@@ -46,11 +47,24 @@ public class Case extends BaseEntity {
     @Column(name = "content",length = 99)
     private String content;
 
+    @ApiModelProperty(value = "封面图片")
+    @Column(name = "indexurl",length = 255)
+    private String indexurl;
+
     @ApiModelProperty(value = "图片地址")
-    @Column(name = "urls",length = 9999)
+    @Column(name = "urls",length = 5000)
     private String urls;
 
     @ApiModelProperty(value = "发布者")
     @OneToOne(fetch=FetchType.LAZY)
     private UserSecurity userSecurity;
+
+    @OneToMany(targetEntity=Comment.class,cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+    private List<Comment> comments;
+
+    @OneToMany(targetEntity=UserSecurity.class,cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+    private List<UserSecurity> stars;
+
+    @OneToMany(targetEntity=UserSecurity.class,cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+    private List<UserSecurity> browsers;
 }

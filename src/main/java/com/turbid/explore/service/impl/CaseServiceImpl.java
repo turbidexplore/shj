@@ -37,4 +37,9 @@ public class CaseServiceImpl implements CaseService {
         Page<Case> pages=  caseRepositroy.mycases(pageable,name);
         return pages.getContent();
     }
+
+    @Override
+    public Case caseByCode(String code) {
+        return caseRepositroy.caseByCode(code);
+    }
 }

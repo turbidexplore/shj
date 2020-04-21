@@ -1,10 +1,10 @@
 package com.turbid.explore.pojo;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 
 /**
@@ -77,6 +77,43 @@ public class UserAuth extends BaseEntity {
     //vip有效期
     @Column(name = "vipday",length = 32)
     private String vipday;
+
+    @ApiModelProperty(value = "公司logo")
+    @Column(name = "logo",length = 255)
+    private String logo;
+
+
+    @ApiModelProperty(value = "是否严选")
+    @Column(name = "ischoose",length = 255)
+    private Integer ischoose;
+
+    @ApiModelProperty(value = "所属城市")
+    @Column(name = "city",length = 255)
+    private String city;
+
+    @ApiModelProperty(value = "公司标签信息")
+    @Column(name = "label",length = 255)
+    private String label;
+
+    //访客信息
+    @OneToMany(targetEntity=UserSecurity.class,cascade= CascadeType.ALL,fetch= FetchType.LAZY)
+    private List<UserSecurity> visitor;
+
+    //访客信息
+    @OneToMany(targetEntity=UserSecurity.class,cascade= CascadeType.ALL,fetch= FetchType.LAZY)
+    private List<UserSecurity> fans;
+
+    @ApiModelProperty(value = "banner")
+    @Column(name = "banner",length = 255)
+    private String banner;
+
+    @ApiModelProperty(value = "公司展示图片")
+    @Column(name = "company_show",length = 255)
+    private String company_show;
+
+    @ApiModelProperty(value = "公司介绍")
+    @Column(name = "introduce",length = 255)
+    private String introduce;
 
 
 
