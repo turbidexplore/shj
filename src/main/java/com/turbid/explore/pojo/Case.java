@@ -1,14 +1,17 @@
 package com.turbid.explore.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
 @Table(name = "case_info")
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer"})
 public class Case extends BaseEntity {
 
     @ApiModelProperty(value = "项目名称")
@@ -59,12 +62,12 @@ public class Case extends BaseEntity {
     @OneToOne(fetch=FetchType.LAZY)
     private UserSecurity userSecurity;
 
-    @OneToMany(targetEntity=Comment.class,cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-    private List<Comment> comments;
+    @ManyToMany(targetEntity=Comment.class,cascade = {CascadeType.DETACH} ,fetch= FetchType.LAZY)
+    private Set<Comment> comments;
 
-    @OneToMany(targetEntity=UserSecurity.class,cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-    private List<UserSecurity> stars;
+    @ManyToMany(targetEntity=UserSecurity.class,cascade = {CascadeType.DETACH} ,fetch= FetchType.LAZY)
+    private Set<UserSecurity> stars;
 
-    @OneToMany(targetEntity=UserSecurity.class,cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-    private List<UserSecurity> browsers;
+    @ManyToMany(targetEntity=UserSecurity.class,cascade = {CascadeType.DETACH} ,fetch= FetchType.LAZY)
+    private Set<UserSecurity> browsers;
 }

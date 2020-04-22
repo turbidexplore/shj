@@ -1,5 +1,4 @@
 package com.turbid.explore.pojo;
-import com.turbid.explore.tools.CodeLib;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
@@ -7,8 +6,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 @MappedSuperclass
@@ -17,7 +14,7 @@ import java.util.Date;
 public class BaseEntity implements Serializable {
     //用户编号
     @Id
-    @Column(name = "code", unique = true, nullable = false, length = 32)
+    @Column(name = "code",  nullable = false, length = 32)
     @GenericGenerator(name = "jpa-uuid", strategy = "uuid")
     @GeneratedValue(generator = "jpa-uuid")
     private String code;

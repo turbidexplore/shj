@@ -26,8 +26,13 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<Comment> listByPage(String relation, Integer page) {
-        Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
+        Pageable pageable = new PageRequest(page,10, Sort.Direction.DESC,"create_time");
         Page<Comment> pages=  commentRepositroy.listByPage(pageable,relation);
         return pages.getContent();
+    }
+
+    @Override
+    public int listByCount(String relation) {
+        return commentRepositroy.listByCount(relation);
     }
 }

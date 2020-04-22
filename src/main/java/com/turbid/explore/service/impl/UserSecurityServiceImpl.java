@@ -15,8 +15,8 @@ public class UserSecurityServiceImpl implements UserSecurityService {
     @Autowired
     private UserSecurityRepository userSecurityRepository;
 
-    public void save(UserSecurity userSecurity){
-        userSecurityRepository.saveAndFlush(userSecurity);
+    public UserSecurity save(UserSecurity userSecurity){
+        return userSecurityRepository.saveAndFlush(userSecurity);
     }
 
     public UserSecurity findByPhone(String phone){

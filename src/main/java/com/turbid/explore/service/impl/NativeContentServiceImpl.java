@@ -41,6 +41,6 @@ public class NativeContentServiceImpl implements NativeContentService {
 
     @Override
     public NativeContent newsByCode(String code) {
-        return nativeContentRepositroy.newsByCode(code);
+        return nativeContentRepositroy.getOne(code);
     }
 }

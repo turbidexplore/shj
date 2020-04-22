@@ -10,4 +10,6 @@ public interface CommentService {
     Comment save(Comment comment);
 
     List<Comment> listByPage(String relation, Integer page);
+
+    int listByCount(String relation);
 }

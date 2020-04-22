@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public interface UserSecurityService {
-     void save(UserSecurity userSecurity);
+     UserSecurity save(UserSecurity userSecurity);
      UserSecurity findByPhone(String phone);
      int findByPhoneCount(String phone);
 }

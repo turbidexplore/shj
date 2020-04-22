@@ -8,5 +8,5 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public interface UserAuthService {
-    void save(UserAuth userAuth);
+    UserAuth save(UserAuth userAuth);
 }

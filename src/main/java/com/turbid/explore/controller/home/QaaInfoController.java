@@ -17,7 +17,7 @@ import java.security.Principal;
 
 
 @Api(description = "问答接口")
-@Controller
+@RestController
 @RequestMapping("/qaa")
 @CrossOrigin
 public class QaaInfoController {

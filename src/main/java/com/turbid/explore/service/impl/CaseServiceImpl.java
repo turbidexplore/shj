@@ -42,4 +42,9 @@ public class CaseServiceImpl implements CaseService {
     public Case caseByCode(String code) {
         return caseRepositroy.caseByCode(code);
     }
+
+    @Override
+    public Case update(Case obj) {
+        return caseRepositroy.save(obj);
+    }
 }

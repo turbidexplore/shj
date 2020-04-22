@@ -33,6 +33,6 @@ public class QaaInfoServiceImpl implements QaaInfoService {
 
     @Override
     public QaaInfo qaaByCode(String code) {
-        return qaaInfoRepositroy.qaaByCode(code);
+        return qaaInfoRepositroy.getOne(code);
     }
 }

@@ -176,14 +176,15 @@ public class UserController {
            UserSecurity userSecurity= userSecurityService.findByPhone(userAuth.getContactphone());
            if(null==userSecurity.getPhonenumber()||userSecurity.equals(null)){
                userSecurity.setPhonenumber(userAuth.getContactphone());
+               userSecurity.setPhonenumber(CodeLib.encrypt("123456"));
            }
             userAuth.setStatus(0);
-            userSecurity.setUserAuth(userAuth);
-            userSecurityService.save(userSecurity);
+            userSecurity.setUserAuth(userAuthService.save(userAuth));
+            return Mono.just(Info.SUCCESS(userSecurityService.save(userSecurity)));
         }catch (Exception e){
-            e.getStackTrace();
+            return Mono.just(Info.SUCCESS(e.getMessage()));
         }
-        return Mono.just(Info.SUCCESS(null));
+
     }
 
     @ApiOperation(value = "检查验证码", notes="检查验证码是否正确,传入手机号和验证码,当data值为0时表示为失败，为其他数值时为成功")

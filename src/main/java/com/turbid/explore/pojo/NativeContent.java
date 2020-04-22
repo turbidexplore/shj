@@ -7,6 +7,7 @@ import lombok.Data;
 import javax.persistence.*;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -26,8 +27,8 @@ public class NativeContent extends BaseEntity{
     UserSecurity userSecurity;
 
     //浏览者信息
-    @OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-    private List<UserSecurity> sees;
+    @OneToMany(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+    private Set<UserSecurity> sees;
 
     //软文内容
     @Column(name = "content",length = 66666)
@@ -37,12 +38,12 @@ public class NativeContent extends BaseEntity{
     private String firstimage;
 
     //点赞者信息
-    @OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-    private List<UserSecurity> stars;
+    @OneToMany(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+    private Set<UserSecurity> stars;
 
     //评论信息
-    @OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-    private List<Comment> comments;
+    @OneToMany(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+    private Set<Comment> comments;
 
     private String addftime;
 

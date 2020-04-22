@@ -1,6 +1,8 @@
 package com.turbid.explore.controller.home;
 
+import com.alibaba.fastjson.JSONArray;
 import com.turbid.explore.pojo.Case;
+import com.turbid.explore.pojo.UserSecurity;
 import com.turbid.explore.service.CaseService;
 import com.turbid.explore.service.UserSecurityService;
 import com.turbid.explore.tools.Info;
@@ -57,26 +59,28 @@ public class CaseController {
     @ApiOperation(value = "查询案例信息", notes="查询案例信息")
     @PostMapping(value = "/caseByCode")
     public Mono<Info> caseByCode(Principal principal,@RequestParam(name = "code")String code) {
+        Case obj= caseService.caseByCode(code);
         try {
-           Case obj= caseService.caseByCode(code);
-           obj.getBrowsers().add(userSecurityService.findByPhone(principal.getName()));
-           caseService.save(obj);
+            UserSecurity userSecurity= userSecurityService.findByPhone(principal.getName());
+            obj.getBrowsers().add(userSecurity);
+            caseService.save(obj);
             return Mono.just(Info.SUCCESS(obj));
         }catch (Exception e){
-            return Mono.just(Info.SUCCESS(e.getMessage()));
+            return Mono.just(Info.ERROR(e.getMessage()));
         }
     }
 
     @ApiOperation(value = "点赞", notes="点赞")
     @PostMapping(value = "/star")
     public Mono<Info> star(Principal principal,@RequestParam(name = "code")String code) {
+        Case obj= caseService.caseByCode(code);
         try {
-            Case obj= caseService.caseByCode(code);
-            obj.getStars().add(userSecurityService.findByPhone(principal.getName()));
-            caseService.save(obj);
-            return Mono.just(Info.SUCCESS(""));
+           UserSecurity userSecurity= userSecurityService.findByPhone(principal.getName());
+           obj.getStars().add(userSecurity);
+           caseService.save(obj);
+           return Mono.just(Info.SUCCESS(""));
         }catch (Exception e){
-            return Mono.just(Info.SUCCESS(e.getMessage()));
+           return Mono.just(Info.ERROR(e.getMessage()));
         }
     }
 }

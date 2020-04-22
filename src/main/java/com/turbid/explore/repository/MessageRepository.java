@@ -8,17 +8,18 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Repository
 public interface MessageRepository extends JpaRepository<Message,String> {
 
     @Query("SELECT count(m) from Message m where m.mebile=:mebile and m.authcode=:authcode and  m.create_time>= :now ")
-    int findCountByMailAndAuthode(@Param("mebile") String mebile, @Param("authcode") String authcode, @Param("now") Calendar now);
+    int findCountByMailAndAuthode(@Param("mebile") String mebile, @Param("authcode") String authcode, @Param("now") Date now);
 
     @Query("SELECT count(m) from Message m where m.email=:mail and m.authcode=:authcode and  m.create_time>= :now ")
-    int findMessagesByMailAndAuthode(@Param("mail") String mail, @Param("authcode") String authcode, @Param("now") Calendar now);
+    int findMessagesByMailAndAuthode(@Param("mail") String mail, @Param("authcode") String authcode, @Param("now") Date now);
 
     @Query("SELECT m from Message m where m.mebile=:mebile and  m.create_time>= :now order by m.create_time desc ")
-    List<Message> findCodeByPhone(@Param("mebile") String mebile, @Param("now") Calendar now);
+    List<Message> findCodeByPhone(@Param("mebile") String mebile, @Param("now") Date now);
 }

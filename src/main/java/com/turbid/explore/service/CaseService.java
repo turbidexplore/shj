@@ -15,4 +15,6 @@ public interface CaseService {
     List<Case> mycases(Integer page, String name);
 
     Case caseByCode(String code);
+
+    Case update(Case obj);
 }

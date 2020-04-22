@@ -17,4 +17,7 @@ public interface CommentRepositroy extends JpaRepository<Comment,String> {
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
     @Query("SELECT c from Comment c where c.relation= :relation ")
     Page<Comment> listByPage(Pageable pageable,@Param("relation") String relation);
+
+    @Query("SELECT count(c) from Comment c where c.relation= :relation ")
+    int listByCount(@Param("relation") String relation);
 }

@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -96,12 +97,12 @@ public class UserAuth extends BaseEntity {
     private String label;
 
     //访客信息
-    @OneToMany(targetEntity=UserSecurity.class,cascade= CascadeType.ALL,fetch= FetchType.LAZY)
-    private List<UserSecurity> visitor;
+    @OneToMany(targetEntity=UserSecurity.class,cascade= CascadeType.ALL,fetch= FetchType.EAGER)
+    private Set<UserSecurity> visitor;
 
     //访客信息
-    @OneToMany(targetEntity=UserSecurity.class,cascade= CascadeType.ALL,fetch= FetchType.LAZY)
-    private List<UserSecurity> fans;
+    @OneToMany(targetEntity=UserSecurity.class,cascade= CascadeType.ALL,fetch= FetchType.EAGER)
+    private Set<UserSecurity> fans;
 
     @ApiModelProperty(value = "banner")
     @Column(name = "banner",length = 255)

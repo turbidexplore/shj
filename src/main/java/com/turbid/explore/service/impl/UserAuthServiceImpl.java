@@ -16,7 +16,7 @@ public class UserAuthServiceImpl implements UserAuthService {
     private UserAuthRepository userAuthRepository;
 
     @Override
-    public void save(UserAuth userAuth) {
-        userAuthRepository.save(userAuth);
+    public UserAuth save(UserAuth userAuth) {
+       return  userAuthRepository.saveAndFlush(userAuth);
     }
 }

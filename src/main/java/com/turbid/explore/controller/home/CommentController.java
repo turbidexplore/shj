@@ -1,5 +1,6 @@
 package com.turbid.explore.controller.home;
 
+import com.alibaba.fastjson.JSONObject;
 import com.turbid.explore.pojo.Comment;
 import com.turbid.explore.service.CommentService;
 import com.turbid.explore.service.UserSecurityService;
@@ -13,10 +14,13 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import java.security.Principal;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @Api(description = "评论接口")
-@Controller
+@RestController
 @RequestMapping("/comment")
 @CrossOrigin
 public class CommentController {
@@ -36,10 +40,12 @@ public class CommentController {
     }
 
     @ApiOperation(value = "查看相关评论", notes="查看相关评论")
-    @GetMapping("/comments")
+    @PostMapping("/comments")
     public Mono<Info> comments(@RequestParam("relation") String relation,@RequestParam("page")Integer page) {
-
-        return Mono.just(Info.SUCCESS( commentService.listByPage(relation,page)));
+        Map<String,Object> jo=new HashMap<>();
+        jo.put("data",commentService.listByPage(relation,page));
+        jo.put("count",commentService.listByCount(relation));
+        return Mono.just(Info.SUCCESS(jo));
     }
 
 

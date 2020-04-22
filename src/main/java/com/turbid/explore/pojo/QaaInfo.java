@@ -8,6 +8,7 @@ import lombok.Data;
 import javax.persistence.*;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Questions and answers
@@ -31,16 +32,16 @@ public class QaaInfo extends BaseEntity{
     private String label;
 
     //发布者信息
-    @OneToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+    @OneToOne(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
     UserSecurity userSecurity;
 
     //点赞者信息
-    @OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-    private List<UserSecurity> stars;
+    @OneToMany(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+    private Set<UserSecurity> stars;
 
     //评论信息
-    @OneToMany(cascade= CascadeType.ALL,fetch= FetchType.LAZY)
-    private List<Comment> comments;
+    @OneToMany(cascade= CascadeType.ALL,fetch= FetchType.EAGER)
+    private Set<Comment> comments;
 
     private String addftime;
 

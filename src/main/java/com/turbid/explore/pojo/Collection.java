@@ -1,40 +1,31 @@
 package com.turbid.explore.pojo;
 
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.turbid.explore.pojo.bo.CollectionType;
 import com.turbid.explore.pojo.bo.ComentType;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Data
 @Entity
-@Table(name = "comment")
-public class Comment extends BaseEntity {
+@Table(name = "collection")
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer"})
+public class Collection extends BaseEntity {
 
-    public Comment() {
-    }
-
-    @ApiModelProperty(value = "评论用户信息")
+    @ApiModelProperty(value = "收藏用户信息")
     @OneToOne(targetEntity = UserSecurity.class)
     @JoinColumn(name = "user_id",referencedColumnName = "code")
     private UserSecurity userSecurity;
 
-    //评论内容
-    @ApiModelProperty(value = "评论内容")
-    @Column(name = "content",length = 255)
-    private String content;
-
     //评论类型
-    @ApiModelProperty(value = "评论类型")
+    @ApiModelProperty(value = "收藏类型")
     @Column(name = "type",length = 5000)
-    private ComentType comentType;
+    private CollectionType collectionType;
 
     //评论关联
-    @ApiModelProperty(value = "评论关联")
+    @ApiModelProperty(value = "收藏关联")
     @Column(name = "relation",length = 255)
     private String relation;
-
-
 }

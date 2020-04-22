@@ -15,22 +15,16 @@ public class CheckServiceImpl implements CheckService {
     private MessageRepository messageRepository;
 
     public int findMessagesByMebileAndAuthode(String mebile,String authcode){
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date(new Date().getTime()-1000*60*10));
-        return messageRepository.findCountByMailAndAuthode(mebile,authcode,calendar);
+        return messageRepository.findCountByMailAndAuthode(mebile,authcode,new Date(new Date().getTime()-1000*60*10));
     }
 
     public int findMessagesByMailAndAuthode(String mail,String authcode){
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date(new Date().getTime()-1000*60*10));
-        return messageRepository.findMessagesByMailAndAuthode(mail,authcode,calendar);
+        return messageRepository.findMessagesByMailAndAuthode(mail,authcode,new Date(new Date().getTime()-1000*60*10));
     }
 
     @Override
     public String findCodeByPhone(String username) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date(new Date().getTime()-1000*60*10));
-        return messageRepository.findCodeByPhone(username,calendar).get(0).getAuthcode();
+        return messageRepository.findCodeByPhone(username,new Date(new Date().getTime()-1000*60*10)).get(0).getAuthcode();
     }
 
 }

@@ -1,6 +1,5 @@
 package com.turbid.explore.controller.home;
 
-import com.turbid.explore.pojo.Case;
 import com.turbid.explore.pojo.NativeContent;
 import com.turbid.explore.service.NativeContentService;
 import com.turbid.explore.service.UserSecurityService;
@@ -70,7 +69,9 @@ public class NativeContentController {
     public Mono<Info> newsByCode(Principal principal, @RequestParam(name = "code")String code) {
         try {
           NativeContent nativeContent=  nativeContentService.newsByCode(code);
-          nativeContent.getSees().add(userSecurityService.findByPhone(principal.getName()));
+            if( nativeContent.getSees().toString().contains(principal.getName())==false) {
+                nativeContent.getSees().add(userSecurityService.findByPhone(principal.getName()));
+            }
             return Mono.just(Info.SUCCESS(nativeContentService.save(nativeContent)));
         }catch (Exception e){
             return Mono.just(Info.SUCCESS(e.getMessage()));
@@ -81,9 +82,13 @@ public class NativeContentController {
     @PostMapping(value = "/star")
     public Mono<Info> star(Principal principal,@RequestParam(name = "code")String code) {
         try {
-            NativeContent nativeContent=  nativeContentService.newsByCode(code);
-            nativeContent.getStars().add(userSecurityService.findByPhone(principal.getName()));
-            nativeContentService.save(nativeContent);
+                NativeContent nativeContent=  nativeContentService.newsByCode(code);
+                nativeContent.getStars().add(userSecurityService.findByPhone(principal.getName()));
+            try {
+                nativeContentService.save(nativeContent);
+                }catch (Exception e){
+
+                }
             return Mono.just(Info.SUCCESS(""));
         }catch (Exception e){
             return Mono.just(Info.SUCCESS(e.getMessage()));
