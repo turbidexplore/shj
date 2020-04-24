@@ -8,24 +8,21 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.text.SimpleDateFormat;
-import java.util.List;
 import java.util.Set;
 
-/**
- * Questions and answers
- */
 @Data
 @Entity
-@Table(name = "qaa_info")
-@ApiModel(description= "问答实体")
+@Table(name = "answer")
+@ApiModel(description= "回答实体")
 @JsonIgnoreProperties(value = { "hibernateLazyInitializer"})
-public class QaaInfo extends BaseEntity{
+public class Answer extends BaseEntity{
 
-    @ApiModelProperty(value = "标题")
-    @Column(name = "title")
-    private String title;
+    @ApiModelProperty(value = "回答用户信息")
+    @OneToOne(targetEntity = UserSecurity.class)
+    @JoinColumn(name = "user_id",referencedColumnName = "code")
+    private UserSecurity userSecurity;
 
-    @ApiModelProperty(value = "内容")
+    @ApiModelProperty(value = "回答内容")
     @Column(name = "content",length = 500)
     private String content;
 
@@ -33,21 +30,12 @@ public class QaaInfo extends BaseEntity{
     @Column(name = "images",length = 5000)
     private String images;
 
-    @ApiModelProperty(value = "标签")
-    @Column(name = "label")
-    private String label;
-
-    //发布者信息
-    @OneToOne(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
-    UserSecurity userSecurity;
+    @ApiModelProperty(value = "qaacode")
+    @Column(name = "qaacode")
+    private String qaacode;
 
     //点赞者信息
     @OneToMany(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
     private Set<UserSecurity> stars;
-
-    //评论信息
-    @OneToMany(cascade= CascadeType.ALL,fetch= FetchType.EAGER)
-    private List<Answer> answers;
-
 
 }

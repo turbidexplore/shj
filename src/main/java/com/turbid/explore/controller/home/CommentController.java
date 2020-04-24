@@ -1,6 +1,5 @@
 package com.turbid.explore.controller.home;
 
-import com.alibaba.fastjson.JSONObject;
 import com.turbid.explore.pojo.Comment;
 import com.turbid.explore.service.CommentService;
 import com.turbid.explore.service.UserSecurityService;
@@ -9,13 +8,13 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import java.security.Principal;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -43,7 +42,11 @@ public class CommentController {
     @PostMapping("/comments")
     public Mono<Info> comments(@RequestParam("relation") String relation,@RequestParam("page")Integer page) {
         Map<String,Object> jo=new HashMap<>();
-        jo.put("data",commentService.listByPage(relation,page));
+        List<Comment> commentList= commentService.listByPage(relation,page);
+        commentList.forEach(v->{
+            v.setCount(commentService.listByCount(v.getCode()));
+        });
+        jo.put("data",commentList);
         jo.put("count",commentService.listByCount(relation));
         return Mono.just(Info.SUCCESS(jo));
     }

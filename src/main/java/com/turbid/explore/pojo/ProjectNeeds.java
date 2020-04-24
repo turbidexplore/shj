@@ -76,20 +76,6 @@ public class ProjectNeeds extends BaseEntity{
     private UserSecurity userSecurity;
 
 
-    private String addftime;
-
-    public String getAddftime() {
-        return CodeLib.getFriendlyTime(super.getCreate_time(),true);
-    }
-
-    private String addtime;
-
-    public String getAddtime() {
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String dateStr = sdf.format(this.getCreate_time().getTime());
-        return dateStr;
-    }
 
     public ProjectNeeds() {
     }

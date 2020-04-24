@@ -2,15 +2,21 @@ package com.turbid.explore.pojo;
 
 
 import com.turbid.explore.pojo.bo.ComentType;
+import com.turbid.explore.service.CommentService;
+import com.turbid.explore.service.impl.CommentServiceImpl;
+import com.turbid.explore.tools.CodeLib;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
-import java.util.List;
+import java.text.SimpleDateFormat;
 
 @Data
 @Entity
 @Table(name = "comment")
+@Component
 public class Comment extends BaseEntity {
 
     public Comment() {
@@ -35,6 +41,9 @@ public class Comment extends BaseEntity {
     @ApiModelProperty(value = "评论关联")
     @Column(name = "relation",length = 255)
     private String relation;
+
+    private int count;
+
 
 
 }

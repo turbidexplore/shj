@@ -1,10 +1,13 @@
 package com.turbid.explore.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.turbid.explore.tools.CodeLib;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -70,4 +73,39 @@ public class Case extends BaseEntity {
 
     @ManyToMany(targetEntity=UserSecurity.class,cascade = {CascadeType.DETACH} ,fetch= FetchType.LAZY)
     private Set<UserSecurity> browsers;
+
+    public int seecount;
+    public int starcount;
+    public int  commentcount;
+
+    public Set<Comment> getComments() {
+        return null;
+    }
+
+    public Set<UserSecurity> getStars() {
+        return null;
+    }
+
+    public Set<UserSecurity> getStarsInfo() {
+        return stars;
+    }
+
+    public Set<UserSecurity> getBrowsers() {
+        return null;
+    }
+
+    public Set<UserSecurity> getBrowsersInfo() {
+        return browsers;
+    }
+
+    public int getSeecount() {
+        int count=browsers.size();
+        return count;
+    }
+
+    public int getStarcount() {
+        int count=stars.size();
+        return count;
+    }
+
 }

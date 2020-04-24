@@ -55,5 +55,22 @@ public class FollowController {
         return Mono.just(Info.SUCCESS( jo));
     }
 
+    @ApiOperation(value = "是否关注", notes="是否关注")
+    @PutMapping("/isfollow")
+    public Mono<Info> isfollow(Principal principal, @RequestParam("phone") String phone) {
+        if(0<followService.findByCount(principal.getName(),phone)){
+            return Mono.just(Info.SUCCESS(true));
+        }else{
+            return Mono.just(Info.SUCCESS(false));
+        }
+    }
+
+    @ApiOperation(value = "取消关注", notes="取消关注")
+    @PutMapping("/cancelfollow")
+    public Mono<Info> cancelfollow(Principal principal, @RequestParam("phone") String phone) {
+
+        return Mono.just(Info.SUCCESS(followService.cancelfollow(principal.getName(),phone)));
+    }
+
 
 }

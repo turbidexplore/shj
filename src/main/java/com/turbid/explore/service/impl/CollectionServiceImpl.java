@@ -40,4 +40,9 @@ public class CollectionServiceImpl implements CollectionService {
     public int findByCount(String name, String relation) {
         return collectionRepositroy.findByCount(name,relation);
     }
+
+    @Override
+    public Object cancelcollection(String name, String relation) {
+        return collectionRepositroy.cancelcollection(name,relation);
+    }
 }

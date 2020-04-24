@@ -1,18 +1,18 @@
 package com.turbid.explore.controller.home;
 
-import com.alibaba.fastjson.JSONArray;
 import com.turbid.explore.pojo.Case;
+import com.turbid.explore.pojo.Comment;
 import com.turbid.explore.pojo.UserSecurity;
-import com.turbid.explore.service.CaseService;
-import com.turbid.explore.service.UserSecurityService;
+import com.turbid.explore.service.*;
 import com.turbid.explore.tools.Info;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
-
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
 
 @Api(description = "案例相关接口")
 @RestController("/case")
@@ -56,16 +56,41 @@ public class CaseController {
         }
     }
 
+    @Autowired
+    private CommentService commentService;
+
+    @Autowired
+    private CollectionService collectionService;
+
+    @Autowired
+    private FollowService followService;
+
     @ApiOperation(value = "查询案例信息", notes="查询案例信息")
     @PostMapping(value = "/caseByCode")
     public Mono<Info> caseByCode(Principal principal,@RequestParam(name = "code")String code) {
+        Map<String,Object> data=new HashMap<>();
         Case obj= caseService.caseByCode(code);
+        obj.setCommentcount(commentService.listByCount(code));
         try {
             UserSecurity userSecurity= userSecurityService.findByPhone(principal.getName());
-            obj.getBrowsers().add(userSecurity);
-            caseService.save(obj);
-            return Mono.just(Info.SUCCESS(obj));
+            obj.getBrowsersInfo().add(userSecurity);
+            data.put("data",caseService.save(obj));
+            data.put("isstar",obj.getStarsInfo().contains(userSecurity));
+            if(0<followService.findByCount(principal.getName(),obj.getUserSecurity().getPhonenumber())){
+                data.put("isfollow",true);
+            }else{
+                data.put("isfollow",false);
+            }
+           int ccount= collectionService.findByCount(principal.getName(),code);
+            data.put("collectioncount",ccount);
+            if(0<ccount){
+                data.put("iscollection",true);
+            }else{
+                data.put("iscollection",false);
+            }
+            return Mono.just(Info.SUCCESS(data));
         }catch (Exception e){
+            e.getStackTrace();
             return Mono.just(Info.ERROR(e.getMessage()));
         }
     }
@@ -76,7 +101,7 @@ public class CaseController {
         Case obj= caseService.caseByCode(code);
         try {
            UserSecurity userSecurity= userSecurityService.findByPhone(principal.getName());
-           obj.getStars().add(userSecurity);
+           obj.getStarsInfo().add(userSecurity);
            caseService.save(obj);
            return Mono.just(Info.SUCCESS(""));
         }catch (Exception e){

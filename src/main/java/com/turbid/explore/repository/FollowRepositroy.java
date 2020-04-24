@@ -22,8 +22,14 @@ public interface FollowRepositroy extends JpaRepository<Follow,String> {
     Page<Follow> followme(Pageable pageable,@Param("name") String name);
 
     @Query("SELECT count(c) from Follow c where c.user.phonenumber= :name ")
-    int myfollowCount(String name);
+    int myfollowCount(@Param("name")String name);
 
     @Query("SELECT count(c) from Follow c where c.userFollow.phonenumber= :name ")
-    int followmeCount(String name);
+    int followmeCount(@Param("name")String name);
+
+    @Query("SELECT count(c) from Follow c where c.userFollow.phonenumber= :phone and c.user.phonenumber=:name ")
+    int findByCount(@Param("name")String name,@Param("phone") String phone);
+
+    @Query("delete from Follow c where c.userFollow.phonenumber= :phone and c.user.phonenumber=:name ")
+    Object cancelfollow(@Param("name")String name,@Param("phone") String phone);
 }

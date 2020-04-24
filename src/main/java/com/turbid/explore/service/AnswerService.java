@@ -1,0 +1,17 @@
+package com.turbid.explore.service;
+
+import com.turbid.explore.pojo.Answer;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public interface AnswerService {
+    Answer save(Answer answer);
+
+    List<Answer> answersByQaacode(String code, Integer page);
+
+    int answerCount(String code);
+
+    Answer get(String code);
+}

@@ -1,13 +1,11 @@
 package com.turbid.explore.controller.home;
 import com.alibaba.fastjson.JSONObject;
+import com.turbid.explore.pojo.Shop;
 import com.turbid.explore.pojo.UserAuth;
 import com.turbid.explore.pojo.UserBasic;
 import com.turbid.explore.pojo.UserSecurity;
-import com.turbid.explore.service.CheckService;
+import com.turbid.explore.service.*;
 import com.turbid.explore.service.impl.SMSServiceImpl;
-import com.turbid.explore.service.UserAuthService;
-import com.turbid.explore.service.UserBasicService;
-import com.turbid.explore.service.UserSecurityService;
 import com.turbid.explore.tools.CodeLib;
 import com.turbid.explore.tools.Info;
 import io.swagger.annotations.Api;
@@ -167,20 +165,39 @@ public class UserController {
     }
 
     @Autowired
-    UserAuthService userAuthService;
+    private UserAuthService userAuthService;
+
+    @Autowired
+    private ShopService shopService;
 
     @ApiOperation(value = "用户认证", notes="用户认证")
     @PostMapping(value = "/userauth")
-    public Mono<Info> userauth(@RequestBody UserAuth userAuth)  {
+    public Mono<Info> userauth(@RequestBody Shop shop)  {
         try {
-           UserSecurity userSecurity= userSecurityService.findByPhone(userAuth.getContactphone());
-           if(null==userSecurity.getPhonenumber()||userSecurity.equals(null)){
-               userSecurity.setPhonenumber(userAuth.getContactphone());
-               userSecurity.setPhonenumber(CodeLib.encrypt("123456"));
+           UserSecurity userSecurity= userSecurityService.findByPhone(shop.getContactphone());
+
+           if(null==userSecurity||userSecurity.equals(null)){
+               userSecurity=new UserSecurity();
+               userSecurity.setPhonenumber(shop.getContactphone());
+               userSecurity.setPassword(CodeLib.encrypt("123456"));
+               UserAuth userAuth =new UserAuth();
+               userAuth.setStatus(0);
+               userSecurity.setUserAuth(userAuth);
+               userAuthService.save(userAuth);
+               UserBasic userBasic=new UserBasic();
+               userBasic.setNikename(CodeLib.getNikeName(stringRedisTemplate));
+               userBasic.setHeadportrait( CodeLib.getHeadimg());
+               userBasicService.save(userBasic);
+               userSecurity.setUserBasic(userBasic);
+               userSecurity.setType(2);
+           }else {
+               userSecurity.getUserAuth().setStatus(0);
+               userAuthService.save( userSecurity.getUserAuth());
            }
-            userAuth.setStatus(0);
-            userSecurity.setUserAuth(userAuthService.save(userAuth));
-            return Mono.just(Info.SUCCESS(userSecurityService.save(userSecurity)));
+            userSecurity= userSecurityService.save(userSecurity);
+            shop=shopService.save(shop);
+            shop.setUserSecurity(userSecurity);
+            return Mono.just(Info.SUCCESS(shop));
         }catch (Exception e){
             return Mono.just(Info.SUCCESS(e.getMessage()));
         }

@@ -27,6 +27,9 @@ public class UserSecurity extends BaseEntity {
     @Column(name = "phonenumber",length = 11)
     private String phonenumber;
 
+    //手机号码
+    @Column(name = "qaalevel")
+    private int qaalevel;
 
     //用户基础信息
     @OneToOne(targetEntity = UserBasic.class)

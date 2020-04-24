@@ -37,7 +37,7 @@ public class Brand extends BaseEntity{
 
     @ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH},optional=false)
     @JoinColumn(name="company_code")
-    private UserAuth company;
+    private Shop company;
 
     //评论信息
     @OneToMany(cascade= CascadeType.ALL,fetch= FetchType.LAZY)

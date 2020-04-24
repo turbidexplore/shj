@@ -9,15 +9,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Component
 public class CommentServiceImpl implements CommentService {
 
     @Autowired
-    private CommentRepositroy commentRepositroy;
+    private  CommentRepositroy commentRepositroy;
 
     @Override
     public Comment save(Comment comment) {
@@ -31,7 +33,6 @@ public class CommentServiceImpl implements CommentService {
         return pages.getContent();
     }
 
-    @Override
     public int listByCount(String relation) {
         return commentRepositroy.listByCount(relation);
     }

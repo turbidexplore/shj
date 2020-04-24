@@ -47,4 +47,14 @@ public class FollowServiceImpl implements FollowService {
     public int myfollowCount(String name) {
         return followRepositroy.myfollowCount(name);
     }
+
+    @Override
+    public int findByCount(String name, String phone) {
+        return followRepositroy.findByCount(name,phone);
+    }
+
+    @Override
+    public Object cancelfollow(String name, String phone) {
+        return followRepositroy.cancelfollow(name,phone);
+    }
 }

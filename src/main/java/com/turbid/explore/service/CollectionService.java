@@ -14,4 +14,6 @@ public interface CollectionService {
     List<Collection> listByPagePhone(String phone, Integer page);
 
     int findByCount(String name, String relation);
+
+    Object cancelcollection(String name, String relation);
 }

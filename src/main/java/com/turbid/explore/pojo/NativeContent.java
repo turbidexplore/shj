@@ -38,25 +38,34 @@ public class NativeContent extends BaseEntity{
     private String firstimage;
 
     //点赞者信息
-    @OneToMany(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+    @OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
     private Set<UserSecurity> stars;
 
     //评论信息
-    @OneToMany(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+    @OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
     private Set<Comment> comments;
 
-    private String addftime;
+    public int seecount;
+    public int starcount;
+    public int  commentcount;
 
-    public String getAddftime() {
-        return CodeLib.getFriendlyTime(this.getCreate_time(),true);
+    public int getSeecount() {
+        int count=sees.size();
+        this.sees=null;
+        return count;
     }
 
-    private String addtime;
-
-    public String getAddtime() {
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String dateStr = sdf.format(this.getCreate_time().getTime());
-        return dateStr;
+    public int getStarcount() {
+        int count=stars.size();
+        this.stars=null;
+        return count;
     }
+
+    public int getCommentcount() {
+        int count=comments.size();
+        this.comments=null;
+        return count;
+    }
+
+
 }

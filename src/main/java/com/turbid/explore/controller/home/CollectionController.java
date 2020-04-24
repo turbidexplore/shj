@@ -44,7 +44,13 @@ public class CollectionController {
         }else{
           return Mono.just(Info.SUCCESS(false));
         }
+    }
 
+    @ApiOperation(value = "取消收藏", notes="取消收藏")
+    @PutMapping("/cancelcollection")
+    public Mono<Info> cancelcollection(Principal principal, @RequestParam("relation") String relation) {
+
+            return Mono.just(Info.SUCCESS(collectionService.cancelcollection(principal.getName(),relation)));
     }
 
     @ApiOperation(value = "查看收藏", notes="查看收藏")

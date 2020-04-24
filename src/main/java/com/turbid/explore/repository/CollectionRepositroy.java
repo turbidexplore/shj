@@ -23,6 +23,9 @@ public interface CollectionRepositroy extends JpaRepository<Collection,String> {
     @Query("SELECT c from Collection c where c.userSecurity.phonenumber= :phone ")
     Page<Collection> listByPagePhone(Pageable pageable, @Param("phone") String phone);
 
-    @Query("SELECT c from Collection c where c.relation= :relation and c.userSecurity.phonenumber=:name")
+    @Query("SELECT count(c) from Collection c where c.userSecurity.phonenumber=:name and c.relation= :relation  ")
     int findByCount(@Param("name") String name,@Param("relation")  String relation);
+
+    @Query("delete from Collection c where c.userSecurity.phonenumber=:name and c.relation= :relation  ")
+    Object cancelcollection(@Param("name") String name,@Param("relation")  String relation);
 }

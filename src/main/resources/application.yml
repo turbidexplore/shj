@@ -60,13 +60,7 @@ spring:
       username: anoax
       password: zhangan28
       repositories: true
-  mail:
-    host: smtp.exmail.qq.com
-    account: a@anoax.com
-    from: a@anoax.com
-    pass: GSyGZkN5TdLB4KMi
-    port: 465
-    protocol: smtp
+
 security:
   oauth2:
     resource:
