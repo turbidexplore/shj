@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.QueryHint;
+import java.util.List;
 
 @Repository
 public interface CaseRepositroy extends JpaRepository<Case,String> {
@@ -24,4 +25,7 @@ public interface CaseRepositroy extends JpaRepository<Case,String> {
 
     @Query("select c from Case c where c.code=:code")
     Case caseByCode(@Param("code") String code);
+
+//    @Query("select c from Case c where c.code=:code")
+//    List<Case> recommend(@Param("obj") Case obj);
 }

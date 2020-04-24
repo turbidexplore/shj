@@ -1,5 +1,6 @@
 package com.turbid.explore.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -7,6 +8,7 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name = "banner")
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer"})
 public class Banner  extends BaseEntity {
 
     //商品图片组

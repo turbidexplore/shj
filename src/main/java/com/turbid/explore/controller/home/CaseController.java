@@ -108,4 +108,15 @@ public class CaseController {
            return Mono.just(Info.ERROR(e.getMessage()));
         }
     }
+
+
+    @ApiOperation(value = "推荐案例", notes="推荐案例")
+    @PostMapping(value = "/recommend")
+    public Mono<Info> recommend(@RequestParam(name = "code")String code) {
+        try {
+            return Mono.just(Info.SUCCESS(caseService.recommend(caseService.caseByCode(code))));
+        }catch (Exception e){
+            return Mono.just(Info.ERROR(e.getMessage()));
+        }
+    }
 }

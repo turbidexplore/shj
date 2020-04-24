@@ -17,4 +17,6 @@ public interface CaseService {
     Case caseByCode(String code);
 
     Case update(Case obj);
+
+    List<Case> recommend(Case obj);
 }

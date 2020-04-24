@@ -47,4 +47,9 @@ public class CaseServiceImpl implements CaseService {
     public Case update(Case obj) {
         return caseRepositroy.save(obj);
     }
+
+    @Override
+    public List<Case> recommend(Case obj) {
+        return null;//caseRepositroy.recommend(obj);
+    }
 }
