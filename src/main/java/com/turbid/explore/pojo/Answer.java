@@ -38,4 +38,19 @@ public class Answer extends BaseEntity{
     @OneToMany(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
     private Set<UserSecurity> stars;
 
+    private int starscount;
+
+    public int getStarscount() {
+        return stars.size();
+    }
+
+    private int commentcount;
+
+    public int getCommentcount() {
+        return commentcount;
+    }
+
+    private boolean isstar;
+
+
 }

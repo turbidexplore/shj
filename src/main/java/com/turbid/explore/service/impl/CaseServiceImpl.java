@@ -50,6 +50,6 @@ public class CaseServiceImpl implements CaseService {
 
     @Override
     public List<Case> recommend(Case obj) {
-        return null;//caseRepositroy.recommend(obj);
+        return caseRepositroy.recommend(obj.getLabel(),obj.getSubject());
     }
 }

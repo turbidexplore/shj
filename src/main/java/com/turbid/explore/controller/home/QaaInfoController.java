@@ -5,6 +5,7 @@ import com.turbid.explore.pojo.Case;
 import com.turbid.explore.pojo.QaaInfo;
 import com.turbid.explore.pojo.UserSecurity;
 import com.turbid.explore.service.AnswerService;
+import com.turbid.explore.service.CommentService;
 import com.turbid.explore.service.QaaInfoService;
 import com.turbid.explore.service.UserSecurityService;
 import com.turbid.explore.tools.Info;
@@ -36,8 +37,13 @@ public class QaaInfoController {
     @ApiOperation(value = "发布问题", notes="发布问题")
     @PutMapping("/addqaa")
     public Mono<Info> addqaa(Principal principal, @RequestBody QaaInfo qaaInfo) {
-        qaaInfo.setUserSecurity(userSecurityService.findByPhone(principal.getName()));
-        return Mono.just(Info.SUCCESS( qaaInfoService.save(qaaInfo)));
+        try {
+            qaaInfo.setUserSecurity(userSecurityService.findByPhone(principal.getName()));
+            return Mono.just(Info.SUCCESS( qaaInfoService.save(qaaInfo)));
+        }catch (Exception e){
+            return Mono.just(Info.ERROR( e.getMessage()));
+        }
+
     }
 
     @ApiOperation(value = "查看问答列表", notes="查看问答列表")
@@ -48,8 +54,13 @@ public class QaaInfoController {
 
     @ApiOperation(value = "查看问答", notes="查看问答")
     @GetMapping("/qaaByCode")
-    public Mono<Info> qaaByCode(@RequestParam("code")String code) {
-        return Mono.just(Info.SUCCESS( qaaInfoService.qaaByCode(code)));
+    public Mono<Info> qaaByCode(Principal principal,@RequestParam("code")String code) {
+        Map<String,Object> data=new HashMap<>();
+        UserSecurity userSecurity= userSecurityService.findByPhone(principal.getName());
+        QaaInfo qaaInfo= qaaInfoService.qaaByCode(code);
+        data.put("isstar",qaaInfo.getStars().contains(userSecurity));
+        data.put("data",qaaInfo);
+        return Mono.just(Info.SUCCESS(data ));
     }
 
     @Autowired
@@ -65,14 +76,21 @@ public class QaaInfoController {
         return Mono.just(Info.SUCCESS(answer));
     }
 
+    @Autowired
+    private CommentService commentService;
+
     @ApiOperation(value = "查看答案", notes="查看答案")
     @GetMapping("/answersByQaacode")
-    public Mono<Info> answersByQaacode(@RequestParam("code")String code,@RequestParam("page")Integer page) {
+    public Mono<Info> answersByQaacode(Principal principal,@RequestParam("code")String code,@RequestParam("page")Integer page) {
         Map<String,Object> data=new HashMap<>();
+        UserSecurity userSecurity= userSecurityService.findByPhone(principal.getName());
         List<Answer> answerList=answerService.answersByQaacode(code,page);
-        int count=answerService.answerCount(code);
+        answerList.forEach(v->{
+            v.setCommentcount(commentService.listByCount(v.getCode()));
+            v.setIsstar(v.getStars().contains(userSecurity));
+        });
         data.put("data",answerList);
-        data.put("count",count);
+        data.put("count",qaaInfoService.qaaByCode(code).getAnswersinfo().size());
         return Mono.just(Info.SUCCESS( data));
     }
 

@@ -49,5 +49,29 @@ public class QaaInfo extends BaseEntity{
     @OneToMany(cascade= CascadeType.ALL,fetch= FetchType.EAGER)
     private List<Answer> answers;
 
+    public List<Answer> getAnswers() {
+        return null;
+    }
+
+    public List<Answer> getAnswersinfo() {
+        return answers;
+    }
+
+    private int starcount;
+
+    public int getStarcount() {
+        if(null!=stars){
+        return stars.size();}else {return 0; }
+    }
+
+
+  private int answercount;
+
+    public int getAnswercount() {
+        if(null!=answers){
+        return answers.size();
+        }else {return 0;}
+    }
+
 
 }

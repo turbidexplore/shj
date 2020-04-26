@@ -99,13 +99,19 @@ public class Case extends BaseEntity {
     }
 
     public int getSeecount() {
+        if (null!=browsers){
         int count=browsers.size();
-        return count;
+        return count;}else {
+            return 0;
+        }
     }
 
     public int getStarcount() {
+        if(null!=stars){
         int count=stars.size();
-        return count;
+        return count;}else {
+            return 0;
+        }
     }
 
 }
