@@ -13,4 +13,6 @@ public interface BrandService {
     List<Brand> getByShop(String code);
 
     Brand get(String code);
+
+    List<Brand> getByLabel(String classgroup, String brandgroup);
 }

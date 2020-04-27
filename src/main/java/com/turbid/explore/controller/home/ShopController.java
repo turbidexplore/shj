@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Api(description = "店铺接口")
 @RestController
@@ -39,4 +43,26 @@ public class ShopController {
     public Mono<Info> update(@RequestBody Shop shop) {
         return Mono.just(Info.SUCCESS( shopService.save(shop)));
     }
+
+    @ApiOperation(value = "通过商铺label获取商铺信息", notes="通过商铺label获取商铺信息")
+    @GetMapping("/getbylabel")
+    public Mono<Info> getbylabel(@RequestParam("classgroup")String classgroup,@RequestParam("brandgroup")String brandgroup) {
+        List list=new ArrayList();
+        shopService.getByLabel(classgroup,brandgroup).forEach(v->{
+            Map map=new HashMap();
+            map.put("code",v.getCode());
+            map.put("name",v.getCompanyname());
+            map.put("logo",v.getLogo());
+            list.add(map);
+        });
+        return Mono.just(Info.SUCCESS( list));
+    }
+
+    @ApiOperation(value = "官方严选", notes="官方严选")
+    @GetMapping("/choose")
+    public Mono<Info> choose(@RequestParam(value = "label",required = false)String label) {
+
+        return Mono.just(Info.SUCCESS( shopService.getByChoose(label)));
+    }
+
 }

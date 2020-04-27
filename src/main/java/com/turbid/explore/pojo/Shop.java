@@ -1,5 +1,6 @@
 package com.turbid.explore.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -11,7 +12,11 @@ import java.util.Set;
 @Entity
 @Table(name = "shop")
 @ApiModel(description= "Shop")
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer"})
 public class Shop extends BaseEntity{
+
+    public Shop() {
+    }
 
     //企业名称
     @Column(name = "companyname",  nullable = false, length = 32)
@@ -78,6 +83,10 @@ public class Shop extends BaseEntity{
     @Column(name = "label",length = 255)
     private String label;
 
+    @ApiModelProperty(value = "公司所属品牌馆")
+    @Column(name = "brandgroup",length = 255)
+    private String brandgroup;
+
     //访客信息
     @OneToMany(targetEntity=UserSecurity.class,cascade= CascadeType.ALL,fetch= FetchType.EAGER)
     private Set<UserSecurity> visitor;
@@ -103,4 +112,15 @@ public class Shop extends BaseEntity{
     @JoinColumn(name = "user_id",referencedColumnName = "code")
     private UserSecurity userSecurity;
 
+    @ApiModelProperty(value = "公司状态")
+    @Column(name = "status")
+    private Integer status;
+
+
+    public Shop(String code,String companyname,String logo) {
+        super();
+        this.setCode(code);
+        this.companyname=companyname;
+        this.logo=logo;
+    }
 }

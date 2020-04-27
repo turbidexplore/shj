@@ -29,4 +29,9 @@ public class BrandServiceImpl implements BrandService {
     public Brand get(String code) {
         return brandRepositroy.getOne(code);
     }
+
+    @Override
+    public List<Brand> getByLabel(String classgroup, String brandgroup) {
+        return brandRepositroy.getByLabel(classgroup,brandgroup);
+    }
 }

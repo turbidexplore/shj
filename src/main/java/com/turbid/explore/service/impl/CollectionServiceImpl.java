@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -42,7 +43,8 @@ public class CollectionServiceImpl implements CollectionService {
     }
 
     @Override
-    public Object cancelcollection(String name, String relation) {
+    @Transactional
+    public Integer cancelcollection(String name, String relation) {
         return collectionRepositroy.cancelcollection(name,relation);
     }
 }

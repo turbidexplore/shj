@@ -5,6 +5,7 @@ import com.turbid.explore.pojo.Comment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.repository.query.Param;
@@ -27,5 +28,6 @@ public interface CollectionRepositroy extends JpaRepository<Collection,String> {
     int findByCount(@Param("name") String name,@Param("relation")  String relation);
 
     @Query("delete from Collection c where c.userSecurity.phonenumber=:name and c.relation= :relation  ")
-    Object cancelcollection(@Param("name") String name,@Param("relation")  String relation);
+    @Modifying
+    Integer cancelcollection(@Param("name") String name,@Param("relation")  String relation);
 }

@@ -6,6 +6,8 @@ import com.turbid.explore.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ShopServiceImpl implements ShopService {
     @Autowired
@@ -24,5 +26,15 @@ public class ShopServiceImpl implements ShopService {
     @Override
     public Shop getByUser(String name) {
         return shopRepositroy.getByUser(name);
+    }
+
+    @Override
+    public List<Shop> getByLabel(String label,String brandgroup) {
+        return shopRepositroy.getByLabel(label,brandgroup);
+    }
+
+    @Override
+    public List<Shop> getByChoose(String label) {
+        return shopRepositroy.getByChoose(label);
     }
 }

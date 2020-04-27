@@ -145,34 +145,89 @@ public class BaseController {
     public Mono<Info> brandgroup()  {
         List<Map<String,String>> list=new ArrayList<>();
         Map<String,String> map =new HashMap<>();
-        map.put("name","");
-        map.put("logo","");
+        map.put("name","家居馆");
+        map.put("logo","https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3862065343,1024477825&fm=15&gp=0.jpg");
         list.add(map);
         map=new HashMap<>();
-        map.put("name","");
-        map.put("logo","");
+        map.put("name","高端定制馆");
+        map.put("logo","https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3862065343,1024477825&fm=15&gp=0.jpg");
         list.add(map);
         map=new HashMap<>();
-        map.put("name","");
-        map.put("logo","");
+        map.put("name","全屋定制馆");
+        map.put("logo","https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3862065343,1024477825&fm=15&gp=0.jpg");
         list.add(map);
         map=new HashMap<>();
-        map.put("name","");
-        map.put("logo","");
+        map.put("name","设计馆");
+        map.put("logo","https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3862065343,1024477825&fm=15&gp=0.jpg");
         list.add(map);
         map=new HashMap<>();
-        map.put("name","");
-        map.put("logo","");
+        map.put("name","墙布馆");
+        map.put("logo","https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3862065343,1024477825&fm=15&gp=0.jpg");
         list.add(map);
         map=new HashMap<>();
-        map.put("name","");
-        map.put("logo","");
+        map.put("name","灯具馆");
+        map.put("logo","https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3862065343,1024477825&fm=15&gp=0.jpg");
         list.add(map);
         map=new HashMap<>();
-        map.put("name","");
-        map.put("logo","");
+        map.put("name","床品馆");
+        map.put("logo","https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3862065343,1024477825&fm=15&gp=0.jpg");
+        list.add(map);
+        map=new HashMap<>();
+        map.put("name","饰品馆");
+        map.put("logo","https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3862065343,1024477825&fm=15&gp=0.jpg");
+        list.add(map);
+        map=new HashMap<>();
+        map.put("name","地毯馆");
+        map.put("logo","https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3862065343,1024477825&fm=15&gp=0.jpg");
+        list.add(map);
+        map=new HashMap<>();
+        map.put("name","窗帘");
+        map.put("logo","https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3862065343,1024477825&fm=15&gp=0.jpg");
+        list.add(map);
+        map=new HashMap<>();
+        map.put("name","其他");
+        map.put("logo","https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3862065343,1024477825&fm=15&gp=0.jpg");
         list.add(map);
 
+        return Mono.just(Info.SUCCESS(list));
+    }
+
+    @ApiOperation(value = "获取品牌馆分类信息", notes="获取品牌馆分类信息")
+    @GetMapping(value = "/classgroup")
+    public Mono<Info> classgroup()  {
+        List<Map<String,String>> list=new ArrayList<>();
+        Map<String,String> map =new HashMap<>();
+        map.put("name","新古典");
+        map.put("logo","https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3862065343,1024477825&fm=15&gp=0.jpg");
+        list.add(map);
+        map=new HashMap<>();
+        map.put("name","新中式");
+        map.put("logo","https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3862065343,1024477825&fm=15&gp=0.jpg");
+        list.add(map);
+        map=new HashMap<>();
+        map.put("name","美式");
+        map.put("logo","https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3862065343,1024477825&fm=15&gp=0.jpg");
+        list.add(map);
+        map=new HashMap<>();
+        map.put("name","轻奢");
+        map.put("logo","https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3862065343,1024477825&fm=15&gp=0.jpg");
+        list.add(map);
+        map=new HashMap<>();
+        map.put("name","极简");
+        map.put("logo","https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3862065343,1024477825&fm=15&gp=0.jpg");
+        list.add(map);
+        map=new HashMap<>();
+        map.put("name","北欧");
+        map.put("logo","https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3862065343,1024477825&fm=15&gp=0.jpg");
+        list.add(map);
+        map=new HashMap<>();
+        map.put("name","现代");
+        map.put("logo","https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3862065343,1024477825&fm=15&gp=0.jpg");
+        list.add(map);
+        map=new HashMap<>();
+        map.put("name","其他");
+        map.put("logo","https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3862065343,1024477825&fm=15&gp=0.jpg");
+        list.add(map);
         return Mono.just(Info.SUCCESS(list));
     }
 

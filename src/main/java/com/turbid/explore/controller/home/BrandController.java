@@ -10,6 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @Api(description = "品牌接口")
 @RestController
 @RequestMapping("/brand")
@@ -35,6 +40,21 @@ public class BrandController {
     @GetMapping("/getByShop")
     public Mono<Info> getByShop(@RequestParam("code") String code) {
         return Mono.just(Info.SUCCESS( brandService.getByShop(code)));
+    }
+
+
+    @ApiOperation(value = "通过label获取品牌信息", notes="通过label获取品牌信息")
+    @GetMapping("/getbylabel")
+    public Mono<Info> getbylabel(@RequestParam("classgroup")String classgroup,@RequestParam("brandgroup")String brandgroup) {
+        List list=new ArrayList();
+        brandService.getByLabel(classgroup,brandgroup).forEach(v->{
+            Map map=new HashMap();
+            map.put("code",v.getCode());
+            map.put("name",v.getName());
+            map.put("logo",v.getLogo());
+            list.add(map);
+        });
+        return Mono.just(Info.SUCCESS(list ));
     }
 
 
