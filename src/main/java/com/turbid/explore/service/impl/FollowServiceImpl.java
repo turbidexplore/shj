@@ -11,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.beans.Transient;
 import java.util.List;
 
 @Service
@@ -54,7 +56,13 @@ public class FollowServiceImpl implements FollowService {
     }
 
     @Override
-    public Object cancelfollow(String name, String phone) {
-        return followRepositroy.cancelfollow(name,phone);
+    @Transactional
+    public int cancelfollow( String code) {
+        return followRepositroy.cancelfollow(code);
+    }
+
+    @Override
+    public String find(String name, String phone) {
+        return followRepositroy.find(name,phone);
     }
 }

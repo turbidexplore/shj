@@ -21,10 +21,6 @@ public class BaseEntity implements Serializable {
     @GeneratedValue(generator = "jpa-uuid")
     private String code;
 
-    //是否删除
-    @Column(name = "isdel",length = 1)
-    private boolean isdel=false;
-
     //添加时间
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)

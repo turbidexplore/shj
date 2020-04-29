@@ -41,7 +41,11 @@ public class Answer extends BaseEntity{
     private int starscount;
 
     public int getStarscount() {
-        return stars.size();
+        if(null!=stars) {
+            return stars.size();
+        }else {
+            return 0;
+        }
     }
 
     private int commentcount;

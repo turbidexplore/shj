@@ -26,4 +26,9 @@ public class UserSecurityServiceImpl implements UserSecurityService {
     public int findByPhoneCount(String phone){
         return userSecurityRepository.findByPhoneCount(phone);
     }
+
+    @Override
+    public UserSecurity findByCode(String usercode) {
+        return userSecurityRepository.getOne(usercode);
+    }
 }

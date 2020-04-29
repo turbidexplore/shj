@@ -1,9 +1,6 @@
 package com.turbid.explore.controller.home;
 import com.alibaba.fastjson.JSONObject;
-import com.turbid.explore.pojo.Shop;
-import com.turbid.explore.pojo.UserAuth;
-import com.turbid.explore.pojo.UserBasic;
-import com.turbid.explore.pojo.UserSecurity;
+import com.turbid.explore.pojo.*;
 import com.turbid.explore.service.*;
 import com.turbid.explore.service.impl.SMSServiceImpl;
 import com.turbid.explore.tools.CodeLib;
@@ -244,15 +241,36 @@ public class UserController {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");//注意月份是MM
         try {
             Date date = simpleDateFormat.parse(day);
-            if(date.getTime()>new Date().getTime()){
-                return true;
-            }else {
-                return false;
-            }
+            if(date.getTime()>new Date().getTime()){ return true; }else { return false; }
         } catch (ParseException e) {
             e.printStackTrace();
             return false;
         }
+    }
+
+    @ApiOperation(value = "判断是否vip是否有效", notes="判断是否vip是否有效")
+    @PostMapping(value = "/isvip")
+    public Mono<Info> vip(@RequestParam("usercode")String usercode) throws ParseException {
+        boolean vip=false;
+      UserSecurity userSecurity = userSecurityService.findByCode(usercode);
+      UserAuth userAuth=userSecurity.getUserAuth();
+      if(null!=userAuth){
+          if (null!=userAuth.getVipday()){
+                vip=isvip(userAuth.getVipday());
+          }
+      }
+      return Mono.just(Info.SUCCESS(vip));
+    }
+
+    @Autowired
+    private ComplaintSerivce complaintSerivce;
+
+    @ApiOperation(value = "投诉用户", notes="投诉用户")
+    @PostMapping(value = "/complaint")
+    public Mono<Info> complaint(Principal principal, @RequestBody Complaint complaint)  {
+        complaint.setUserSecurity(userSecurityService.findByPhone(principal.getName()));
+        complaint.setComplaintUserSecurity(userSecurityService.findByCode(complaint.getComplaintUserSecurity().getCode()));
+        return Mono.just(Info.SUCCESS(complaintSerivce.save(complaint)));
     }
 
 }

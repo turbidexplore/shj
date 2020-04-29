@@ -4,6 +4,7 @@ import com.turbid.explore.pojo.Follow;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.repository.query.Param;
@@ -30,6 +31,10 @@ public interface FollowRepositroy extends JpaRepository<Follow,String> {
     @Query("SELECT count(c) from Follow c where c.userFollow.phonenumber= :phone and c.user.phonenumber=:name ")
     int findByCount(@Param("name")String name,@Param("phone") String phone);
 
-    @Query("delete from Follow c where c.userFollow.phonenumber= :phone and c.user.phonenumber=:name ")
-    Object cancelfollow(@Param("name")String name,@Param("phone") String phone);
+    @Query("delete from Follow c where c.code=:code")
+    @Modifying
+    int cancelfollow(@Param("code") String code);
+
+    @Query("SELECT c.code from Follow c where c.userFollow.phonenumber= :phone and c.user.phonenumber=:name ")
+    String find(@Param("name")String name,@Param("phone") String phone);
 }

@@ -19,5 +19,7 @@ public interface FollowService {
 
     int findByCount(String name, String phone);
 
-    Object cancelfollow(String name, String phone);
+    int cancelfollow(String code);
+
+    String find(String name, String phone);
 }

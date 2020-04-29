@@ -71,7 +71,7 @@ public class QaaInfoController {
     public Mono<Info> answer(Principal principal,@RequestBody Answer answer) {
         answer.setUserSecurity(userSecurityService.findByPhone(principal.getName()));
         QaaInfo qaaInfo= qaaInfoService.qaaByCode(answer.getQaacode());
-        qaaInfo.getAnswers().add(answerService.save(answer));
+        qaaInfo.getAnswersinfo().add(answerService.save(answer));
         qaaInfoService.save(qaaInfo);
         return Mono.just(Info.SUCCESS(answer));
     }

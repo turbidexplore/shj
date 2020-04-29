@@ -119,4 +119,16 @@ public class CaseController {
             return Mono.just(Info.ERROR(e.getMessage()));
         }
     }
+
+    @Autowired
+    private ShopService shopService;
+    @ApiOperation(value = "通过店铺code获取案例", notes="通过店铺code获取案例")
+    @PostMapping(value = "/caseByShop")
+    public Mono<Info> caseByShop(@RequestParam(name = "code")String code,@RequestParam(name = "page")Integer page) {
+        try {
+            return Mono.just(Info.SUCCESS(caseService.mycases(page,shopService.getByCode(code).getUserSecurity().getPhonenumber())));
+        }catch (Exception e){
+            return Mono.just(Info.ERROR(e.getMessage()));
+        }
+    }
 }

@@ -11,4 +11,6 @@ public interface UserSecurityService {
      UserSecurity save(UserSecurity userSecurity);
      UserSecurity findByPhone(String phone);
      int findByPhoneCount(String phone);
+
+    UserSecurity findByCode(String usercode);
 }

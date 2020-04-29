@@ -19,6 +19,10 @@ public class Shop extends BaseEntity{
     }
 
     //企业名称
+    @Column(name = "name",  nullable = false, length = 32)
+    private String name;
+
+    //企业名称
     @Column(name = "companyname",  nullable = false, length = 32)
     private String companyname;
 
@@ -88,10 +92,10 @@ public class Shop extends BaseEntity{
     private String brandgroup;
 
     //访客信息
-    @OneToMany(targetEntity=UserSecurity.class,cascade= CascadeType.ALL,fetch= FetchType.EAGER)
-    private Set<UserSecurity> visitor;
+    @OneToMany(targetEntity=Visitor.class,cascade= CascadeType.ALL,fetch= FetchType.EAGER)
+    private Set<Visitor> visitor;
 
-    //访客信息
+    //粉丝信息
     @OneToMany(targetEntity=UserSecurity.class,cascade= CascadeType.ALL,fetch= FetchType.EAGER)
     private Set<UserSecurity> fans;
 
@@ -115,6 +119,22 @@ public class Shop extends BaseEntity{
     @ApiModelProperty(value = "公司状态")
     @Column(name = "status")
     private Integer status;
+
+    @ApiModelProperty(value = "访问量")
+    @Column(name = "seecount")
+    private Integer seecount;
+
+    @ApiModelProperty(value = "粉丝数")
+    @Column(name = "fanscount")
+    private Integer fanscount;
+
+    @ApiModelProperty(value = "活跃度")
+    @Column(name = "hat")
+    private Integer hat;
+
+    @ApiModelProperty(value = "vr地址")
+    @Column(name = "vrweb")
+    private String vrweb;
 
 
     public Shop(String code,String companyname,String logo) {

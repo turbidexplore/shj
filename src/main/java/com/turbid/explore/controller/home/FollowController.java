@@ -69,7 +69,7 @@ public class FollowController {
     @PutMapping("/cancelfollow")
     public Mono<Info> cancelfollow(Principal principal, @RequestParam("phone") String phone) {
 
-        return Mono.just(Info.SUCCESS(followService.cancelfollow(principal.getName(),phone)));
+        return Mono.just(Info.SUCCESS(followService.cancelfollow(followService.find(principal.getName(),phone))));
     }
 
 
