@@ -45,6 +45,6 @@ public class CollectionServiceImpl implements CollectionService {
     @Override
     @Transactional
     public Integer cancelcollection(String name, String relation) {
-        return collectionRepositroy.cancelcollection(name,relation);
+        return collectionRepositroy.cancelcollection(collectionRepositroy.find(name,relation).getCode());
     }
 }

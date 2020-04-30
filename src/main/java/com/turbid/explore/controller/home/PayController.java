@@ -1,5 +1,6 @@
 package com.turbid.explore.controller.home;
 
+import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
@@ -60,7 +61,7 @@ public class PayController {
         webpayBo.setOut_trade_no(CodeLib.randomCode(12,1));
         // SDK 公共请求类，包含公共请求参数，以及封装了签名与验签，开发者无需关注签名与验签
         //调用RSA签名方式
-        AlipayClient client = new DefaultAlipayClient(AlipayConfig.URL, AlipayConfig.APPID, AlipayConfig.RSA_PRIVATE_KEY, AlipayConfig.FORMAT, AlipayConfig.CHARSET, AlipayConfig.ALIPAY_PUBLIC_KEY,AlipayConfig.SIGNTYPE);
+        AlipayClient client = new DefaultAlipayClient(AlipayConfig.URL, AlipayConfig.testAPPID, AlipayConfig.testRSA_PRIVATE_KEY, AlipayConfig.FORMAT, AlipayConfig.CHARSET, AlipayConfig.testALIPAY_PUBLIC_KEY,AlipayConfig.SIGNTYPE);
         AlipayTradeWapPayRequest alipay_request=new AlipayTradeWapPayRequest();
 
         // 封装请求支付信息
@@ -130,7 +131,7 @@ public class PayController {
         //获取支付宝的通知返回参数，可参考技术文档中页面跳转同步通知参数列表(以上仅供参考)//
         //计算得出通知验证结果
         //boolean AlipaySignature.rsaCheckV1(Map<String, String> params, String publicKey, String charset, String sign_type)
-        boolean verify_result = AlipaySignature.rsaCheckV1(params, AlipayConfig.ALIPAY_PUBLIC_KEY, AlipayConfig.CHARSET, "RSA2");
+        boolean verify_result = AlipaySignature.rsaCheckV1(params, AlipayConfig.testALIPAY_PUBLIC_KEY, AlipayConfig.CHARSET, "RSA2");
 
         if(verify_result){//验证成功
             //////////////////////////////////////////////////////////////////////////////////////////
@@ -197,7 +198,7 @@ public class PayController {
         //获取支付宝的通知返回参数，可参考技术文档中页面跳转同步通知参数列表(以上仅供参考)//
         //计算得出通知验证结果
         //boolean AlipaySignature.rsaCheckV1(Map<String, String> params, String publicKey, String charset, String sign_type)
-        boolean verify_result = AlipaySignature.rsaCheckV1(params, AlipayConfig.ALIPAY_PUBLIC_KEY, AlipayConfig.CHARSET, "RSA2");
+        boolean verify_result = AlipaySignature.rsaCheckV1(params, AlipayConfig.testALIPAY_PUBLIC_KEY, AlipayConfig.CHARSET, "RSA2");
 
         if(verify_result){//验证成功
             //////////////////////////////////////////////////////////////////////////////////////////
@@ -225,7 +226,7 @@ public class PayController {
     public Mono<Info> aliquery(@RequestBody QueryBo queryBo) throws AlipayApiException, UnsupportedEncodingException {
 
         // SDK 公共请求类，包含公共请求参数，以及封装了签名与验签，开发者无需关注签名与验签
-        AlipayClient client = new DefaultAlipayClient(AlipayConfig.URL, AlipayConfig.APPID, AlipayConfig.RSA_PRIVATE_KEY, AlipayConfig.FORMAT, AlipayConfig.CHARSET, AlipayConfig.ALIPAY_PUBLIC_KEY,AlipayConfig.SIGNTYPE);
+        AlipayClient client = new DefaultAlipayClient(AlipayConfig.URL, AlipayConfig.testAPPID, AlipayConfig.testRSA_PRIVATE_KEY, AlipayConfig.FORMAT, AlipayConfig.CHARSET, AlipayConfig.testALIPAY_PUBLIC_KEY,AlipayConfig.SIGNTYPE);
         AlipayTradeQueryRequest alipay_request = new AlipayTradeQueryRequest();
 
         AlipayTradeQueryModel model=new AlipayTradeQueryModel();
@@ -234,7 +235,7 @@ public class PayController {
         alipay_request.setBizModel(model);
 
         AlipayTradeQueryResponse alipay_response =client.execute(alipay_request);
-        return Mono.just(Info.SUCCESS(alipay_response.getBody()));
+        return Mono.just(Info.SUCCESS(JSONObject.parseObject(alipay_response.getBody())));
     }
 
     /**
@@ -248,7 +249,7 @@ public class PayController {
     public Mono<Info> alidownloadurl(@RequestBody DownloadurlBo downloadurlBo) throws AlipayApiException, UnsupportedEncodingException {
         /**********************/
         // SDK 公共请求类，包含公共请求参数，以及封装了签名与验签，开发者无需关注签名与验签
-        AlipayClient client = new DefaultAlipayClient(AlipayConfig.URL, AlipayConfig.APPID, AlipayConfig.RSA_PRIVATE_KEY, AlipayConfig.FORMAT, AlipayConfig.CHARSET, AlipayConfig.ALIPAY_PUBLIC_KEY,AlipayConfig.SIGNTYPE);
+        AlipayClient client = new DefaultAlipayClient(AlipayConfig.URL, AlipayConfig.testAPPID, AlipayConfig.testRSA_PRIVATE_KEY, AlipayConfig.FORMAT, AlipayConfig.CHARSET, AlipayConfig.testALIPAY_PUBLIC_KEY,AlipayConfig.SIGNTYPE);
         AlipayDataDataserviceBillDownloadurlQueryRequest alipay_request = new AlipayDataDataserviceBillDownloadurlQueryRequest();
 
         AlipayDataDataserviceBillDownloadurlQueryModel model =new AlipayDataDataserviceBillDownloadurlQueryModel();
@@ -272,7 +273,7 @@ public class PayController {
     public Mono<Info> alicloes(@RequestBody CloesBo cloesBo) throws AlipayApiException, UnsupportedEncodingException {
         /**********************/
         // SDK 公共请求类，包含公共请求参数，以及封装了签名与验签，开发者无需关注签名与验签
-        AlipayClient client = new DefaultAlipayClient(AlipayConfig.URL, AlipayConfig.APPID, AlipayConfig.RSA_PRIVATE_KEY, AlipayConfig.FORMAT, AlipayConfig.CHARSET, AlipayConfig.ALIPAY_PUBLIC_KEY,AlipayConfig.SIGNTYPE);
+        AlipayClient client = new DefaultAlipayClient(AlipayConfig.URL, AlipayConfig.testAPPID, AlipayConfig.testRSA_PRIVATE_KEY, AlipayConfig.FORMAT, AlipayConfig.CHARSET, AlipayConfig.testALIPAY_PUBLIC_KEY,AlipayConfig.SIGNTYPE);
         AlipayTradeCloseRequest alipay_request=new AlipayTradeCloseRequest();
 
         AlipayTradeCloseModel model =new AlipayTradeCloseModel();
@@ -295,7 +296,7 @@ public class PayController {
     @PostMapping("/ali/refund")
     public Mono<Info> alirefund(@RequestBody RefundBo refundBo) throws AlipayApiException {
         // SDK 公共请求类，包含公共请求参数，以及封装了签名与验签，开发者无需关注签名与验签
-        AlipayClient client = new DefaultAlipayClient(AlipayConfig.URL, AlipayConfig.APPID, AlipayConfig.RSA_PRIVATE_KEY, AlipayConfig.FORMAT, AlipayConfig.CHARSET, AlipayConfig.ALIPAY_PUBLIC_KEY,AlipayConfig.SIGNTYPE);
+        AlipayClient client = new DefaultAlipayClient(AlipayConfig.URL, AlipayConfig.testAPPID, AlipayConfig.testRSA_PRIVATE_KEY, AlipayConfig.FORMAT, AlipayConfig.CHARSET, AlipayConfig.testALIPAY_PUBLIC_KEY,AlipayConfig.SIGNTYPE);
         AlipayTradeRefundRequest alipay_request = new AlipayTradeRefundRequest();
 
         AlipayTradeRefundModel model=new AlipayTradeRefundModel();
@@ -320,7 +321,7 @@ public class PayController {
     public Mono<Info> alirefundQuery(@RequestBody RefundQueryBo refundQueryBo) throws AlipayApiException {
 
         // SDK 公共请求类，包含公共请求参数，以及封装了签名与验签，开发者无需关注签名与验签
-        AlipayClient client = new DefaultAlipayClient(AlipayConfig.URL, AlipayConfig.APPID, AlipayConfig.RSA_PRIVATE_KEY, AlipayConfig.FORMAT, AlipayConfig.CHARSET, AlipayConfig.ALIPAY_PUBLIC_KEY, AlipayConfig.SIGNTYPE);
+        AlipayClient client = new DefaultAlipayClient(AlipayConfig.URL, AlipayConfig.testAPPID, AlipayConfig.testRSA_PRIVATE_KEY, AlipayConfig.FORMAT, AlipayConfig.CHARSET, AlipayConfig.testALIPAY_PUBLIC_KEY, AlipayConfig.SIGNTYPE);
         AlipayTradeFastpayRefundQueryRequest alipay_request = new AlipayTradeFastpayRefundQueryRequest();
 
         AlipayTradeFastpayRefundQueryModel model = new AlipayTradeFastpayRefundQueryModel();
@@ -338,7 +339,7 @@ public class PayController {
     @PostMapping("/ali/apppayorder")
     public Mono<Info> apppayorder(@RequestBody WebpayBo webpayBo){
         //实例化客户端
-        AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.URL, AlipayConfig.APPID, AlipayConfig.RSA_PRIVATE_KEY, AlipayConfig.FORMAT, AlipayConfig.CHARSET, AlipayConfig.ALIPAY_PUBLIC_KEY, AlipayConfig.SIGNTYPE);
+        AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.URL, AlipayConfig.testAPPID, AlipayConfig.testRSA_PRIVATE_KEY, AlipayConfig.FORMAT, AlipayConfig.CHARSET, AlipayConfig.testALIPAY_PUBLIC_KEY, AlipayConfig.SIGNTYPE);
         //实例化具体API对应的request类,类名称和接口名称对应,当前调用接口名称：alipay.trade.app.pay
         AlipayTradeAppPayRequest request = new AlipayTradeAppPayRequest();
         //SDK已经封装掉了公共参数，这里只需要传入业务参数。以下方法为sdk的model入参方式(model和biz_content同时存在的情况下取biz_content)。
@@ -393,8 +394,6 @@ public class PayController {
         String url = "https://api.mch.weixin.qq.com/pay/unifiedorder";
         String xml = WXParamGenerate(body,out_trade_no,total_fee,product_id);
         String res = httpsRequest(url,"POST",xml);
-
-
         return res;
     }
 

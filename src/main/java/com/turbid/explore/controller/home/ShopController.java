@@ -72,8 +72,8 @@ public class ShopController {
 
     @ApiOperation(value = "官方严选", notes="官方严选")
     @GetMapping("/choose")
-    public Mono<Info> choose(@RequestParam(value = "label",required = false)String label) {
-        return Mono.just(Info.SUCCESS( shopService.getByChoose(label)));
+    public Mono<Info> choose(@RequestParam(value = "label",required = false)String label,@RequestParam(value = "page")Integer page) {
+        return Mono.just(Info.SUCCESS( shopService.getByChoose(label,page)));
     }
 
 }

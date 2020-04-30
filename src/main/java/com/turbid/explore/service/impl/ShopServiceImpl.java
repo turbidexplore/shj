@@ -1,9 +1,14 @@
 package com.turbid.explore.service.impl;
 
+import com.turbid.explore.pojo.Collection;
 import com.turbid.explore.pojo.Shop;
 import com.turbid.explore.repository.ShopRepositroy;
 import com.turbid.explore.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,7 +39,9 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public List<Shop> getByChoose(String label) {
-        return shopRepositroy.getByChoose(label);
+    public List<Shop> getByChoose(String label, Integer page) {
+        Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
+        Page<Shop> pages=   shopRepositroy.getByChoose(pageable,label);
+        return pages.getContent();
     }
 }

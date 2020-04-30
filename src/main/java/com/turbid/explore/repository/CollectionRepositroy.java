@@ -27,7 +27,10 @@ public interface CollectionRepositroy extends JpaRepository<Collection,String> {
     @Query("SELECT count(c) from Collection c where c.userSecurity.phonenumber=:name and c.relation= :relation  ")
     int findByCount(@Param("name") String name,@Param("relation")  String relation);
 
-    @Query("delete from Collection c where c.userSecurity.phonenumber=:name and c.relation= :relation  ")
+    @Query("SELECT c from Collection c where c.userSecurity.phonenumber=:name and c.relation= :relation  ")
+    Collection find(@Param("name") String name,@Param("relation")  String relation);
+
+    @Query("delete from Collection c where c.code=:code  ")
     @Modifying
-    Integer cancelcollection(@Param("name") String name,@Param("relation")  String relation);
+    Integer cancelcollection(@Param("code") String code);
 }

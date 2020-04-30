@@ -96,8 +96,8 @@ public class BaseController {
         Map<String,Object> map=new HashMap<>();
         map.put("key","需求加急");
         map.put("value","NEEDS_URGENT");
-        map.put("price",9.9);
-        map.put("costprice",9.9);
+        map.put("price",0.01);
+        map.put("costprice",0.01);
         info.put("NEEDS_URGENT",map);
         map=new HashMap<>();
         map.put("key","逐条查看信息");

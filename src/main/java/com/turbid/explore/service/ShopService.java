@@ -15,5 +15,5 @@ public interface ShopService {
 
     List<Shop> getByLabel(String label,String brandgroup);
 
-    List<Shop> getByChoose(String label);
+    List<Shop> getByChoose(String label, Integer page);
 }

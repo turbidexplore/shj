@@ -42,5 +42,4 @@ public class UserSecurity extends BaseEntity {
     private UserAuth userAuth;
 
 
-
 }

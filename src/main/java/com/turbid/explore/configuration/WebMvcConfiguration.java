@@ -16,19 +16,19 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        //public HttpMessageConverters fastJsonHttpMessageConverters() {
         FastJsonHttpMessageConverter fastConverter = new FastJsonHttpMessageConverter();
         FastJsonConfig fastJsonConfig = new FastJsonConfig();
-        fastJsonConfig.setSerializerFeatures(SerializerFeature.PrettyFormat);
         fastJsonConfig.setDateFormat("yyyy-MM-dd HH:mm:ss");
-        List<MediaType> mediaTypes = new ArrayList<>();
-        mediaTypes.add(MediaType.TEXT_HTML);
-        //设定json格式且编码为UTF-8, IE会出现下载提示
-        //mediaTypes.add(MediaType.APPLICATION_JSON_UTF8);
-        fastConverter.setSupportedMediaTypes(mediaTypes);
+        fastJsonConfig.setSerializerFeatures(SerializerFeature.WriteMapNullValue,
+                SerializerFeature.QuoteFieldNames, SerializerFeature.DisableCircularReferenceDetect,SerializerFeature.PrettyFormat);
         fastConverter.setFastJsonConfig(fastJsonConfig);
+        List<MediaType> fastMediaTypes = new ArrayList<>();
+        fastMediaTypes.add(MediaType.APPLICATION_JSON_UTF8);
+        fastMediaTypes.add(MediaType.TEXT_HTML);
+        fastMediaTypes.add(MediaType.parseMediaType(MediaType.TEXT_HTML_VALUE + ";charset=ISO-8859-1"));
+        fastConverter.setSupportedMediaTypes(fastMediaTypes);
         converters.add(fastConverter);
-
     }
+
 
 }
