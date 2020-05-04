@@ -50,6 +50,7 @@ public class ShopController {
         return Mono.just(Info.SUCCESS( shop));
     }
 
+
     @ApiOperation(value = "更新商铺信息", notes="更新商铺信息")
     @PutMapping("/update")
     public Mono<Info> update(@RequestBody Shop shop) {

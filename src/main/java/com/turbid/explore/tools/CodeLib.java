@@ -51,7 +51,7 @@ public class CodeLib {
         if(type==0){
             base="abcdefghijklmnopqrstuvwxyz";
         }else if(type==1){
-            base="0123456789";
+            base="123456789";
         }
         Random random = new Random();
         StringBuffer sb = new StringBuffer();

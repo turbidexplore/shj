@@ -57,6 +57,7 @@ public class UserController {
                if(userSecurityService.findByPhoneCount(jo.getString("username"))==0){
                    UserSecurity userSecurity = new UserSecurity();
                    userSecurity.setPassword(jo.getString("password"));
+                   userSecurity.setLikes(jo.getString("likes"));
                    userSecurity.setPhonenumber(jo.getString("username"));
                    userSecurity.setType(jo.getInteger("type"));
                    UserBasic userBasic=new UserBasic();
@@ -192,8 +193,8 @@ public class UserController {
                userAuthService.save( userSecurity.getUserAuth());
            }
             userSecurity= userSecurityService.save(userSecurity);
+           shop.setUserSecurity(userSecurity);
             shop=shopService.save(shop);
-            shop.setUserSecurity(userSecurity);
             return Mono.just(Info.SUCCESS(shop));
         }catch (Exception e){
             return Mono.just(Info.SUCCESS(e.getMessage()));

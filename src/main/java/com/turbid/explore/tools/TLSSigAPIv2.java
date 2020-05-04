@@ -7,25 +7,22 @@ import java.security.*;
 import java.nio.charset.Charset;
 
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.zip.Deflater;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
-import com.qcloud.cos.utils.Base64;
 import org.json.JSONObject;
 
 public class TLSSigAPIv2 {
 
-    private long sdkappid;
-    private String key;
+    private static long sdkappid=1400334582;
 
-    public TLSSigAPIv2(long sdkappid, String key) {
-        this.sdkappid = sdkappid;
-        this.key = key;
-    }
+    private static String key="72d736f1307d531aeb773c80f55a891a2c30a360a4a9d3841deb893c2cb54551";
 
-    private String hmacsha256(String identifier, long currTime, long expire, String base64Userbuf) {
+
+    private static String hmacsha256(String identifier, long currTime, long expire, String base64Userbuf) {
         String contentToBeSigned = "TLS.identifier:" + identifier + "\n"
                 + "TLS.sdkappid:" + sdkappid + "\n"
                 + "TLS.time:" + currTime + "\n"
@@ -39,7 +36,7 @@ public class TLSSigAPIv2 {
             SecretKeySpec keySpec = new SecretKeySpec(byteKey, "HmacSHA256");
             hmac.init(keySpec);
             byte[] byteSig = hmac.doFinal(contentToBeSigned.getBytes("UTF-8"));
-            return (Base64.encodeAsString(byteSig)).replaceAll("\\s*", "");
+            return (Base64.getEncoder().encodeToString(byteSig)).replaceAll("\\s*", "");
         } catch (UnsupportedEncodingException e) {
             return "";
         } catch (NoSuchAlgorithmException e) {
@@ -49,7 +46,7 @@ public class TLSSigAPIv2 {
         }
     }
 
-    private String genSig(String identifier, long expire, byte[] userbuf) {
+    private static String genSig(String identifier, long expire, byte[] userbuf) {
 
         long currTime = System.currentTimeMillis()/1000;
 
@@ -62,7 +59,7 @@ public class TLSSigAPIv2 {
 
         String base64UserBuf = null;
         if (null != userbuf) {
-            base64UserBuf = Base64.encodeAsString(userbuf);
+            base64UserBuf =  Base64.getEncoder().encodeToString(userbuf);
             sigDoc.put("TLS.userbuf", base64UserBuf);
         }
         String sig = hmacsha256(identifier, currTime, expire, base64UserBuf);
@@ -76,17 +73,20 @@ public class TLSSigAPIv2 {
         byte [] compressedBytes = new byte[2048];
         int compressedBytesLength = compressor.deflate(compressedBytes);
         compressor.end();
-        return (new String(Base64Url.base64EncodeUrl(Arrays.copyOfRange(compressedBytes,
+        return (new String(Base64URL.base64EncodeUrl(Arrays.copyOfRange(compressedBytes,
                 0, compressedBytesLength)))).replaceAll("\\s*", "");
     }
 
-    public String genSig(String identifier, long expire) {
+    public static String genSig(String identifier, long expire) {
         return genSig(identifier, expire, null);
     }
 
-    public String genSigWithUserBuf(String identifier, long expire, byte[] userbuf) {
+    public static String genSigWithUserBuf(String identifier, long expire, byte[] userbuf) {
         return genSig(identifier, expire, userbuf);
     }
 
+    public static void main(String[] a){
+        System.out.println(genSig("hello",890000000));
+    }
 
 }
