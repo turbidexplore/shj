@@ -1,7 +1,7 @@
 package com.turbid.explore.service.impl;
 
 import com.turbid.explore.pojo.Collection;
-import com.turbid.explore.pojo.Comment;
+import com.turbid.explore.pojo.bo.CollectionType;
 import com.turbid.explore.repository.CollectionRepositroy;
 import com.turbid.explore.service.CollectionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +31,9 @@ public class CollectionServiceImpl implements CollectionService {
     }
 
     @Override
-    public List<Collection> listByPagePhone(String phone, Integer page) {
+    public List<Collection> listByPagePhone(String phone, Integer page, CollectionType collectionType) {
         Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
-        Page<Collection> pages=  collectionRepositroy.listByPagePhone(pageable,phone);
+        Page<Collection> pages=  collectionRepositroy.listByPagePhone(pageable,phone,collectionType);
         return pages.getContent();
     }
 

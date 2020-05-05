@@ -52,4 +52,9 @@ public class CaseServiceImpl implements CaseService {
     public List<Case> recommend(Case obj) {
         return caseRepositroy.recommend(obj.getLabel(),obj.getSubject());
     }
+
+    @Override
+    public int starcount(String name) {
+        return caseRepositroy.starcount(name);
+    }
 }

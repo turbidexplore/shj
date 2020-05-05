@@ -28,30 +28,27 @@ public class BaseController {
     @GetMapping(value = "/usertype")
     public Mono<Info> usertype()  {
         JSONArray ja=new JSONArray();
-        JSONObject jo=new JSONObject();
+        Map<String,Object> jo=new HashMap<>();
         jo.put("type",0);
+        jo.put("img","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/%E4%BD%8D%E5%9B%BE%403x(3).png");
         jo.put("text","设计师");
         ja.add(jo);
         jo=new JSONObject();
         jo.put("type",1);
+        jo.put("img","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/%E4%BD%8D%E5%9B%BE%403x(1).png");
         jo.put("text","经销商");
         ja.add(jo);
         jo=new JSONObject();
         jo.put("type",2);
+        jo.put("img","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/%E4%BD%8D%E5%9B%BE%403x(2).png");
         jo.put("text","工厂");
         ja.add(jo);
         jo=new JSONObject();
         jo.put("type",3);
+        jo.put("img","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/%E4%BD%8D%E5%9B%BE%403x(3).png");
         jo.put("text","设计公司");
         ja.add(jo);
-        jo=new JSONObject();
-        jo.put("type",4);
-        jo.put("text","地产商");
-        ja.add(jo);
-        jo=new JSONObject();
-        jo.put("type",5);
-        jo.put("text","其他");
-        ja.add(jo);
+
 
         return Mono.just(Info.SUCCESS(ja));
     }

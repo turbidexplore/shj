@@ -48,4 +48,9 @@ public class ProjectNeedsServiceImpl implements ProjectNeedsService {
         Page<ProjectNeeds> pages=  needsRepositroy.getMyNeeds(pageable,name,status);
         return pages.getContent();
     }
+
+    @Override
+    public int countByStatus(String name, int status) {
+        return  needsRepositroy.countByStatus(name,status);
+    }
 }

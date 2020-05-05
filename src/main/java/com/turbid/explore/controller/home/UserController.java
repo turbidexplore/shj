@@ -69,9 +69,7 @@ public class UserController {
                    userBasic.setCity(info.getString("city"));
                    userBasicService.save(userBasic);
                    userSecurity.setUserBasic(userBasic);
-
-                   userSecurityService.save(userSecurity);
-                   return Mono.just(Info.SUCCESS(null));
+                   return Mono.just(Info.SUCCESS( userSecurityService.save(userSecurity)));
                }else {
                    return Mono.just(Info.ERROR("手机号码已注册"));
                }
@@ -126,6 +124,7 @@ public class UserController {
             if (null==object){
                 return Mono.just(Info.ERROR("登录失败"));
             }
+            object.put("userinfo",userSecurityService.findByPhone(jsonObject.getString("username")));
             return Mono.just(Info.SUCCESS(object));
         }catch (Exception e){
             e.getStackTrace();
@@ -272,6 +271,23 @@ public class UserController {
         complaint.setUserSecurity(userSecurityService.findByPhone(principal.getName()));
         complaint.setComplaintUserSecurity(userSecurityService.findByCode(complaint.getComplaintUserSecurity().getCode()));
         return Mono.just(Info.SUCCESS(complaintSerivce.save(complaint)));
+    }
+
+    @ApiOperation(value = "修改用户信息", notes="修改用户信息")
+    @PostMapping(value = "/update")
+    public Mono<Info> update(Principal principal,@RequestParam(value = "nikename",required = false)String nikename,@RequestParam(value = "logo",required = false)String logo,@RequestParam(value = "likes",required = false)String likes)  {
+       UserSecurity userSecurity=userSecurityService.findByPhone(principal.getName());
+       if(nikename!=null&&!nikename.equals(null)){
+           userSecurity.getUserBasic().setNikename(nikename);
+       }
+        if(logo!=null&&!logo.equals(null)){
+            userSecurity.getUserBasic().setHeadportrait(logo);
+            userBasicService.save(userSecurity.getUserBasic());
+        }
+        if(likes!=null&&!likes.equals(null)){
+            userSecurity.setLikes(likes);
+        }
+        return Mono.just(Info.SUCCESS(userSecurityService.save(userSecurity)));
     }
 
 }

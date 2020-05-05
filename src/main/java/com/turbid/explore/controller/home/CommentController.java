@@ -24,7 +24,6 @@ import java.util.Map;
 @CrossOrigin
 public class CommentController {
 
-
     @Autowired
     private UserSecurityService userSecurityService;
 

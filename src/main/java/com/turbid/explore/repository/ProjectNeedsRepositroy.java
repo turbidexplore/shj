@@ -23,4 +23,6 @@ public interface ProjectNeedsRepositroy extends JpaRepository<ProjectNeeds,Strin
     @Query("SELECT n from ProjectNeeds n where n.userSecurity.phonenumber=:name and n.status=:status  ")
     Page<ProjectNeeds> getMyNeeds(Pageable pageable, @Param("name") String name,@Param("status") Integer status);
 
+    @Query("SELECT count (n) from ProjectNeeds n where n.userSecurity.phonenumber=:name and n.status=:status  ")
+    int countByStatus( @Param("name")String name, @Param("status") int status);
 }

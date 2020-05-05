@@ -1,6 +1,7 @@
 package com.turbid.explore.service;
 
 import com.turbid.explore.pojo.Collection;
+import com.turbid.explore.pojo.bo.CollectionType;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,7 +12,7 @@ public interface CollectionService {
 
     List<Collection> listByPage(String relation);
 
-    List<Collection> listByPagePhone(String phone, Integer page);
+    List<Collection> listByPagePhone(String phone, Integer page, CollectionType collectionType);
 
     int findByCount(String name, String relation);
 

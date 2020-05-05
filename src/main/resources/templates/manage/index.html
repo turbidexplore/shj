@@ -444,5 +444,22 @@
     <script src="../scripts/extras.1.1.0.min.js"></script>
     <script src="../scripts/shards-dashboards.1.1.0.min.js"></script>
     <script src="../scripts/app/app-blog-overview.1.1.0.js"></script>
+    <script src="../js/jquery.cookie.min.js"></script>
+    <script>
+      $.ajax({
+        type: 'GET',
+        url : "/shop/get",
+        async: true,
+        crossDomain: true,
+        headers: {
+          "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
+          "cache-control": "no-cache",
+          "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
+        }
+      }).done(function(result) {
+        console.log(result);
+      });
+    </script>
+
   </body>
 </html>

@@ -16,5 +16,5 @@ public interface ProjectNeedsService {
 
     List<ProjectNeeds> getMyNeeds(String name,  Integer page,Integer status);
 
-
+    int countByStatus(String name, int status);
 }

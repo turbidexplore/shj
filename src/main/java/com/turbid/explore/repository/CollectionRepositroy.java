@@ -2,6 +2,7 @@ package com.turbid.explore.repository;
 
 import com.turbid.explore.pojo.Collection;
 import com.turbid.explore.pojo.Comment;
+import com.turbid.explore.pojo.bo.CollectionType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,8 +22,8 @@ public interface CollectionRepositroy extends JpaRepository<Collection,String> {
     List<Collection> listByPage(@Param("relation") String relation);
 
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
-    @Query("SELECT c from Collection c where c.userSecurity.phonenumber= :phone ")
-    Page<Collection> listByPagePhone(Pageable pageable, @Param("phone") String phone);
+    @Query("SELECT c from Collection c where c.userSecurity.phonenumber= :phone and c.collectionType=:collectionType ")
+    Page<Collection> listByPagePhone(Pageable pageable, @Param("phone") String phone,@Param("collectionType") CollectionType collectionType);
 
     @Query("SELECT count(c) from Collection c where c.userSecurity.phonenumber=:name and c.relation= :relation  ")
     int findByCount(@Param("name") String name,@Param("relation")  String relation);

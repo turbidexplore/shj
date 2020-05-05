@@ -2,6 +2,7 @@ package com.turbid.explore.controller.home;
 
 import com.turbid.explore.pojo.Collection;
 import com.turbid.explore.pojo.Comment;
+import com.turbid.explore.pojo.bo.CollectionType;
 import com.turbid.explore.service.CollectionService;
 import com.turbid.explore.service.CommentService;
 import com.turbid.explore.service.UserSecurityService;
@@ -21,7 +22,6 @@ import java.security.Principal;
 @RequestMapping("/collection")
 @CrossOrigin
 public class CollectionController {
-
 
     @Autowired
     private UserSecurityService userSecurityService;
@@ -61,8 +61,8 @@ public class CollectionController {
 
     @ApiOperation(value = "我的收藏", notes="我的收藏")
     @PostMapping("/my")
-    public Mono<Info> my(Principal principal,@RequestParam("page")Integer page) {
-        return Mono.just(Info.SUCCESS( collectionService.listByPagePhone(principal.getName(),page)));
+    public Mono<Info> my(Principal principal, @RequestParam("page")Integer page, @RequestParam("type")CollectionType collectionType) {
+        return Mono.just(Info.SUCCESS( collectionService.listByPagePhone(principal.getName(),page,collectionType)));
     }
 
 

@@ -19,4 +19,6 @@ public interface CaseService {
     Case update(Case obj);
 
     List<Case> recommend(Case obj);
+
+    int starcount(String name);
 }
