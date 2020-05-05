@@ -5,6 +5,7 @@ import com.turbid.explore.pojo.bo.CollectionType;
 import com.turbid.explore.repository.CollectionRepositroy;
 import com.turbid.explore.service.CollectionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,11 +27,13 @@ public class CollectionServiceImpl implements CollectionService {
     }
 
     @Override
+//    @Cacheable(cacheNames = {"redis_cache"}, key = "'CollectionlistByPage'+#relation")
     public List<Collection> listByPage(String relation) {
         return collectionRepositroy.listByPage(relation);
     }
 
     @Override
+//    @Cacheable(cacheNames = {"redis_cache"}, key = "'CollectionlistByPagePhone'+#phone+#page+#collectionType")
     public List<Collection> listByPagePhone(String phone, Integer page, CollectionType collectionType) {
         Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
         Page<Collection> pages=  collectionRepositroy.listByPagePhone(pageable,phone,collectionType);

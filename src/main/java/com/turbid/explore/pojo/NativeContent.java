@@ -1,5 +1,6 @@
 package com.turbid.explore.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.turbid.explore.tools.CodeLib;
 import lombok.Data;
@@ -23,7 +24,7 @@ public class NativeContent extends BaseEntity{
     private String title;
 
     //发布者信息
-    @OneToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+    @OneToOne(cascade=CascadeType.ALL,fetch= FetchType.EAGER)
     UserSecurity userSecurity;
 
     //浏览者信息
@@ -50,18 +51,28 @@ public class NativeContent extends BaseEntity{
     public int  commentcount;
 
     public int getSeecount() {
-        int count=sees.size();
-        this.sees=null;
-        return count;
+        if(null==sees){
+            return 0;
+        }else {
+            int count = sees.size();
+            this.sees = null;
+            return count;
+        }
     }
 
     public int getStarcount() {
+        if(null==stars){
+            return 0;
+        }
         int count=stars.size();
         this.stars=null;
         return count;
     }
 
     public int getCommentcount() {
+        if(null==comments){
+            return 0;
+        }
         int count=comments.size();
         this.comments=null;
         return count;

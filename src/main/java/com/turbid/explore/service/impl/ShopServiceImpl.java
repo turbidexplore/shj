@@ -5,6 +5,7 @@ import com.turbid.explore.pojo.Shop;
 import com.turbid.explore.repository.ShopRepositroy;
 import com.turbid.explore.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -34,11 +35,13 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
+//    @Cacheable(cacheNames = {"redis_cache"}, key = "'ShopgetByLabel'+#label+#brandgroup")
     public List<Shop> getByLabel(String label,String brandgroup) {
         return shopRepositroy.getByLabel(label,brandgroup);
     }
 
     @Override
+//    @Cacheable(cacheNames = {"redis_cache"}, key = "'getByChoose'+#label+#page")
     public List<Shop> getByChoose(String label, Integer page) {
         Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
         Page<Shop> pages=   shopRepositroy.getByChoose(pageable,label);

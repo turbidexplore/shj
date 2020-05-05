@@ -4,6 +4,7 @@ import com.turbid.explore.pojo.ProjectNeeds;
 import com.turbid.explore.repository.ProjectNeedsRepositroy;
 import com.turbid.explore.service.ProjectNeedsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +27,7 @@ public class ProjectNeedsServiceImpl implements ProjectNeedsService {
     }
 
     @Override
+//    @Cacheable(cacheNames = {"redis_cache"}, key = "'ProjectNeedslistByPage'+#page+#style+#category+#type+#search")
     public List<ProjectNeeds> listByPage(Integer page, String style, String category, String type, String search) {
         Pageable pageable = new PageRequest(page,size, Sort.Direction.DESC,"create_time");
         Page<ProjectNeeds> pages=  needsRepositroy.listByPage(pageable,style,category,type);
@@ -33,11 +35,13 @@ public class ProjectNeedsServiceImpl implements ProjectNeedsService {
     }
 
     @Override
+//    @Cacheable(cacheNames = {"redis_cache"}, key = "'getNeedsByCode'+#code")
     public ProjectNeeds getNeedsByCode(String code) {
         return needsRepositroy.getOne(code);
     }
 
     @Override
+//    @Cacheable(cacheNames = {"redis_cache"}, key = "'getMyNeeds'+#name+#page+#status")
     public List<ProjectNeeds> getMyNeeds(String name, Integer page, Integer status) {
         Pageable pageable =null;
         if(status==0) {

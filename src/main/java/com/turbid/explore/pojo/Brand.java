@@ -48,7 +48,7 @@ public class Brand extends BaseEntity{
     private Shop company;
 
     //评论信息
-    @OneToMany(cascade= CascadeType.ALL,fetch= FetchType.LAZY)
+    @OneToMany(cascade= CascadeType.ALL,fetch=FetchType.EAGER)
     private List<Comment> comments;
 
     public Brand(String code,String name,String logo) {

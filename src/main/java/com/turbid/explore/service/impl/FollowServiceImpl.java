@@ -5,6 +5,7 @@ import com.turbid.explore.pojo.Follow;
 import com.turbid.explore.repository.FollowRepositroy;
 import com.turbid.explore.service.FollowService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +28,7 @@ public class FollowServiceImpl implements FollowService {
     }
 
     @Override
+//    @Cacheable(cacheNames = {"redis_cache"}, key = "'myfollow'+#name+#page")
     public List<Follow> myfollow(String name, Integer page) {
         Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
         Page<Follow> pages=  followRepositroy.myfollow(pageable,name);
@@ -34,6 +36,7 @@ public class FollowServiceImpl implements FollowService {
     }
 
     @Override
+    @Cacheable(cacheNames = {"redis_cache"}, key = "'followme'+#name+#page")
     public List<Follow> followme(String name, Integer page) {
         Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
         Page<Follow> pages=  followRepositroy.followme(pageable,name);

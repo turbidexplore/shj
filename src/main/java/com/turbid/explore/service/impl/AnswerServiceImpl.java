@@ -4,6 +4,7 @@ import com.turbid.explore.pojo.Answer;
 import com.turbid.explore.repository.AnswerRepository;
 import com.turbid.explore.service.AnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,6 +25,7 @@ public class AnswerServiceImpl implements AnswerService {
     }
 
     @Override
+//    @Cacheable(cacheNames = {"redis_cache"}, key = "'answersByQaacode'+#code+'.'+#page")
     public List<Answer> answersByQaacode(String code, Integer page) {
         Pageable pageable = new PageRequest(page,10, Sort.Direction.DESC,"create_time");
         Page<Answer> pages=  answerRepository.answersByQaacode(pageable,code);

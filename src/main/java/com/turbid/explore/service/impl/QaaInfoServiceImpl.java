@@ -5,6 +5,7 @@ import com.turbid.explore.pojo.QaaInfo;
 import com.turbid.explore.repository.QaaInfoRepositroy;
 import com.turbid.explore.service.QaaInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +26,7 @@ public class QaaInfoServiceImpl implements QaaInfoService {
     }
 
     @Override
+//    @Cacheable(cacheNames = {"redis_cache"}, key = "'QaaInfolistByPage'+#page+#label")
     public List<QaaInfo> listByPage(Integer page, String label) {
         Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
         Page<QaaInfo> pages=  qaaInfoRepositroy.listByPage(pageable,label);
@@ -32,6 +34,7 @@ public class QaaInfoServiceImpl implements QaaInfoService {
     }
 
     @Override
+//    @Cacheable(cacheNames = {"redis_cache"}, key = "'qaaByCode'+#code")
     public QaaInfo qaaByCode(String code) {
         return qaaInfoRepositroy.getOne(code);
     }

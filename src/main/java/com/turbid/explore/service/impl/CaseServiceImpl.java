@@ -5,6 +5,7 @@ import com.turbid.explore.pojo.ProjectNeeds;
 import com.turbid.explore.repository.CaseRepositroy;
 import com.turbid.explore.service.CaseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,13 +26,16 @@ public class CaseServiceImpl implements CaseService {
     }
 
     @Override
+    //@Cacheable(cacheNames = {"redis_cache"}, key = "'caseListByPage'+#page+#subject+#label+#search")
     public List<Case> listByPage(Integer page, String subject, String label, String search) {
+        System.out.println(page+"/"+subject+"/"+label+"/"+search);
         Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
         Page<Case> pages=  caseRepositroy.listByPage(pageable,subject,label);
         return pages.getContent();
     }
 
     @Override
+    //@Cacheable(cacheNames = {"redis_cache"}, key = "'mycases'+#page+#name")
     public List<Case> mycases(Integer page, String name) {
         Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
         Page<Case> pages=  caseRepositroy.mycases(pageable,name);
@@ -39,6 +43,7 @@ public class CaseServiceImpl implements CaseService {
     }
 
     @Override
+    //@Cacheable(cacheNames = {"redis_cache"}, key = "'caseByCode'+#code")
     public Case caseByCode(String code) {
         return caseRepositroy.caseByCode(code);
     }
@@ -49,6 +54,7 @@ public class CaseServiceImpl implements CaseService {
     }
 
     @Override
+    //@Cacheable(cacheNames = {"redis_cache"}, key = "'recommend'+#obj.getLabel()+#obj.getSubject()")
     public List<Case> recommend(Case obj) {
         return caseRepositroy.recommend(obj.getLabel(),obj.getSubject());
     }

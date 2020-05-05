@@ -14,7 +14,7 @@ import java.util.Set;
 @Data
 @Entity
 @Table(name = "case_info")
-@JsonIgnoreProperties(value = { "hibernateLazyInitializer"})
+@JsonIgnoreProperties(value = { "hibernateEAGERInitializer"})
 public class Case extends BaseEntity {
 
     @ApiModelProperty(value = "项目名称")
@@ -62,16 +62,16 @@ public class Case extends BaseEntity {
     private String urls;
 
     @ApiModelProperty(value = "发布者")
-    @OneToOne(fetch=FetchType.LAZY)
+    @OneToOne(fetch=FetchType.EAGER)
     private UserSecurity userSecurity;
 
-    @ManyToMany(targetEntity=Comment.class,cascade = {CascadeType.DETACH} ,fetch= FetchType.LAZY)
+    @ManyToMany(targetEntity=Comment.class,cascade = {CascadeType.DETACH} ,fetch= FetchType.EAGER)
     private Set<Comment> comments;
 
-    @ManyToMany(targetEntity=UserSecurity.class,cascade = {CascadeType.DETACH} ,fetch= FetchType.LAZY)
+    @ManyToMany(targetEntity=UserSecurity.class,cascade = {CascadeType.DETACH} ,fetch= FetchType.EAGER)
     private Set<UserSecurity> stars;
 
-    @ManyToMany(targetEntity=UserSecurity.class,cascade = {CascadeType.DETACH} ,fetch= FetchType.LAZY)
+    @ManyToMany(targetEntity=UserSecurity.class,cascade = {CascadeType.DETACH} ,fetch= FetchType.EAGER)
     private Set<UserSecurity> browsers;
 
     public int seecount;

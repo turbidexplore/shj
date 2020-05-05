@@ -5,6 +5,7 @@ import com.turbid.explore.pojo.Shop;
 import com.turbid.explore.repository.BrandRepositroy;
 import com.turbid.explore.service.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
+//    @Cacheable(cacheNames = {"redis_cache"}, key = "'getByShop'+#code")
     public List<Brand> getByShop(String code) {
         return brandRepositroy.getByShop(code);
     }
@@ -31,6 +33,7 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
+//    @Cacheable(cacheNames = {"redis_cache"}, key = "'getByLabel'+#classgroup+'.'+#brandgroup")
     public List<Brand> getByLabel(String classgroup, String brandgroup) {
         return brandRepositroy.getByLabel(classgroup,brandgroup);
     }

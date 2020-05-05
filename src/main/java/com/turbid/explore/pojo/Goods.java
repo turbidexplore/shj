@@ -38,7 +38,7 @@ public class Goods extends BaseEntity {
     @Column(name = "pricetype")
     private Integer pricetype;
 
-    @ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH},optional=false)
+    @ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH},optional=false,fetch= FetchType.EAGER)
     @JoinColumn(name="company_code")
     private Shop company;
 

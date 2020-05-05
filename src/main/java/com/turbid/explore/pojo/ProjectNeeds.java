@@ -71,7 +71,7 @@ public class ProjectNeeds extends BaseEntity{
     private Integer chatcount;
 
     @ApiModelProperty(value = "发布者")
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch= FetchType.EAGER)
     @JoinColumn(name="usercode")
     private UserSecurity userSecurity;
 

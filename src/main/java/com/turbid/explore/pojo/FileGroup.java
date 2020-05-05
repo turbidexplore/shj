@@ -14,6 +14,6 @@ import java.util.List;
 @Table(name = "file_group")
 public class FileGroup extends BaseEntity {
 
-    @OneToMany(mappedBy = "fileGroup",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+    @OneToMany(mappedBy = "fileGroup",cascade=CascadeType.ALL,fetch= FetchType.EAGER)
     private List<FileInfo> fileInfos;
 }

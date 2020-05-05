@@ -4,6 +4,7 @@ import com.turbid.explore.pojo.NativeContent;
 import com.turbid.explore.repository.NativeContentRepositroy;
 import com.turbid.explore.service.NativeContentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +27,7 @@ public class NativeContentServiceImpl implements NativeContentService {
     }
 
     @Override
+//    @Cacheable(cacheNames = {"redis_cache"}, key = "'NativeContentlistByPage'+#page")
     public List<NativeContent> listByPage(Integer page) {
         Pageable pageable = new PageRequest(page,size, Sort.Direction.DESC,"create_time");
         Page<NativeContent> pages=  nativeContentRepositroy.listByPage(pageable);
@@ -33,6 +35,7 @@ public class NativeContentServiceImpl implements NativeContentService {
     }
 
     @Override
+//    @Cacheable(cacheNames = {"redis_cache"}, key = "'NativeContentlistByPage'+#page+#username")
     public List<NativeContent> listByPage(Integer page, String username) {
         Pageable pageable = new PageRequest(page,size, Sort.Direction.DESC,"create_time");
         Page<NativeContent> pages=  nativeContentRepositroy.listByPage(pageable,username);
@@ -40,6 +43,7 @@ public class NativeContentServiceImpl implements NativeContentService {
     }
 
     @Override
+//    @Cacheable(cacheNames = {"redis_cache"}, key = "'newsByCode'+#code")
     public NativeContent newsByCode(String code) {
         return nativeContentRepositroy.getOne(code);
     }
