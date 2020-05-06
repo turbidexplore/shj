@@ -50,5 +50,14 @@ public class CommentController {
         return Mono.just(Info.SUCCESS(jo));
     }
 
+    @ApiOperation(value = "查看店铺相关评论", notes="查看店铺相关评论")
+    @PostMapping("/shopcomments")
+    public Mono<Info> shopcomments(@RequestParam("relation") String relation,@RequestParam("page")Integer page) {
+        Map<String,Object> jo=new HashMap<>();
+        jo.put("data",commentService.listByShopPage(relation,page));
+        jo.put("count",commentService.listByShopCount(relation));
+        return Mono.just(Info.SUCCESS(jo));
+    }
+
 
 }

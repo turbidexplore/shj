@@ -126,10 +126,11 @@
             <!-- End Page Header -->
             <!-- Default Light Table -->
             <div class="row">
-              <div class="col-lg-12">
+
+              <div class="col-lg-7">
                 <div class="card card-small mb-4">
                   <div class="card-header border-bottom">
-                    <h6 class="m-0">认证信息</h6>
+                    <h6 class="m-0">企业基本信息</h6>
                   </div>
                   <ul class="list-group list-group-flush">
                     <li class="list-group-item p-3">
@@ -137,15 +138,12 @@
                         <div class="col">
                           <form>
                             <div class="form-row">
-                              <div class="form-group col-md-4">
-                                <label for="name">店铺名称</label>
-                                <input type="text" class="form-control" id="name" > </div>
-                              <div class="form-group col-md-4">
+                              <div class="form-group col-md-5">
+                                <label for="name">商铺名称</label>
+                                <input type="text" disabled="" class="form-control" id="name" placeholder="企业名称" value=""> </div>
+                              <div class="form-group col-md-5">
                                 <label for="companyname">企业名称</label>
-                                <input type="text" class="form-control" id="companyname" > </div>
-                              <div class="form-group col-md-4">
-                                <label for="unifiedcreditcode">统一信用代码</label>
-                                <input type="text" class="form-control" id="unifiedcreditcode" > </div>
+                                <input type="text" disabled="" class="form-control" id="companyname" placeholder="企业名称" value=""> </div>
                             </div>
                             <div class="form-row">
                               <div class="form-group col-md-4" >
@@ -158,22 +156,75 @@
                                 <select id="label" class="form-control">
 
                                 </select></div>
+                              <div class="form-group col-md-5">
+                                <label for="city">所在城市</label>
+                                <input type="text" class="form-control" id="city" placeholder="城市" value=""> </div>
                             </div>
                             <div class="form-row">
-                            <div class="form-group  col-md-4" >
-                              <label for="city">所属城市</label>
-                              <input type="text" class="form-control" id="city"> </div>
-                            <div class="form-group  col-md-8" >
-                              <label for="companyaddress">注册地址</label>
-                              <input type="text" class="form-control" id="companyaddress"> </div>
+                              <div class="form-group col-md-10">
+                                <label for="unifiedcreditcode">统一信用代码</label>
+                                <input type="text" disabled="" class="form-control" id="unifiedcreditcode" placeholder="统一信用代码" value=""> </div>
                             </div>
                             <div class="form-row">
-                              <div class="form-group col-md-12">
-                                <label for="businessscope">经营范围</label>
-                                <textarea class="form-control" id="businessscope" rows="5"></textarea>
+                              <div class="form-group col-md-10">
+                                <label for="companyaddress">注册地址</label>
+                                <input type="text" disabled="" class="form-control" name="companyaddress" id="companyaddress" placeholder="注册地址" value=""> </div>
+                            </div>
+                            <div class="form-row">
+                              <div class="form-group col-md-10">
+                                <label for="businessscope">企业经验范围</label>
+                                <textarea disabled="" class="form-control" id="businessscope" rows="4"></textarea>
                               </div>
                             </div>
-                            <button type="submit" class="btn btn-accent">更新信息</button>
+                            <div class="form-row">
+                              <div class="form-group col-md-10">
+                                <label for="introduce">公司介绍</label>
+                                <textarea disabled="" class="form-control" id="introduce" rows="4"></textarea>
+                              </div>
+                            </div>
+
+                          </form>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <div class="card card-small mb-4">
+                  <div class="card-header border-bottom">
+                    <h6 class="m-0">联系人信息</h6>
+                  </div>
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item p-3">
+                      <div class="row">
+                        <div class="col">
+                          <form>
+                            <div class="form-row">
+                              <div class="form-group col-md-4">
+                                <label for="contactname">联系人名称</label>
+                                <input type="text" class="form-control" id="contactname" placeholder="请输入联系人名称" value=""> </div>
+                              <div class="form-group col-md-4">
+                                <label for="contactemail">联系人邮箱</label>
+                                <input type="email" class="form-control" id="contactemail" placeholder="请输入联系人邮箱"> </div>
+                            </div>
+                            <div class="form-row">
+                              <div class="form-group col-md-6">
+                                <label for="contactphone">手机号码</label>
+                                <input type="text" disabled="" class="form-control" id="contactphone" placeholder="请输入手机号码">
+                              </div>
+                            </div>
+
+                            <div class="form-row">
+                              <div class="form-group col-md-6">
+                                <label for="idcard">身份证号码</label>
+                                <input type="text" class="form-control" id="idcard" placeholder="身份证号码"> </div>
+                            </div>
+                            <div class="form-row">
+                              <div class="form-group col-md-6">
+                                <label for="contactaddress">联系地址</label>
+                                <input type="text" class="form-control" id="contactaddress" placeholder="请输入联系地址"> </div>
+                            </div>
+
+                            <button type="button" class="btn btn-accent" onclick="save()">提交修改</button>
                           </form>
                         </div>
                       </div>
@@ -181,6 +232,46 @@
                   </ul>
                 </div>
               </div>
+              <div class="col-lg-5">
+                <div class="card card-small mb-4 pt-3">
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item p-4">
+                      <span style="font-size:12px ;">设汇家企业认证是企业身份的象征，通过企业认证后，可以增加用户的影响力，可以享有设汇家特殊权限，可以迅速增加粉丝。通过企业认证后，用户名字后面会加一个企业的标识。</span>
+                    </li>
+                  </ul>
+                  <div class="card-header border-bottom text-center">
+                    <div class="mb-3 mx-auto">
+                      <img src="http://5b0988e595225.cdn.sohucs.com/images/20190301/4177a110311d4022b1b785d1d75962b9.jpeg" alt="User Avatar" width="200" id="businesslicenseimg"> </div>
+
+                  </div>
+                  <div class="card-header border-bottom text-center">
+                    <div class="mb-3 mx-auto">
+                      <img src="https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/public/202004021610593523840642784547502.jpg" alt="User Avatar" width="200" id="idcardpositiveimg"> </div>
+                    <div class="mb-3 mx-auto">
+                      <img src="https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/public/202004021612128178511606060969560.jpg" alt="User Avatar" width="200" id="idcardreverseimg"> </div>
+                  </div>
+                  <div class="card-header border-bottom text-center">
+                    <div class="mb-3 mx-auto">
+                      <img src="" alt="User Avatar" width="200" id="logoimg"> </div>
+                    <a href="javascript:;" class="file">商铺logo
+                      <input type="file" id="logo"  />
+                    </a>
+                    <div class="mb-3 mx-auto">
+                      <img src="" alt="User Avatar" width="200" id="bannerimg"> </div>
+                    <a href="javascript:;" class="file"> 店铺广告图<input type="file" id="banner"  /></a>
+                  </div>
+                  <div class="card-header border-bottom text-center">
+                    <div class="mb-3 mx-auto">
+                      <img src="" alt="User Avatar" width="200" id="company_showimg"> </div>
+                    <a href="javascript:;" class="file">公司展示图
+                      <input type="file" id="company_show"  />
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+
+
             </div>
             <!-- End Default Light Table -->
           </div>
@@ -194,7 +285,7 @@
       <script src="../scripts/bootstrap.min.js"></script>
       <script src="../js/jquery.cookie.min.js"></script>
       <script>
-        console.log(12);
+        var code;
         $.ajax({
           type: 'GET',
           url : "/shop/get",
@@ -207,8 +298,518 @@
           }
         }).done(function(result) {
             console.log(result);
+                   $("#city").val(result.data.city);
+                   $("#name").val(result.data.name);
+                   $("#brandgroup").val(result.data.brandgroup);
+                   $("#label").val(result.data.label);
+                   $("#introduce").val(result.data.introduce);
+                   $("#businesslicenseimg").attr('src',result.data.businesslicense);
+                   $("#logoimg").attr('src',result.data.logo);
+                   $("#bannerimg").attr('src',result.data.banner),
+                   $("#company_showimg").attr('src',result.data.company_show),
+                   $("#businessscope").val(result.data.businessscope);
+                   $("#companyaddress").val(result.data.companyaddress);
+                   $("#companyname").val(result.data.companyname);
+                   $("#contactaddress").val(result.data.contactaddress);
+                   $("#contactname").val(result.data.contactname);
+                   $("#contactemail").val(result.data.contactemail);
+                   $("#contactphone").val(result.data.contactphone);
+                   $("#idcard").val(result.data.idcard);
+                   $("#idcardpositiveimg").attr('src',result.data.idcardpositive);
+                   $("#idcardreverseimg").attr('src',result.data.idcardreverse);
+                   $("#unifiedcreditcode").val(result.data.unifiedcreditcode);
+                   code=result.data.code;
         });
 
+
+        $.ajax({
+          type: 'GET',
+          url : "/base/brandgroup",
+          processData: false,
+          contentType: false,
+        }).done(function(result) {
+          result.data.forEach( function (v,i) {
+            $("#brandgroup").append("<option value='"+v.name+"'>"+v.name+"</option>");
+          });
+
+        });
+
+        $.ajax({
+          type: 'GET',
+          url : "/base/classgroup",
+          processData: false,
+          contentType: false,
+        }).done(function(result) {
+          result.data.forEach( function (v,i) {
+            $("#label").append("<option value='"+v.name+"'>"+v.name+"</option>");
+          });
+
+        });
+        function check() {
+          $.ajax({
+            type: 'POST',
+            url : "/user/check?phone="+$("#contactphone").val()+"&sms="+$("#smscode").val(),
+            processData: false,
+            contentType: false,
+          }).done(function(result) {
+            if(result.data>0){
+              $("#checkok").html(" [ √验证成功 ]");
+            }else {
+              $("#checkok").html("");
+            }
+          });
+        }
+
+        var countdown=60;  // 时长 s
+        // 获取验证码按钮点击事件
+        function sendMsgCode() {
+          if($("#contactphone").val()==""||$("#contactphone").val()==null||!(/^1[3456789]\d{9}$/.test($("#contactphone").val()))){
+            layui.use("layer",function() {
+              layer.msg('手机号码不合法');
+            });
+            return false;
+          }
+
+          $("#sendsms").attr('disabled',true);
+          $("#sendsms").text('重新发送('+60+'s)');
+          var timer = setInterval(function () {
+            if (countdown == 0) {
+              clearInterval(timer);
+              $("#sendsms").text('发送验证码');
+              countdown = 60;
+              $("#sendsms").attr('disabled',false);
+            }
+
+            $("#sendsms").text('重新发送('+(countdown-1)+'s)');
+            countdown--;
+          }, 1000);
+          $.ajax({
+            type: 'POST',
+            url : "/user/sms?phone="+$("#contactphone").val(),
+            processData: false,
+            contentType: false,
+          }).done(function(result) {
+
+          });
+
+        };
+
+        $("#idcardpositive").on("change",function(){
+          function getObjectURL(file) {
+            var url = null;
+            if (window.createObjcectURL != undefined) {
+              url = window.createOjcectURL(file);
+            } else if (window.URL != undefined) {
+              url = window.URL.createObjectURL(file);
+            } else if (window.webkitURL != undefined) {
+              url = window.webkitURL.createObjectURL(file);
+            }
+            return url;
+          }
+          var blobURL = getObjectURL(this.files[0]);
+          var imgUTL = '';
+
+          var xhr = new XMLHttpRequest();
+          xhr.open('GET', blobURL);
+          xhr.responseType = 'blob';
+
+          xhr.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+              var imageBlob = this.response;
+              var imageType = imageBlob.type;
+              var imageName = null;
+              if (imageType.includes('png')) {
+                imageName = 'uploaded-image.png';
+              } else if (imageType.includes('gif')) {
+                imageName = 'uploaded-image.gif';
+              } else if (imageType.includes('bmp')) {
+                imageName = 'uploaded-image.bmp';
+              } else {
+                imageName = 'uploaded-image.jpg';
+              }
+              var form = new FormData();
+              form.append('file', imageBlob, imageName); // 第三个参数为文件名
+              $.ajax({
+                type: 'POST',
+                url : "/file/upload",
+                data: form ,
+                processData: false,
+                contentType: false,
+              }).done(function(result) {
+                console.log(result);
+                $("#idcardpositiveimg").attr("src",result.data);
+              });
+            }
+          };
+          xhr.send();
+        })
+
+        $("#idcardreverse").on("change",function(){
+          function getObjectURL(file) {
+            var url = null;
+            if (window.createObjcectURL != undefined) {
+              url = window.createOjcectURL(file);
+            } else if (window.URL != undefined) {
+              url = window.URL.createObjectURL(file);
+            } else if (window.webkitURL != undefined) {
+              url = window.webkitURL.createObjectURL(file);
+            }
+            return url;
+          }
+          var blobURL = getObjectURL(this.files[0]);
+          var imgUTL = '';
+
+          var xhr = new XMLHttpRequest();
+          xhr.open('GET', blobURL);
+          xhr.responseType = 'blob';
+
+          xhr.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+              var imageBlob = this.response;
+              var imageType = imageBlob.type;
+              var imageName = null;
+              if (imageType.includes('png')) {
+                imageName = 'uploaded-image.png';
+              } else if (imageType.includes('gif')) {
+                imageName = 'uploaded-image.gif';
+              } else if (imageType.includes('bmp')) {
+                imageName = 'uploaded-image.bmp';
+              } else {
+                imageName = 'uploaded-image.jpg';
+              }
+              var form = new FormData();
+              form.append('file', imageBlob, imageName); // 第三个参数为文件名
+              $.ajax({
+                type: 'POST',
+                url : "/file/upload",
+                data: form ,
+                processData: false,
+                contentType: false,
+              }).done(function(result) {
+                console.log(result);
+                $("#idcardreverseimg").attr("src",result.data);
+              });
+            }
+          };
+          xhr.send();
+        })
+
+        $("#businesslicense").on("change",function(){
+          function getObjectURL(file) {
+            var url = null;
+            if (window.createObjcectURL != undefined) {
+              url = window.createOjcectURL(file);
+            } else if (window.URL != undefined) {
+              url = window.URL.createObjectURL(file);
+            } else if (window.webkitURL != undefined) {
+              url = window.webkitURL.createObjectURL(file);
+            }
+            return url;
+          }
+          var blobURL = getObjectURL(this.files[0]);
+          var imgUTL = '';
+
+          var xhr = new XMLHttpRequest();
+          xhr.open('GET', blobURL);
+          xhr.responseType = 'blob';
+
+          xhr.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+              var imageBlob = this.response;
+              var imageType = imageBlob.type;
+              var imageName = null;
+              if (imageType.includes('png')) {
+                imageName = 'uploaded-image.png';
+              } else if (imageType.includes('gif')) {
+                imageName = 'uploaded-image.gif';
+              } else if (imageType.includes('bmp')) {
+                imageName = 'uploaded-image.bmp';
+              } else {
+                imageName = 'uploaded-image.jpg';
+              }
+              var form = new FormData();
+              form.append('file', imageBlob, imageName); // 第三个参数为文件名
+              $.ajax({
+                type: 'POST',
+                url : "/file/upload",
+                data: form ,
+                processData: false,
+                contentType: false,
+              }).done(function(result) {
+                console.log(result);
+                $("#businesslicenseimg").attr("src",result.data);
+              });
+            }
+          };
+          xhr.send();
+        })
+
+        $("#logo").on("change",function(){
+          function getObjectURL(file) {
+            var url = null;
+            if (window.createObjcectURL != undefined) {
+              url = window.createOjcectURL(file);
+            } else if (window.URL != undefined) {
+              url = window.URL.createObjectURL(file);
+            } else if (window.webkitURL != undefined) {
+              url = window.webkitURL.createObjectURL(file);
+            }
+            return url;
+          }
+          var blobURL = getObjectURL(this.files[0]);
+          var imgUTL = '';
+
+          var xhr = new XMLHttpRequest();
+          xhr.open('GET', blobURL);
+          xhr.responseType = 'blob';
+
+          xhr.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+              var imageBlob = this.response;
+              var imageType = imageBlob.type;
+              var imageName = null;
+              if (imageType.includes('png')) {
+                imageName = 'uploaded-image.png';
+              } else if (imageType.includes('gif')) {
+                imageName = 'uploaded-image.gif';
+              } else if (imageType.includes('bmp')) {
+                imageName = 'uploaded-image.bmp';
+              } else {
+                imageName = 'uploaded-image.jpg';
+              }
+              var form = new FormData();
+              form.append('file', imageBlob, imageName); // 第三个参数为文件名
+              $.ajax({
+                type: 'POST',
+                url : "/file/upload",
+                data: form ,
+                processData: false,
+                contentType: false,
+              }).done(function(result) {
+                console.log(result);
+                $("#logoimg").attr("src",result.data);
+              });
+            }
+          };
+          xhr.send();
+        })
+
+        $("#banner").on("change",function(){
+          function getObjectURL(file) {
+            var url = null;
+            if (window.createObjcectURL != undefined) {
+              url = window.createOjcectURL(file);
+            } else if (window.URL != undefined) {
+              url = window.URL.createObjectURL(file);
+            } else if (window.webkitURL != undefined) {
+              url = window.webkitURL.createObjectURL(file);
+            }
+            return url;
+          }
+          var blobURL = getObjectURL(this.files[0]);
+          var imgUTL = '';
+
+          var xhr = new XMLHttpRequest();
+          xhr.open('GET', blobURL);
+          xhr.responseType = 'blob';
+
+          xhr.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+              var imageBlob = this.response;
+              var imageType = imageBlob.type;
+              var imageName = null;
+              if (imageType.includes('png')) {
+                imageName = 'uploaded-image.png';
+              } else if (imageType.includes('gif')) {
+                imageName = 'uploaded-image.gif';
+              } else if (imageType.includes('bmp')) {
+                imageName = 'uploaded-image.bmp';
+              } else {
+                imageName = 'uploaded-image.jpg';
+              }
+              var form = new FormData();
+              form.append('file', imageBlob, imageName); // 第三个参数为文件名
+              $.ajax({
+                type: 'POST',
+                url : "/file/upload",
+                data: form ,
+                processData: false,
+                contentType: false,
+              }).done(function(result) {
+                console.log(result);
+                $("#bannerimg").attr("src",result.data);
+              });
+            }
+          };
+          xhr.send();
+        })
+
+        $("#company_show").on("change",function(){
+          function getObjectURL(file) {
+            var url = null;
+            if (window.createObjcectURL != undefined) {
+              url = window.createOjcectURL(file);
+            } else if (window.URL != undefined) {
+              url = window.URL.createObjectURL(file);
+            } else if (window.webkitURL != undefined) {
+              url = window.webkitURL.createObjectURL(file);
+            }
+            return url;
+          }
+          var blobURL = getObjectURL(this.files[0]);
+          var imgUTL = '';
+
+          var xhr = new XMLHttpRequest();
+          xhr.open('GET', blobURL);
+          xhr.responseType = 'blob';
+
+          xhr.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+              var imageBlob = this.response;
+              var imageType = imageBlob.type;
+              var imageName = null;
+              if (imageType.includes('png')) {
+                imageName = 'uploaded-image.png';
+              } else if (imageType.includes('gif')) {
+                imageName = 'uploaded-image.gif';
+              } else if (imageType.includes('bmp')) {
+                imageName = 'uploaded-image.bmp';
+              } else {
+                imageName = 'uploaded-image.jpg';
+              }
+              var form = new FormData();
+              form.append('file', imageBlob, imageName); // 第三个参数为文件名
+              $.ajax({
+                type: 'POST',
+                url : "/file/upload",
+                data: form ,
+                processData: false,
+                contentType: false,
+              }).done(function(result) {
+                console.log(result);
+                $("#company_showimg").attr("src",result.data);
+              });
+            }
+          };
+          xhr.send();
+        })
+
+        function save() {
+          if ($("#name").val() == "" || $("#name").val() == null) {
+            layui.use("layer",function() {
+              layer.msg('请输入商铺名称');
+            }); return false;
+          }else if ($("#companyname").val() == "" || $("#companyname").val() == null) {
+            layui.use("layer",function() {
+              layer.msg('请输入公司名称');
+            }); return false;
+          } else if ($("#unifiedcreditcode").val() == "" || $("#unifiedcreditcode").val() == null) {
+            layui.use("layer",function() {
+              layer.msg('请输入统一信用代码');
+            }); return false;
+          } else if ($("#companyaddress").val() == "" || $("#companyaddress").val() == null) {
+            layui.use("layer",function() {
+              layer.msg('请输入公司注册地');
+            }); return false;
+          }else if ($("#city").val() == "" || $("#city").val() == null) {
+            layui.use("layer",function() {
+              layer.msg('请输入所在城市');
+            }); return false;
+          } else if ($("#businessscope").val() == "" || $("#businessscope").val() == null) {
+            layui.use("layer",function() {
+              layer.msg('请输入经营范围');
+            }); return false;
+          } else if ($("#introduce").val() == "" || $("#introduce").val() == null) {
+            layui.use("layer",function() {
+              layer.msg('请输入公司介绍');
+            }); return false;
+          } else if ($("#businesslicenseimg").attr('src') == "http://5b0988e595225.cdn.sohucs.com/images/20190301/4177a110311d4022b1b785d1d75962b9.jpeg" ) {
+            layui.use("layer",function() {
+              layer.msg('请上传营业执照');
+            }); return false;
+          } else if ($("#contactname").val() == "" || $("#contactname").val() == null) {
+            layui.use("layer",function() {
+              layer.msg('请输入联系人名称');
+            }); return false;
+          } else if ($("#contactemail").val() == "" || $("#contactemail").val() == null) {
+            layui.use("layer",function() {
+              layer.msg('请输入联系人邮箱');
+            }); return false;
+          } else if ($("#contactphone").val() == "" || $("#contactphone").val() == null) {
+            layui.use("layer",function() {
+              layer.msg('请输入联系人手机号码');
+            }); return false;
+          } else if ($("#idcard").val() == "" || $("#idcard").val() == null) {
+            layui.use("layer",function() {
+              layer.msg('请输入身份证号码');
+            }); return false;
+          } else if ($("#contactaddress").val() == "" || $("#contactaddress").val() == null) {
+            layui.use("layer",function() {
+              layer.msg('请输入联系人地址');
+            });return false;
+          } else if ($("#idcardpositiveimg").attr('src') == "https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/public/202004021610593523840642784547502.jpg" ) {
+            layui.use("layer",function() {
+              layer.msg('请输入上传身份证正面');
+            });return false;
+          } else if ($("#idcardreverseimg").attr('src') == "https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/public/202004021612128178511606060969560.jpg") {
+            layui.use("layer",function() {
+              layer.msg('请输入上传身份证反面');
+            });return false;
+          } else if ($("#logoimg").attr('src') == ""||$("#logoimg").attr('src')==null ) {
+            layui.use("layer",function() {
+              layer.msg('请输入上传商铺logo');
+            });return false;
+          } else if ($("#bannerimg").attr('src') == ""||$("#bannerimg").attr('src')== null ) {
+            layui.use("layer",function() {
+              layer.msg('请输入上商铺广告图');
+            });return false;
+          } else if ($("#company_showimg").attr('src') == ""||$("#company_showimg").attr('src')== null ) {
+            layui.use("layer",function() {
+              layer.msg('请输入上公司展示图');
+            });return false;
+          }
+
+              $.ajax({
+                type: 'PUT',
+                url: "/shop/update",
+                data: JSON.stringify({
+                  "code": this.code,
+                  "city": $("#city").val(),
+                  "name": $("#name").val(),
+                  "brandgroup": $("#brandgroup").val(),
+                  "label": $("#label").val(),
+                  "introduce": $("#introduce").val(),
+                  "businesslicense": $("#businesslicenseimg").attr('src'),
+                  "logo": $("#logoimg").attr('src'),
+                  "banner": $("#bannerimg").attr('src'),
+                  "company_show": $("#company_showimg").attr('src'),
+                  "businessscope": $("#businessscope").val(),
+                  "companyaddress": $("#companyaddress").val(),
+                  "companyname": $("#companyname").val(),
+                  "contactaddress": $("#contactaddress").val(),
+                  "contactname": $("#contactname").val(),
+                  "contactemail": $("#contactemail").val(),
+                  "contactphone": $("#contactphone").val(),
+                  "idcard": $("#idcard").val(),
+                  "idcardpositive": $("#idcardpositiveimg").attr('src'),
+                  "idcardreverse": $("#idcardreverseimg").attr('src'),
+                  "unifiedcreditcode": $("#unifiedcreditcode").val()
+                }),
+                processData: false,
+                contentType: "application/json; charset=UTF-8",
+              }).done(function (result) {
+                layui.use("layer", function () {
+                  layer.alert('修改成功。', {
+                    skin: 'layui-layer-molv' //样式类名
+                    , closeBtn: 0
+                    , anim: 4 //动画类型
+                  }, function () {
+
+                  });
+                });
+              });
+
+        };
      </script>
   </body>
 </html>

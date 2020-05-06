@@ -26,15 +26,21 @@ public class CaseController {
     private UserSecurityService userSecurityService;
 
     @ApiOperation(value = "新增案例", notes="新增案例")
-    @PutMapping(value = "/addcase")
+    @PutMapping("/addcase")
     public Mono<Info> addcase(Principal principal, @RequestBody Case obj) {
         obj.setUserSecurity(userSecurityService.findByPhone(principal.getName()));
         return Mono.just(Info.SUCCESS(caseService.save(obj)));
     }
 
+    @ApiOperation(value = "新增案例", notes="新增案例")
+    @DeleteMapping("/remove")
+    public Mono<Info> remove(Principal principal,@RequestParam("code")String code) {
+        return Mono.just(Info.SUCCESS(caseService.remove(code)));
+    }
 
-    @ApiOperation(value = "获取案例列表", notes="获取案例列表")
-    @PostMapping(value = "/caseByPage")
+
+    @ApiOperation( value ="获取案例列表", notes="获取案例列表")
+    @PostMapping("/caseByPage")
     public Mono<Info> caseByPage(@RequestParam(name = "page")Integer page,
                                   @RequestParam(name = "subject", required = false)String subject,
                                   @RequestParam(name = "label", required = false)String label,
@@ -47,10 +53,20 @@ public class CaseController {
     }
 
     @ApiOperation(value = "获取我的案例列表", notes="获取我的案例列表")
-    @PostMapping(value = "/mycases")
+    @PostMapping("/mycases")
     public Mono<Info> mycases(Principal principal,@RequestParam(name = "page")Integer page) {
         try {
             return Mono.just(Info.SUCCESS(caseService.mycases(page,principal.getName())));
+        }catch (Exception e){
+            return Mono.just(Info.SUCCESS(e.getMessage()));
+        }
+    }
+
+    @ApiOperation(value = "获取我的案例列表", notes="获取我的案例列表")
+    @GetMapping("/cases")
+    public Mono<Info> cases(Principal principal) {
+        try {
+            return Mono.just(Info.SUCCESS(caseService.mycases(0,principal.getName())));
         }catch (Exception e){
             return Mono.just(Info.SUCCESS(e.getMessage()));
         }
@@ -66,7 +82,7 @@ public class CaseController {
     private FollowService followService;
 
     @ApiOperation(value = "查询案例信息", notes="查询案例信息")
-    @PostMapping(value = "/caseByCode")
+    @PostMapping("/caseByCode")
     public Mono<Info> caseByCode(Principal principal,@RequestParam(name = "code")String code) {
         Map<String,Object> data=new HashMap<>();
         Case obj= caseService.caseByCode(code);
@@ -96,7 +112,7 @@ public class CaseController {
     }
 
     @ApiOperation(value = "点赞", notes="点赞")
-    @PostMapping(value = "/star")
+    @PostMapping("/star")
     public Mono<Info> star(Principal principal,@RequestParam(name = "code")String code) {
         Case obj= caseService.caseByCode(code);
         try {
@@ -111,7 +127,7 @@ public class CaseController {
 
 
     @ApiOperation(value = "推荐案例", notes="推荐案例")
-    @PostMapping(value = "/recommend")
+    @PostMapping("/recommend")
     public Mono<Info> recommend(@RequestParam(name = "code")String code) {
         try {
             return Mono.just(Info.SUCCESS(caseService.recommend(caseService.caseByCode(code))));
@@ -120,10 +136,12 @@ public class CaseController {
         }
     }
 
+
     @Autowired
     private ShopService shopService;
+
     @ApiOperation(value = "通过店铺code获取案例", notes="通过店铺code获取案例")
-    @PostMapping(value = "/caseByShop")
+    @PostMapping("/caseByShop")
     public Mono<Info> caseByShop(@RequestParam(name = "code")String code,@RequestParam(name = "page")Integer page) {
         try {
             return Mono.just(Info.SUCCESS(caseService.mycases(page,shopService.getByCode(code).getUserSecurity().getPhonenumber())));

@@ -16,4 +16,9 @@ public class VisitorServiceImpl implements VisitorService {
     public Visitor save(Visitor visitor) {
         return visitorRepository.saveAndFlush(visitor);
     }
+
+    @Override
+    public int count(String dateStr, String code) {
+        return  visitorRepository.countNumber(dateStr,code);
+    }
 }

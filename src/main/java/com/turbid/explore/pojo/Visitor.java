@@ -1,12 +1,10 @@
 package com.turbid.explore.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Data
 @Entity
@@ -15,7 +13,10 @@ import javax.persistence.Table;
 public class Visitor extends BaseEntity {
 
     //用户认证信息
-    @OneToOne(targetEntity = UserSecurity.class)
-    @JoinColumn(name = "user_id",referencedColumnName = "code")
+    @ManyToOne(fetch= FetchType.EAGER)
+    @JoinColumn(name="usercode")
     private UserSecurity userSecurity;
+
+    @Column(name = "shopcode")
+    private String shopcode;
 }

@@ -63,4 +63,15 @@ public class CaseServiceImpl implements CaseService {
     public int starcount(String name) {
         return caseRepositroy.starcount(name);
     }
+
+    @Override
+    public int remove(String code) {
+         caseRepositroy.delete(caseRepositroy.caseByCode(code));
+         return 1;
+    }
+
+    @Override
+    public int casecount(String name) {
+        return caseRepositroy.casecount(name);
+    }
 }

@@ -31,4 +31,8 @@ public interface CaseRepositroy extends JpaRepository<Case,String> {
 
     @Query("select sum (c.stars.size) from Case c where  c.userSecurity.phonenumber=:name")
     int starcount(@Param("name")String name);
+
+    @Query("select count(c) from Case c where c.userSecurity.phonenumber=:name")
+    int casecount(@Param("name")String name);
+
 }

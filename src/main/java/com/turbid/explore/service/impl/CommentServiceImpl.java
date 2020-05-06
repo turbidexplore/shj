@@ -38,4 +38,16 @@ public class CommentServiceImpl implements CommentService {
     public int listByCount(String relation) {
         return commentRepositroy.listByCount(relation);
     }
+
+    @Override
+    public List<Comment> listByShopPage(String relation, Integer page) {
+        Pageable pageable = new PageRequest(page,10, Sort.Direction.DESC,"create_time");
+        Page<Comment> pages=  commentRepositroy.listByShopPage(pageable,relation);
+        return pages.getContent();
+    }
+
+    @Override
+    public int listByShopCount(String relation) {
+        return commentRepositroy.listByShopCount(relation);
+    }
 }

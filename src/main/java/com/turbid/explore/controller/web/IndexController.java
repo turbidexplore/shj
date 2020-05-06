@@ -87,5 +87,20 @@ public class IndexController {
         return "business";
     }
 
+    @RequestMapping("/manage/tables")
+    public String tables(){
+        return "/manage/tables";
+    }
+
+    @RequestMapping("/manage/brands")
+    public String brands(){
+        return "/manage/brands";
+    }
+
+    @RequestMapping("/manage/brand")
+    public String brand(){
+        return "/manage/brand";
+    }
+
 
 }

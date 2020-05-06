@@ -12,4 +12,8 @@ public interface CommentService {
     List<Comment> listByPage(String relation, Integer page);
 
     int listByCount(String relation);
+
+    List<Comment> listByShopPage(String relation, Integer page);
+
+    int listByShopCount(String relation);
 }

@@ -21,4 +21,8 @@ public interface CaseService {
     List<Case> recommend(Case obj);
 
     int starcount(String name);
+
+    int remove(String code);
+
+    int casecount(String name);
 }

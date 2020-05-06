@@ -69,7 +69,9 @@ public class UserController {
                    userBasic.setCity(info.getString("city"));
                    userBasicService.save(userBasic);
                    userSecurity.setUserBasic(userBasic);
-                   return Mono.just(Info.SUCCESS( userSecurityService.save(userSecurity)));
+                   userSecurity=  userSecurityService.save(userSecurity);
+                   restTemplate.put("http://127.0.0.1:10002/im/account_import?identifier="+userSecurity.getCode()+"&nikename="+userBasic.getNikename(),null);
+                   return Mono.just(Info.SUCCESS(userSecurity ));
                }else {
                    return Mono.just(Info.ERROR("手机号码已注册"));
                }

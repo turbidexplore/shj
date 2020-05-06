@@ -57,10 +57,11 @@ public class IMController {
 
     @ApiOperation(value = "导入账号", notes="导入账号")
     @PutMapping("/account_import")
-    public Mono<Info> account_import(@RequestParam("identifier") String identifier) {
+    public Mono<Info> account_import(@RequestParam("identifier") String identifier,@RequestParam("nikename") String nikename) {
         Map<String, Object> requestBody = ImmutableMap.of(
                 "Identifier", identifier,
-                "Nick", identifier);
+                "Nick", nikename,
+                "FaceUrl","https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1588763946885&di=11fc71844ac400e62d61e5abbff4e4fb&imgtype=0&src=http%3A%2F%2Fpic.90sjimg.com%2Fdesign%2F00%2F67%2F59%2F63%2F58e89bee922a2.png");
         JSONObject jsonObject= restTemplate.postForObject(baseUrl+account_import_url+config()
                ,requestBody, JSONObject.class);
         return Mono.just(Info.SUCCESS(jsonObject));

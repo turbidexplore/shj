@@ -91,14 +91,6 @@ public class Shop extends BaseEntity{
     @Column(name = "brandgroup",length = 255)
     private String brandgroup;
 
-    //访客信息
-    @OneToMany(targetEntity=Visitor.class,cascade= CascadeType.ALL,fetch= FetchType.EAGER)
-    private Set<Visitor> visitor;
-
-    //粉丝信息
-    @OneToMany(targetEntity=UserSecurity.class,cascade= CascadeType.ALL,fetch= FetchType.EAGER)
-    private Set<UserSecurity> fans;
-
     @ApiModelProperty(value = "banner")
     @Column(name = "banner",length = 255)
     private String banner;

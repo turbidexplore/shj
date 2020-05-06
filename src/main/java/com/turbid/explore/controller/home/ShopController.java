@@ -2,9 +2,7 @@ package com.turbid.explore.controller.home;
 
 import com.turbid.explore.pojo.Shop;
 import com.turbid.explore.pojo.Visitor;
-import com.turbid.explore.service.ShopService;
-import com.turbid.explore.service.UserSecurityService;
-import com.turbid.explore.service.VisitorService;
+import com.turbid.explore.service.*;
 import com.turbid.explore.tools.Info;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -13,10 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Api(description = "店铺接口")
 @RestController
@@ -45,8 +41,9 @@ public class ShopController {
         Shop shop=  shopService.getByCode(code);
         Visitor visitor=new Visitor();
         visitor.setUserSecurity(userSecurityService.findByPhone(principal.getName()));
+        visitor.setShopcode(code);
         visitorService.save(visitor);
-        shop.getVisitor().add(visitor);
+
         return Mono.just(Info.SUCCESS( shop));
     }
 
@@ -75,6 +72,28 @@ public class ShopController {
     @GetMapping("/choose")
     public Mono<Info> choose(@RequestParam(value = "label",required = false)String label,@RequestParam(value = "page")Integer page) {
         return Mono.just(Info.SUCCESS( shopService.getByChoose(label,page)));
+    }
+
+    @Autowired
+    private FollowService followService;
+
+    @Autowired
+    private CaseService caseService;
+
+    @ApiOperation(value = "店铺统计", notes="店铺统计")
+    @GetMapping("/count")
+    public Mono<Info> count(Principal principal,@RequestParam("code")String code) {
+
+        Map<String,Object> data =new HashMap<>();
+        data.put("followcount",followService.followmeCount(principal.getName()));
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String dateStr = sdf.format(new Date());
+        data.put("today",visitorService.count(dateStr,code));
+        sdf = new SimpleDateFormat("yyyy-MM");
+         dateStr = sdf.format(new Date());
+        data.put("tomom",visitorService.count(dateStr, code));
+        data.put("casecount",caseService.casecount(principal.getName()));
+        return Mono.just(Info.SUCCESS( data));
     }
 
 }
