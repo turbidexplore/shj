@@ -1,5 +1,6 @@
 package com.turbid.explore.controller.home;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.ImmutableMap;
 import com.turbid.explore.pojo.bo.Message;
@@ -19,8 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import reactor.core.publisher.Mono;
 
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Api(description = "即时通讯接口")
 @RestController
@@ -38,6 +38,8 @@ public class IMController {
     private String push_="v4/openim/im_push";
 
     private String send_msg="v4/openim/sendmsg";
+
+    private String portrait_set="v4/profile/portrait_set";
 
     private long appid=1400334582;
 
@@ -64,6 +66,46 @@ public class IMController {
                 "FaceUrl","https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1588763946885&di=11fc71844ac400e62d61e5abbff4e4fb&imgtype=0&src=http%3A%2F%2Fpic.90sjimg.com%2Fdesign%2F00%2F67%2F59%2F63%2F58e89bee922a2.png");
         JSONObject jsonObject= restTemplate.postForObject(baseUrl+account_import_url+config()
                ,requestBody, JSONObject.class);
+        return Mono.just(Info.SUCCESS(jsonObject));
+    }
+
+    @ApiOperation(value = "设置资料", notes="设置资料")
+    @PutMapping("/changename")
+    public Mono<Info> changename(@RequestParam("identifier") String identifier,@RequestParam("name") String name) {
+        JSONArray data =new JSONArray();
+        JSONObject item=new JSONObject();
+        item.put("Tag","Tag_Profile_IM_Nick");
+        item.put("Value",name);
+        data.add(item);
+
+        Map<String, Object> requestBody = ImmutableMap.of(
+                "From_Account", identifier,
+                "ProfileItem",data
+        );
+        JSONObject jsonObject= restTemplate.postForObject(baseUrl+portrait_set+config()
+                ,requestBody, JSONObject.class);
+        return Mono.just(Info.SUCCESS(jsonObject));
+    }
+
+    @ApiOperation(value = "设置资料", notes="设置资料")
+    @PutMapping("/portrait_set")
+    public Mono<Info> portrait_set(@RequestParam("identifier") String identifier,@RequestParam("type") String type) {
+        JSONArray data =new JSONArray();
+        JSONObject item=new JSONObject();
+        item.put("Tag","Tag_Profile_Custom_usertype");
+        item.put("Value",type);
+        data.add(item);
+        item=new JSONObject();
+        item.put("Tag","Tag_Profile_Custom_yx");
+        item.put("Value","严选");
+        data.add(item);
+
+        Map<String, Object> requestBody = ImmutableMap.of(
+                "From_Account", identifier,
+                "ProfileItem",data
+        );
+        JSONObject jsonObject= restTemplate.postForObject(baseUrl+portrait_set+config()
+                ,requestBody, JSONObject.class);
         return Mono.just(Info.SUCCESS(jsonObject));
     }
 

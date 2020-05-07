@@ -66,7 +66,7 @@ public class UserController {
                    JSONObject info= JSONObject.parseObject(CodeLib.getAddressByIp(jo.getString("ip")));
                    userBasic.setCountry(info.getString("country"));
                    userBasic.setProvince(info.getString("region"));
-                   userBasic.setCity(info.getString("city"));
+                   userBasic.setCity(jo.getString("city"));
                    userBasicService.save(userBasic);
                    userSecurity.setUserBasic(userBasic);
                    userSecurity=  userSecurityService.save(userSecurity);
@@ -292,4 +292,7 @@ public class UserController {
         return Mono.just(Info.SUCCESS(userSecurityService.save(userSecurity)));
     }
 
+    public static void main(String[] a){
+        System.out.println(CodeLib.getAddressByIp("10.38.18.118"));
+    }
 }
