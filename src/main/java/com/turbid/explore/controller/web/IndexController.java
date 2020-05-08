@@ -102,5 +102,28 @@ public class IndexController {
         return "/manage/brand";
     }
 
+    @RequestMapping("/manage/goods")
+    public String goods(){
+        return "/manage/goods";
+    }
+
+    @RequestMapping("/manage/good")
+    public String good(){
+        return "/manage/good";
+    }
+
+    @RequestMapping("/manage/count")
+    public String count(){
+        return "/manage/count";
+    }
+
+    @RequestMapping("/manage/cases")
+    public String cases(){
+        return "/manage/count";
+    }
+    @RequestMapping("/manage/comments")
+    public String comments(){
+        return "/manage/count";
+    }
 
 }

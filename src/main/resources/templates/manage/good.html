@@ -48,12 +48,12 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" href="/manage/brands">
+                <a class="nav-link " href="/manage/brands">
                   <i class="material-icons">vertical_split</i>
                   <span>我的品牌</span>
                 </a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item active">
                 <a class="nav-link " href="/manage/goods">
                   <i class="material-icons">vertical_split</i>
                   <span>特加仓管理</span>
@@ -95,7 +95,6 @@
                   <span>账户信息</span>
                 </a>
               </li>
-             
             </ul>
           </div>
         </aside>
@@ -117,19 +116,14 @@
                     <form class="add-new-post">
                       <div class="form-row">
                         <div class="form-group col-md-4">
-                          <label for="name">品牌名称</label>
-                          <input type="text" class="form-control" id="name" placeholder="品牌名称" value=""> </div>
-                        <div class="form-group col-md-3" >
-                          <label for="brandgroup">品牌馆</label>
-                          <select id="brandgroup" class="form-control">
-
-                          </select></div>
-                        <div class="form-group  col-md-3" >
-                          <label for="label">标签</label>
-                          <select id="label" class="form-control">
-
-                          </select></div>
-
+                          <div class="card-header border-bottom text-center">
+                            <div class="mb-3 mx-auto">
+                              <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1588743624402&di=d7eeb4dca9d478f6f431d0e4cad095e9&imgtype=0&src=http%3A%2F%2Fpic.qiantucdn.com%2F58pic%2F15%2F41%2F24%2F82G58PICnZi_1024.png%2521%2Ffw%2F1024%2Fwatermark%2Furl%2FL2ltYWdlcy93YXRlcm1hcmsvZGF0dS5wbmc%3D%2Frepeat%2Ftrue" alt="User Avatar" width="120" id="logoimg"> </div>
+                            <a href="javascript:;" class="file">上传展示图片
+                              <input type="file" id="logo" />
+                            </a>
+                          </div>
+                        </div>
                       </div>
                       <textarea class="easyui-validatebox" name="newsMatter" id="newsMatter" rows="60" cols="70" data-options="required:true">  </textarea>
                     </form>
@@ -140,13 +134,6 @@
               <div class="col-lg-4 col-md-12">
                 <!-- Add New Post Form -->
                 <div class="card card-small mb-3">
-                  <div class="card-header border-bottom text-center">
-                    <div class="mb-3 mx-auto">
-                      <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1588743624402&di=d7eeb4dca9d478f6f431d0e4cad095e9&imgtype=0&src=http%3A%2F%2Fpic.qiantucdn.com%2F58pic%2F15%2F41%2F24%2F82G58PICnZi_1024.png%2521%2Ffw%2F1024%2Fwatermark%2Furl%2FL2ltYWdlcy93YXRlcm1hcmsvZGF0dS5wbmc%3D%2Frepeat%2Ftrue" alt="User Avatar" width="120" id="logoimg"> </div>
-                    <a href="javascript:;" class="file">上传品牌logo
-                      <input type="file" id="logo" />
-                    </a>
-                  </div>
                   <div class="card-body">
                   <form class="add-new-post">
                   <div class="form-row">
@@ -180,30 +167,6 @@
      <script src="../scripts/bootstrap.min.js"></script>
      <script src="../js/jquery.cookie.min.js"></script>
   <script>
-
-    $.ajax({
-      type: 'GET',
-      url : "/base/brandgroup",
-      processData: false,
-      contentType: false,
-    }).done(function(result) {
-      result.data.forEach( function (v,i) {
-        $("#brandgroup").append("<option value='"+v.name+"'>"+v.name+"</option>");
-      });
-
-    });
-
-    $.ajax({
-      type: 'GET',
-      url : "/base/classgroup",
-      processData: false,
-      contentType: false,
-    }).done(function(result) {
-      result.data.forEach( function (v,i) {
-        $("#label").append("<option value='"+v.name+"'>"+v.name+"</option>");
-      });
-
-    });
 
     $("#logo").on("change",function(){
       function getObjectURL(file) {

@@ -74,6 +74,12 @@ public class ShopController {
         return Mono.just(Info.SUCCESS( shopService.getByChoose(label,page)));
     }
 
+    @ApiOperation(value = "官方推荐", notes="官方推荐")
+    @GetMapping("/recommend")
+    public Mono<Info> recommend(Principal principal,@RequestParam(value = "page")Integer page) {
+        return Mono.just(Info.SUCCESS( shopService.recommend(principal,page)));
+    }
+
     @Autowired
     private FollowService followService;
 

@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.List;
 
 @Service
@@ -45,6 +46,13 @@ public class ShopServiceImpl implements ShopService {
     public List<Shop> getByChoose(String label, Integer page) {
         Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
         Page<Shop> pages=   shopRepositroy.getByChoose(pageable,label);
+        return pages.getContent();
+    }
+
+    @Override
+    public List<Shop> recommend(Principal principal, Integer page) {
+        Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
+        Page<Shop> pages=   shopRepositroy.recommend(pageable);
         return pages.getContent();
     }
 }

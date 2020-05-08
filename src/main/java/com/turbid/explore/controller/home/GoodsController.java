@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
+import java.security.Principal;
+
 @Api(description = "特卖会接口")
 @RestController
 @RequestMapping("/goods")
@@ -50,5 +52,11 @@ public class GoodsController {
         goods.setLikes(goods.getLikes()+1);
         goodsService.save(goods);
         return Mono.just(Info.SUCCESS(goods));
+    }
+
+    @ApiOperation(value = "获取我的商品信息",notes = "获取我的商品信息")
+    @PostMapping("/mylistByPage")
+    public Mono<Info> mylistByPage(Principal principal, @RequestParam(value = "label",required = false)String label, @RequestParam("page")Integer page) {
+        return Mono.just(Info.SUCCESS( goodsService.listByPage(label,page)));
     }
 }

@@ -1,10 +1,13 @@
 package com.turbid.explore.controller.home;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.ImmutableMap;
 import com.turbid.explore.pojo.*;
 import com.turbid.explore.service.*;
 import com.turbid.explore.service.impl.SMSServiceImpl;
 import com.turbid.explore.tools.CodeLib;
 import com.turbid.explore.tools.Info;
+import com.turbid.explore.tools.TLSSigAPIv2;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -26,6 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @Api(description = "用户操作接口")
 @RestController
@@ -49,6 +53,15 @@ public class UserController {
     private StringRedisTemplate stringRedisTemplate;
 
 
+    private String baseUrl="https://console.tim.qq.com/";;
+    private String portrait_set="v4/profile/portrait_set";
+    private long appid=1400334582;
+
+    public String config(){
+        return "?sdkappid="+appid+"&identifier=administrator"+"&usersig="+ TLSSigAPIv2.genSig("administrator",680000000)
+                +"&random="+ UUID.randomUUID().toString().replace("-", "").toLowerCase()+"&contenttype=json";
+    }
+
     @ApiOperation(value = "注册", notes="通过手机号注册")
     @PostMapping(value = "/register")
     public Mono<Info> register(@RequestBody JSONObject jo) {
@@ -62,10 +75,7 @@ public class UserController {
                    userSecurity.setType(jo.getInteger("type"));
                    UserBasic userBasic=new UserBasic();
                    userBasic.setNikename(CodeLib.getNikeName(stringRedisTemplate));
-                   userBasic.setHeadportrait( CodeLib.getHeadimg());
-                   JSONObject info= JSONObject.parseObject(CodeLib.getAddressByIp(jo.getString("ip")));
-                   userBasic.setCountry(info.getString("country"));
-                   userBasic.setProvince(info.getString("region"));
+                   userBasic.setHeadportrait(CodeLib.getHeadimg());
                    userBasic.setCity(jo.getString("city"));
                    userBasicService.save(userBasic);
                    userSecurity.setUserBasic(userBasic);
@@ -279,20 +289,40 @@ public class UserController {
     @PostMapping(value = "/update")
     public Mono<Info> update(Principal principal,@RequestParam(value = "nikename",required = false)String nikename,@RequestParam(value = "logo",required = false)String logo,@RequestParam(value = "likes",required = false)String likes)  {
        UserSecurity userSecurity=userSecurityService.findByPhone(principal.getName());
+        JSONArray data =new JSONArray();
+        JSONObject item=null;
        if(nikename!=null&&!nikename.equals(null)){
            userSecurity.getUserBasic().setNikename(nikename);
+           item=new JSONObject();
+           item.put("Tag","Tag_Profile_IM_Nick");
+           item.put("Value",nikename);
+           data.add(item);
        }
         if(logo!=null&&!logo.equals(null)){
             userSecurity.getUserBasic().setHeadportrait(logo);
             userBasicService.save(userSecurity.getUserBasic());
+            item=new JSONObject();
+            item.put("Tag","Tag_Profile_IM_Image");
+            item.put("Value",logo);
+            data.add(item);
         }
         if(likes!=null&&!likes.equals(null)){
             userSecurity.setLikes(likes);
         }
+
+
+
+
+
+        Map<String, Object> requestBody = ImmutableMap.of(
+                "From_Account", userSecurity.getCode(),
+                "ProfileItem",data
+        );
+        System.out.println(restTemplate.postForObject(baseUrl+portrait_set+config()
+                ,requestBody, JSONObject.class));
         return Mono.just(Info.SUCCESS(userSecurityService.save(userSecurity)));
     }
 
-    public static void main(String[] a){
-        System.out.println(CodeLib.getAddressByIp("10.38.18.118"));
-    }
+
+
 }

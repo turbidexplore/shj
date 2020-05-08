@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.QueryHint;
+import java.security.Principal;
 import java.util.List;
 
 @Repository
@@ -24,4 +25,8 @@ public interface ShopRepositroy extends JpaRepository<Shop,String> {
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
     @Query("select s from Shop s where s.ischoose=1 and (s.label like %:label% or :label is null ) ")
     Page<Shop> getByChoose(Pageable pageable, @Param("label") String label);
+
+    @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
+    @Query("select s from Shop s  ")
+    Page<Shop> recommend(Pageable pageable);
 }

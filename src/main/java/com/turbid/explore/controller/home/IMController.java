@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import reactor.core.publisher.Mono;
 
+import java.security.Principal;
 import java.util.*;
 
 @Api(description = "即时通讯接口")
@@ -68,6 +69,7 @@ public class IMController {
                ,requestBody, JSONObject.class);
         return Mono.just(Info.SUCCESS(jsonObject));
     }
+
 
     @ApiOperation(value = "设置资料", notes="设置资料")
     @PutMapping("/changename")
@@ -131,5 +133,36 @@ public class IMController {
         Map<String, Object> requestBody = ImmutableMap.of("TaskIds", taskIds);
         JSONObject jsonObject= restTemplate.postForObject(baseUrl+push_+config(),requestBody, JSONObject.class);
         return Mono.just(Info.SUCCESS(jsonObject));
+    }
+
+    @ApiOperation(value = "通知", notes="通知")
+    @PostMapping("/notice")
+    public Mono<Info> notice(Principal principal) {
+        Map<String,List<Map<String,String>>> data=new HashMap<>();
+        List<Map<String,String>> sys=new ArrayList<>();
+        Map<String,String> itemsys=new HashMap<>();
+        itemsys.put("message","测试系统消息发发范德萨发给VS的风格十分");
+        itemsys.put("form","系统管理员");
+        itemsys.put("time","2020-05-01 12:30:56");
+        sys.add(itemsys);
+        itemsys=new HashMap<>();
+        itemsys.put("message","测试系统消息2发大水发射点发钱啊");
+        itemsys.put("form","系统管理员");
+        itemsys.put("time","2020-05-01 12:30:58");
+        sys.add(itemsys);
+        data.put("sys",sys);
+        List<Map<String,String>> msg=new ArrayList<>();
+        Map<String,String> itemmsg=new HashMap<>();
+        itemmsg.put("message","测试订单通知内容发放大使发");
+        itemmsg.put("form","订单通知");
+        itemmsg.put("time","2020-05-01 12:30:56");
+        msg.add(itemmsg);
+        itemmsg=new HashMap<>();
+        itemmsg.put("message","测试支付通知内容41234erwqe2");
+        itemmsg.put("form","支付通知");
+        itemmsg.put("time","2020-05-01 12:30:58");
+        msg.add(itemmsg);
+        data.put("msg",msg);
+        return Mono.just(Info.SUCCESS(data));
     }
 }
