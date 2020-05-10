@@ -42,37 +42,55 @@
           <div class="nav-wrapper">
             <ul class="nav flex-column">
               <li class="nav-item">
-                <a class="nav-link " href="index.html">
+                <a class="nav-link " href="/manage/index">
                   <i class="material-icons">edit</i>
                   <span>首页</span>
                 </a>
               </li>
-              <li class="nav-item ">
-                <a class="nav-link " href="nativecontent.html">
+              <li class="nav-item">
+                <a class="nav-link " href="/manage/brands">
                   <i class="material-icons">vertical_split</i>
-                  <span>我的商铺</span>
+                  <span>我的品牌</span>
                 </a>
               </li>
-              <li class="nav-item active">
-                <a class="nav-link " href="content.html">
+              <li class="nav-item">
+                <a class="nav-link " href="/manage/goods">
+                  <i class="material-icons">vertical_split</i>
+                  <span>特加仓管理</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="/manage/comments">
+                  <i class="material-icons">note_add</i>
+                  <span>评论管理</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="/manage/cases">
+                  <i class="material-icons">note_add</i>
+                  <span>案例中心</span>
+                </a>
+              </li>
+              <li class="nav-item active" >
+                <a class="nav-link " href="/manage/nativecontent">
                   <i class="material-icons">note_add</i>
                   <span>内容中心</span>
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link " href="form-components.html">
+                <a class="nav-link " href="/manage/count">
                   <i class="material-icons">view_module</i>
                   <span>数据中心</span>
                 </a>
               </li>
-              <li class="nav-item ">
-                <a class="nav-link " href="tables.html">
+              <li class="nav-item">
+                <a class="nav-link " href="/manage/tables">
                   <i class="material-icons">table_chart</i>
-                  <span>Tables</span>
+                  <span>子账号管理</span>
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link " href="usercenter.html">
+                <a class="nav-link " href="/manage/usercenter">
                   <i class="material-icons">person</i>
                   <span>账户信息</span>
                 </a>
@@ -122,7 +140,7 @@
             <!-- Page Header -->
             <div class="page-header row no-gutters py-4">
               <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
-                <a  class="mb-2 btn btn-sm btn-primary mr-1" href="/contact">新建图文</a>
+                <a  class="mb-2 btn btn-sm btn-primary mr-1" href="/manage/content">新建图文</a>
               </div>
             </div>
             <div class="row" id="content">
@@ -156,11 +174,11 @@
     }
     $.ajax(settings).done(function (response) {
       response.data.forEach(function (v,i) {
-        console.log(v);
+        var img=v.firstimage.split(",")[0];
      var html= '<div class="col-lg-3 col-md-6 col-sm-12 mb-4">'+
                 '<div class="card card-small card-post card-post--1">'+
-                '<div class="card-post__image" style="background-image: url('+v.firstimage+');">'+
-                '<a href="#" class="card-post__category badge badge-pill badge-dark">预览</a>'+
+                '<div class="card-post__image" style="background-image: url('+img+');">'+
+                '<a href="#" class="card-post__category badge badge-pill badge-dark" onclick="preview(\''+v.code+'\')">预览</a>'+
                 '<div class="card-post__author d-flex">'+
                 '<a href="#" class="card-post__author-avatar card-post__author-avatar--small" style="background-image: url('+v.userSecurity.userBasic.headportrait+');">Written by Anna Kunis</a> &nbsp;<strong style="margin-top: 10px;">'+v.userSecurity.userBasic.nikename+
                 '</strong></div></div>'+
@@ -173,7 +191,31 @@
       })
     });
     
-    function preview(title ,content) {
+    function preview(code) {
+      var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": "/nativecontent/newsByCode?code="+code,
+        "method": "GET",
+        "processData": false,
+        "headers": {
+          "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
+          "cache-control": "no-cache",
+          "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
+        }
+      }
+      $.ajax(settings).done(function (response) {
+        layui.use("layer", function () {
+          layer.open({
+            type: 1,
+            title: response.data.title,
+            skin: 'layui-layer-rim', //加上边框
+            area: ['500px', '700px'], //宽高
+            content: response.data.content
+          });
+        });
+      });
+
 
     }
   </script>

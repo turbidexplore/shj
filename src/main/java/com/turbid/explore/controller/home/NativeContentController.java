@@ -40,6 +40,7 @@ public class NativeContentController {
         }else {
             nativeContent.setFirstimage("");
         }
+        nativeContent.setContent(nativeContent.getContent().replace("<img ","<img style='width:100%' "));
         nativeContentService.save(nativeContent);
         return Mono.just(Info.SUCCESS(null));
     }

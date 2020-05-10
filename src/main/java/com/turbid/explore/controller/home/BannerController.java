@@ -33,6 +33,7 @@ public class BannerController {
         bannerList.add(banner);
         bannerList.add(banner);
         bannerList.add(banner);
+
         return Mono.just(Info.SUCCESS(bannerList));
     }
 }

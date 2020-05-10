@@ -28,14 +28,18 @@ public class NativeContent extends BaseEntity{
     UserSecurity userSecurity;
 
     //浏览者信息
-    @OneToMany(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+    @ManyToMany(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
     private Set<UserSecurity> sees;
 
     //软文内容
     @Column(name = "content",length = 66666)
     private String content;
 
-    @Column(name = "firstimage",length = 255)
+    //软文内容
+    @Column(name = "label",length = 66666)
+    private String label;
+
+    @Column(name = "firstimage",length = 1000)
     private String firstimage;
 
     //点赞者信息

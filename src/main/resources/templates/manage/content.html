@@ -41,42 +41,60 @@
           </form>
           <div class="nav-wrapper">
             <ul class="nav flex-column">
-              <li class="nav-item">
-                <a class="nav-link " href="index.html">
-                  <i class="material-icons">edit</i>
-                  <span>首页</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link " href="nativecontent.html">
-                  <i class="material-icons">vertical_split</i>
-                  <span>我的商铺</span>
-                </a>
-              </li>
-              <li class="nav-item active">
-                <a class="nav-link " href="content.html">
-                  <i class="material-icons">note_add</i>
-                  <span>内容中心</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link " href="form-components.html">
-                  <i class="material-icons">view_module</i>
-                  <span>数据中心</span>
-                </a>
-              </li>
-              <li class="nav-item ">
-                <a class="nav-link " href="tables.html">
-                  <i class="material-icons">table_chart</i>
-                  <span>Tables</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link " href="usercenter.html">
-                  <i class="material-icons">person</i>
-                  <span>账户信息</span>
-                </a>
-              </li>
+                <li class="nav-item">
+                  <a class="nav-link " href="/manage/index">
+                    <i class="material-icons">edit</i>
+                    <span>首页</span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link " href="/manage/brands">
+                    <i class="material-icons">vertical_split</i>
+                    <span>我的品牌</span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link " href="/manage/goods">
+                    <i class="material-icons">vertical_split</i>
+                    <span>特加仓管理</span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link " href="/manage/comments">
+                    <i class="material-icons">note_add</i>
+                    <span>评论管理</span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link " href="/manage/cases">
+                    <i class="material-icons">note_add</i>
+                    <span>案例中心</span>
+                  </a>
+                </li>
+                <li class="nav-item active" >
+                  <a class="nav-link " href="/manage/nativecontent">
+                    <i class="material-icons">note_add</i>
+                    <span>内容中心</span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link " href="/manage/count">
+                    <i class="material-icons">view_module</i>
+                    <span>数据中心</span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link " href="/manage/tables">
+                    <i class="material-icons">table_chart</i>
+                    <span>子账号管理</span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link " href="/manage/usercenter">
+                    <i class="material-icons">person</i>
+                    <span>账户信息</span>
+                  </a>
+                </li>
              
             </ul>
           </div>
@@ -111,22 +129,22 @@
                   <div class="card-body layui-form" >
                     <h1>图文属性标签</h1>
                     <p style="font-size: 12px;color: #8a8a8a;margin-bottom: 3px;">按风格分类</p>
-                    <input type="checkbox" name="" title="法式新古典">
-                    <input type="checkbox" name="" title="美式风格">
-                    <input type="checkbox" name="" title="轻奢">
-                    <input type="checkbox" name="" title="极简">
-                    <input type="checkbox" name="" title="北欧">
-                    <input type="checkbox" name="" title="现代">
-                    <input type="checkbox" name="" title="新中式">
+                    <input type="checkbox" name="label" title="法式新古典" value="法式新古典">
+                    <input type="checkbox" name="label" title="美式风格" value="美式风格">
+                    <input type="checkbox" name="label" title="轻奢" value="轻奢">
+                    <input type="checkbox" name="label" title="极简" value="极简">
+                    <input type="checkbox" name="label" title="北欧" value="北欧">
+                    <input type="checkbox" name="label" title="现代" value="现代">
+                    <input type="checkbox" name="label" title="新中式" value="新中式">
                     <p style="font-size: 12px;color: #8a8a8a;margin-bottom: 3px;">按功能分类</p>
-                    <input type="checkbox" name="" title="成品家居">
-                    <input type="checkbox" name="" title="定制家居">
-                    <input type="checkbox" name="" title="窗帘">
-                    <input type="checkbox" name="" title="墙布">
-                    <input type="checkbox" name="" title="画品">
-                    <input type="checkbox" name="" title="灯具">
-                    <input type="checkbox" name="" title="生活用品">
-                    <input type="checkbox" name="" title="饰品">
+                    <input type="checkbox" name="label" title="成品家居" value="成品家居">
+                    <input type="checkbox" name="label" title="定制家居" value="定制家居">
+                    <input type="checkbox" name="label" title="窗帘" value="窗帘">
+                    <input type="checkbox" name="label" title="墙布" value="墙布">
+                    <input type="checkbox" name="label" title="画品" value="画品">
+                    <input type="checkbox" name="label" title="灯具" value="灯具">
+                    <input type="checkbox" name="label" title="生活用品" value="生活用品">
+                    <input type="checkbox" name="label" title="饰品" value="饰品">
                   </div>
                 </div>
               </div>
@@ -165,13 +183,37 @@
       var content = CKEDITOR.instances.newsMatter.getData();
       content=content.replace(/&ldquo;/g,'\"');//转义&ldquo; 左双引号
       content=content.replace(/&rdquo;/g,'\"');//转义&ldquo; 右双引号
+      var label='';
+      $("input:checkbox[name='label']:checked").each(function(i){
+
+        label = label+$(this).val()+",";
+        console.log(label);
+
+      });
+      if($("#title").val()==null||$("#title").val()==''||$("#title").val()==undefined) {
+        layui.use("layer",function() {
+          layer.msg('请填写标题');
+        });
+        return false;
+      }else if(content==null||content==''||content==undefined) {
+        layui.use("layer",function() {
+          layer.msg('请填写内容');
+        });
+        return false;
+      }else if(label==null||label==''||label==undefined) {
+        layui.use("layer",function() {
+          layer.msg('请至少选择一个标签');
+        });
+        return false;
+      }
       $.ajax({
         type: 'POST',
         url: "/nativecontent/add",
         data: JSON.stringify({
           "status":status,
           "content": content,
-          "title": $("#title").val()
+          "title": $("#title").val(),
+          "label":label
         }),
         processData: false,
         contentType: "application/json; charset=UTF-8",
@@ -186,6 +228,8 @@
             skin: 'layui-layer-molv' //样式类名
             , closeBtn: 0
             , anim: 4 //动画类型
+          }, function () {
+            window.location.replace("/manage/nativecontent");
           });
         });
       });
@@ -195,15 +239,17 @@
       var content = CKEDITOR.instances.newsMatter.getData();
       content=content.replace(/&ldquo;/g,'\"');//转义&ldquo; 左双引号
       content=content.replace(/&rdquo;/g,'\"');//转义&ldquo; 右双引号
-      layui.use("layer", function () {
-        layer.open({
-          type: 1,
-          title: $("#title").val(),
-          skin: 'layui-layer-rim', //加上边框
-          area: ['500px', '700px'], //宽高
-          content: content
+
+        layui.use("layer", function () {
+          layer.open({
+            type: 1,
+            title: $("#title").val(),
+            skin: 'layui-layer-rim', //加上边框
+            area: ['500px', '700px'], //宽高
+            content: content
+          });
         });
-      });
+
     }
   </script>
   </body>
