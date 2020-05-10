@@ -52,22 +52,22 @@ public class IndexController {
         return "manage/auth";
     }
 
-    @RequestMapping("/manage/index")
+    @RequestMapping("/manageindex")
     public String manageindex(){
         return "manage/index";
     }
 
-    @RequestMapping("/manage/content")
+    @RequestMapping("/managecontent")
     public String content(){
         return "manage/content";
     }
 
-    @RequestMapping("/manage/nativecontent")
+    @RequestMapping("/managenativecontent")
     public String nativecontent(){
         return "/manage/nativecontent";
     }
 
-    @RequestMapping("/manage/usercenter")
+    @RequestMapping("/manageusercenter")
     public String usercenter(){
         return "/manage/usercenter";
     }
@@ -87,41 +87,41 @@ public class IndexController {
         return "business";
     }
 
-    @RequestMapping("/manage/tables")
+    @RequestMapping("/managetables")
     public String tables(){
         return "/manage/tables";
     }
 
-    @RequestMapping("/manage/brands")
+    @RequestMapping("/managebrands")
     public String brands(){
         return "/manage/brands";
     }
 
-    @RequestMapping("/manage/brand")
+    @RequestMapping("/managebrand")
     public String brand(){
         return "/manage/brand";
     }
 
-    @RequestMapping("/manage/goods")
+    @RequestMapping("/managegoods")
     public String goods(){
         return "/manage/goods";
     }
 
-    @RequestMapping("/manage/good")
+    @RequestMapping("/managegood")
     public String good(){
         return "/manage/good";
     }
 
-    @RequestMapping("/manage/count")
+    @RequestMapping("/managecount")
     public String count(){
         return "/manage/count";
     }
 
-    @RequestMapping("/manage/cases")
+    @RequestMapping("/managecases")
     public String cases(){
         return "/manage/count";
     }
-    @RequestMapping("/manage/comments")
+    @RequestMapping("/managecomments")
     public String comments(){
         return "/manage/count";
     }

@@ -34,7 +34,7 @@
 <script src="/layui/layui.js" type="text/javascript"></script>
 <script>
     if( $.cookie("ACCESS_TOKEN")!=undefined){
-        window.location.href="/manage/index";
+        window.location.href="/manageindex";
     }
     layui.use('layer', function () {
         //非空验证
@@ -82,7 +82,7 @@
                             $.cookie("ACCESS_TOKEN", token, {expires: 7,path:"/",domain:"anoax.com"});
                             $.cookie("ACCESS_TOKEN", token,{expires: 7,path:"/"});
                             setTimeout(function () {
-                                window.location.href="/manage/index";
+                                window.location.href="/manageindex";
                             }, 1000);
                         }else{
                             var msgalert = '登录失败！帐号或密码错误';
