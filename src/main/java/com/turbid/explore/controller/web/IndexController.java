@@ -64,12 +64,12 @@ public class IndexController {
 
     @RequestMapping("/managenativecontent")
     public String nativecontent(){
-        return "/manage/nativecontent";
+        return "manage/nativecontent";
     }
 
     @RequestMapping("/manageusercenter")
     public String usercenter(){
-        return "/manage/usercenter";
+        return "manage/usercenter";
     }
 
     @RequestMapping("/privacyprotocol")
@@ -89,41 +89,41 @@ public class IndexController {
 
     @RequestMapping("/managetables")
     public String tables(){
-        return "/manage/tables";
+        return "manage/tables";
     }
 
     @RequestMapping("/managebrands")
     public String brands(){
-        return "/manage/brands";
+        return "manage/brands";
     }
 
     @RequestMapping("/managebrand")
     public String brand(){
-        return "/manage/brand";
+        return "manage/brand";
     }
 
     @RequestMapping("/managegoods")
     public String goods(){
-        return "/manage/goods";
+        return "manage/goods";
     }
 
     @RequestMapping("/managegood")
     public String good(){
-        return "/manage/good";
+        return "manage/good";
     }
 
     @RequestMapping("/managecount")
     public String count(){
-        return "/manage/count";
+        return "manage/count";
     }
 
     @RequestMapping("/managecases")
     public String cases(){
-        return "/manage/count";
+        return "manage/count";
     }
     @RequestMapping("/managecomments")
     public String comments(){
-        return "/manage/count";
+        return "manage/count";
     }
 
 }
