@@ -309,20 +309,13 @@ public class UserController {
         if(likes!=null&&!likes.equals(null)){
             userSecurity.setLikes(likes);
         }
-
-
-
-
-
         Map<String, Object> requestBody = ImmutableMap.of(
                 "From_Account", userSecurity.getCode(),
                 "ProfileItem",data
         );
-        System.out.println(restTemplate.postForObject(baseUrl+portrait_set+config()
-                ,requestBody, JSONObject.class));
+        restTemplate.postForObject(baseUrl+portrait_set+config()
+                ,requestBody, JSONObject.class);
         return Mono.just(Info.SUCCESS(userSecurityService.save(userSecurity)));
     }
-
-
 
 }
