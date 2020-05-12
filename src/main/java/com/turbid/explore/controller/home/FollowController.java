@@ -55,6 +55,25 @@ public class FollowController {
         return Mono.just(Info.SUCCESS( jo));
     }
 
+
+    @ApiOperation(value = "关注他的", notes="关注他的")
+    @PostMapping("/followhe")
+    public Mono<Info> followhe(@RequestParam("usercode")String usercode,@RequestParam("page")Integer page) {
+        Map<String,Object> jo=new HashMap<>();
+        jo.put("data",followService.followhe(usercode,page));
+        jo.put("count",followService.followheCount(usercode));
+        return Mono.just(Info.SUCCESS(jo));
+    }
+
+    @ApiOperation(value = "他的关注", notes="他的关注")
+    @PostMapping("/hefollow")
+    public Mono<Info> hefollow(@RequestParam("usercode")String usercode,@RequestParam("page")Integer page) {
+        Map<String,Object> jo=new HashMap<>();
+        jo.put("data",followService.hefollow(usercode,page));
+        jo.put("count",followService.hefollowCount(usercode));
+        return Mono.just(Info.SUCCESS( jo));
+    }
+
     @ApiOperation(value = "是否关注", notes="是否关注")
     @PutMapping("/isfollow")
     public Mono<Info> isfollow(Principal principal, @RequestParam("phone") String phone) {

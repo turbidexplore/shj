@@ -80,6 +80,26 @@ public class ShopController {
         return Mono.just(Info.SUCCESS( shopService.recommend(principal,page)));
     }
 
+    @ApiOperation(value = "招商加盟", notes="招商加盟")
+    @GetMapping("/zsjm")
+    public Mono<Info> zsjm(Principal principal,@RequestParam(value = "page")Integer page,@RequestParam(value = "type",required = false)String type) {
+
+        List<Map<String,Object>> data=new ArrayList<>();
+        shopService.zsjm(principal,page,type).forEach(v->{
+            Map<String,Object> item=new HashMap<>();
+            item.put("name",v.getName());
+            item.put("logo",v.getLogo());
+            item.put("content",v.getBusinessscope());
+            item.put("label",v.getLabel());
+            item.put("user",v.getUserSecurity());
+            item.put("ischoose",v.getIschoose());
+            item.put("showimg",v.getCompany_show());
+            item.put("shop",v.getCode());
+            data.add(item);
+        });
+        return Mono.just(Info.SUCCESS(data ));
+    }
+
     @Autowired
     private FollowService followService;
 

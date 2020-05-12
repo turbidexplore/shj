@@ -61,7 +61,11 @@ public class CaseServiceImpl implements CaseService {
 
     @Override
     public int starcount(String name) {
-        return caseRepositroy.starcount(name);
+      Integer count=  caseRepositroy.starcount(name);
+        if(null==count){
+        return 0;}else {
+            return count;
+        }
     }
 
     @Override
@@ -73,5 +77,12 @@ public class CaseServiceImpl implements CaseService {
     @Override
     public int casecount(String name) {
         return caseRepositroy.casecount(name);
+    }
+
+    @Override
+    public List<Case> casesByUsercode(String usercode, Integer page) {
+        Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
+        Page<Case> pages=  caseRepositroy.casesByUsercode(pageable,usercode);
+        return pages.getContent();
     }
 }

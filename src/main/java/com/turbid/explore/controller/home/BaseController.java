@@ -229,7 +229,12 @@ public class BaseController {
     }
 
 
-
+    @ApiOperation(value = "达人研习社分类", notes="达人研习社分类")
+    @GetMapping(value = "/studysubject")
+    public Mono<Info> studysubject()  {
+        return Mono.just(Info.SUCCESS(new String[]{"材料工艺","风格解析","色彩搭配"
+              ,"布艺软装","生活美学","空间方案","销售技巧","风水设计" }));
+    }
 
 
 }

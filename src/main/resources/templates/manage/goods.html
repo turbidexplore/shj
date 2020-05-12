@@ -155,42 +155,65 @@
     <script src="../layui/layui.js"></script>
     <script src="../scripts/popper.min.js"></script>
     <script src="../scripts/bootstrap.min.js"></script>
-    <script src="../scripts/shards-dashboards.1.1.0.min.js"></script>
     <script src="../js/jquery.cookie.min.js"></script>
-    <script src="../scripts/extras.1.1.0.min.js"></script>
 
   <script>
-    var settings = {
-      "async": true,
-      "crossDomain": true,
-      "url": "/brand/mybrands",
-      "method": "GET",
-      "processData": false,
-      "headers": {
-        "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
-        "cache-control": "no-cache",
-        "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
+    var index=0;
+    list(index);
+
+    $(window).scroll(function () {
+
+      var scrollTop = $(this).scrollTop();
+      //console.log(scrollTop);
+      var scrollHeight = $(document).height();
+      //console.log('['+scrollHeight+']');
+      var windowHeight = screen.availHeight;
+      //console.log('【'+windowHeight+'】');
+      if (scrollTop+ windowHeight >= scrollHeight) {
+        if (stop == true && ipage <= totalPage) {
+          stop = false;
+        } else {
+          index++;
+          list(index)
+        }
       }
-    }
-    $.ajax(settings).done(function (response) {
-      response.data.forEach(function (v,i) {
-        console.log(v);
-        var html= '<div class="col-lg-4"><div class="card card-small card-post mb-4">'+
-                  ' <div class="card-body">'+
-                  '  <h5 class="card-title">'+v.name+'</h5>'+
-                  '  <p class="card-text text-muted"> '+v.introduce+'</p>'+
-                  '   </div>'+
-                  '  <div class="card-footer border-top d-flex">'+
-                  '  <div class="card-post__author d-flex">'+
-                  '  <div class="d-flex flex-column justify-content-center ml-3">'+
-                  '  <span class="card-post__author-name">'+v.label+'</span>'+
-                  '  <small class="text-muted">'+v.addftime+'</small></div></div>'+
-                  '   <div class="my-auto ml-auto">'+
-                  '      <a class="mb-2 btn btn-danger mr-2" href="#">'+v.brandgroup+' </a>'+
-                  '</div></div></div></div>';
-        $("#content").append(html);
-      })
     });
+    function list(page) {
+      var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": "/goods/mylistByPage?page="+page,
+        "method": "POST",
+        "processData": false,
+        "headers": {
+          "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
+          "cache-control": "no-cache",
+          "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
+        }
+      }
+      $.ajax(settings).done(function (response) {
+        response.data.forEach(function (v,i) {
+          console.log(v);
+          var img=v.imgs.split(",")[0];
+          var pricetype=v.pricetype?'一口价':'可议价';
+          var html= '<div class="col-lg-3 col-md-6 col-sm-12 mb-4">'+
+                  '<div class="card card-small card-post card-post--1">'+
+                  '<div class="card-post__image" style="background-image: url('+img+');">'+
+                  '<a href="#" class="card-post__category badge badge-pill badge-dark">'+v.lable+'</a>'+
+                  '</div>'+
+                  '<div class="card-body">'+
+                  '<p class="card-title"><button type="button" class="mb-1 btn btn-sm btn-outline-danger mr-1">'+pricetype+'</button>'+
+                  '<span>'+v.title+'</span></p>'+
+                  '<p></strong> 最小价格:<strong style="color: #c69500;">'+v.price+'元</strong> <br>  最大价格:<strong style="color: #c69500;">'+v.maxprice+'元</strong> </p>'+
+                  '<span class="text-muted" style="font-size: 12px;">'+v.addtime+'  发布</span>'+
+                  '</div></div></div>';
+          $("#content").append(html);
+        })
+      });
+
+    }
+
+
 
   </script>
   </body>

@@ -25,4 +25,6 @@ public interface CaseService {
     int remove(String code);
 
     int casecount(String name);
+
+    List<Case> casesByUsercode(String usercode, Integer page);
 }

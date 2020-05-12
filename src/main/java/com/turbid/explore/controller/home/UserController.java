@@ -179,7 +179,7 @@ public class UserController {
     @Autowired
     private ShopService shopService;
 
-    @ApiOperation(value = "用户认证", notes="用户认证")
+    @ApiOperation(value = "商户认证", notes="商户认证")
     @PostMapping(value = "/userauth")
     public Mono<Info> userauth(@RequestBody Shop shop)  {
         try {
@@ -213,6 +213,28 @@ public class UserController {
 
     }
 
+    @ApiOperation(value = "用户认证", notes="用户认证")
+    @PostMapping(value = "/auth")
+    public Mono<Info> auth(Principal principal,@RequestParam("name") String name,@RequestParam("idcard") String idcard,@RequestParam("idcardpositive") String idcardpositive,@RequestParam("idcardreverse") String idcardreverse)  {
+        try {
+            UserSecurity userSecurity= userSecurityService.findByPhone(principal.getName());
+            UserAuth userAuth=userSecurity.getUserAuth();
+            if (null==userAuth){
+                userAuth=new UserAuth();
+            }
+            userAuth.setName(name);
+            userAuth.setIdcard(idcard);
+            userAuth.setIdcardpositive(idcardpositive);
+            userAuth.setIdcardreverse(idcardreverse);
+            userAuth.setStatus(1);
+            userSecurity.setUserAuth(userAuthService.save(userAuth));
+            return Mono.just(Info.SUCCESS(userSecurityService.save(userSecurity)));
+        }catch (Exception e){
+            return Mono.just(Info.SUCCESS(e.getMessage()));
+        }
+
+    }
+
     @ApiOperation(value = "检查验证码", notes="检查验证码是否正确,传入手机号和验证码,当data值为0时表示为失败，为其他数值时为成功")
     @PostMapping(value = "/check")
     @ApiImplicitParams({
@@ -228,6 +250,12 @@ public class UserController {
     @PostMapping(value = "/userinfo")
     public Mono<Info> userinfo(Principal principal)  {
         return Mono.just(Info.SUCCESS(userSecurityService.findByPhone(principal.getName())));
+    }
+
+    @ApiOperation(value = "获取用户信息", notes="通过USERCODE获取用户信息")
+    @PostMapping(value = "/userinfoByCode")
+    public Mono<Info> userinfoByCode(@RequestParam("usercode")String usercode)  {
+        return Mono.just(Info.SUCCESS(userSecurityService.findByCode(usercode)));
     }
 
     @ApiOperation(value = "获取用户认证信息", notes="获取用户认证信息")

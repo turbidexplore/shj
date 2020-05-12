@@ -26,7 +26,21 @@ public class UserAuth extends BaseEntity {
     @Column(name = "vipday",length = 32)
     private String vipday;
 
+    //身份证号码
+    @Column(name = "name",nullable = false,length = 255)
+    private String name;
 
+    //身份证号码
+    @Column(name = "idcard",nullable = false,length = 255)
+    private String idcard;
+
+    //身份证正面
+    @Column(name = "idcardpositive",nullable = false,length = 255)
+    private String idcardpositive;
+
+    //身份证正面
+    @Column(name = "idcardreverse",nullable = false,length = 255)
+    private String idcardreverse;
 
 
 

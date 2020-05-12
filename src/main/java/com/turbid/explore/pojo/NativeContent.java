@@ -54,6 +54,12 @@ public class NativeContent extends BaseEntity{
     public int starcount;
     public int  commentcount;
 
+    public int imgsize;
+
+    public int getImgsize() {
+        return CodeLib.listImgSrc(this.content).size();
+    }
+
     public int getSeecount() {
         if(null==sees){
             return 0;

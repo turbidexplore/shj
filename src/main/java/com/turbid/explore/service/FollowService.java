@@ -22,4 +22,12 @@ public interface FollowService {
     int cancelfollow(String code);
 
     String find(String name, String phone);
+
+    List<Follow> hefollow(String name, Integer page);
+
+    List<Follow> followhe(String name, Integer page);
+
+    int followheCount(String name);
+
+    int hefollowCount(String name);
 }

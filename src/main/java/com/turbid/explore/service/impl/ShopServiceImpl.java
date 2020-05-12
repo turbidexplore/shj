@@ -55,4 +55,11 @@ public class ShopServiceImpl implements ShopService {
         Page<Shop> pages=   shopRepositroy.recommend(pageable);
         return pages.getContent();
     }
+
+    @Override
+    public List<Shop> zsjm(Principal principal, Integer page, String type) {
+        Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
+        Page<Shop> pages=   shopRepositroy.zsjm(pageable,type);
+        return pages.getContent();
+    }
 }

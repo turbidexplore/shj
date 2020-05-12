@@ -30,9 +30,12 @@ public interface CaseRepositroy extends JpaRepository<Case,String> {
     List<Case> recommend(@Param("label")String label,@Param("subject") String subject);
 
     @Query("select sum (c.stars.size) from Case c where  c.userSecurity.phonenumber=:name")
-    int starcount(@Param("name")String name);
+    Integer starcount(@Param("name")String name);
 
     @Query("select count(c) from Case c where c.userSecurity.phonenumber=:name")
     int casecount(@Param("name")String name);
 
+    @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
+    @Query("SELECT c from Case c where c.userSecurity.code=:usercode ")
+    Page<Case> casesByUsercode(Pageable pageable, @Param("usercode") String usercode);
 }

@@ -68,4 +68,28 @@ public class FollowServiceImpl implements FollowService {
     public String find(String name, String phone) {
         return followRepositroy.find(name,phone);
     }
+
+    @Override
+    public List<Follow> hefollow(String name, Integer page) {
+        Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
+        Page<Follow> pages=  followRepositroy.hefollow(pageable,name);
+        return pages.getContent();
+    }
+
+    @Override
+    public List<Follow> followhe(String name, Integer page) {
+        Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
+        Page<Follow> pages=  followRepositroy.followhe(pageable,name);
+        return pages.getContent();
+    }
+
+    @Override
+    public int followheCount(String name) {
+            return followRepositroy.followheCount(name);
+    }
+
+    @Override
+    public int hefollowCount(String name) {
+                return followRepositroy.hefollowCount(name);
+    }
 }

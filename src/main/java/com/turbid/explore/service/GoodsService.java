@@ -14,4 +14,6 @@ public interface GoodsService {
     List<Goods> listByPage(String label, Integer page);
 
     List<Goods> newGoods(String shopcode);
+
+    List<Goods> mylistByPage(String name, Integer page);
 }

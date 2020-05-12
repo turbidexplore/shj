@@ -46,4 +46,11 @@ public class GoodsServiceImpl implements GoodsService {
         Page<Goods> pages=  goodsRepository.newGoods(pageable,shopcode);
         return pages.getContent();
     }
+
+    @Override
+    public List<Goods> mylistByPage(String name, Integer page) {
+        Pageable pageable = new PageRequest(page,12, Sort.Direction.DESC,"create_time");
+        Page<Goods> pages=  goodsRepository.mylistByPage(pageable,name);
+        return pages.getContent();
+    }
 }

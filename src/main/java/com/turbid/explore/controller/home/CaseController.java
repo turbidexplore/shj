@@ -72,6 +72,16 @@ public class CaseController {
         }
     }
 
+    @ApiOperation(value = "获取我的案例列表", notes="获取我的案例列表")
+    @GetMapping("/casesByUsercode")
+    public Mono<Info> casesByUsercode(@RequestParam("usercode")String usercode,@RequestParam("page")Integer page) {
+        try {
+            return Mono.just(Info.SUCCESS(caseService.casesByUsercode(usercode,page)));
+        }catch (Exception e){
+            return Mono.just(Info.SUCCESS(e.getMessage()));
+        }
+    }
+
     @Autowired
     private CommentService commentService;
 

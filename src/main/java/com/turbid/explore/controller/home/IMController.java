@@ -99,7 +99,7 @@ public class IMController {
         data.add(item);
         item=new JSONObject();
         item.put("Tag","Tag_Profile_Custom_yx");
-        item.put("Value","严选");
+        item.put("Value","");
         data.add(item);
 
         Map<String, Object> requestBody = ImmutableMap.of(

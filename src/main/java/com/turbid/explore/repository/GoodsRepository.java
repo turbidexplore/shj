@@ -21,4 +21,8 @@ public interface GoodsRepository extends JpaRepository<Goods,String> {
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
     @Query("select g from Goods g where g.company.code=:shopcode ")
     Page<Goods> newGoods(Pageable pageable, @Param("shopcode") String shopcode);
+
+    @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
+    @Query("select g from Goods g where g.company.userSecurity.phonenumber=:name ")
+    Page<Goods> mylistByPage(Pageable pageable,@Param("name") String name);
 }

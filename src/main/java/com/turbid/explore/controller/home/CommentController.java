@@ -1,7 +1,9 @@
 package com.turbid.explore.controller.home;
 
 import com.turbid.explore.pojo.Comment;
+import com.turbid.explore.pojo.Shop;
 import com.turbid.explore.service.CommentService;
+import com.turbid.explore.service.ShopService;
 import com.turbid.explore.service.UserSecurityService;
 import com.turbid.explore.tools.Info;
 import io.swagger.annotations.Api;
@@ -50,13 +52,25 @@ public class CommentController {
         return Mono.just(Info.SUCCESS(jo));
     }
 
+    @Autowired
+    private ShopService shopService;
+
     @ApiOperation(value = "查看店铺相关评论", notes="查看店铺相关评论")
     @PostMapping("/shopcomments")
-    public Mono<Info> shopcomments(@RequestParam("relation") String relation,@RequestParam("page")Integer page) {
+    public Mono<Info> shopcomments(Principal principal,@RequestParam("page")Integer page) {
+        Shop shop=shopService.getByUser(principal.getName());
         Map<String,Object> jo=new HashMap<>();
-        jo.put("data",commentService.listByShopPage(relation,page));
-        jo.put("count",commentService.listByShopCount(relation));
+        jo.put("data",commentService.listByShopPage(shop.getCode(),page));
+        jo.put("count",commentService.listByShopCount(shop.getCode()));
         return Mono.just(Info.SUCCESS(jo));
+    }
+
+    @ApiOperation(value = "查看店铺相关评论数量", notes="查看店铺相关评论数量")
+    @PostMapping("/shopcommentscount")
+    public Mono<Info> shopcommentscount(Principal principal) {
+        Shop shop=shopService.getByUser(principal.getName());
+
+        return Mono.just(Info.SUCCESS(commentService.listByShopCount(shop.getCode())));
     }
 
 

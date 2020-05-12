@@ -29,4 +29,8 @@ public interface ShopRepositroy extends JpaRepository<Shop,String> {
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
     @Query("select s from Shop s  ")
     Page<Shop> recommend(Pageable pageable);
+
+    @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
+    @Query("select s from Shop s where (s.label like %:type% or :type is null )")
+    Page<Shop> zsjm(Pageable pageable, @Param("type") String type);
 }

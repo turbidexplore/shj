@@ -1,8 +1,10 @@
 package com.turbid.explore.controller.home;
 
+import com.turbid.explore.pojo.Call;
 import com.turbid.explore.pojo.NeedsRelation;
 import com.turbid.explore.pojo.ProjectNeeds;
 import com.turbid.explore.repository.NeedsRelationRepositroy;
+import com.turbid.explore.service.CallService;
 import com.turbid.explore.service.ProjectNeedsService;
 import com.turbid.explore.service.UserSecurityService;
 import com.turbid.explore.tools.CodeLib;
@@ -146,6 +148,25 @@ public class ProjectNeedsController {
             return Mono.just(Info.SUCCESS(e.getMessage()));
         }
     }
+
+    @Autowired
+    private CallService callService;
+
+    @ApiOperation(value = "联系", notes="需求加急")
+    @PostMapping(value = "/call")
+    public Mono<Info> call(Principal principal,@RequestParam(name = "usercode")String usercode,@RequestParam("needscode")String needscode) {
+        try {
+            Call call=new Call();
+            call.setUserinfo(userSecurityService.findByPhone(principal.getName()));
+            call.setCalluserinfo(userSecurityService.findByCode(usercode));
+            call.setProjectNeeds(projectNeedsService.getNeedsByCode(needscode));
+
+            return Mono.just(Info.SUCCESS(callService.save(call)));
+        }catch (Exception e){
+            return Mono.just(Info.SUCCESS(e.getMessage()));
+        }
+    }
+
 
 
 }

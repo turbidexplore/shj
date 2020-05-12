@@ -37,4 +37,18 @@ public interface FollowRepositroy extends JpaRepository<Follow,String> {
 
     @Query("SELECT c.code from Follow c where c.userFollow.phonenumber= :phone and c.user.phonenumber=:name ")
     String find(@Param("name")String name,@Param("phone") String phone);
+
+    @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
+    @Query("SELECT c from Follow c where c.user.code= :name ")
+    Page<Follow> hefollow(Pageable pageable,@Param("name") String name);
+
+    @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
+    @Query("SELECT c from Follow c where c.userFollow.code= :name ")
+    Page<Follow> followhe(Pageable pageable,@Param("name") String name);
+
+    @Query("SELECT count(c) from Follow c where c.user.code= :name ")
+    int hefollowCount(@Param("name")String name);
+
+    @Query("SELECT count(c) from Follow c where c.userFollow.code= :name ")
+    int followheCount(@Param("name")String name);
 }

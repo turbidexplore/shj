@@ -109,49 +109,82 @@
             </div>
             <!-- End Page Header -->
             <div class="row" style="margin-top: 8px;">
-              <div class="col-lg-8 col-md-12">
+
+              <div class="col-lg-6 col-md-12">
                 <!-- Add New Post Form -->
                 <div class="card card-small mb-3">
                   <div class="card-body">
                     <form class="add-new-post">
-                      <div class="form-row">
-                        <div class="form-group col-md-4">
-                          <div class="card-header border-bottom text-center">
-                            <div class="mb-3 mx-auto">
-                              <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1588743624402&di=d7eeb4dca9d478f6f431d0e4cad095e9&imgtype=0&src=http%3A%2F%2Fpic.qiantucdn.com%2F58pic%2F15%2F41%2F24%2F82G58PICnZi_1024.png%2521%2Ffw%2F1024%2Fwatermark%2Furl%2FL2ltYWdlcy93YXRlcm1hcmsvZGF0dS5wbmc%3D%2Frepeat%2Ftrue" alt="User Avatar" width="120" id="logoimg"> </div>
-                            <a href="javascript:;" class="file">上传展示图片
-                              <input type="file" id="logo" />
-                            </a>
-                          </div>
-                        </div>
-                      </div>
+                      <span>商品展示内容</span>
                       <textarea class="easyui-validatebox" name="newsMatter" id="newsMatter" rows="60" cols="70" data-options="required:true">  </textarea>
                     </form>
                   </div>
                 </div>
               </div>
 
-              <div class="col-lg-4 col-md-12">
+
+              <div class="col-lg-6 col-md-12">
                 <!-- Add New Post Form -->
                 <div class="card card-small mb-3">
                   <div class="card-body">
-                  <form class="add-new-post">
-                  <div class="form-row">
-                    <div class="form-group col-md-12">
-                      <label for="introduce">品牌介绍</label>
-                      <textarea class="form-control" id="introduce" rows="4"></textarea>
-                    </div>
-                  </div>
-                    <div class="form-row">
-                    <div class="form-group col-md-12">
-                      <label for="business">招商信息</label>
-                      <textarea class="form-control" id="business" rows="4"></textarea>
-                    </div>
-                  </div>
-                  </form>
+                    <form class="add-new-post">
+                      <div class="form-row">
+                        <div class="form-group col-md-12">
+                          <label for="title">商品标题</label>
+                          <input type="text" class="form-control" id="title" placeholder="商品标题">
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-6">
+                          <label for="minprice">最小价格</label>
+                          <input type="text" class="form-control" id="minprice" placeholder="最小价格">
+                        </div>
+                        <div class="form-group col-md-6">
+                          <label for="maxprice">最大价格</label>
+                          <input type="text" class="form-control" id="maxprice" placeholder="最大价格">
+                        </div>
+                      </div>
+
+                      <div class="form-row">
+                        <div class="form-group col-md-6">
+                          <label for="label">商品类型</label>
+                          <select id="label" class="form-control">
+
+                          </select>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                          <label for="title">价格类型</label>
+                         <select id="pricetype" class="form-control">
+                           <option value="0">一口价</option>
+                           <option value="1">可议价</option>
+                         </select>
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-12">
+                          <label for="skucount">库存数量</label>
+                          <input type="text" class="form-control" id="skucount" placeholder="库存数量">
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-12">
+                          <div class="mb-3 mx-auto">
+                            <div id="imgview"></div>
+                            <a href="javascript:;" class="file">上传展示图片
+                            <input type="file" id="logo" />
+                          </a>
+                        </div>
+                        </div>
+                      </div>
+
+                    </form>
                   </div>
                 </div>
               </div>
+
+
+
               </div>
             </div>
 
@@ -167,6 +200,18 @@
      <script src="../scripts/bootstrap.min.js"></script>
      <script src="../js/jquery.cookie.min.js"></script>
   <script>
+
+    $.ajax({
+      type: 'GET',
+      url : "/base/categorys",
+      processData: false,
+      contentType: false,
+    }).done(function(result) {
+      result.data.forEach( function (v,i) {
+        $("#label").append("<option value='"+v+"'>"+v+"</option>");
+      });
+
+    });
 
     $("#logo").on("change",function(){
       function getObjectURL(file) {
@@ -210,13 +255,16 @@
             processData: false,
             contentType: false,
           }).done(function(result) {
-            console.log(result);
-            $("#logoimg").attr("src",result.data);
+            $("#imgview").append("<img src='"+result.data+"' style='width: 100px;' name='showimage' onclick='remove(this)'>");
           });
         }
       };
       xhr.send();
     })
+
+    function remove(obj){
+      $(obj).remove();
+    }
 
     layui.use('form', function(){
       var form = layui.form;
@@ -239,38 +287,51 @@
       var content = CKEDITOR.instances.newsMatter.getData();
       content=content.replace(/&ldquo;/g,'\"');//转义&ldquo; 左双引号
       content=content.replace(/&rdquo;/g,'\"');//转义&ldquo; 右双引号
-      if ($("#name").val() == "" || $("#name").val() == null) {
+      if ($("#title").val() == "" || $("#title").val() == null) {
         layui.use("layer",function() {
-          layer.msg('请输入品牌名称');
+          layer.msg('请输入标题');
         }); return false;
       }
       if (content == "" || content == null) {
         layui.use("layer",function() {
-          layer.msg('请编辑品牌内容');
+          layer.msg('请编辑展示内容');
         }); return false;
       }
 
-      if ($("#introduce").val() == "" || $("#introduce").val() == null) {
+      if ($("#minprice").val() == "" || $("#minprice").val() == null) {
         layui.use("layer",function() {
-          layer.msg('请输入品牌介绍');
+          layer.msg('请输入最小价格');
         }); return false;
       }
-      if ($("#business").val() == "" || $("#business").val() == null) {
+      if ($("#skucount").val() == "" || $("#skucount").val() == null) {
         layui.use("layer",function() {
-          layer.msg('请输入招商信息');
+          layer.msg('请输入库存数量');
         }); return false;
       }
+      var imgs='';
+      $('*[name="showimage"]').each(function(i,v){
+        console.log(v);
+        imgs=imgs+$(v).attr('src')+","
+      })
+      if (imgs == '') {
+        layui.use("layer",function() {
+          layer.msg('请至少上传一张展示图片');
+        }); return false;
+      }
+
       $.ajax({
         type: 'Put',
-        url: "/brand/add",
+        url: "/goods/add",
         data: JSON.stringify({
-          "logo": $("#logoimg").attr('src'),
-          "brandgroup": $("#brandgroup").val(),
-          "label": $("#label").val(),
+          "title": $("#title").val(),
+          "minprice": $("#minprice").val(),
+          "lable": $("#label").val(),
           "content": content,
-          "name": $("#name").val(),
-          "introduce":$("#introduce").val(),
-          "business":$("#business").val()
+          "maxprice": $("#maxprice").val(),
+          "price":$("#minprice").val(),
+          "skucount":$("#skucount").val(),
+          "imgs":imgs,
+          "pricetype":$("#pricetype").val()
         }),
         processData: false,
         contentType: "application/json; charset=UTF-8",
@@ -281,12 +342,12 @@
         }
       }).done(function (result) {
         layui.use("layer", function () {
-          layer.alert('发布成功', {
+          layer.alert('保存成功', {
             skin: 'layui-layer-molv' //样式类名
             , closeBtn: 0
             , anim: 4 //动画类型
           }, function () {
-            window.location.replace("/managebrands");
+            window.location.replace("/managegoods");
           });
 
         });

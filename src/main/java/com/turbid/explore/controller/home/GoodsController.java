@@ -2,6 +2,7 @@ package com.turbid.explore.controller.home;
 
 import com.turbid.explore.pojo.Goods;
 import com.turbid.explore.service.GoodsService;
+import com.turbid.explore.service.ShopService;
 import com.turbid.explore.tools.Info;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -20,11 +21,15 @@ public class GoodsController {
     @Autowired
     private GoodsService goodsService;
 
+    @Autowired
+    private ShopService shopService;
+
     @ApiOperation(value = "添加特卖品", notes="添加特卖品")
     @PutMapping("/add")
-    public Mono<Info> add(@RequestBody Goods goods) {
+    public Mono<Info> add(Principal principal,@RequestBody Goods goods) {
+        goods.setCompany(shopService.getByUser(principal.getName()));
         goods=goodsService.save(goods);
-        return Mono.just(Info.SUCCESS(null));
+        return Mono.just(Info.SUCCESS(goods));
     }
 
     @ApiOperation(value = "查询特卖品", notes="查询特卖品")
@@ -56,7 +61,8 @@ public class GoodsController {
 
     @ApiOperation(value = "获取我的商品信息",notes = "获取我的商品信息")
     @PostMapping("/mylistByPage")
-    public Mono<Info> mylistByPage(Principal principal, @RequestParam(value = "label",required = false)String label, @RequestParam("page")Integer page) {
-        return Mono.just(Info.SUCCESS( goodsService.listByPage(label,page)));
+    public Mono<Info> mylistByPage(Principal principal,  @RequestParam("page")Integer page) {
+
+        return Mono.just(Info.SUCCESS( goodsService.mylistByPage(principal.getName(),page)));
     }
 }

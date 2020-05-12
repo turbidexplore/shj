@@ -121,9 +121,20 @@ public class IndexController {
     public String cases(){
         return "manage/count";
     }
+
     @RequestMapping("/managecomments")
     public String comments(){
-        return "manage/count";
+        return "manage/comments";
+    }
+
+    @RequestMapping("/managestudys")
+    public String studys(){
+        return "manage/studys";
+    }
+
+    @RequestMapping("/managestudy")
+    public String study(){
+        return "manage/study";
     }
 
 }
