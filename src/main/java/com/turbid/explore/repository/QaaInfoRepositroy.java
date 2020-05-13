@@ -20,4 +20,8 @@ public interface QaaInfoRepositroy extends JpaRepository<QaaInfo,String> {
 
     @Query("SELECT q from QaaInfo q where q.code=:code ")
     QaaInfo qaaByCode(@Param("code") String code);
+
+    @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
+    @Query("SELECT q from QaaInfo q where q.userSecurity.phonenumber=:name")
+    Page<QaaInfo> listByUser(Pageable pageable,@Param("name") String name);
 }

@@ -3,6 +3,7 @@ package com.turbid.explore.controller.home;
 import com.turbid.explore.pojo.Call;
 import com.turbid.explore.pojo.NeedsRelation;
 import com.turbid.explore.pojo.ProjectNeeds;
+import com.turbid.explore.pojo.UserSecurity;
 import com.turbid.explore.repository.NeedsRelationRepositroy;
 import com.turbid.explore.service.CallService;
 import com.turbid.explore.service.ProjectNeedsService;
@@ -18,6 +19,7 @@ import reactor.core.publisher.Mono;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 @Api(description = "产品需求操作接口")
 @RestController
@@ -94,7 +96,13 @@ public class ProjectNeedsController {
     @PostMapping(value = "/getMyNeeds")
     public Mono<Info> getMyNeeds(Principal principal,@RequestParam(name = "page")Integer page,@RequestParam(name = "status")Integer status) {
         try {
-            return Mono.just(Info.SUCCESS(projectNeedsService.getMyNeeds(principal.getName(),page,status)));
+            if(status==3) {
+                return Mono.just(Info.SUCCESS(callService.listByUserMe(userSecurityService.findByPhone(principal.getName()).getCode(), page)));
+            }else if(status==2){
+                return Mono.just(Info.SUCCESS(callService.listByUserMy(userSecurityService.findByPhone(principal.getName()).getCode(), page)));
+            }else {
+                return Mono.just(Info.SUCCESS(projectNeedsService.getMyNeeds(principal.getName(), page, status)));
+            }
         }catch (Exception e){
             return Mono.just(Info.SUCCESS(e.getMessage()));
         }
@@ -105,21 +113,14 @@ public class ProjectNeedsController {
 
     @ApiOperation(value = "单个需求查看订单生成", notes="单个需求查看订单生成")
     @PutMapping(value = "/seeneedorder")
-    public Mono<Info> seeneedorder(Principal principal,@RequestParam(name = "code")String code,@RequestParam(name="paytype")String paytype) {
+    public Mono<Info> seeneedorder(Principal principal,@RequestParam(name = "needsorderno")String needsorderno) {
         try {
             NeedsRelation needsRelation=new NeedsRelation();
             needsRelation.setOrderno(CodeLib.randomCode(12,1));
             needsRelation.setPhone(principal.getName());
             needsRelation.setStatus(0);
-            needsRelation.setNeedscode(code);
-            needsRelationRepositroy.saveAndFlush(needsRelation);
-            Object obj=null;
-            if(paytype=="wechatpay"){
-
-            }else if(paytype=="alipay"){
-
-            }
-            return Mono.just(Info.SUCCESS(obj));
+            needsRelation.setNeedsorderno(needsorderno);
+            return Mono.just(Info.SUCCESS(needsRelationRepositroy.saveAndFlush(needsRelation).getOrderno()));
         }catch (Exception e){
             return Mono.just(Info.SUCCESS(e.getMessage()));
         }
@@ -127,10 +128,10 @@ public class ProjectNeedsController {
 
     @ApiOperation(value = "查看是否能看该条需求", notes="查看是否能看该条需求")
     @PostMapping(value = "/isseeneeds")
-    public Mono<Info> isseeneeds(Principal principal,@RequestParam(name = "code")String code) {
+    public Mono<Info> isseeneeds(Principal principal,@RequestParam(name = "needsorderno")String needsorderno) {
         try {
             boolean issee=false;
-            if(needsRelationRepositroy.findneedsR(principal.getName(),code)>0){
+            if(needsRelationRepositroy.findneedsR(principal.getName(),needsorderno)>0){
                 issee=true;
             }
             return Mono.just(Info.SUCCESS(issee));
@@ -139,15 +140,8 @@ public class ProjectNeedsController {
         }
     }
 
-    @ApiOperation(value = "需求加急", notes="需求加急")
-    @PostMapping(value = "/urgent")
-    public Mono<Info> urgent(Principal principal,@RequestParam(name = "orderno")String orderno) {
-        try {
-            return Mono.just(Info.SUCCESS(null));
-        }catch (Exception e){
-            return Mono.just(Info.SUCCESS(e.getMessage()));
-        }
-    }
+
+
 
     @Autowired
     private CallService callService;
@@ -157,10 +151,17 @@ public class ProjectNeedsController {
     public Mono<Info> call(Principal principal,@RequestParam(name = "usercode")String usercode,@RequestParam("needscode")String needscode) {
         try {
             Call call=new Call();
-            call.setUserinfo(userSecurityService.findByPhone(principal.getName()));
-            call.setCalluserinfo(userSecurityService.findByCode(usercode));
-            call.setProjectNeeds(projectNeedsService.getNeedsByCode(needscode));
-
+            UserSecurity userinfo= userSecurityService.findByPhone(principal.getName());
+            call.setUsercode(userinfo.getCode());
+            call.setUsername(userinfo.getUserBasic().getNikename());
+            call.setUserhredimg(userinfo.getUserBasic().getHeadportrait());
+            call.setUsertype(userinfo.getType().toString());
+            UserSecurity calluserinfo= userSecurityService.findByCode(usercode);
+            call.setCallusercode(calluserinfo.getCode());
+            call.setCallusername(calluserinfo.getUserBasic().getNikename());
+            call.setCalluserhredimg(calluserinfo.getUserBasic().getHeadportrait());
+            call.setCallusertype(calluserinfo.getType().toString());
+            call.setProjectinfo(projectNeedsService.getNeedsByCode(needscode));
             return Mono.just(Info.SUCCESS(callService.save(call)));
         }catch (Exception e){
             return Mono.just(Info.SUCCESS(e.getMessage()));

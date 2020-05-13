@@ -41,4 +41,11 @@ public class AnswerServiceImpl implements AnswerService {
     public Answer get(String code) {
         return answerRepository.getOne(code);
     }
+
+    @Override
+    public List<Answer> listByUser(String name, Integer page) {
+        Pageable pageable = new PageRequest(page,10, Sort.Direction.DESC,"create_time");
+        Page<Answer> pages=  answerRepository.listByUser(pageable,name);
+        return pages.getContent();
+    }
 }

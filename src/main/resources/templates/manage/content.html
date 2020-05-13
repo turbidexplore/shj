@@ -65,12 +65,6 @@
                     <span>评论管理</span>
                   </a>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link " href="/managecases">
-                    <i class="material-icons">note_add</i>
-                    <span>案例中心</span>
-                  </a>
-                </li>
                 <li class="nav-item active" >
                   <a class="nav-link " href="/managenativecontent">
                     <i class="material-icons">note_add</i>
@@ -127,7 +121,7 @@
                 <!-- Add New Post Form -->
                 <div class="card card-small mb-3">
                   <div class="card-body layui-form" >
-                    <h1>图文属性标签</h1>
+                    <h5>图文属性标签</h5>
                     <p style="font-size: 12px;color: #8a8a8a;margin-bottom: 3px;">按风格分类</p>
                     <input type="checkbox" name="label" title="法式新古典" value="法式新古典">
                     <input type="checkbox" name="label" title="美式风格" value="美式风格">
@@ -168,8 +162,10 @@
     });
     CKEDITOR.replace('newsMatter', {
       height : 600,
-      filebrowserImageUploadUrl :  "/file/image"
+      filebrowserImageUploadUrl :  "/file/image",
+      disallowedContent:'img{width,height};img[width,height]'
     });
+
 
     $('#newsMatter').each(function () {
       var $textarea = $(this);

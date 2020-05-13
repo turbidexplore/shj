@@ -13,7 +13,9 @@ import com.turbid.explore.configuration.AlipayConfig;
 import com.turbid.explore.configuration.WeChatPayConfig;
 import com.turbid.explore.pojo.Order;
 import com.turbid.explore.pojo.bo.*;
+import com.turbid.explore.service.NeedsRelationService;
 import com.turbid.explore.service.OrderService;
+import com.turbid.explore.service.ProjectNeedsService;
 import com.turbid.explore.tools.CodeLib;
 import com.turbid.explore.tools.Info;
 import io.micrometer.core.instrument.util.StringUtils;
@@ -110,9 +112,15 @@ public class PayController {
         return Mono.just(Info.SUCCESS(orderService.findByOrderNo(orderno)));
     }
 
+    @Autowired
+    private ProjectNeedsService projectNeedsService;
+
+    @Autowired
+    private NeedsRelationService needsRelationService;
 
     @PostMapping("/ali/asyncnotify")
     public void aliasyncnotify(HttpServletRequest request) throws UnsupportedEncodingException, AlipayApiException {
+        System.out.println("success-------------------------------------");	//请不要修改或删除
         //获取支付宝POST过来反馈信息
         Map<String,String> params = new HashMap<String,String>();
         Map requestParams = request.getParameterMap();
@@ -147,9 +155,7 @@ public class PayController {
         if(verify_result){//验证成功
             //////////////////////////////////////////////////////////////////////////////////////////
             //请在这里加上商户的业务逻辑程序代码
-
             //——请根据您的业务逻辑来编写程序（以下代码仅作参考）——
-
             if(trade_status.equals("TRADE_FINISHED")){
                 //判断该笔订单是否在商户网站中已经做过处理
                 //如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
@@ -170,9 +176,14 @@ public class PayController {
             }
 
             //——请根据您的业务逻辑来编写程序（以上代码仅作参考）——
-
-            System.out.println("success");	//请不要修改或删除
-
+            switch (order.getGoodscode()){
+                case "NEEDS_URGENT":
+                    projectNeedsService.updateURGENT(order.getOrderno());
+                    break;
+                case "SEE_NEEDS":
+                    needsRelationService.updateSEE(order.getOrderno());
+                    break;
+            }
             //////////////////////////////////////////////////////////////////////////////////////////
            order.setStatus(1);
 
@@ -219,8 +230,16 @@ public class PayController {
             //////////////////////////////////////////////////////////////////////////////////////////
             //请在这里加上商户的业务逻辑程序代码
             //该页面可做页面美工编辑
-            System.out.println("验证成功<br />");
+            System.out.println("验证成功<br />------------------------------------");
             //——请根据您的业务逻辑来编写程序（以上代码仅作参考）——
+            switch (order.getGoodscode()){
+                case "NEEDS_URGENT":
+                    projectNeedsService.updateURGENT(order.getOrderno());
+                    break;
+                case "SEE_NEEDS":
+                    needsRelationService.updateSEE(order.getOrderno());
+                    break;
+            }
             order.setStatus(1);
             //////////////////////////////////////////////////////////////////////////////////////////
         }else{

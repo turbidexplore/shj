@@ -3,6 +3,7 @@ package com.turbid.explore.service;
 import com.turbid.explore.pojo.ProjectNeeds;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -17,4 +18,6 @@ public interface ProjectNeedsService {
     List<ProjectNeeds> getMyNeeds(String name,  Integer page,Integer status);
 
     int countByStatus(String name, int status);
+    
+    void updateURGENT(String orderno);
 }

@@ -18,9 +18,9 @@ public class NeedsRelation extends BaseEntity{
     @Column(name = "orderno")
     private String orderno;
 
-    @ApiModelProperty(value = "需求code")
-    @Column(name = "needscode")
-    private String needscode;
+    @ApiModelProperty(value = "needsorderno")
+    @Column(name = "needsorderno")
+    private String needsorderno;
 
     @ApiModelProperty(value = "用户code")
     @Column(name = "phone")

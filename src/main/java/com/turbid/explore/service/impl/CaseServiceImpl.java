@@ -28,7 +28,6 @@ public class CaseServiceImpl implements CaseService {
     @Override
     //@Cacheable(cacheNames = {"redis_cache"}, key = "'caseListByPage'+#page+#subject+#label+#search")
     public List<Case> listByPage(Integer page, String subject, String label, String search) {
-        System.out.println(page+"/"+subject+"/"+label+"/"+search);
         Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
         Page<Case> pages=  caseRepositroy.listByPage(pageable,subject,label);
         return pages.getContent();

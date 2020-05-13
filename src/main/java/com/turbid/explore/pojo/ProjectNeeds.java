@@ -6,6 +6,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import javax.persistence.*;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
+import java.util.List;
 
 @Data
 @Entity
@@ -74,7 +76,6 @@ public class ProjectNeeds extends BaseEntity{
     @ManyToOne(fetch= FetchType.EAGER)
     @JoinColumn(name="usercode")
     private UserSecurity userSecurity;
-
 
 
     public ProjectNeeds() {

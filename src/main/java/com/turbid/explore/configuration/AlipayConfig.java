@@ -6,9 +6,9 @@ public class AlipayConfig {
     // 私钥 pkcs8格式的
     public static String RSA_PRIVATE_KEY = "MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCjX0qfsBPOgh9Da1KnAnlAY9r0fieiTHFaYznEjJ2g/b6Ood25NFZE4E7ogEBn6G6U8LZ505RBOvik2VjtNED/7PieGy80A4N771YbkHX3CgctafgVfD2EYJurUC4RW4agwDQXzrqhd3vshWrdGhEwvZaoo6I+2nAuLp9RJdnV6sYQZk+woQNDq9zyDJZ+aH45nfbb6Zu+leNKX90kFG2pE7/x76vVylnc4U2z57dKGRscgqSTST4cte2Witihl+PlUNT2/slUIH3wSoixeGm1vT6WFKGuQ1ME5b5wmgykrlSxHRRf9fYlcDGpfVWsiMLb+L3FJSd4OtrHbKaR3BVDAgMBAAECggEAc7OzF/ENtf01wvupJ5p64P1XPjxyOWFGDiuj5+1mXXQXltBQRTApwNHTUJo0AuL8HgN0WEdeAeyP18AOWL/fIOFlGiRKg93RKt7P7umaggDaIHGiPyUkNDJvTR6V4bkeWY6F1i6UwnHqlBHRIxGpBwneP0TUTQtK04o1TrUt128ydPX/9ZWxAPU4EqMG7SSAhsU4+DsxrEGXusrInxBMa9SRJIZQ4EKcuE3MtjvHRFJv89Z5VKN1s+xpifV7wweYWTO3YIDQ/ahJOZGrSnd4oVnUijBjFtvQEO86F8ETqHm/c1KDRLMsEVsav1xS7/G+VNSUVu1e22JyYfr6nEdgUQKBgQDNzLRxdsgkJEz0tiM/gMvZJtOlWrIwhFCLtXd8ot/vIWSjR51BmhRwgnVb1M54lU3HZrq1BdzfaUxr6Mwp8Hr/Deuuz5khc2JLJ3AsJn4Uf51SSf5oF488kTWBIeX5MXD/fLQPIpemlptpseYKZ+7PHvQn12WK1Op9Wrd/4RJnJwKBgQDLOS35eac9OcoDlMAV8GOBWPX7Krs4OPv5VyQ2k31Yyq6LRMh8FunaEewLQ9fr1B/VzIkx9C9o7hu3wyw5KcDMWQs975QRDq5A5Owd7earVpCVtqz94ZbIqsgr4kK+wWM211GK/FwAQ1l8PyqO66oZpjYkZhbFLFuYj2/taO5ShQKBgQCd2hHdpdpFvoI4gSvwHX4+BYX5IuPiStrtDjekJdnVtatXgiqgkupykd4qncPwwbRy6dzz1Jdh1YaEjn9q+8WbtLW91AYEnlgahRmJA81ZM7kb0R2OAeQf9NExRyr6RG4DyUbjBQmFAagbHhTwjl+iBoAHvzNnlYB2vgpZz+0pqQKBgQDCTVVLpajkvRANBHfzgfdhgHEPR/fg9XrVFyAknjfGYWMo/QbCvhWwzlnlG2SishoODJVQEawSozYVKKJrtSQFPU2mVh43gNXSbg3jP8bAIu/ydMpJoxrLmZ3xd09hmv0FPjFUtZwxFDPGu44xP9lO1MAHZSR4OMUKxHm7gAv9EQKBgDsjEfyS9feKfv1YiFxr9Jm6RiDfn9pJ+yFUw1ezu/cHf9TZWJrYg3KoTpW+TVRSYKRb10m5V5AYzRSS5mSaZm5RkMIAJhafvsanEzX2M0YwY6wYE83R1Yshdj2S4QZLiPcvwQ4ISKuaJ7NREpK5KzFELxy5qa8Hwnh+IA8gvqze";
     // 服务器异步通知页面路径 需http://或者https://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
-    public static String notify_url = "https://www.deslibs.com/pay/asyncnotify";
+    public static String notify_url = "https://www.deslibs.com/pay/ali/asyncnotify";
     // 页面跳转同步通知页面路径 需http://或者https://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问 商户可以自定义同步跳转地址
-    public static String return_url = "https://www.deslibs.com/pay/notify";
+    public static String return_url = "https://www.deslibs.com/pay/ali/notifiy";
     // 请求网关地址
     public static String URL = "https://openapi.alipay.com/gateway.do";
     // 编码

@@ -20,4 +20,8 @@ public interface AnswerRepository extends JpaRepository<Answer,String> {
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
     @Query("SELECT a from Answer a where a.qaacode=:code ")
     Page<Answer> answersByQaacode(Pageable pageable,@Param("code")String code);
+
+    @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
+    @Query("SELECT a from Answer a where a.userSecurity.phonenumber=:name ")
+    Page<Answer> listByUser(Pageable pageable, @Param("name")String name);
 }

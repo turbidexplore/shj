@@ -39,4 +39,5 @@ CKEDITOR.editorConfig = function( config ) {
 	//config.uploadUrl = '上传路径';
 
 	config.imageUploadUrl= '/file/pimage';
+	config.disallowedContent = 'img{width,height};img[width,height]';
 };

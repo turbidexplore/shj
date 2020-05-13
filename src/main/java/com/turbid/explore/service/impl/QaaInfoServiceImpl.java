@@ -38,4 +38,11 @@ public class QaaInfoServiceImpl implements QaaInfoService {
     public QaaInfo qaaByCode(String code) {
         return qaaInfoRepositroy.getOne(code);
     }
+
+    @Override
+    public List<QaaInfo> listByUser(String name, Integer page) {
+        Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
+        Page<QaaInfo> pages=  qaaInfoRepositroy.listByUser(pageable,name);
+        return pages.getContent();
+    }
 }

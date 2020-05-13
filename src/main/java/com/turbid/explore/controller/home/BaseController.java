@@ -99,8 +99,8 @@ public class BaseController {
         map=new HashMap<>();
         map.put("key","逐条查看信息");
         map.put("value","SEE_NEEDS");
-        map.put("price",9.9);
-        map.put("costprice",9.9);
+        map.put("price",0.01);
+        map.put("costprice",0.01);
         info.put("SEE_NEEDS",map);
         map=new HashMap<>();
         map.put("key","工厂VIP月卡");

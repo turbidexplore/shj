@@ -126,7 +126,9 @@ figure > figcaption
 	text-align: center;
 	display: block; /* For IE8 */
 }
-
+img{
+	width: 100%;
+}
 a > img {
 	padding: 1px;
 	margin: 1px;

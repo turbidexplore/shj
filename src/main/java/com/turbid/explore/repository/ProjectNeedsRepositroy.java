@@ -4,6 +4,7 @@ import com.turbid.explore.pojo.ProjectNeeds;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.repository.query.Param;
@@ -25,4 +26,8 @@ public interface ProjectNeedsRepositroy extends JpaRepository<ProjectNeeds,Strin
 
     @Query("SELECT count (n) from ProjectNeeds n where n.userSecurity.phonenumber=:name and n.status=:status  ")
     int countByStatus( @Param("name")String name, @Param("status") int status);
+
+    @Modifying
+    @Query("update ProjectNeeds p set p.isurgent=1 where p.orderno=:orderno")
+    int updateURGENT( @Param("orderno")String orderno);
 }

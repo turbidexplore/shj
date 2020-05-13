@@ -7,19 +7,36 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@Table(name = "call")
+@Table(name = "callinfo")
 @JsonIgnoreProperties(value = { "hibernateEAGERInitializer"})
 public class Call extends BaseEntity{
 
-    @ManyToOne(cascade= CascadeType.ALL,fetch= FetchType.LAZY)
-    @JoinColumn(name="userinfod")
-    private UserSecurity userinfo;
+
+    @Column(name="username")
+    private String username;
+
+    @Column(name="usercode")
+    private String usercode;
+
+    @Column(name="usertype")
+    private String usertype;
+
+    @Column(name="userhredimg")
+    private String userhredimg;
+
+    @Column(name="callusername")
+    private String callusername;
+
+    @Column(name="callusercode")
+    private String callusercode;
+
+    @Column(name="callusertype")
+    private String callusertype;
+
+    @Column(name="calluserhredimg")
+    private String calluserhredimg;
 
     @ManyToOne(cascade= CascadeType.ALL,fetch= FetchType.LAZY)
-    @JoinColumn(name="calluserinfo")
-    private UserSecurity calluserinfo;
-
-    @ManyToOne(cascade= CascadeType.ALL,fetch= FetchType.LAZY)
-    @JoinColumn(name="projectNeeds")
-    private ProjectNeeds projectNeeds;
+    @JoinColumn(name="projectinfo")
+    private ProjectNeeds projectinfo;
 }
