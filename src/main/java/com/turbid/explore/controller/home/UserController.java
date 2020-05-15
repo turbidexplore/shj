@@ -8,6 +8,7 @@ import com.turbid.explore.service.impl.SMSServiceImpl;
 import com.turbid.explore.tools.CodeLib;
 import com.turbid.explore.tools.Info;
 import com.turbid.explore.tools.TLSSigAPIv2;
+import io.micrometer.core.instrument.util.StringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import reactor.core.publisher.Mono;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -80,7 +82,13 @@ public class UserController {
                    userBasicService.save(userBasic);
                    userSecurity.setUserBasic(userBasic);
                    userSecurity=  userSecurityService.save(userSecurity);
-                   restTemplate.put("http://127.0.0.1:10002/im/account_import?identifier="+userSecurity.getCode()+"&nikename="+userBasic.getNikename(),null);
+                   Map<String, Object> requestBody = ImmutableMap.of(
+                           "Identifier", userSecurity.getCode(),
+                           "Nick", userBasic.getNikename(),
+                           "FaceUrl","https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1588763946885&di=11fc71844ac400e62d61e5abbff4e4fb&imgtype=0&src=http%3A%2F%2Fpic.90sjimg.com%2Fdesign%2F00%2F67%2F59%2F63%2F58e89bee922a2.png");
+                   JSONObject jsonObject= restTemplate.postForObject(baseUrl+"v4/im_open_login_svc/account_import"+config()
+                           ,requestBody, JSONObject.class);
+
                    return Mono.just(Info.SUCCESS(userSecurity ));
                }else {
                    return Mono.just(Info.ERROR("手机号码已注册"));
@@ -248,8 +256,43 @@ public class UserController {
 
     @ApiOperation(value = "获取用户信息", notes="通过token获取用户信息")
     @PostMapping(value = "/userinfo")
-    public Mono<Info> userinfo(Principal principal)  {
+    public Mono<Info> userinfo(Principal principal,HttpServletRequest request)  {
+        System.out.println(getIpAddress(request));
         return Mono.just(Info.SUCCESS(userSecurityService.findByPhone(principal.getName())));
+    }
+
+    private static String getIpAddress(HttpServletRequest request) {
+        String Xip = request.getHeader("X-Real-IP");
+        String XFor = request.getHeader("X-Forwarded-For");
+        if(StringUtils.isNotEmpty(XFor) && !"unKnown".equalsIgnoreCase(XFor)){
+            //多次反向代理后会有多个ip值，第一个ip才是真实ip
+            int index = XFor.indexOf(",");
+            if(index != -1){
+                return XFor.substring(0,index);
+            }else{
+                return XFor;
+            }
+        }
+        XFor = Xip;
+        if(StringUtils.isNotEmpty(XFor) && !"unKnown".equalsIgnoreCase(XFor)){
+            return XFor;
+        }
+        if (StringUtils.isBlank(XFor) || "unknown".equalsIgnoreCase(XFor)) {
+            XFor = request.getHeader("Proxy-Client-IP");
+        }
+        if (StringUtils.isBlank(XFor) || "unknown".equalsIgnoreCase(XFor)) {
+            XFor = request.getHeader("WL-Proxy-Client-IP");
+        }
+        if (StringUtils.isBlank(XFor) || "unknown".equalsIgnoreCase(XFor)) {
+            XFor = request.getHeader("HTTP_CLIENT_IP");
+        }
+        if (StringUtils.isBlank(XFor) || "unknown".equalsIgnoreCase(XFor)) {
+            XFor = request.getHeader("HTTP_X_FORWARDED_FOR");
+        }
+        if (StringUtils.isBlank(XFor) || "unknown".equalsIgnoreCase(XFor)) {
+            XFor = request.getRemoteAddr();
+        }
+        return XFor;
     }
 
     @ApiOperation(value = "获取用户信息", notes="通过USERCODE获取用户信息")
@@ -345,5 +388,11 @@ public class UserController {
                 ,requestBody, JSONObject.class);
         return Mono.just(Info.SUCCESS(userSecurityService.save(userSecurity)));
     }
+
+    @PostMapping(value = "/testip")
+    public Mono<Info> testip(@RequestParam("ip")String ip)  {
+        return Mono.just(Info.SUCCESS(CodeLib.getAddressByIp(ip)));
+    }
+
 
 }

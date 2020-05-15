@@ -11,7 +11,6 @@ import javax.persistence.*;
 @JsonIgnoreProperties(value = { "hibernateEAGERInitializer"})
 public class Call extends BaseEntity{
 
-
     @Column(name="username")
     private String username;
 
@@ -39,4 +38,7 @@ public class Call extends BaseEntity{
     @ManyToOne(cascade= CascadeType.ALL,fetch= FetchType.LAZY)
     @JoinColumn(name="projectinfo")
     private ProjectNeeds projectinfo;
+
+    public Call() {
+    }
 }

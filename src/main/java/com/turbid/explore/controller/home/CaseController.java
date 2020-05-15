@@ -159,4 +159,16 @@ public class CaseController {
             return Mono.just(Info.ERROR(e.getMessage()));
         }
     }
+
+
+    @ApiOperation(value = "数据统计", notes="数据统计")
+    @PostMapping(value = "/countbyuser")
+    public Mono<Info> countbyuser(Principal principal)  {
+        Map<String,Object> data=new HashMap<>();
+        UserSecurity userSecurity=userSecurityService.findByPhone(principal.getName());
+        data.put("star",caseService.starcount(userSecurity.getCode()));
+        data.put("casecount",caseService.casecount(userSecurity.getCode()));
+        data.put("commentcount",caseService.commentcount(userSecurity.getCode()));
+        return Mono.just(Info.SUCCESS(data));
+    }
 }

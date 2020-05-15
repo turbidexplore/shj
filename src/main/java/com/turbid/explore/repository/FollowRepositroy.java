@@ -15,11 +15,11 @@ import javax.persistence.QueryHint;
 @Repository
 public interface FollowRepositroy extends JpaRepository<Follow,String> {
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
-    @Query("SELECT c from Follow c where c.user.phonenumber= :name ")
+    @Query("SELECT c from Follow c where c.user.phonenumber= :name order by c.user.code,c.userFollow.code")
     Page<Follow> myfollow(Pageable pageable,@Param("name") String name);
 
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
-    @Query("SELECT c from Follow c where c.userFollow.phonenumber= :name ")
+    @Query("SELECT c from Follow c where c.userFollow.phonenumber= :name order by c.user.code,c.userFollow.code ")
     Page<Follow> followme(Pageable pageable,@Param("name") String name);
 
     @Query("SELECT count(c) from Follow c where c.user.phonenumber= :name or c.user.code=:name ")
@@ -39,11 +39,11 @@ public interface FollowRepositroy extends JpaRepository<Follow,String> {
     String find(@Param("name")String name,@Param("phone") String phone);
 
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
-    @Query("SELECT c from Follow c where c.user.code= :name ")
+    @Query("SELECT c from Follow c where c.user.code= :name order by c.user.code,c.userFollow.code")
     Page<Follow> hefollow(Pageable pageable,@Param("name") String name);
 
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
-    @Query("SELECT c from Follow c where c.userFollow.code= :name ")
+    @Query("SELECT c from Follow c where c.userFollow.code= :name order by c.user.code,c.userFollow.code")
     Page<Follow> followhe(Pageable pageable,@Param("name") String name);
 
     @Query("SELECT count(c) from Follow c where c.user.code= :name ")

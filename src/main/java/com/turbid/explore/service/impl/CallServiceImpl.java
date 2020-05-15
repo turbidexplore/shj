@@ -2,6 +2,7 @@ package com.turbid.explore.service.impl;
 
 import com.turbid.explore.pojo.Call;
 import com.turbid.explore.pojo.Case;
+import com.turbid.explore.pojo.ProjectNeeds;
 import com.turbid.explore.repository.CallRepository;
 import com.turbid.explore.service.CallService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,16 +26,16 @@ public class CallServiceImpl implements CallService {
     }
 
     @Override
-    public List<Call> listByUserMe(String name, Integer page) {
+    public List<ProjectNeeds> listByUserMe(String name, Integer page) {
         Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
-        Page<Call> pages=  callRepository.listByUserMe(pageable,name);
+        Page<ProjectNeeds> pages=  callRepository.listByUserMe(pageable,name);
         return pages.getContent();
     }
 
     @Override
-    public List<Call> listByUserMy(String name, Integer page) {
+    public List<ProjectNeeds> listByUserMy(String name, Integer page) {
         Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
-        Page<Call> pages=  callRepository.listByUserMy(pageable,name);
+        Page<ProjectNeeds> pages=  callRepository.listByUserMy(pageable,name);
         return pages.getContent();
     }
 }

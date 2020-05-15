@@ -117,4 +117,22 @@ public class QaaInfoController {
         }
     }
 
+    @ApiOperation(value = "删除问题", notes="删除问题")
+    @PutMapping("/deleteqaa")
+    public Mono<Info> deleteqaa(Principal principal,@RequestParam("qaacode")String qaacode) {
+        QaaInfo qaaInfo= qaaInfoService.qaaByCode(qaacode);
+        qaaInfo.setIsdel(true);
+        qaaInfoService.save(qaaInfo);
+        return Mono.just(Info.SUCCESS(null));
+    }
+
+    @ApiOperation(value = "删除答案", notes="删除答案")
+    @PutMapping("/deleteanswer")
+    public Mono<Info> answer(Principal principal,@RequestParam("answercode")String answercode) {
+        Answer answer= answerService.get(answercode);
+        answer.setIsdel(true);
+        answerService.save(answer);
+        return Mono.just(Info.SUCCESS(null));
+    }
+
 }

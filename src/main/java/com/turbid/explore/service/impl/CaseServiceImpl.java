@@ -84,4 +84,9 @@ public class CaseServiceImpl implements CaseService {
         Page<Case> pages=  caseRepositroy.casesByUsercode(pageable,usercode);
         return pages.getContent();
     }
+
+    @Override
+    public int commentcount(String usercode) {
+         return caseRepositroy.commentcount(usercode);
+    }
 }

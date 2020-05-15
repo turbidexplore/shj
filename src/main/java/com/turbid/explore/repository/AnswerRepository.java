@@ -14,14 +14,14 @@ import javax.persistence.QueryHint;
 @Repository
 public interface AnswerRepository extends JpaRepository<Answer,String> {
 
-    @Query("select count(a) from Answer a where a.qaacode=:code")
+    @Query("select count(a) from Answer a where a.isdel=false and a.qaacode=:code")
     int answerCount(@Param("code") String code);
 
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
-    @Query("SELECT a from Answer a where a.qaacode=:code ")
+    @Query("SELECT a from Answer a where a.isdel=false and a.qaacode=:code ")
     Page<Answer> answersByQaacode(Pageable pageable,@Param("code")String code);
 
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
-    @Query("SELECT a from Answer a where a.userSecurity.phonenumber=:name ")
+    @Query("SELECT a from Answer a where a.isdel=false and a.userSecurity.phonenumber=:name ")
     Page<Answer> listByUser(Pageable pageable, @Param("name")String name);
 }

@@ -27,15 +27,26 @@ public class GoodsController {
     @ApiOperation(value = "添加特卖品", notes="添加特卖品")
     @PutMapping("/add")
     public Mono<Info> add(Principal principal,@RequestBody Goods goods) {
+        goods.setStatus(0);
+        goods.setBrowses(0);
         goods.setCompany(shopService.getByUser(principal.getName()));
         goods=goodsService.save(goods);
         return Mono.just(Info.SUCCESS(goods));
     }
 
+    @ApiOperation(value = "上架下架", notes="上架下架")
+    @PutMapping("/updatastatus")
+    public Mono<Info> updatastatus(Principal principal,@RequestParam("code")String code,@RequestParam("status")Integer status) {
+        goodsService.updatastatus(code,status);
+        return Mono.just(Info.SUCCESS(null));
+    }
+
     @ApiOperation(value = "查询特卖品", notes="查询特卖品")
     @GetMapping("/get")
     public Mono<Info> get(@RequestParam("code")String code) {
-        return Mono.just(Info.SUCCESS( goodsService.get(code)));
+        Goods goods=  goodsService.get(code);
+        goods.setBrowses(goods.getBrowses()+1);
+        return Mono.just(Info.SUCCESS(goodsService.save(goods)));
     }
 
     @ApiOperation(value = "特卖品列表", notes="特卖品列表")

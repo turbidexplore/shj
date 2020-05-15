@@ -16,4 +16,6 @@ public interface GoodsService {
     List<Goods> newGoods(String shopcode);
 
     List<Goods> mylistByPage(String name, Integer page);
+
+    int updatastatus(String code, Integer status);
 }

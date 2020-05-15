@@ -15,9 +15,7 @@ import reactor.core.publisher.Mono;
 
 import java.security.Principal;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Api(description = "个人中心")
 @RestController
@@ -77,8 +75,14 @@ public class UserCenterController {
     @ApiOperation(value = "我的回答", notes="我的回答")
     @PostMapping(value = "/myanswer")
     public Mono<Info> myanswer(Principal principal,@RequestParam("page")Integer page)  {
-
-        return Mono.just(Info.SUCCESS(answerService.listByUser(principal.getName(),page)));
+        List<Map<String,Object>> data=new ArrayList<>();
+        answerService.listByUser(principal.getName(),page).forEach(v->{
+            Map<String,Object> item=new HashMap<>();
+            item.put("qaa",qaaInfoService.qaaByCode(v.getQaacode()));
+            item.put("answer",v);
+            data.add(item);
+        });
+        return Mono.just(Info.SUCCESS(data));
     }
 
     @Autowired

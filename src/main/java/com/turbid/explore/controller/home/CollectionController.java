@@ -1,11 +1,8 @@
 package com.turbid.explore.controller.home;
 
-import com.turbid.explore.pojo.Collection;
-import com.turbid.explore.pojo.Comment;
+import com.turbid.explore.pojo.*;
 import com.turbid.explore.pojo.bo.CollectionType;
-import com.turbid.explore.service.CollectionService;
-import com.turbid.explore.service.CommentService;
-import com.turbid.explore.service.UserSecurityService;
+import com.turbid.explore.service.*;
 import com.turbid.explore.tools.Info;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -15,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 
 @Api(description = "收藏接口")
@@ -59,10 +59,45 @@ public class CollectionController {
         return Mono.just(Info.SUCCESS( collectionService.listByPage(relation)));
     }
 
+    @Autowired
+    private GoodsService goodsService;
+
+    @Autowired
+    private NativeContentService nativeContentService;
+
+
+    @Autowired
+    private CaseService caseService;
+
     @ApiOperation(value = "我的收藏", notes="我的收藏")
     @PostMapping("/my")
     public Mono<Info> my(Principal principal, @RequestParam("page")Integer page, @RequestParam("type")CollectionType collectionType) {
-        return Mono.just(Info.SUCCESS( collectionService.listByPagePhone(principal.getName(),page,collectionType)));
+        List<Object> data=new ArrayList<>();
+        collectionService.listByPagePhone(principal.getName(),page,collectionType).forEach(v->{
+                switch (collectionType){
+                    case goods:
+                      Goods goods= goodsService.get(v.getRelation());
+                        if(null!=goods){
+                            data.add(goods);
+                        }
+                        break;
+                    case nativecontent:
+                       NativeContent nativeContent= nativeContentService.newsByCode(v.getRelation());
+                        if(null!=nativeContent){
+                            data.add(nativeContent);
+                        }
+                        break;
+                    case books:
+                        break;
+                    case caseinfo:
+                        Case caseinfo=caseService.caseByCode(v.getRelation());
+                        if(null!=caseinfo){
+                             data.add(caseinfo);
+                        }
+                        break;
+                }
+        });
+        return Mono.just(Info.SUCCESS(data ));
     }
 
 

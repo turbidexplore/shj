@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -52,5 +53,11 @@ public class GoodsServiceImpl implements GoodsService {
         Pageable pageable = new PageRequest(page,12, Sort.Direction.DESC,"create_time");
         Page<Goods> pages=  goodsRepository.mylistByPage(pageable,name);
         return pages.getContent();
+    }
+
+    @Override
+    @Transactional
+    public int updatastatus(String code, Integer status) {
+        return goodsRepository.updatastatus(code,status);
     }
 }

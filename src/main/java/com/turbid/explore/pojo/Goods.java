@@ -26,6 +26,11 @@ public class Goods extends BaseEntity {
     @Column(name = "price")
     private Integer price;
 
+
+    @ApiModelProperty(value = "状态")
+    @Column(name = "status")
+    private Integer status;
+
     @ApiModelProperty(value = "最小价格")
     @Column(name = "minprice")
     private Integer minprice;
@@ -49,6 +54,10 @@ public class Goods extends BaseEntity {
     @ApiModelProperty(value = "感兴趣数")
     @Column(name = "likes")
     private Integer likes;
+
+    @ApiModelProperty(value = "浏览量")
+    @Column(name = "browses")
+    private Integer browses;
 
     @ApiModelProperty(value = "图片集")
     @Column(name = "imgs")

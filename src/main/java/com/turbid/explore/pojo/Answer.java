@@ -57,4 +57,7 @@ public class Answer extends BaseEntity{
     private boolean isstar;
 
 
+    @Column(name = "isdel")
+    private boolean isdel=false;
+
 }

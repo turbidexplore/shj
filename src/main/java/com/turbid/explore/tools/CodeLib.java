@@ -165,7 +165,7 @@ public class CodeLib {
         BufferedReader reader = null;
         String result = null;
         StringBuffer sbf = new StringBuffer();
-        String thisUrl ="http://ip.taobao.com/service/getIpInfo.php?ip="+ip;
+        String thisUrl ="http://api.map.baidu.com/location/ip?ip="+ip+"&ak=fVl33R4iStCXR9xkS9jGc0GiAp5Em0TB";
         try {
             URL url = new URL(thisUrl);
             HttpURLConnection connection = (HttpURLConnection) url
@@ -181,7 +181,7 @@ public class CodeLib {
             }
             reader.close();
             result = sbf.toString();
-            return result;
+            return ascii2native(result);
 
         } catch (Exception e) {
             System.out.println("获取IP地址失败");
@@ -189,6 +189,20 @@ public class CodeLib {
         }
 
     }
+
+    public static String ascii2native(String ascii) {
+        int n = ascii.length() / 6;
+        StringBuilder sb = new StringBuilder(n);
+        for (int i = 0, j = 2; i < n; i++, j += 6) {
+            String code = ascii.substring(j, j + 4);
+            char ch = (char) Integer.parseInt(code, 16);
+            sb.append(ch);
+        }
+        return sb.toString();
+    }
+
+
+
 
 
     public static String getNikeName(StringRedisTemplate stringRedisTemplate){

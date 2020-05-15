@@ -47,6 +47,18 @@ public class ShopController {
         return Mono.just(Info.SUCCESS( shop));
     }
 
+    @ApiOperation(value = "通过商铺usercode获取商铺信息", notes="通过商铺usercode获取商铺信息")
+    @GetMapping("/getbyusercode")
+    public Mono<Info> getbyusercode(Principal principal,@RequestParam("usercode")String usercode) {
+        Shop shop=  shopService.getByUsercode(usercode);
+        Visitor visitor=new Visitor();
+        visitor.setUserSecurity(userSecurityService.findByPhone(principal.getName()));
+        visitor.setShopcode(shop.getCode());
+        visitorService.save(visitor);
+
+        return Mono.just(Info.SUCCESS( shop));
+    }
+
 
     @ApiOperation(value = "更新商铺信息", notes="更新商铺信息")
     @PutMapping("/update")
@@ -120,6 +132,13 @@ public class ShopController {
         data.put("tomom",visitorService.count(dateStr, code));
         data.put("casecount",caseService.casecount(principal.getName()));
         return Mono.just(Info.SUCCESS( data));
+    }
+
+
+    @ApiOperation(value = "需求列表推荐店铺", notes="需求列表推荐店铺")
+    @GetMapping("/shopByNeeds")
+    public Mono<Info> shopByNeeds(@RequestParam(value = "needscode")String needscode,@RequestParam(value = "page")Integer page) {
+        return Mono.just(Info.SUCCESS( shopService.getByChoose(null,page)));
     }
 
 }

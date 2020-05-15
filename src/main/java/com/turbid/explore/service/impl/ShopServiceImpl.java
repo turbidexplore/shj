@@ -62,4 +62,9 @@ public class ShopServiceImpl implements ShopService {
         Page<Shop> pages=   shopRepositroy.zsjm(pageable,type);
         return pages.getContent();
     }
+
+    @Override
+    public Shop getByUsercode(String usercode) {
+        return shopRepositroy.getByUsercode(usercode);
+    }
 }

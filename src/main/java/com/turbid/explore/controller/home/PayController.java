@@ -18,6 +18,7 @@ import com.turbid.explore.service.OrderService;
 import com.turbid.explore.service.ProjectNeedsService;
 import com.turbid.explore.tools.CodeLib;
 import com.turbid.explore.tools.Info;
+import com.turbid.explore.tools.MD5;
 import io.micrometer.core.instrument.util.StringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -31,13 +32,16 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.ssl.SSLContexts;
 import org.apache.http.util.EntityUtils;
+import org.dom4j.DocumentHelper;
 import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
+
 
 import javax.net.ssl.SSLContext;
 import javax.servlet.http.HttpServletRequest;
@@ -45,6 +49,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.*;
 import java.security.KeyStore;
+import java.security.Principal;
 import java.util.*;
 
 
@@ -62,8 +67,8 @@ public class PayController {
      */
     @ApiOperation(value = "支付宝web支付", notes="支付宝web支付")
     @PostMapping("/ali/webpay")
-    public void aliwebpay(@RequestBody WebpayBo webpayBo, HttpServletResponse response) {
-        orderinfo(webpayBo.getOut_trade_no(),webpayBo.getProduct_code(),webpayBo.getTotal_amount(),"ali");
+    public void aliwebpay(Principal principal, @RequestBody WebpayBo webpayBo, HttpServletResponse response) {
+        orderinfo(webpayBo.getOut_trade_no(),webpayBo.getProduct_code(),webpayBo.getTotal_amount(),"aliweb",webpayBo.getBody(),principal.getName());
         webpayBo.setOut_trade_no(CodeLib.randomCode(12,1));
         // SDK 公共请求类，包含公共请求参数，以及封装了签名与验签，开发者无需关注签名与验签
         //调用RSA签名方式
@@ -110,6 +115,13 @@ public class PayController {
     @ResponseBody
     public Mono<Info> getOrder(@RequestParam("orderno")String orderno) {
         return Mono.just(Info.SUCCESS(orderService.findByOrderNo(orderno)));
+    }
+
+    @ApiOperation(value = "查询我的订单", notes="查询我的订单")
+    @PostMapping("/order/my")
+    @ResponseBody
+    public Mono<Info> ordermy(Principal principal,@RequestParam("page")Integer page) {
+        return Mono.just(Info.SUCCESS(orderService.findByUser(principal.getName(),page)));
     }
 
     @Autowired
@@ -373,8 +385,8 @@ public class PayController {
     @ApiOperation(value = "支付宝app支付", notes="支付宝app支付")
     @ResponseBody
     @PostMapping("/ali/apppayorder")
-    public Mono<Info> apppayorder(@RequestBody WebpayBo webpayBo){
-        orderinfo(webpayBo.getOut_trade_no(),webpayBo.getProduct_code(),webpayBo.getTotal_amount(),"ali");
+    public Mono<Info> apppayorder(Principal principal,@RequestBody WebpayBo webpayBo){
+        orderinfo(webpayBo.getOut_trade_no(),webpayBo.getProduct_code(),webpayBo.getTotal_amount(),"aliapp",webpayBo.getBody(),principal.getName());
         //实例化客户端
         AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.URL, AlipayConfig.APPID, AlipayConfig.RSA_PRIVATE_KEY, AlipayConfig.FORMAT, AlipayConfig.CHARSET, AlipayConfig.ALIPAY_PUBLIC_KEY, AlipayConfig.SIGNTYPE);
         //实例化具体API对应的request类,类名称和接口名称对应,当前调用接口名称：alipay.trade.app.pay
@@ -404,17 +416,90 @@ public class PayController {
 
     @ApiOperation(value = "微信web支付", notes="微信web支付")
     @ResponseBody
-    @PostMapping("/ali/wechatpayorder")
-    public Mono<Info> wechatpayorder(@RequestBody WebpayBo webpayBo){
+    @PostMapping("/wechat/webpay")
+    public Mono<Info> wechatweb(Principal principal,@RequestBody WebpayBo webpayBo){
         try {
-          Map<String,String> map=  doXMLParse(SendPayment(webpayBo.getBody(),webpayBo.getOut_trade_no(),Double.valueOf(webpayBo.getTotal_amount()),webpayBo.getProduct_code()));
-            return Mono.just(Info.SUCCESS(map.get("mweb_url")+"&redirect_url=https%3A%2F%2Fanoax.com"));
+            orderinfo(webpayBo.getOut_trade_no(),webpayBo.getProduct_code(),webpayBo.getTotal_amount(),"wechatweb",webpayBo.getBody(),principal.getName());
+          Map<String,String> map=  doXMLParse(SendPayment(webpayBo.getBody(),webpayBo.getOut_trade_no(),Double.valueOf(webpayBo.getTotal_amount()),webpayBo.getProduct_code(),"MWEB",WeChatPayConfig.APP_ID));
+            return Mono.just(Info.SUCCESS(map));
         } catch (Exception e) {
             e.printStackTrace();
         }
         return Mono.just(null);
 
     }
+
+    @ApiOperation(value = "微信APP支付", notes="微信APP支付")
+    @ResponseBody
+    @PostMapping("/wechat/apppay")
+    public Mono<Info> apppay(Principal principal,@RequestBody WebpayBo webpayBo){
+        try {
+            orderinfo(webpayBo.getOut_trade_no(),webpayBo.getProduct_code(),webpayBo.getTotal_amount(),"wechatapp",webpayBo.getBody(),principal.getName());
+            Map<String,String> map=  doXMLParse(SendPayment(webpayBo.getBody(),webpayBo.getOut_trade_no(),Double.valueOf(webpayBo.getTotal_amount()),webpayBo.getProduct_code(),"APP",WeChatPayConfig.OPEN_APP_ID));
+            Map<String,String> param = new HashMap<String,String>();
+            String timestamp=String.valueOf(System.currentTimeMillis()/1000);
+            System.out.println(map);
+            param.put("appid",WeChatPayConfig.OPEN_APP_ID);
+            param.put("partnerid", WeChatPayConfig.MCH_ID);
+            param.put("prepayid", map.get("prepay_id"));
+            param.put("package", "Sign=WXPay");
+            param.put("noncestr", map.get("nonce_str"));
+            param.put("timestamp",timestamp);
+            String sign = GetSign(param);
+            param.put("sign", sign);
+            return Mono.just(Info.SUCCESS(param));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Mono.just(null);
+
+    }
+
+    @ApiOperation(value = "微信回调", notes="微信回调")
+    @RequestMapping("/wechat/notifiy")
+    public String wechatnotifiy(HttpServletRequest httpServletRequest){
+        Order order=null;
+        try {
+            InputStream inStream = httpServletRequest.getInputStream();
+            int _buffer_size = 1024;
+            if (inStream != null) {
+                ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+                byte[] tempBytes = new byte[_buffer_size];
+                int count = -1;
+                while ((count = inStream.read(tempBytes, 0, _buffer_size)) != -1) {
+                    outStream.write(tempBytes, 0, count);
+                }
+                tempBytes = null;
+                outStream.flush();
+                //将流转换成字符串
+                String result = new String(outStream.toByteArray(), "UTF-8");
+
+                //将XML格式转化成MAP格式数据
+                Map<String, String> resultMap =doXMLParse(result);
+                String out_trade_no=  resultMap.get("out_trade_no");
+                 order=orderService.findByOrderNo(out_trade_no);
+                switch (order.getGoodscode()){
+                    case "NEEDS_URGENT":
+                        projectNeedsService.updateURGENT(order.getOrderno());
+                        break;
+                    case "SEE_NEEDS":
+                        needsRelationService.updateSEE(order.getOrderno());
+                        break;
+                }
+                order.setStatus(1);
+                //后续具体自己实现
+            }
+            //通知微信支付系统接收到信息
+            return "<xml><return_code><![CDATA[SUCCESS]]></return_code> <return_msg><![CDATA[OK]]></return_msg></xml>";
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            order.setStatus(2);
+        }
+        //如果失败返回错误，微信会再次发送支付信息
+        orderService.save(order);
+        return "fail";
+    }
+
 
 
     /** 微信支付 *************************/
@@ -428,15 +513,15 @@ public class PayController {
      * total_fee	订单金额		单位  元
      * product_id	商品ID
      */
-    public static String SendPayment(String body, String out_trade_no, double total_fee, String product_id){
+    public static String SendPayment(String body, String out_trade_no, double total_fee, String product_id,String type,String appid){
         String url = "https://api.mch.weixin.qq.com/pay/unifiedorder";
-        String xml = WXParamGenerate(body,out_trade_no,total_fee,product_id);
+        String xml = WXParamGenerate(body,out_trade_no,total_fee,product_id,type,appid);
         String res = httpsRequest(url,"POST",xml);
         return res;
     }
 
     public static String NonceStr(){
-        String res = UUID.randomUUID().toString().substring(0,30);
+        String res = UUID.randomUUID().toString().replace("-","");
         return res;
     }
 
@@ -453,7 +538,8 @@ public class PayController {
 
     public static String GetSign(Map<String,String> param){
         String StringA =  formatUrlMap(param, false, false);
-        String stringSignTemp = CodeLib.md5(StringA+"&key="+ WeChatPayConfig.API_KEY).toUpperCase();
+        System.out.println(StringA);
+        String stringSignTemp = MD5.MD5Encode(StringA+"&key="+ WeChatPayConfig.API_KEY).toUpperCase();
         return stringSignTemp;
     }
 
@@ -472,10 +558,10 @@ public class PayController {
 
 
     //微信统一下单参数设置
-    public static String WXParamGenerate(String description,String out_trade_no,double total_fee,String product_id){
+    public static String WXParamGenerate(String description,String out_trade_no,double total_fee,String product_id,String type,String appid){
         int fee = (int)(total_fee * 100.00);
         Map<String,String> param = new HashMap<String,String>();
-        param.put("appid", WeChatPayConfig.APP_ID);
+        param.put("appid", appid);
         param.put("mch_id", WeChatPayConfig.MCH_ID);
         param.put("nonce_str",NonceStr());
         param.put("body", description);
@@ -483,11 +569,9 @@ public class PayController {
         param.put("total_fee", fee+"");
         param.put("spbill_create_ip", GetIp());
         param.put("notify_url", WeChatPayConfig.WEIXIN_NOTIFY);
-        param.put("trade_type", WeChatPayConfig.TRADE_TYPE);
+        param.put("trade_type", type);
         param.put("product_id", product_id+"");
-
         String sign = GetSign(param);
-
         param.put("sign", sign);
         return GetMapToXML(param);
     }
@@ -722,8 +806,10 @@ public class PayController {
     @Autowired
     private OrderService orderService;
 
-    public void orderinfo(String orderno,String code,String price,String type){
+    public void orderinfo(String orderno,String code,String price,String type,String body,String userphone){
         Order order=new Order();
+        order.setUserphone(userphone);
+        order.setBody(body);
         order.setOrderno(orderno);
         order.setPaytype(type);
         order.setGoodscode(code);

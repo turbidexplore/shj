@@ -15,13 +15,13 @@ import javax.persistence.QueryHint;
 public interface QaaInfoRepositroy extends JpaRepository<QaaInfo,String> {
 
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
-    @Query("SELECT q from QaaInfo q where (q.label like %:label% or :label is null ) ")
+    @Query("SELECT q from QaaInfo q where q.isdel=false and (q.label like %:label% or :label is null ) ")
     Page<QaaInfo> listByPage(Pageable pageable,@Param("label") String label);
 
     @Query("SELECT q from QaaInfo q where q.code=:code ")
     QaaInfo qaaByCode(@Param("code") String code);
 
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
-    @Query("SELECT q from QaaInfo q where q.userSecurity.phonenumber=:name")
+    @Query("SELECT q from QaaInfo q where q.isdel=false and q.userSecurity.phonenumber=:name")
     Page<QaaInfo> listByUser(Pageable pageable,@Param("name") String name);
 }

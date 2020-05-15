@@ -74,4 +74,6 @@ public class QaaInfo extends BaseEntity{
     }
 
 
+    @Column(name = "isdel")
+    private boolean isdel=false;
 }
