@@ -73,7 +73,6 @@ public class GoodsController {
     @ApiOperation(value = "获取我的商品信息",notes = "获取我的商品信息")
     @PostMapping("/mylistByPage")
     public Mono<Info> mylistByPage(Principal principal,  @RequestParam("page")Integer page) {
-
         return Mono.just(Info.SUCCESS( goodsService.mylistByPage(principal.getName(),page)));
     }
 }

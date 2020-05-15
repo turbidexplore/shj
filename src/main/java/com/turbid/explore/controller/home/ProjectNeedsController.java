@@ -90,6 +90,16 @@ public class ProjectNeedsController {
         }
     }
 
+    @ApiOperation(value = "获取最新需求", notes="获取最新需求")
+    @PostMapping(value = "/newneeds")
+    public Mono<Info> newneeds() {
+        try {
+            return Mono.just(Info.SUCCESS(projectNeedsService.newneeds()));
+        }catch (Exception e){
+            return Mono.just(Info.SUCCESS(e.getMessage()));
+        }
+    }
+
 
 
     @ApiOperation(value = "获取我的产品需求信息", notes="获取我的产品需求信息")

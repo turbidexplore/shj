@@ -62,16 +62,16 @@ public class Case extends BaseEntity {
     private String urls;
 
     @ApiModelProperty(value = "发布者")
-    @OneToOne(fetch=FetchType.EAGER)
+    @OneToOne(fetch=FetchType.LAZY)
     private UserSecurity userSecurity;
 
-    @ManyToMany(targetEntity=Comment.class,cascade = {CascadeType.DETACH} ,fetch= FetchType.EAGER)
+    @ManyToMany(targetEntity=Comment.class,cascade = {CascadeType.DETACH} ,fetch= FetchType.LAZY)
     private Set<Comment> comments;
 
-    @ManyToMany(targetEntity=UserSecurity.class,cascade = {CascadeType.DETACH} ,fetch= FetchType.EAGER)
+    @ManyToMany(targetEntity=UserSecurity.class,cascade = {CascadeType.DETACH} ,fetch= FetchType.LAZY)
     private Set<UserSecurity> stars;
 
-    @ManyToMany(targetEntity=UserSecurity.class,cascade = {CascadeType.DETACH} ,fetch= FetchType.EAGER)
+    @ManyToMany(targetEntity=UserSecurity.class,cascade = {CascadeType.DETACH} ,fetch= FetchType.LAZY)
     private Set<UserSecurity> browsers;
 
     public int seecount;

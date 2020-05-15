@@ -64,4 +64,11 @@ public class ProjectNeedsServiceImpl implements ProjectNeedsService {
     public void updateURGENT(String orderno) {
         needsRepositroy.updateURGENT(orderno);
     }
+
+    @Override
+    public List<ProjectNeeds> newneeds() {
+        Pageable pageable = new PageRequest(0,3, Sort.Direction.DESC,"create_time");
+        Page<ProjectNeeds> pages=  needsRepositroy.newneeds(pageable);
+        return pages.getContent();
+    }
 }

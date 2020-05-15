@@ -30,4 +30,8 @@ public interface ProjectNeedsRepositroy extends JpaRepository<ProjectNeeds,Strin
     @Modifying
     @Query("update ProjectNeeds p set p.isurgent=1 where p.orderno=:orderno")
     int updateURGENT( @Param("orderno")String orderno);
+
+    @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
+    @Query("SELECT n from ProjectNeeds n ")
+    Page<ProjectNeeds> newneeds(Pageable pageable);
 }

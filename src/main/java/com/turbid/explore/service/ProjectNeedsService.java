@@ -20,4 +20,6 @@ public interface ProjectNeedsService {
     int countByStatus(String name, int status);
     
     void updateURGENT(String orderno);
+
+    List<ProjectNeeds> newneeds();
 }
