@@ -53,9 +53,9 @@ public class UserCenterController {
 
     @ApiOperation(value = "数据统计", notes="数据统计")
     @PostMapping(value = "/countbyuser")
-    public Mono<Info> countbyuser(@RequestParam("usercode")String usercode)  {
+    public Mono<Info> countbyuser(Principal principal,@RequestParam("usercode")String usercode)  {
         Map<String,Object> data=new HashMap<>();
-        data.put("shb",0);
+        data.put("shb",userSecurityService.findByPhone(principal.getName()).getShb());
         data.put("follow",followService.myfollowCount(usercode));
         data.put("fans",followService.followmeCount(usercode));
         data.put("star",caseService.starcount(usercode));
@@ -96,6 +96,30 @@ public class UserCenterController {
     public Mono<Info> feedback(Principal principal, @RequestBody Feedback feedback)  {
         feedback.setUserSecurity(userSecurityService.findByPhone(principal.getName()));
         return Mono.just(Info.SUCCESS(feedbackRepository.saveAndFlush(feedback)));
+    }
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    String dateStr = sdf.format(new Date());
+
+    @ApiOperation(value = "签到", notes="签到")
+    @PostMapping(value = "signin")
+    public Mono<Info> signin(Principal principal)  {
+
+        UserSecurity userSecurity=userSecurityService.findByPhone(principal.getName());
+        if(null==userSecurity.getShb()){
+            userSecurity.setShb(1);
+            userSecurity.setSignintime(dateStr);
+        }else {
+            userSecurity.setShb(userSecurity.getShb()+1);
+            userSecurity.setSignintime(dateStr);
+        }
+        userSecurityService.save(userSecurity);
+        return Mono.just(Info.SUCCESS("签到成功"));
+    }
+
+    @ApiOperation(value = "是否签到", notes="是否签到")
+    @PostMapping(value = "issignin")
+    public Mono<Info> issignin(Principal principal)  {
+        return Mono.just(Info.SUCCESS(userSecurityService.issignin(principal.getName(),dateStr)));
     }
 
 

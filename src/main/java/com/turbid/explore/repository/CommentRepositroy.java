@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.QueryHint;
+import java.util.List;
 
 @Repository
 public interface CommentRepositroy extends JpaRepository<Comment,String> {
@@ -27,4 +28,7 @@ public interface CommentRepositroy extends JpaRepository<Comment,String> {
 
     @Query("SELECT count(c) from Comment c where c.relation in (select b.code from Brand b where b.company.code=:relation) ")
     int listByShopCount(@Param("relation") String relation);
+
+    @Query("SELECT c from Comment c where c.relation =:relation and c.userSecurity.phonenumber=:name  ")
+    List<Comment> mycomments(@Param("name") String name, @Param("relation") String relation);
 }

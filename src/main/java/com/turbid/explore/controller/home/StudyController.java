@@ -28,4 +28,15 @@ public class StudyController {
         return Mono.just(Info.SUCCESS(studyService.save(study)));
     }
 
+    @ApiOperation(value = "获取课程分页列表", notes="获取课程分页列表")
+    @PostMapping(value = "/needsByPage")
+    public Mono<Info> needsByPage(@RequestParam(name = "page")Integer page,
+                                  @RequestParam(name = "style", required = false)String style) {
+        try {
+            return Mono.just(Info.SUCCESS(studyService.listByPage(page,style)));
+        }catch (Exception e){
+            return Mono.just(Info.SUCCESS(e.getMessage()));
+        }
+    }
+
 }

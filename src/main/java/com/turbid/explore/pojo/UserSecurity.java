@@ -35,6 +35,13 @@ public class UserSecurity extends BaseEntity {
     @Column(name = "likes")
     private String likes;
 
+    //手机号码
+    @Column(name = "shb")
+    private Integer shb;
+
+    @Column(name = "signintime")
+    private String signintime;
+
     //用户基础信息
     @OneToOne(targetEntity = UserBasic.class)
     @JoinColumn(name = "basic_id",referencedColumnName = "code")

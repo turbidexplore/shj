@@ -68,7 +68,7 @@ public class ShopController {
 
     @ApiOperation(value = "通过商铺label获取商铺信息", notes="通过商铺label获取商铺信息")
     @GetMapping("/getbylabel")
-    public Mono<Info> getbylabel(@RequestParam("classgroup")String classgroup,@RequestParam("brandgroup")String brandgroup) {
+    public Mono<Info> getbylabel(@RequestParam(value = "classgroup",required = false)String classgroup,@RequestParam(value = "brandgroup",required = false)String brandgroup) {
         List list=new ArrayList();
         shopService.getByLabel(classgroup,brandgroup).forEach(v->{
             Map map=new HashMap();
@@ -95,18 +95,25 @@ public class ShopController {
     @ApiOperation(value = "招商加盟", notes="招商加盟")
     @GetMapping("/zsjm")
     public Mono<Info> zsjm(Principal principal,@RequestParam(value = "page")Integer page,@RequestParam(value = "type",required = false)String type) {
-
         List<Map<String,Object>> data=new ArrayList<>();
         shopService.zsjm(principal,page,type).forEach(v->{
             Map<String,Object> item=new HashMap<>();
             item.put("name",v.getName());
             item.put("logo",v.getLogo());
+            item.put("area","全国");
             item.put("content",v.getBusinessscope());
+            item.put("address",v.getCompanyaddress());
             item.put("label",v.getLabel());
             item.put("user",v.getUserSecurity());
             item.put("ischoose",v.getIschoose());
+            item.put("banner",v.getBanner());
+            item.put("brand","测试数据");
+            item.put("investmentamount","10万元");
             item.put("showimg",v.getCompany_show());
-            item.put("shop",v.getCode());
+            item.put("shopcode",v.getCode());
+            item.put("shopcount",50);
+            item.put("dateofestablishment","2018-08-01");
+            item.put("bzj","10万元");
             data.add(item);
         });
         return Mono.just(Info.SUCCESS(data ));

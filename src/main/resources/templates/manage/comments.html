@@ -3,9 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Shards Dashboard Lite - Free Bootstrap Admin Template – DesignRevision</title>
-    <meta name="description" content="A high-quality &amp; free Bootstrap admin dashboard template pack that comes with lots of templates and components.">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <title>设汇家 ｜ 泛家居行业供应链平台</title>
+    <meta name="keywords" content="浑浊探索,苏州浑浊信息科技有限公司,turbid,explore,科技">
+    <meta name="description" content="设汇家官网">
+    <meta name="author" content="设汇家">    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="../styles/all.css" rel="stylesheet">
     <link rel="stylesheet" href="../styles/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="../styles/shards-dashboards.1.1.0.min.css">
@@ -191,14 +192,27 @@
        }).done(function(result) {
          $("#datacount").html(result.data.count)
          $("#dataview").html("");
-         console.log(result);
          result.data.data.forEach(function (v,i) {
+           var mycomments
+           $.ajax({
+             type: 'Post',
+             url : "/comment/mycomments?relation="+v.code,
+             async: true,
+             crossDomain: true,
+             headers: {
+               "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
+               "cache-control": "no-cache",
+               "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
+             }
+           }).done(function(result) {
+              console.log(result)
+           });
            $("#dataview").append('<tr>'+
                    ' <td><img src="'+v.userSecurity.userBasic.headportrait+'" style="width:40px;" class=" rounded-circle"> '+v.userSecurity.userBasic.nikename+'</td>'+
                    '<td>'+v.content+'</td>'+
                    '<td>'+v.content+'</td>'+
                    '<td>'+v.addftime+'</td>'+
-                   '<td><button type="button" class="mb-2 btn btn-sm btn-success mr-1">回复</button></td>'+
+                   '<td><button type="button" class="mb-2 btn btn-sm btn-success mr-1" onclick="huifu(\''+v.code+'\')">回复</button></td>'+
                    '</tr>')
          });
        });
@@ -207,7 +221,6 @@
     layui.use(['laypage', 'layer'], function(){
       var laypage = layui.laypage
               ,layer = layui.layer;
-
       $.ajax({
         type: 'Post',
         url : "/comment/shopcommentscount",
@@ -228,8 +241,27 @@
           }
         });
       });
-
     });
+
+     function huifu(obj) {
+       layer.prompt({title: '请输入回复内容', formType: 2}, function(pass, index){
+         layer.close(index);
+         $.ajax({
+           type: 'PUT',
+           url : "/comment/addcomment",
+           processData: false,
+           contentType: "application/json; charset=UTF-8",
+           data:JSON.stringify({"relation":obj,"comentType":"coment","content":pass}),
+           headers: {
+             "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
+             "cache-control": "no-cache",
+             "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
+           }
+         }).done(function(result) {
+           layer.msg("回复成功");
+         });
+       });
+     }
   </script>
   </body>
 </html>

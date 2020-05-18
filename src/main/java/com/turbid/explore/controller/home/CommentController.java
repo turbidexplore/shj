@@ -52,6 +52,12 @@ public class CommentController {
         return Mono.just(Info.SUCCESS(jo));
     }
 
+    @ApiOperation(value = "查看相关评论", notes="查看相关评论")
+    @PostMapping("/mycomments")
+    public Mono<Info> mycomments(Principal principal,@RequestParam("relation") String relation) {
+        return Mono.just(Info.SUCCESS(commentService.mycomments(principal.getName(),relation)));
+    }
+
     @Autowired
     private ShopService shopService;
 

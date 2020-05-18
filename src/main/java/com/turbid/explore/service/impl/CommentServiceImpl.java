@@ -50,4 +50,9 @@ public class CommentServiceImpl implements CommentService {
     public int listByShopCount(String relation) {
         return commentRepositroy.listByShopCount(relation);
     }
+
+    @Override
+    public List<Comment> mycomments(String name, String relation) {
+        return commentRepositroy.mycomments(name,relation);
+    }
 }

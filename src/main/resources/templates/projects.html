@@ -20,6 +20,7 @@
         <!-- main css -->
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="css/responsive.css">
+		<link rel="stylesheet" href="layui/css/layui.css">
     </head>
     <body>
 
@@ -68,11 +69,12 @@
         <section class="projects_area pad_top">
         	<div class="main_title">
         		<h2>多种风格多重体验</h2>
-        		<p>让生活充满不一样的精彩</p>
+        		<p>让生活充满不一样的精彩<strong style="color: red;font-size: 16px;">(全文阅读/下载需要高级会员权限)</strong></p>
         	</div>
 				<div class="row m0">
 					<div class="projects_item wd_18">
-						<a href="project-details">
+<!--						<a href="project-details">-->
+						<a href="#" onclick="go()">
 							<img src="img/projects/projects-1.jpg" alt="">
 							<div class="hover">
 								<h4>苏州奥体龙格亲子游泳馆</h4>
@@ -80,7 +82,8 @@
 						</a>
 					</div>
 					<div class="projects_item wd_18">
-						<a href="project-details">
+<!--						<a href="project-details">-->
+						<a href="#" onclick="go()">
 							<img src="img/projects/projects-2.jpg" alt="">
 							<div class="hover">
 								<h4>苏州奥体龙格亲子游泳馆</h4>
@@ -88,7 +91,8 @@
 						</a>
 					</div>
 					<div class="projects_item wd_44">
-						<a href="project-details">
+<!--						<a href="project-details">-->
+						<a href="#" onclick="go()">
 							<img src="img/projects/projects-3.jpg" alt="">
 							<div class="hover">
 								<h4>苏州奥体龙格亲子游泳馆</h4>
@@ -96,7 +100,8 @@
 						</a>
 					</div>
 					<div class="projects_item wd_18">
-						<a href="project-details">
+<!--						<a href="project-details">-->
+						<a href="#" onclick="go()">
 							<img src="img/projects/projects-4.jpg" alt="">
 							<div class="hover">
 								<h4>苏州奥体龙格亲子游泳馆</h4>
@@ -186,5 +191,40 @@
         <script src="vendors/counter-up/jquery.waypoints.min.js"></script>
         <script src="vendors/counter-up/jquery.counterup.min.js"></script>
         <script src="js/theme.js"></script>
+		<script src="layui/layui.js"></script>
+
+	<script>
+		function go() {
+			layui.use("layer", function () {
+				layer.open({
+					type: 1,
+					title: "会员价格表",
+					skin: 'layui-layer-rim', //加上边框
+					area: ['500px', '300px'], //宽高
+					content: '<table class="layui-table">\n' +
+							'  <thead>\n' +
+							'    <tr>\n' +
+							'      <th>高级会员(年)</th>\n' +
+							'      <th>超能会员(年)</th>\n' +
+							'      <th>终身会员(年)</th>\n' +
+							'    </tr> \n' +
+							'  </thead>\n' +
+							'  <tbody>\n' +
+							'    <tr>\n' +
+							'      <td><button type="button" class="layui-btn layui-btn-fluid">立即开通</button></td>\n' +
+							'      <td><button type="button" class="layui-btn layui-btn-fluid">立即开通</button></td>\n' +
+							'      <td><button type="button" class="layui-btn layui-btn-fluid">立即开通</button></td>\n' +
+							'    </tr>\n' +
+							'    <tr>\n' +
+							'      <td>￥188元</td>\n' +
+							'      <td>￥288元</td>\n' +
+							'      <td>￥588元</td>\n' +
+							'    </tr>\n' +
+							'  </tbody>\n' +
+							'</table>'
+				});
+			});
+		}
+	</script>
     </body>
 </html>

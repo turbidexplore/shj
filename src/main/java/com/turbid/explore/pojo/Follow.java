@@ -24,4 +24,6 @@ public class Follow extends  BaseEntity {
     @OneToOne(targetEntity = UserSecurity.class)
     @JoinColumn(name = "user_id",referencedColumnName = "code")
     private UserSecurity user;
+
+    private boolean isf;
 }

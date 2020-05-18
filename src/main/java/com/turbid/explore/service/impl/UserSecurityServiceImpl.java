@@ -31,4 +31,9 @@ public class UserSecurityServiceImpl implements UserSecurityService {
     public UserSecurity findByCode(String usercode) {
         return userSecurityRepository.getOne(usercode);
     }
+
+    @Override
+    public int issignin(String name, String dateStr) {
+        return userSecurityRepository.issignin(name,dateStr);
+    }
 }

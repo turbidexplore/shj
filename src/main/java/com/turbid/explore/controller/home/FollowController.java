@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -41,7 +43,13 @@ public class FollowController {
     @PostMapping("/followme")
     public Mono<Info> followme(Principal principal,@RequestParam("page")Integer page) {
         Map<String,Object> jo=new HashMap<>();
-        jo.put("data",followService.followme(principal.getName(),page));
+        List data=new ArrayList<>();
+        followService.followme(principal.getName(),page).forEach(v->{
+            v.setIsf(isf(principal.getName(),v.getUser().getPhonenumber()));
+            data.add(v);
+
+        });
+        jo.put("data",data);
         jo.put("count",followService.followmeCount(principal.getName()));
         return Mono.just(Info.SUCCESS(jo));
     }
@@ -50,9 +58,22 @@ public class FollowController {
     @PostMapping("/myfollow")
     public Mono<Info> myfollow(Principal principal,@RequestParam("page")Integer page) {
         Map<String,Object> jo=new HashMap<>();
-        jo.put("data",followService.myfollow(principal.getName(),page));
+        List data=new ArrayList<>();
+        followService.myfollow(principal.getName(),page).forEach(v->{
+            v.setIsf(isf(v.getUserFollow().getPhonenumber(),principal.getName()));
+            data.add(v);
+        });
+        jo.put("data",data);
         jo.put("count",followService.myfollowCount(principal.getName()));
         return Mono.just(Info.SUCCESS( jo));
+    }
+
+    public boolean isf(String name,String phone){
+        if(0<followService.findByCount(name,phone)){
+            return true;
+        }else{
+            return false;
+        }
     }
 
 

@@ -13,4 +13,6 @@ public interface UserSecurityService {
      int findByPhoneCount(String phone);
 
     UserSecurity findByCode(String usercode);
+
+    int issignin(String name, String dateStr);
 }
