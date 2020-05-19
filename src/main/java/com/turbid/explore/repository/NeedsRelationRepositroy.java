@@ -1,6 +1,7 @@
 package com.turbid.explore.repository;
 
 import com.turbid.explore.pojo.NeedsRelation;
+import com.turbid.explore.pojo.ProjectNeeds;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -16,4 +17,7 @@ public interface NeedsRelationRepositroy extends JpaRepository<NeedsRelation,Str
     @Modifying
     @Query("update NeedsRelation p set p.status=1 where p.orderno=:orderno")
     int updateSEE(@Param("orderno") String orderno);
+
+    @Query("select n from ProjectNeeds n where n.orderno in(select p.needsorderno from NeedsRelation p where p.orderno=:orderno) ")
+    ProjectNeeds getByOrder(@Param("orderno")String orderno);
 }

@@ -1,4 +1,5 @@
 package com.turbid.explore.pojo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.turbid.explore.tools.CodeLib;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
@@ -25,14 +26,17 @@ public class BaseEntity implements Serializable {
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_time",length = 32)
+    @JsonIgnore
     private Date create_time;
 
+    @JsonIgnore
     private String addftime;
 
     public String getAddftime() {
         return CodeLib.getFriendlyTime(this.create_time,true);
     }
 
+    @JsonIgnore
     private String addtime;
 
     public String getAddtime() {

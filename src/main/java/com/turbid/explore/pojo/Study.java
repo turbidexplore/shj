@@ -7,6 +7,7 @@ import lombok.Data;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.util.Date;
 
 @Data
 @Entity
@@ -15,27 +16,58 @@ import javax.persistence.Table;
 @JsonIgnoreProperties(value = { "hibernateLazyInitializer"})
 public class Study extends BaseEntity {
 
-    @Column(name = "title",  nullable = false, length = 32)
+    @Column(name = "title",   length = 32)
     private String title;
 
-    @Column(name = "price",  nullable = false, length = 32)
+    @Column(name = "price",   length = 32)
     private Integer price;
 
-    @Column(name = "shb",  nullable = false, length = 32)
+    @Column(name = "shb",   length = 32)
     private Integer shb;
 
-    @Column(name = "pricetype",  nullable = false, length = 32)
+    @Column(name = "pricetype",   length = 32)
     private String pricetype;
 
-    @Column(name = "type",  nullable = false, length = 32)
+    @Column(name = "type",   length = 32)
     private String type;
 
-    @Column(name = "indeximgurl",  nullable = false, length = 5000)
+    @Column(name = "indeximgurl",   length = 5000)
     private String indeximgurl;
 
-    @Column(name = "videourl",  nullable = false, length = 5000)
+    @Column(name = "videourl",   length = 5000)
     private String videourl;
 
-    @Column(name = "seecount",  nullable = false, length = 32)
+    @Column(name = "seecount",  length = 32)
     private Integer seecount;
+
+    public Study(String code, Date create_time, String indeximgurl, Integer seecount, Integer price, String pricetype, Integer shb, String title, String type) {
+    this.setCode(code);
+    this.setCreate_time(create_time);
+    this.indeximgurl=indeximgurl;
+    this.seecount=seecount;
+    this.price=price;
+    this.pricetype=pricetype;
+    this.shb=shb;
+    this.title=title;
+    this.type=type;
+    }
+
+    public Study(String videourl,String code, Date create_time, String indeximgurl, Integer seecount, Integer price, String pricetype, Integer shb, String title, String type) {
+       this.videourl=videourl;
+        this.setCode(code);
+        this.setCreate_time(create_time);
+        this.indeximgurl=indeximgurl;
+        this.seecount=seecount;
+        this.price=price;
+        this.pricetype=pricetype;
+        this.shb=shb;
+        this.title=title;
+        this.type=type;
+    }
+
+    public Study() {
+
+    }
+
+
 }

@@ -2,7 +2,8 @@ package com.turbid.explore.controller.home;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.turbid.explore.service.DistrictService;
+import com.turbid.explore.pojo.Shop;
+import com.turbid.explore.service.*;
 import com.turbid.explore.tools.CodeLib;
 import com.turbid.explore.tools.Info;
 import io.swagger.annotations.Api;
@@ -282,8 +283,96 @@ public class BaseController {
     @ApiOperation(value = "达人研习社分类", notes="达人研习社分类")
     @GetMapping(value = "/studysubject")
     public Mono<Info> studysubject()  {
-        return Mono.just(Info.SUCCESS(new String[]{"材料工艺","风格解析","色彩搭配"
-              ,"布艺软装","生活美学","空间方案","销售技巧","风水设计" }));
+        List data=new ArrayList();
+        Map<String,String> map =new HashMap<>();
+        map.put("name","材料工艺");
+        map.put("img","https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3862065343,1024477825&fm=15&gp=0.jpg");
+        data.add(map);
+        map =new HashMap<>();
+        map.put("name","风格解析");
+        map.put("img","https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3862065343,1024477825&fm=15&gp=0.jpg");
+        data.add(map);
+        map =new HashMap<>();
+        map.put("name","色彩搭配");
+        map.put("img","https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3862065343,1024477825&fm=15&gp=0.jpg");
+        data.add(map);
+        map =new HashMap<>();
+        map.put("name","布艺软装");
+        map.put("img","https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3862065343,1024477825&fm=15&gp=0.jpg");
+        data.add(map);
+        map =new HashMap<>();
+        map.put("name","生活美学");
+        map.put("img","https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3862065343,1024477825&fm=15&gp=0.jpg");
+        data.add(map);
+        map =new HashMap<>();
+        map.put("name","空间方案");
+        map.put("img","https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3862065343,1024477825&fm=15&gp=0.jpg");
+        data.add(map);
+        map =new HashMap<>();
+        map.put("name","销售技巧");
+        map.put("img","https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3862065343,1024477825&fm=15&gp=0.jpg");
+        data.add(map);
+        map =new HashMap<>();
+        map.put("name","风水设计");
+        map.put("img","https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3862065343,1024477825&fm=15&gp=0.jpg");
+        data.add(map);
+
+        return Mono.just(Info.SUCCESS(data));
+    }
+
+
+    @Autowired
+    private ProjectNeedsService projectNeedsService;
+
+    @Autowired
+    private ShopService shopService;
+
+    @Autowired
+    private BrandService brandService;
+
+    @Autowired
+    private GoodsService goodsService;
+
+    @Autowired
+    private QaaInfoService qaaInfoService;
+
+    @Autowired
+    private StudyService studyService;
+
+    @Autowired
+    private CaseService caseService;
+
+    @ApiOperation(value = "搜索", notes="搜索")
+    @PostMapping(value = "/search")
+    public Mono<Info> search(@RequestParam("test")String text,@RequestParam("type")Integer type)  {
+        Map data =new HashMap();
+
+        switch (type){
+            case 0:
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+            case 6:
+                break;
+            default:
+                data.put("需求",null);
+                data.put("招商",null);
+                data.put("品牌",null);
+                data.put("特价仓",null);
+                data.put("问答",null);
+                data.put("课程",null);
+                data.put("案例",null);
+                break;
+        }
+        return Mono.just(Info.SUCCESS(data));
     }
 
 

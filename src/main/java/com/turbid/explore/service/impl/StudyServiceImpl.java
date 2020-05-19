@@ -30,4 +30,16 @@ public class StudyServiceImpl implements StudyService {
         Page<Study> pages=  studyRepository.listByPage(pageable,style);
         return pages.getContent();
     }
+
+    @Override
+    public Study get(String code) {
+        return studyRepository.getOne(code);
+    }
+
+    @Override
+    public List<Study> hatstudyByPage(Integer page) {
+        Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"seecount");
+        Page<Study> pages=  studyRepository.hatstudyByPage(pageable);
+        return pages.getContent();
+    }
 }

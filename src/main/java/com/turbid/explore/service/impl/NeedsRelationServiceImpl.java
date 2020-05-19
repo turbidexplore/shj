@@ -1,6 +1,7 @@
 package com.turbid.explore.service.impl;
 
 import com.turbid.explore.pojo.NeedsRelation;
+import com.turbid.explore.pojo.ProjectNeeds;
 import com.turbid.explore.repository.NeedsRelationRepositroy;
 import com.turbid.explore.service.NeedsRelationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,5 +23,10 @@ public class NeedsRelationServiceImpl implements NeedsRelationService {
     @Transactional
     public void updateSEE(String orderno) {
         needsRelationRepositroy.updateSEE( orderno);
+    }
+
+    @Override
+    public ProjectNeeds getByOrder(String orderno) {
+        return needsRelationRepositroy.getByOrder( orderno);
     }
 }

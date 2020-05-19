@@ -71,4 +71,9 @@ public class ProjectNeedsServiceImpl implements ProjectNeedsService {
         Page<ProjectNeeds> pages=  needsRepositroy.newneeds(pageable);
         return pages.getContent();
     }
+
+    @Override
+    public ProjectNeeds getByOrder(String orderno) {
+        return needsRepositroy.getByOrder(orderno);
+    }
 }

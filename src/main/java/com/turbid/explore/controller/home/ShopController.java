@@ -29,6 +29,9 @@ public class ShopController {
     @Autowired
     private UserSecurityService userSecurityService;
 
+    @Autowired
+    private BrandService brandService;
+
     @ApiOperation(value = "获取商铺信息", notes="获取商铺信息")
     @GetMapping("/get")
     public Mono<Info> get(Principal principal) {
@@ -107,7 +110,7 @@ public class ShopController {
             item.put("user",v.getUserSecurity());
             item.put("ischoose",v.getIschoose());
             item.put("banner",v.getBanner());
-            item.put("brand","测试数据");
+            item.put("brand",brandService.getOneByShop(v.getCode()));
             item.put("investmentamount","10万元");
             item.put("showimg",v.getCompany_show());
             item.put("shopcode",v.getCode());

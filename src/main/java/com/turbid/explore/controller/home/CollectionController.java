@@ -69,6 +69,9 @@ public class CollectionController {
     @Autowired
     private CaseService caseService;
 
+    @Autowired
+    private StudyService studyService;
+
     @ApiOperation(value = "我的收藏", notes="我的收藏")
     @PostMapping("/my")
     public Mono<Info> my(Principal principal, @RequestParam("page")Integer page, @RequestParam("type")CollectionType collectionType) {
@@ -88,11 +91,15 @@ public class CollectionController {
                         }
                         break;
                     case books:
-                        break;
-                    case caseinfo:
                         Case caseinfo=caseService.caseByCode(v.getRelation());
                         if(null!=caseinfo){
-                             data.add(caseinfo);
+                            data.add(caseinfo);
+                        }
+                        break;
+                    case caseinfo:
+                        Study study=studyService.get(v.getRelation());
+                        if(null!=study){
+                             data.add(study);
                         }
                         break;
                 }

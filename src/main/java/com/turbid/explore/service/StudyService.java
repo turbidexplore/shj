@@ -10,4 +10,8 @@ public interface StudyService {
     Study save(Study study);
 
     List<Study> listByPage(Integer page, String style);
+
+    Study get(String code);
+
+    List<Study> hatstudyByPage(Integer page);
 }

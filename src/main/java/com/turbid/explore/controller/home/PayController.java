@@ -121,7 +121,22 @@ public class PayController {
     @PostMapping("/order/my")
     @ResponseBody
     public Mono<Info> ordermy(Principal principal,@RequestParam("page")Integer page) {
-        return Mono.just(Info.SUCCESS(orderService.findByUser(principal.getName(),page)));
+        List data=new ArrayList();
+        orderService.findByUser(principal.getName(),page).forEach(v->{
+            Map item=new HashMap();
+            item.put("data",v);
+            switch (v.getGoodscode()){
+                case "NEEDS_URGENT":
+                    item.put("body",projectNeedsService.getByOrder(v.getOrderno()));
+                    break;
+                case "SEE_NEEDS":
+                    item.put("body",needsRelationService.getByOrder(v.getOrderno()));
+                    break;
+            }
+            data.add(item);
+        });
+
+        return Mono.just(Info.SUCCESS(data));
     }
 
     @Autowired

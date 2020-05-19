@@ -28,12 +28,30 @@ public class StudyController {
         return Mono.just(Info.SUCCESS(studyService.save(study)));
     }
 
+
+    @ApiOperation(value = "获取课程详情", notes="获取课程详情")
+    @GetMapping("/get")
+    public Mono<Info> get(@RequestParam(name = "code")String code) {
+
+        return Mono.just(Info.SUCCESS(studyService.get(code)));
+    }
+
     @ApiOperation(value = "获取课程分页列表", notes="获取课程分页列表")
-    @PostMapping(value = "/needsByPage")
-    public Mono<Info> needsByPage(@RequestParam(name = "page")Integer page,
+    @PostMapping(value = "/studyByPage")
+    public Mono<Info> studyByPage(@RequestParam(name = "page")Integer page,
                                   @RequestParam(name = "style", required = false)String style) {
         try {
             return Mono.just(Info.SUCCESS(studyService.listByPage(page,style)));
+        }catch (Exception e){
+            return Mono.just(Info.SUCCESS(e.getMessage()));
+        }
+    }
+
+    @ApiOperation(value = "热门课程", notes="热门课程")
+    @PostMapping(value = "/hatstudyByPage")
+    public Mono<Info> hatstudyByPage(@RequestParam(name = "page")Integer page) {
+        try {
+            return Mono.just(Info.SUCCESS(studyService.hatstudyByPage(page)));
         }catch (Exception e){
             return Mono.just(Info.SUCCESS(e.getMessage()));
         }

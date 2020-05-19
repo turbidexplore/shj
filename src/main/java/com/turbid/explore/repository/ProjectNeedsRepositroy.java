@@ -34,4 +34,7 @@ public interface ProjectNeedsRepositroy extends JpaRepository<ProjectNeeds,Strin
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
     @Query("SELECT n from ProjectNeeds n ")
     Page<ProjectNeeds> newneeds(Pageable pageable);
+
+    @Query("SELECT n from ProjectNeeds n where n.orderno=:orderno  ")
+    ProjectNeeds getByOrder( @Param("orderno")String orderno);
 }

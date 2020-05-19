@@ -22,4 +22,6 @@ public interface ProjectNeedsService {
     void updateURGENT(String orderno);
 
     List<ProjectNeeds> newneeds();
+
+    ProjectNeeds getByOrder(String orderno);
 }
