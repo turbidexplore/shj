@@ -1,10 +1,8 @@
 package com.turbid.explore.controller.home;
 
-import com.turbid.explore.pojo.Call;
-import com.turbid.explore.pojo.NeedsRelation;
-import com.turbid.explore.pojo.ProjectNeeds;
-import com.turbid.explore.pojo.UserSecurity;
+import com.turbid.explore.pojo.*;
 import com.turbid.explore.repository.NeedsRelationRepositroy;
+import com.turbid.explore.repository.NoticeRepository;
 import com.turbid.explore.service.CallService;
 import com.turbid.explore.service.ProjectNeedsService;
 import com.turbid.explore.service.UserSecurityService;
@@ -33,12 +31,17 @@ public class ProjectNeedsController {
     @Autowired
     private UserSecurityService userSecurityService;
 
+    @Autowired
+    private NoticeRepository noticeRepository;
+
     @ApiOperation(value = "新需求添加", notes="新需求添加")
     @PutMapping(value = "/addneeds")
     public Mono<Info> addneeds(Principal principal, @RequestBody ProjectNeeds projectNeeds) {
         projectNeeds.setOrderno(CodeLib.randomCode(18,1));
         projectNeeds.setStatus(0);
         projectNeeds.setUserSecurity(userSecurityService.findByPhone(principal.getName()));
+        noticeRepository.save(new Notice(principal.getName(),"您的需求添加成功","系统通知",0,0));
+
         return Mono.just(Info.SUCCESS(projectNeedsService.save(projectNeeds)));
     }
 
@@ -62,6 +65,8 @@ public class ProjectNeedsController {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String dateStr = sdf.format(new Date());
         projectNeeds.setOvertime(dateStr);
+        noticeRepository.save(new Notice(principal.getName(),"您的需求已关闭","系统通知",0,0));
+
         return Mono.just(Info.SUCCESS(projectNeedsService.save(projectNeeds)));
     }
 

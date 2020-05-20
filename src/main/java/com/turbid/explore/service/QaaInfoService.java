@@ -14,4 +14,6 @@ public interface QaaInfoService {
     QaaInfo qaaByCode(String code);
 
     List<QaaInfo> listByUser(String name, Integer page);
+
+    List<QaaInfo> search(String text, Integer page);
 }

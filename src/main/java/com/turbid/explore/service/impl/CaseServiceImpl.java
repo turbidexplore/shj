@@ -89,4 +89,11 @@ public class CaseServiceImpl implements CaseService {
     public int commentcount(String usercode) {
          return caseRepositroy.commentcount(usercode);
     }
+
+    @Override
+    public List<Case> search(String text, Integer page) {
+        Pageable pageable = new PageRequest(page,10, Sort.Direction.DESC,"create_time");
+        Page<Case> pages=  caseRepositroy.search(pageable,text);
+        return pages.getContent();
+    }
 }

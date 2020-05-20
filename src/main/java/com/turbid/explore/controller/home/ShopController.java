@@ -110,7 +110,12 @@ public class ShopController {
             item.put("user",v.getUserSecurity());
             item.put("ischoose",v.getIschoose());
             item.put("banner",v.getBanner());
-            item.put("brand",brandService.getOneByShop(v.getCode()));
+            try {
+                item.put("brand",brandService.getOneByShop(v.getCode()));
+            }catch (Exception e){
+                item.put("brand",null);
+            }
+
             item.put("investmentamount","10万元");
             item.put("showimg",v.getCompany_show());
             item.put("shopcode",v.getCode());

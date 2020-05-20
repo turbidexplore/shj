@@ -24,4 +24,8 @@ public interface QaaInfoRepositroy extends JpaRepository<QaaInfo,String> {
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
     @Query("SELECT q from QaaInfo q where q.isdel=false and q.userSecurity.phonenumber=:name")
     Page<QaaInfo> listByUser(Pageable pageable,@Param("name") String name);
+
+    @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
+    @Query("SELECT q from QaaInfo q where q.isdel=false and (q.title LIKE CONCAT(:text,'%') or q.content LIKE CONCAT(:text,'%') or q.label LIKE CONCAT(:text,'%') )")
+    Page<QaaInfo> search(Pageable pageable,@Param("text") String text);
 }

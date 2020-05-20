@@ -1,12 +1,16 @@
 package com.turbid.explore.controller.home;
 
 import com.turbid.explore.pojo.Follow;
+import com.turbid.explore.pojo.Notice;
+import com.turbid.explore.pojo.UserSecurity;
+import com.turbid.explore.repository.NoticeRepository;
 import com.turbid.explore.service.FollowService;
 import com.turbid.explore.service.UserSecurityService;
 import com.turbid.explore.tools.Info;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -30,12 +34,20 @@ public class FollowController {
     @Autowired
     private FollowService followService;
 
+    @Autowired
+    private NoticeRepository noticeRepository;
+
     @ApiOperation(value = "关注", notes="关注")
     @PutMapping("/add")
     public Mono<Info> add(Principal principal, @RequestParam("phone") String phone) {
+
         Follow follow=new Follow();
-        follow.setUser(userSecurityService.findByPhone(principal.getName()));
+        UserSecurity user=userSecurityService.findByPhone(principal.getName());
+        follow.setUser(user);
         follow.setUserFollow(userSecurityService.findByPhone(phone));
+
+        noticeRepository.save(new Notice(phone,"用户【"+user.getUserBasic().getNikename()+"】关注了您","关注通知",1,0));
+
         return Mono.just(Info.SUCCESS( followService.save(follow)));
     }
 

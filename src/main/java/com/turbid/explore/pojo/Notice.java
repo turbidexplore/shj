@@ -20,10 +20,27 @@ public class Notice extends BaseEntity {
     @Column(name = "form")
     private String form;
 
+    @Column(name = "type")
+    private Integer type;
+
     @Column(name = "time")
     private String time;
 
+    @Column(name = "status")
+    private Integer status;
+
     public String getTime(){
         return this.getAddftime();
+    }
+
+    public Notice() {
+    }
+
+    public Notice(String userphone,String message,String form,Integer type,Integer status) {
+        this.userphone=userphone;
+        this.message=message;
+        this.form=form;
+        this.type=type;
+        this.status=status;
     }
 }

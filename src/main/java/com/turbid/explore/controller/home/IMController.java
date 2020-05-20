@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.ImmutableMap;
 import com.turbid.explore.pojo.bo.Message;
+import com.turbid.explore.repository.NoticeRepository;
 import com.turbid.explore.tools.CodeLib;
 import com.turbid.explore.tools.Info;
 import com.turbid.explore.tools.TLSSigAPIv2;
@@ -135,33 +136,24 @@ public class IMController {
         return Mono.just(Info.SUCCESS(jsonObject));
     }
 
+    @Autowired
+    private NoticeRepository noticeRepository;
+
     @ApiOperation(value = "通知", notes="通知")
     @PostMapping("/notice")
     public Mono<Info> notice(Principal principal) {
         Map<String,List<Map<String,String>>> data=new HashMap<>();
-        List<Map<String,String>> sys=new ArrayList<>();
-        Map<String,String> itemsys=new HashMap<>();
-        itemsys.put("message","测试系统消息发发范德萨发给VS的风格十分");
-        itemsys.put("form","系统管理员");
-        itemsys.put("time","2020-05-01 12:30:56");
-        sys.add(itemsys);
-        itemsys=new HashMap<>();
-        itemsys.put("message","测试系统消息2发大水发射点发钱啊");
-        itemsys.put("form","系统管理员");
-        itemsys.put("time","2020-05-01 12:30:58");
-        sys.add(itemsys);
+        List sys=new ArrayList<>();
+        List msg=new ArrayList<>();
+        noticeRepository.findByUserphoneAndTypeAndStatus(principal.getName(),0,0).forEach(v->{
+            v.setStatus(1);
+            sys.add(noticeRepository.saveAndFlush(v));
+        });
+        noticeRepository.findByUserphoneAndTypeAndStatus(principal.getName(),1,0).forEach(v->{
+            v.setStatus(1);
+            msg.add(noticeRepository.saveAndFlush(v));
+        });
         data.put("sys",sys);
-        List<Map<String,String>> msg=new ArrayList<>();
-        Map<String,String> itemmsg=new HashMap<>();
-        itemmsg.put("message","测试订单通知内容发放大使发");
-        itemmsg.put("form","订单通知");
-        itemmsg.put("time","2020-05-01 12:30:56");
-        msg.add(itemmsg);
-        itemmsg=new HashMap<>();
-        itemmsg.put("message","测试支付通知内容41234erwqe2");
-        itemmsg.put("form","支付通知");
-        itemmsg.put("time","2020-05-01 12:30:58");
-        msg.add(itemmsg);
         data.put("msg",msg);
         return Mono.just(Info.SUCCESS(data));
     }

@@ -37,4 +37,8 @@ public interface ProjectNeedsRepositroy extends JpaRepository<ProjectNeeds,Strin
 
     @Query("SELECT n from ProjectNeeds n where n.orderno=:orderno  ")
     ProjectNeeds getByOrder( @Param("orderno")String orderno);
+
+    @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
+    @Query("SELECT n from ProjectNeeds n where n.title LIKE CONCAT(:text,'%') or n.type LIKE CONCAT(:text,'%') or n.category  LIKE CONCAT(:text,'%') or n.style LIKE CONCAT(:text,'%') ")
+    Page<ProjectNeeds> search(Pageable pageable,@Param("text") String text);
 }

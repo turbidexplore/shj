@@ -25,4 +25,8 @@ public interface BrandRepositroy extends JpaRepository<Brand,String> {
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
     @Query("select b.name from Brand b where b.company.code=:code ")
    Page<String> getOneByShop(Pageable pageable, @Param("code") String code);
+
+    @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
+    @Query("select b from Brand b where b.name LIKE CONCAT(:text,'%') or b.company.name LIKE CONCAT(:text,'%') or b.brandgroup LIKE CONCAT(:text,'%')  or b.business LIKE CONCAT(:text,'%')  or b.content LIKE CONCAT(:text,'%') or b.introduce LIKE CONCAT(:text,'%') ")
+    Page<Brand> search(Pageable pageable,@Param("text") String text);
 }

@@ -30,4 +30,8 @@ public interface GoodsRepository extends JpaRepository<Goods,String> {
     @Modifying
     @Query("update Goods p set p.status=:status where p.code=:code")
     int updatastatus(@Param("code")String code,@Param("status") Integer status);
+
+    @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
+    @Query("select g from Goods g where  g.status=0 and ( g.content LIKE CONCAT(:text,'%') or g.title  LIKE CONCAT(:text,'%') or g.lable  LIKE CONCAT(:text,'%') )")
+    Page<Goods> search(Pageable pageable,@Param("text") String text);
 }

@@ -40,7 +40,19 @@ public class Study extends BaseEntity {
     @Column(name = "seecount",  length = 32)
     private Integer seecount;
 
-    public Study(String code, Date create_time, String indeximgurl, Integer seecount, Integer price, String pricetype, Integer shb, String title, String type) {
+    @Column(name = "content",  length = 5000)
+    private String content;
+
+    @Column(name = "teachername",  length = 255)
+    private String teachername;
+
+    @Column(name = "teacherheadurl",  length = 255)
+    private String teacherheadurl;
+
+    @Column(name = "teacherdesc",  length = 5000)
+    private String teacherdesc;
+
+    public Study(String code, Date create_time, String indeximgurl, Integer seecount, Integer price, String pricetype, Integer shb, String title, String type,String teachername,String teacherheadurl) {
     this.setCode(code);
     this.setCreate_time(create_time);
     this.indeximgurl=indeximgurl;
@@ -50,6 +62,8 @@ public class Study extends BaseEntity {
     this.shb=shb;
     this.title=title;
     this.type=type;
+    this.teachername=teachername;
+    this.teacherheadurl=teacherheadurl;
     }
 
     public Study(String videourl,String code, Date create_time, String indeximgurl, Integer seecount, Integer price, String pricetype, Integer shb, String title, String type) {

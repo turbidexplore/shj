@@ -11,4 +11,6 @@ public interface NeedsRelationService {
     void updateSEE(String orderno);
 
     ProjectNeeds getByOrder(String orderno);
+
+    void updateSTUDY(String orderno);
 }

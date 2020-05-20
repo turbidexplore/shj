@@ -41,4 +41,8 @@ public interface CaseRepositroy extends JpaRepository<Case,String> {
 
     @Query("select count(c) from Comment c where c.relation in (select caseinfo.code from Case caseinfo where caseinfo.userSecurity.code =:usercode)")
     int commentcount( @Param("usercode")String usercode);
+
+    @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
+    @Query("SELECT c from Case c where c.label LIKE CONCAT(:text,'%') or c.content LIKE CONCAT(:text,'%') or c.title LIKE CONCAT(:text,'%') or c.name LIKE CONCAT(:text,'%') or c.company LIKE CONCAT(:text,'%') or c.subject LIKE CONCAT(:text,'%') or c.address LIKE CONCAT(:text,'%') or c.team LIKE CONCAT(:text,'%')  ")
+    Page<Case> search(Pageable pageable,@Param("text") String text);
 }

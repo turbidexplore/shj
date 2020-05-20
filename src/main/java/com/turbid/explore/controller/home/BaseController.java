@@ -103,6 +103,11 @@ public class BaseController {
         map.put("price",0.01);
         map.put("costprice",0.01);
         info.put("SEE_NEEDS",map);
+        map.put("key","课程购买");
+        map.put("value","SEE_STUDY");
+        map.put("price",0.01);
+        map.put("costprice",0.01);
+        info.put("SEE_STUDY",map);
         map=new HashMap<>();
         map.put("key","工厂VIP月卡");
         map.put("value","MMVIP");
@@ -224,6 +229,8 @@ public class BaseController {
         return Mono.just(Info.SUCCESS(list));
     }
 
+
+
     @ApiOperation(value = "获取品牌馆分类信息", notes="获取品牌馆分类信息")
     @GetMapping(value = "/classgroup")
     public Mono<Info> classgroup()  {
@@ -342,34 +349,47 @@ public class BaseController {
     @Autowired
     private CaseService caseService;
 
-    @ApiOperation(value = "搜索", notes="搜索")
+    @ApiOperation(value = "热门搜索", notes="热门搜索")
+    @GetMapping(value = "/searchhat")
+    public Mono<Info> searchhat()  {
+        return Mono.just(Info.SUCCESS(new String[]{"民宿空间","酒店空间","品牌酒店",
+                "餐饮空间","住宅空间","美式"}));
+    }
+
+    @ApiOperation(value = "搜索", notes="搜索 0需求 2品牌 3特加仓 4问答 5课程 6案例")
     @PostMapping(value = "/search")
-    public Mono<Info> search(@RequestParam("test")String text,@RequestParam("type")Integer type)  {
+    public Mono<Info> search(@RequestParam("text")String text,@RequestParam("type")Integer type,@RequestParam("page")Integer page)  {
         Map data =new HashMap();
 
         switch (type){
             case 0:
+                data.put("needs",projectNeedsService.search(text,page));
                 break;
             case 1:
+                data.put("zsjm",null);
                 break;
             case 2:
+                data.put("company",shopService.search(text,page));
                 break;
             case 3:
+                data.put("goods",goodsService.search(text,page));
                 break;
             case 4:
+                data.put("qaaInfo",qaaInfoService.search(text,page));
                 break;
             case 5:
+                data.put("study",studyService.search(text,page));
                 break;
             case 6:
+                data.put("case",caseService.search(text,page));
                 break;
             default:
-                data.put("需求",null);
-                data.put("招商",null);
-                data.put("品牌",null);
-                data.put("特价仓",null);
-                data.put("问答",null);
-                data.put("课程",null);
-                data.put("案例",null);
+                data.put("needs",projectNeedsService.search(text,page));
+                data.put("company",shopService.search(text,page));
+                data.put("goods",goodsService.search(text,page));
+                data.put("qaaInfo",qaaInfoService.search(text,page));
+                data.put("study",studyService.search(text,page));
+                data.put("case",caseService.search(text,page));
                 break;
         }
         return Mono.just(Info.SUCCESS(data));

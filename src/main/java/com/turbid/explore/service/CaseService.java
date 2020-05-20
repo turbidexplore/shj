@@ -29,4 +29,6 @@ public interface CaseService {
     List<Case> casesByUsercode(String usercode, Integer page);
 
     int commentcount(String usercode);
+
+    List<Case> search(String text, Integer page);
 }

@@ -23,4 +23,6 @@ public interface ShopService {
     List<Shop> zsjm(Principal principal, Integer page, String type);
 
     Shop getByUsercode(String usercode);
+
+    List<Shop> search(String text, Integer page);
 }

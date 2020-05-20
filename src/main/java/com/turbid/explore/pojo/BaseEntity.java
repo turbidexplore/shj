@@ -26,17 +26,14 @@ public class BaseEntity implements Serializable {
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_time",length = 32)
-    @JsonIgnore
     private Date create_time;
 
-    @JsonIgnore
     private String addftime;
 
     public String getAddftime() {
         return CodeLib.getFriendlyTime(this.create_time,true);
     }
 
-    @JsonIgnore
     private String addtime;
 
     public String getAddtime() {

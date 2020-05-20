@@ -18,4 +18,6 @@ public interface GoodsService {
     List<Goods> mylistByPage(String name, Integer page);
 
     int updatastatus(String code, Integer status);
+
+    List<Goods> search(String text, Integer page);
 }

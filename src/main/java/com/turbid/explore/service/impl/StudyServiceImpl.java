@@ -42,4 +42,11 @@ public class StudyServiceImpl implements StudyService {
         Page<Study> pages=  studyRepository.hatstudyByPage(pageable);
         return pages.getContent();
     }
+
+    @Override
+    public List<Study> search(String text, Integer page) {
+        Pageable pageable = new PageRequest(page,10, Sort.Direction.DESC,"seecount");
+        Page<Study> pages=  studyRepository.search(pageable,text);
+        return pages.getContent();
+    }
 }

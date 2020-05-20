@@ -11,11 +11,17 @@ import com.alipay.api.response.*;
 import com.qcloud.cos.utils.Base64;
 import com.turbid.explore.configuration.AlipayConfig;
 import com.turbid.explore.configuration.WeChatPayConfig;
+import com.turbid.explore.pojo.Notice;
 import com.turbid.explore.pojo.Order;
+import com.turbid.explore.pojo.StudyRelation;
+import com.turbid.explore.pojo.UserSecurity;
 import com.turbid.explore.pojo.bo.*;
+import com.turbid.explore.repository.NoticeRepository;
+import com.turbid.explore.repository.StudyRelationRepository;
 import com.turbid.explore.service.NeedsRelationService;
 import com.turbid.explore.service.OrderService;
 import com.turbid.explore.service.ProjectNeedsService;
+import com.turbid.explore.service.UserSecurityService;
 import com.turbid.explore.tools.CodeLib;
 import com.turbid.explore.tools.Info;
 import com.turbid.explore.tools.MD5;
@@ -58,6 +64,9 @@ import java.util.*;
 @RequestMapping("/pay")
 @CrossOrigin
 public class PayController {
+
+    @Autowired
+    private NoticeRepository noticeRepository;
 
     /**
      * 支付宝web支付
@@ -205,9 +214,11 @@ public class PayController {
             //——请根据您的业务逻辑来编写程序（以上代码仅作参考）——
             switch (order.getGoodscode()){
                 case "NEEDS_URGENT":
+                    noticeRepository.save(new Notice(order.getUserphone(),"您的需求加急订单已支付成功","支付通知",0,0));
                     projectNeedsService.updateURGENT(order.getOrderno());
                     break;
                 case "SEE_NEEDS":
+                    noticeRepository.save(new Notice(order.getUserphone(),"您的查看需求订单已支付成功","支付通知",0,0));
                     needsRelationService.updateSEE(order.getOrderno());
                     break;
             }
@@ -261,9 +272,11 @@ public class PayController {
             //——请根据您的业务逻辑来编写程序（以上代码仅作参考）——
             switch (order.getGoodscode()){
                 case "NEEDS_URGENT":
+                    noticeRepository.save(new Notice(order.getUserphone(),"您的需求加急订单已支付成功","支付通知",0,0));
                     projectNeedsService.updateURGENT(order.getOrderno());
                     break;
                 case "SEE_NEEDS":
+                    noticeRepository.save(new Notice(order.getUserphone(),"您的查看需求订单已支付成功","支付通知",0,0));
                     needsRelationService.updateSEE(order.getOrderno());
                     break;
             }
@@ -495,10 +508,16 @@ public class PayController {
                  order=orderService.findByOrderNo(out_trade_no);
                 switch (order.getGoodscode()){
                     case "NEEDS_URGENT":
+                        noticeRepository.save(new Notice(order.getUserphone(),"您的需求加急订单已支付成功","支付通知",0,0));
                         projectNeedsService.updateURGENT(order.getOrderno());
                         break;
                     case "SEE_NEEDS":
+                        noticeRepository.save(new Notice(order.getUserphone(),"您的查看需求订单已支付成功","支付通知",0,0));
                         needsRelationService.updateSEE(order.getOrderno());
+                        break;
+                    case "SEE_STUDY":
+                        noticeRepository.save(new Notice(order.getUserphone(),"您的课程订单已支付成功","支付通知",0,0));
+                        needsRelationService.updateSTUDY(order.getOrderno());
                         break;
                 }
                 order.setStatus(1);
@@ -831,5 +850,26 @@ public class PayController {
         order.setPrice(price);
         order.setStatus(0);
         orderService.save(order);
+    }
+
+    @Autowired
+    private UserSecurityService userSecurityService;
+
+    @Autowired
+    private StudyRelationRepository studyRelationRepository;
+
+    @ApiOperation(value = "设汇币支付", notes="设汇币支付")
+    @PostMapping("/shbpay")
+    public Mono<Info> shbpay(Principal principal,@RequestBody WebpayBo webpayBo) {
+        UserSecurity userSecurity=userSecurityService.findByPhone(principal.getName());
+        if(null!=userSecurity.getShb()&&userSecurity.getShb()>Integer.parseInt(webpayBo.getTotal_amount())){
+            userSecurity.setShb(userSecurity.getShb()-Integer.parseInt(webpayBo.getTotal_amount()));
+            userSecurityService.save(userSecurity);
+            studyRelationRepository.updateSTUDY(webpayBo.getOut_trade_no());
+            return Mono.just(Info.SUCCESS("支付成功"));
+        }else {
+            return Mono.just(Info.ERROR("设汇币余额不足"));
+        }
+
     }
 }

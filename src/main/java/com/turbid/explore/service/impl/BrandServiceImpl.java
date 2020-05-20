@@ -49,4 +49,11 @@ public class BrandServiceImpl implements BrandService {
         Page<String> pages=  brandRepositroy.getOneByShop(pageable,code);
         return pages.getContent().get(0);
     }
+
+    @Override
+    public List<Brand> search(String text, Integer page) {
+        Pageable pageable = new PageRequest(page,10, Sort.Direction.DESC,"create_time");
+        Page<Brand> pages=  brandRepositroy.search(pageable,text);
+        return pages.getContent();
+    }
 }

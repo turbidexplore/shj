@@ -91,15 +91,15 @@ public class CollectionController {
                         }
                         break;
                     case books:
-                        Case caseinfo=caseService.caseByCode(v.getRelation());
-                        if(null!=caseinfo){
-                            data.add(caseinfo);
+                        Study study=studyService.get(v.getRelation());
+                        if(null!=study){
+                            data.add(study);
                         }
                         break;
                     case caseinfo:
-                        Study study=studyService.get(v.getRelation());
-                        if(null!=study){
-                             data.add(study);
+                        Case caseinfo=caseService.caseByCode(v.getRelation());
+                        if(null!=caseinfo){
+                            data.add(caseinfo);
                         }
                         break;
                 }

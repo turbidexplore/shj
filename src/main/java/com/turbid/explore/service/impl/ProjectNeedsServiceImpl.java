@@ -4,7 +4,6 @@ import com.turbid.explore.pojo.ProjectNeeds;
 import com.turbid.explore.repository.ProjectNeedsRepositroy;
 import com.turbid.explore.service.ProjectNeedsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -75,5 +74,12 @@ public class ProjectNeedsServiceImpl implements ProjectNeedsService {
     @Override
     public ProjectNeeds getByOrder(String orderno) {
         return needsRepositroy.getByOrder(orderno);
+    }
+
+    @Override
+    public List<ProjectNeeds> search(String text, Integer page) {
+        Pageable pageable = new PageRequest(page,10, Sort.Direction.DESC,"create_time");
+        Page<ProjectNeeds> pages=  needsRepositroy.search(pageable,text);
+        return pages.getContent();
     }
 }

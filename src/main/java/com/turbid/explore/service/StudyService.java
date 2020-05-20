@@ -14,4 +14,6 @@ public interface StudyService {
     Study get(String code);
 
     List<Study> hatstudyByPage(Integer page);
+
+    List<Study> search(String text, Integer page);
 }

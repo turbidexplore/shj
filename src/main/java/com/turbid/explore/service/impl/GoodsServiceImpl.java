@@ -60,4 +60,11 @@ public class GoodsServiceImpl implements GoodsService {
     public int updatastatus(String code, Integer status) {
         return goodsRepository.updatastatus(code,status);
     }
+
+    @Override
+    public List<Goods> search(String text, Integer page) {
+        Pageable pageable = new PageRequest(page,10, Sort.Direction.DESC,"create_time");
+        Page<Goods> pages=  goodsRepository.search(pageable,text);
+        return pages.getContent();
+    }
 }
