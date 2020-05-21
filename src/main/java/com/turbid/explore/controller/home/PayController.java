@@ -18,10 +18,7 @@ import com.turbid.explore.pojo.UserSecurity;
 import com.turbid.explore.pojo.bo.*;
 import com.turbid.explore.repository.NoticeRepository;
 import com.turbid.explore.repository.StudyRelationRepository;
-import com.turbid.explore.service.NeedsRelationService;
-import com.turbid.explore.service.OrderService;
-import com.turbid.explore.service.ProjectNeedsService;
-import com.turbid.explore.service.UserSecurityService;
+import com.turbid.explore.service.*;
 import com.turbid.explore.tools.CodeLib;
 import com.turbid.explore.tools.Info;
 import com.turbid.explore.tools.MD5;
@@ -77,7 +74,7 @@ public class PayController {
     @ApiOperation(value = "支付宝web支付", notes="支付宝web支付")
     @PostMapping("/ali/webpay")
     public void aliwebpay(Principal principal, @RequestBody WebpayBo webpayBo, HttpServletResponse response) {
-        orderinfo(webpayBo.getOut_trade_no(),webpayBo.getProduct_code(),webpayBo.getTotal_amount(),"aliweb",webpayBo.getBody(),principal.getName());
+        orderinfo(webpayBo.getOut_trade_no(),webpayBo.getProduct_code(),webpayBo.getTotal_amount(),"aliweb",webpayBo.getBody(),principal.getName(),0);
         webpayBo.setOut_trade_no(CodeLib.randomCode(12,1));
         // SDK 公共请求类，包含公共请求参数，以及封装了签名与验签，开发者无需关注签名与验签
         //调用RSA签名方式
@@ -140,6 +137,9 @@ public class PayController {
                     break;
                 case "SEE_NEEDS":
                     item.put("body",needsRelationService.getByOrder(v.getOrderno()));
+                    break;
+                case "SEE_STUDY":
+                    item.put("body",studyService.getByOrder(v.getOrderno()));
                     break;
             }
             data.add(item);
@@ -214,12 +214,16 @@ public class PayController {
             //——请根据您的业务逻辑来编写程序（以上代码仅作参考）——
             switch (order.getGoodscode()){
                 case "NEEDS_URGENT":
-                    noticeRepository.save(new Notice(order.getUserphone(),"您的需求加急订单已支付成功","支付通知",0,0));
                     projectNeedsService.updateURGENT(order.getOrderno());
+                    noticeRepository.save(new Notice(order.getUserphone(),"您的需求加急订单已支付成功","支付通知",0,0));
                     break;
                 case "SEE_NEEDS":
-                    noticeRepository.save(new Notice(order.getUserphone(),"您的查看需求订单已支付成功","支付通知",0,0));
                     needsRelationService.updateSEE(order.getOrderno());
+                    noticeRepository.save(new Notice(order.getUserphone(),"您的查看需求订单已支付成功","支付通知",0,0));
+                    break;
+                case "SEE_STUDY":
+                    studyService.updateSTUDY(order.getOrderno());
+                    noticeRepository.save(new Notice(order.getUserphone(),"您的课程订单已支付成功","支付通知",0,0));
                     break;
             }
             //////////////////////////////////////////////////////////////////////////////////////////
@@ -272,12 +276,16 @@ public class PayController {
             //——请根据您的业务逻辑来编写程序（以上代码仅作参考）——
             switch (order.getGoodscode()){
                 case "NEEDS_URGENT":
-                    noticeRepository.save(new Notice(order.getUserphone(),"您的需求加急订单已支付成功","支付通知",0,0));
                     projectNeedsService.updateURGENT(order.getOrderno());
+                    noticeRepository.save(new Notice(order.getUserphone(),"您的需求加急订单已支付成功","支付通知",0,0));
                     break;
                 case "SEE_NEEDS":
-                    noticeRepository.save(new Notice(order.getUserphone(),"您的查看需求订单已支付成功","支付通知",0,0));
                     needsRelationService.updateSEE(order.getOrderno());
+                    noticeRepository.save(new Notice(order.getUserphone(),"您的查看需求订单已支付成功","支付通知",0,0));
+                    break;
+                case "SEE_STUDY":
+                    studyService.updateSTUDY(order.getOrderno());
+                    noticeRepository.save(new Notice(order.getUserphone(),"您的课程订单已支付成功","支付通知",0,0));
                     break;
             }
             order.setStatus(1);
@@ -414,7 +422,7 @@ public class PayController {
     @ResponseBody
     @PostMapping("/ali/apppayorder")
     public Mono<Info> apppayorder(Principal principal,@RequestBody WebpayBo webpayBo){
-        orderinfo(webpayBo.getOut_trade_no(),webpayBo.getProduct_code(),webpayBo.getTotal_amount(),"aliapp",webpayBo.getBody(),principal.getName());
+        orderinfo(webpayBo.getOut_trade_no(),webpayBo.getProduct_code(),webpayBo.getTotal_amount(),"aliapp",webpayBo.getBody(),principal.getName(),0);
         //实例化客户端
         AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.URL, AlipayConfig.APPID, AlipayConfig.RSA_PRIVATE_KEY, AlipayConfig.FORMAT, AlipayConfig.CHARSET, AlipayConfig.ALIPAY_PUBLIC_KEY, AlipayConfig.SIGNTYPE);
         //实例化具体API对应的request类,类名称和接口名称对应,当前调用接口名称：alipay.trade.app.pay
@@ -447,7 +455,7 @@ public class PayController {
     @PostMapping("/wechat/webpay")
     public Mono<Info> wechatweb(Principal principal,@RequestBody WebpayBo webpayBo){
         try {
-            orderinfo(webpayBo.getOut_trade_no(),webpayBo.getProduct_code(),webpayBo.getTotal_amount(),"wechatweb",webpayBo.getBody(),principal.getName());
+            orderinfo(webpayBo.getOut_trade_no(),webpayBo.getProduct_code(),webpayBo.getTotal_amount(),"wechatweb",webpayBo.getBody(),principal.getName(),0);
           Map<String,String> map=  doXMLParse(SendPayment(webpayBo.getBody(),webpayBo.getOut_trade_no(),Double.valueOf(webpayBo.getTotal_amount()),webpayBo.getProduct_code(),"MWEB",WeChatPayConfig.APP_ID));
             return Mono.just(Info.SUCCESS(map));
         } catch (Exception e) {
@@ -462,7 +470,7 @@ public class PayController {
     @PostMapping("/wechat/apppay")
     public Mono<Info> apppay(Principal principal,@RequestBody WebpayBo webpayBo){
         try {
-            orderinfo(webpayBo.getOut_trade_no(),webpayBo.getProduct_code(),webpayBo.getTotal_amount(),"wechatapp",webpayBo.getBody(),principal.getName());
+            orderinfo(webpayBo.getOut_trade_no(),webpayBo.getProduct_code(),webpayBo.getTotal_amount(),"wechatapp",webpayBo.getBody(),principal.getName(),0);
             Map<String,String> map=  doXMLParse(SendPayment(webpayBo.getBody(),webpayBo.getOut_trade_no(),Double.valueOf(webpayBo.getTotal_amount()),webpayBo.getProduct_code(),"APP",WeChatPayConfig.OPEN_APP_ID));
             Map<String,String> param = new HashMap<String,String>();
             String timestamp=String.valueOf(System.currentTimeMillis()/1000);
@@ -508,16 +516,16 @@ public class PayController {
                  order=orderService.findByOrderNo(out_trade_no);
                 switch (order.getGoodscode()){
                     case "NEEDS_URGENT":
-                        noticeRepository.save(new Notice(order.getUserphone(),"您的需求加急订单已支付成功","支付通知",0,0));
                         projectNeedsService.updateURGENT(order.getOrderno());
+                        noticeRepository.save(new Notice(order.getUserphone(),"您的需求加急订单已支付成功","支付通知",0,0));
                         break;
                     case "SEE_NEEDS":
-                        noticeRepository.save(new Notice(order.getUserphone(),"您的查看需求订单已支付成功","支付通知",0,0));
                         needsRelationService.updateSEE(order.getOrderno());
+                        noticeRepository.save(new Notice(order.getUserphone(),"您的查看需求订单已支付成功","支付通知",0,0));
                         break;
                     case "SEE_STUDY":
+                        studyService.updateSTUDY(order.getOrderno());
                         noticeRepository.save(new Notice(order.getUserphone(),"您的课程订单已支付成功","支付通知",0,0));
-                        needsRelationService.updateSTUDY(order.getOrderno());
                         break;
                 }
                 order.setStatus(1);
@@ -840,7 +848,7 @@ public class PayController {
     @Autowired
     private OrderService orderService;
 
-    public void orderinfo(String orderno,String code,String price,String type,String body,String userphone){
+    public void orderinfo(String orderno,String code,String price,String type,String body,String userphone,Integer status){
         Order order=new Order();
         order.setUserphone(userphone);
         order.setBody(body);
@@ -848,7 +856,7 @@ public class PayController {
         order.setPaytype(type);
         order.setGoodscode(code);
         order.setPrice(price);
-        order.setStatus(0);
+        order.setStatus(status);
         orderService.save(order);
     }
 
@@ -856,16 +864,18 @@ public class PayController {
     private UserSecurityService userSecurityService;
 
     @Autowired
-    private StudyRelationRepository studyRelationRepository;
+    private StudyService studyService;
 
     @ApiOperation(value = "设汇币支付", notes="设汇币支付")
     @PostMapping("/shbpay")
+    @ResponseBody
     public Mono<Info> shbpay(Principal principal,@RequestBody WebpayBo webpayBo) {
         UserSecurity userSecurity=userSecurityService.findByPhone(principal.getName());
         if(null!=userSecurity.getShb()&&userSecurity.getShb()>Integer.parseInt(webpayBo.getTotal_amount())){
             userSecurity.setShb(userSecurity.getShb()-Integer.parseInt(webpayBo.getTotal_amount()));
             userSecurityService.save(userSecurity);
-            studyRelationRepository.updateSTUDY(webpayBo.getOut_trade_no());
+            studyService.updateSTUDY(webpayBo.getOut_trade_no());
+            orderinfo(webpayBo.getOut_trade_no(),webpayBo.getProduct_code(),webpayBo.getTotal_amount(),"shb",webpayBo.getBody(),principal.getName(),1);
             return Mono.just(Info.SUCCESS("支付成功"));
         }else {
             return Mono.just(Info.ERROR("设汇币余额不足"));

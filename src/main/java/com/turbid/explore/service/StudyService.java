@@ -1,6 +1,7 @@
 package com.turbid.explore.service;
 
 import com.turbid.explore.pojo.Study;
+import com.turbid.explore.pojo.StudyRelation;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,4 +17,8 @@ public interface StudyService {
     List<Study> hatstudyByPage(Integer page);
 
     List<Study> search(String text, Integer page);
+
+    void updateSTUDY(String out_trade_no);
+
+    Study getByOrder(String orderno);
 }

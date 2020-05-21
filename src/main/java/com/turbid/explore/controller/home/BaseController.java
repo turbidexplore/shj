@@ -103,6 +103,7 @@ public class BaseController {
         map.put("price",0.01);
         map.put("costprice",0.01);
         info.put("SEE_NEEDS",map);
+        map=new HashMap<>();
         map.put("key","课程购买");
         map.put("value","SEE_STUDY");
         map.put("price",0.01);

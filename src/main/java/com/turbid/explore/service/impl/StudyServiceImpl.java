@@ -2,6 +2,7 @@ package com.turbid.explore.service.impl;
 
 import com.turbid.explore.pojo.NativeContent;
 import com.turbid.explore.pojo.Study;
+import com.turbid.explore.repository.StudyRelationRepository;
 import com.turbid.explore.repository.StudyRepository;
 import com.turbid.explore.service.StudyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -48,5 +50,19 @@ public class StudyServiceImpl implements StudyService {
         Pageable pageable = new PageRequest(page,10, Sort.Direction.DESC,"seecount");
         Page<Study> pages=  studyRepository.search(pageable,text);
         return pages.getContent();
+    }
+
+    @Autowired
+    private StudyRelationRepository studyRelationRepository;
+
+    @Override
+    @Transactional
+    public void updateSTUDY(String out_trade_no) {
+        studyRelationRepository.updateSTUDY(out_trade_no);
+    }
+
+    @Override
+    public Study getByOrder(String orderno) {
+        return studyRepository.getByOrder(orderno);
     }
 }

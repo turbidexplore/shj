@@ -101,6 +101,7 @@ public class ShopController {
         List<Map<String,Object>> data=new ArrayList<>();
         shopService.zsjm(principal,page,type).forEach(v->{
             Map<String,Object> item=new HashMap<>();
+            item.put("compamyname",v.getCompanyname());
             item.put("name",v.getName());
             item.put("logo",v.getLogo());
             item.put("area","全国");
@@ -136,7 +137,6 @@ public class ShopController {
     @ApiOperation(value = "店铺统计", notes="店铺统计")
     @GetMapping("/count")
     public Mono<Info> count(Principal principal,@RequestParam("code")String code) {
-
         Map<String,Object> data =new HashMap<>();
         data.put("followcount",followService.followmeCount(principal.getName()));
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
