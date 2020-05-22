@@ -30,4 +30,6 @@ public interface FollowService {
     int followheCount(String name);
 
     int hefollowCount(String name);
+
+    int newfollowmeCount(String name, String time);
 }

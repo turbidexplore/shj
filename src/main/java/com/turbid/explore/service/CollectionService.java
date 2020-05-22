@@ -17,4 +17,8 @@ public interface CollectionService {
     int findByCount(String name, String relation);
 
     Object cancelcollection(String name, String relation);
+
+    int goodslikes(String time, String code);
+
+    int count(String code);
 }

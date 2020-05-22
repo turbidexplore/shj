@@ -55,4 +55,9 @@ public class CommentServiceImpl implements CommentService {
     public List<Comment> mycomments(String name, String relation) {
         return commentRepositroy.mycomments(name,relation);
     }
+
+    @Override
+    public int commentCount(String time, String code) {
+        return  commentRepositroy.commentCount(time,code);
+    }
 }

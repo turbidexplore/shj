@@ -9,4 +9,8 @@ public interface VisitorService {
      Visitor save(Visitor visitor);
 
     int count(String dateStr, String code);
+
+    int brandCount(String time, String code);
+
+    int goodsCount(String time, String code);
 }

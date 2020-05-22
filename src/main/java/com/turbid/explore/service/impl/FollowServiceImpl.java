@@ -92,4 +92,9 @@ public class FollowServiceImpl implements FollowService {
     public int hefollowCount(String name) {
                 return followRepositroy.hefollowCount(name);
     }
+
+    @Override
+    public int newfollowmeCount(String name, String time) {
+        return followRepositroy.newfollowmeCount(name,time);
+    }
 }

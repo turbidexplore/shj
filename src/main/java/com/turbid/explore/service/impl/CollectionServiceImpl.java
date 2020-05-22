@@ -50,4 +50,14 @@ public class CollectionServiceImpl implements CollectionService {
     public Integer cancelcollection(String name, String relation) {
         return collectionRepositroy.cancelcollection(collectionRepositroy.find(name,relation).getCode());
     }
+
+    @Override
+    public int goodslikes(String time, String code) {
+        return collectionRepositroy.goodslikes(time,code);
+    }
+
+    @Override
+    public int count(String code) {
+        return collectionRepositroy.countByRelation(code);
+    }
 }

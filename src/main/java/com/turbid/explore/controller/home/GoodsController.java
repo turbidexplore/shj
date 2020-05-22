@@ -1,8 +1,8 @@
 package com.turbid.explore.controller.home;
 
 import com.turbid.explore.pojo.Goods;
-import com.turbid.explore.service.GoodsService;
-import com.turbid.explore.service.ShopService;
+import com.turbid.explore.pojo.Visitor;
+import com.turbid.explore.service.*;
 import com.turbid.explore.tools.Info;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -41,11 +41,25 @@ public class GoodsController {
         return Mono.just(Info.SUCCESS(null));
     }
 
+    @Autowired
+    private UserSecurityService userSecurityService;
+
+    @Autowired
+    private VisitorService visitorService;
+
+    @Autowired
+    private CollectionService collectionService;
+
     @ApiOperation(value = "查询特卖品", notes="查询特卖品")
     @GetMapping("/get")
-    public Mono<Info> get(@RequestParam("code")String code) {
+    public Mono<Info> get(Principal principal,@RequestParam("code")String code) {
         Goods goods=  goodsService.get(code);
         goods.setBrowses(goods.getBrowses()+1);
+        goods.setLikes(collectionService.count(code));
+        Visitor visitor=new Visitor();
+        visitor.setShopcode(code);
+        visitor.setUserSecurity(userSecurityService.findByPhone(principal.getName()));
+        visitorService.save(visitor);
         return Mono.just(Info.SUCCESS(goodsService.save(goods)));
     }
 
@@ -61,14 +75,6 @@ public class GoodsController {
         return Mono.just(Info.SUCCESS( goodsService.newGoods(shopcode)));
     }
 
-    @ApiOperation(value = "感兴趣", notes="感兴趣")
-    @GetMapping("/likes")
-    public Mono<Info> likes(@RequestParam("code")String code) {
-        Goods goods= goodsService.get(code);
-        goods.setLikes(goods.getLikes()+1);
-        goodsService.save(goods);
-        return Mono.just(Info.SUCCESS(goods));
-    }
 
     @ApiOperation(value = "获取我的商品信息",notes = "获取我的商品信息")
     @PostMapping("/mylistByPage")

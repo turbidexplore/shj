@@ -34,4 +34,9 @@ public interface CollectionRepositroy extends JpaRepository<Collection,String> {
     @Query("delete from Collection c where c.code=:code  ")
     @Modifying
     Integer cancelcollection(@Param("code") String code);
+
+    @Query("select count (v) from Collection v where (v.create_time LIKE CONCAT(:time,'%') or :time is null ) and v.relation in(select a.code from Goods a where a.company.code =:code)")
+    int goodslikes(@Param("time")String time,@Param("code") String code);
+
+    int countByRelation(String code);
 }

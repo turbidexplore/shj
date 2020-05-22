@@ -1,6 +1,7 @@
 package com.turbid.explore.controller.home;
 
 import com.turbid.explore.pojo.Shop;
+import com.turbid.explore.pojo.UserSecurity;
 import com.turbid.explore.pojo.Visitor;
 import com.turbid.explore.service.*;
 import com.turbid.explore.tools.Info;
@@ -95,6 +96,16 @@ public class ShopController {
         return Mono.just(Info.SUCCESS( shopService.recommend(principal,page)));
     }
 
+    @ApiOperation(value = "查看招商加盟", notes="查看招商加盟")
+    @GetMapping("/seezsjm")
+    public Mono<Info> seezsjm(Principal principal,@RequestParam(value = "code")String code) {
+        Visitor visitor=new Visitor();
+        visitor.setUserSecurity(userSecurityService.findByPhone(principal.getName()));
+        visitor.setShopcode(code+"zsjm");
+        visitorService.save(visitor);
+        return Mono.just(Info.SUCCESS( null));
+    }
+
     @ApiOperation(value = "招商加盟", notes="招商加盟")
     @GetMapping("/zsjm")
     public Mono<Info> zsjm(Principal principal,@RequestParam(value = "page")Integer page,@RequestParam(value = "type",required = false)String type) {
@@ -156,4 +167,29 @@ public class ShopController {
         return Mono.just(Info.SUCCESS( shopService.getByChoose(null,page)));
     }
 
+    @Autowired
+    private CommentService commentService;
+
+    @Autowired
+    private CollectionService collectionService;
+
+    @ApiOperation(value = "店铺数据统计", notes="店铺数据统计")
+    @GetMapping("/statistics")
+    public Mono<Info> Statistics(Principal principal,@RequestParam("code")String code,@RequestParam(value = "time",required = false)String time) {
+        Map<String,Object> data =new HashMap<>();
+        data.put("hyd",85);
+        data.put("brandvisitor",visitorService.brandCount(time, code));
+        data.put("commentcount",commentService.commentCount(time, code));
+        data.put("goodsvisitor",visitorService.goodsCount(time, code));
+        data.put("goodslike",collectionService.goodslikes(time, code));
+        data.put("businessvisitor",visitorService.count(time, code+"zsjm"));
+        data.put("shopvisitor",visitorService.count(time, code));
+        data.put("newfans",followService.newfollowmeCount(principal.getName(),time));
+        data.put("casecount",caseService.casecount(principal.getName()));
+        return Mono.just(Info.SUCCESS( data));
+    }
+
+
 }
+
+

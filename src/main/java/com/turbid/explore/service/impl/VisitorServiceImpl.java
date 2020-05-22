@@ -21,4 +21,14 @@ public class VisitorServiceImpl implements VisitorService {
     public int count(String dateStr, String code) {
         return  visitorRepository.countNumber(dateStr,code);
     }
+
+    @Override
+    public int brandCount(String time, String code) {
+        return  visitorRepository.brandCount(time,code);
+    }
+
+    @Override
+    public int goodsCount(String time, String code) {
+        return  visitorRepository.goodsCount(time,code);
+    }
 }

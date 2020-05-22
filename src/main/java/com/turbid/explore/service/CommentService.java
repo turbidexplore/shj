@@ -18,4 +18,6 @@ public interface CommentService {
     int listByShopCount(String relation);
 
     List<Comment> mycomments(String name, String relation);
+
+    int commentCount(String time, String code);
 }

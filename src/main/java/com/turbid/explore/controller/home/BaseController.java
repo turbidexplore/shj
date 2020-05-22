@@ -25,6 +25,31 @@ import java.util.Map;
 @CrossOrigin
 public class BaseController {
 
+    @GetMapping(value = "/share")
+    public Mono<Info> share()  {
+        Map<String,String> info=new HashMap<>();
+        info.put("shop","https://www.deslibs.com/privacyprotocol");
+        info.put("goods","https://www.deslibs.com/privacyprotocol");
+        info.put("study","https://www.deslibs.com/privacyprotocol");
+        info.put("nativecontent","https://www.deslibs.com/privacyprotocol");
+        info.put("brand","https://www.deslibs.com/privacyprotocol");
+        return Mono.just(Info.SUCCESS(info));
+    }
+
+    @GetMapping(value = "/update")
+    public Mono<Info> update(@RequestParam("version")Integer version)  {
+
+        return Mono.just(Info.SUCCESS("最新版本 v1.0.1"));
+    }
+
+    @GetMapping(value = "/basic")
+    public Mono<Info> basic()  {
+        Map<String,String> info=new HashMap<>();
+        info.put("phonenumber","4006081051");
+        info.put("privacyprotocol","https://www.deslibs.com/privacyprotocol");
+        return Mono.just(Info.SUCCESS(info));
+    }
+
     @ApiOperation(value = "用户类型", notes="用户类型")
     @GetMapping(value = "/usertype")
     public Mono<Info> usertype()  {
@@ -128,12 +153,6 @@ public class BaseController {
         map.put("costprice",12800);
         info.put("MYVIP",map);
         return Mono.just(Info.SUCCESS(info));
-    }
-
-    @ApiOperation(value = "生成订单号", notes="生成订单号")
-    @GetMapping(value = "/orderno")
-    public Mono<Info> orderno()  {
-        return Mono.just(Info.SUCCESS(CodeLib.randomCode(18,1)));
     }
 
 
