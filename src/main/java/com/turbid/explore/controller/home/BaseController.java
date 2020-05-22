@@ -38,8 +38,11 @@ public class BaseController {
 
     @GetMapping(value = "/update")
     public Mono<Info> update(@RequestParam("version")Integer version)  {
-
-        return Mono.just(Info.SUCCESS("最新版本 v1.0.1"));
+        Map<String,Object> info=new HashMap<>();
+        info.put("version",version);
+        info.put("desc","添加了达人研习社模块");
+        info.put("isupdate",false);
+        return Mono.just(Info.SUCCESS(info));
     }
 
     @GetMapping(value = "/basic")
