@@ -19,4 +19,5 @@ public interface BrandService {
     String getOneByShop(String code);
 
     List<Brand> search(String text, Integer page);
+
 }

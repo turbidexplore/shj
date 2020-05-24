@@ -114,12 +114,12 @@ public class IndexController {
 
     @RequestMapping("/managecount")
     public String count(){
-        return "manage/count";
+        return "manage/managecount";
     }
 
     @RequestMapping("/managecases")
     public String cases(){
-        return "manage/count";
+        return "managecount";
     }
 
     @RequestMapping("/managecomments")

@@ -31,15 +31,21 @@ public class BaseEntity implements Serializable {
     private String addftime;
 
     public String getAddftime() {
-        return CodeLib.getFriendlyTime(this.create_time,true);
+        if(null!=this.create_time) {return CodeLib.getFriendlyTime(this.create_time,true);}else {
+            return "";
+        }
     }
 
     private String addtime;
 
     public String getAddtime() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String dateStr = sdf.format(this.create_time.getTime());
-        return dateStr;
+        if(null!=this.create_time) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String dateStr = sdf.format(this.create_time.getTime());
+            return dateStr;
+        }else {
+            return "";
+        }
     }
 
 

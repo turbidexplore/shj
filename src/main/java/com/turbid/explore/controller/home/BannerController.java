@@ -29,7 +29,7 @@ public class BannerController {
                 banner.setCreate_time(new Date());
                 fileInfo.setCreate_time(new Date());
                 fileInfo.setType("banner图片");
-                fileInfo.setUrl("https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E7%BC%96%E7%BB%84%2017.png");
+                fileInfo.setUrl("https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E9%A6%96%E9%A1%B5/%E9%A6%96%E9%A1%B5%E8%BD%AE%E6%92%AD%E4%B8%80.png");
                 banner.setFileInfo(fileInfo);
                 bannerList.add(banner);
                 bannerList.add(banner);
@@ -51,7 +51,7 @@ public class BannerController {
                 banner.setCreate_time(new Date());
                 fileInfo.setCreate_time(new Date());
                 fileInfo.setType("banner图片");
-                fileInfo.setUrl("https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E7%BC%96%E7%BB%84%2017.png");
+                fileInfo.setUrl("https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E5%93%81%E7%89%8C%E9%A6%86/%E5%93%81%E7%89%8C%E9%A6%86%E8%BD%AE%E6%92%AD%E4%B8%80.png");
                 banner.setFileInfo(fileInfo);
                 bannerList.add(banner);
                 bannerList.add(banner);
@@ -62,7 +62,7 @@ public class BannerController {
                 banner.setCreate_time(new Date());
                 fileInfo.setCreate_time(new Date());
                 fileInfo.setType("banner图片");
-                fileInfo.setUrl("https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E7%BC%96%E7%BB%84%2017.png");
+                fileInfo.setUrl("https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E7%89%B9%E5%8A%A0%E4%BB%93/%E7%89%B9%E4%BB%B7%E4%BB%93%E8%BD%AE%E6%92%AD%E4%B8%80.png");
                 banner.setFileInfo(fileInfo);
                 bannerList.add(banner);
                 bannerList.add(banner);
@@ -73,7 +73,7 @@ public class BannerController {
                 banner.setCreate_time(new Date());
                 fileInfo.setCreate_time(new Date());
                 fileInfo.setType("banner图片");
-                fileInfo.setUrl("https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E7%BC%96%E7%BB%84%2017.png");
+                fileInfo.setUrl("https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E8%BE%BE%E4%BA%BA%E7%A0%94%E4%B9%A0%E7%A4%BE/%E8%BE%BE%E4%BA%BA%E7%A0%94%E4%B9%A0%E7%A4%BE%E8%BD%AE%E6%92%AD%E4%B8%80.png");
                 banner.setFileInfo(fileInfo);
                 bannerList.add(banner);
                 bannerList.add(banner);

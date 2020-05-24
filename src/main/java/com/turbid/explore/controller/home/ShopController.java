@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import java.security.Principal;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -186,6 +187,58 @@ public class ShopController {
         data.put("shopvisitor",visitorService.count(time, code));
         data.put("newfans",followService.newfollowmeCount(principal.getName(),time));
         data.put("casecount",caseService.casecount(principal.getName()));
+        return Mono.just(Info.SUCCESS( data));
+    }
+
+
+    @ApiOperation(value = "店铺数据统计", notes="店铺数据统计")
+    @GetMapping("/StatisticsCount")
+    public Mono<Info> StatisticsCount(Principal principal) {
+        Shop shop=shopService.getByUser(principal.getName());
+        Map<String,Object> data =new HashMap<>();
+        List area= new ArrayList();
+        followService.areaCount(principal).forEach(v->{
+            Map item=new HashMap();
+            item.put("name",v.getName());
+            item.put("y",v.getY());
+            area.add(item);
+        });
+        DateFormat df = new SimpleDateFormat("yyyy-");
+        List fansadd= new ArrayList();
+        List fanssee= new ArrayList();
+        for(int i =1;i<=12;i++){
+            String toyear=df.format(new Date());
+            if(i>=10){
+                toyear=toyear+i;
+            }else {
+                toyear=toyear+"0"+i;
+            }
+            System.out.println(toyear);
+            fansadd.add(followService.newfollowmeCount(principal.getName(),toyear));
+            fanssee.add(visitorService.count(toyear,shop.getCode()));
+        }
+        data.put("area",area);
+        data.put("fansadd",fansadd);
+        data.put("fanssee",fanssee);
+        List brand=new ArrayList();
+        visitorService.brandinfo(principal.getName()).forEach(v->{
+            brand.add(new Object[]{v.getName(),v.getCount()});
+        });
+        data.put("brand",brand);
+        return Mono.just(Info.SUCCESS( data));
+    }
+
+    @ApiOperation(value = "店铺访问数据统计", notes="店铺访问数据统计")
+    @GetMapping("/fwl")
+    public Mono<Info> fwl(Principal principal,@RequestParam("code")String code) {
+
+        List data =new ArrayList();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        for(int i =14;i>=0;i--){
+            String time = df.format(new Date().getTime()-i*24*60*60*1000);
+            data.add(new Object[]{time,visitorService.count(time,code)});
+        }
+
         return Mono.just(Info.SUCCESS( data));
     }
 

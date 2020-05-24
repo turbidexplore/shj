@@ -1,10 +1,13 @@
 package com.turbid.explore.repository;
 
 import com.turbid.explore.pojo.Visitor;
+import com.turbid.explore.pojo.bo.BrandCountInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface VisitorRepository extends JpaRepository<Visitor,String> {
@@ -17,4 +20,8 @@ public interface VisitorRepository extends JpaRepository<Visitor,String> {
 
     @Query("select count (v) from Visitor v where (v.create_time LIKE CONCAT(:time,'%') or :time is null ) and v.shopcode in(select a.code from Goods a where a.company.code =:code)")
     int goodsCount(@Param("time")String time,@Param("code") String code);
+
+    @Query("select new BrandCountInfo(b.name,count (v)) from Visitor v,Brand b where v.shopcode=b.code and b.company.userSecurity.phonenumber=:name group by b.name")
+    List<BrandCountInfo> brandinfo(@Param("name") String name);
+
 }

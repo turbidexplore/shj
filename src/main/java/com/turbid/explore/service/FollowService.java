@@ -1,8 +1,10 @@
 package com.turbid.explore.service;
 
 import com.turbid.explore.pojo.Follow;
+import com.turbid.explore.pojo.bo.AreaCount;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.List;
 
 @Service
@@ -32,4 +34,6 @@ public interface FollowService {
     int hefollowCount(String name);
 
     int newfollowmeCount(String name, String time);
+
+    List<AreaCount> areaCount(Principal principal);
 }

@@ -1,7 +1,10 @@
 package com.turbid.explore.service;
 
 import com.turbid.explore.pojo.Visitor;
+import com.turbid.explore.pojo.bo.BrandCountInfo;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public interface VisitorService {
@@ -13,4 +16,7 @@ public interface VisitorService {
     int brandCount(String time, String code);
 
     int goodsCount(String time, String code);
+
+
+    List<BrandCountInfo> brandinfo(String name);
 }

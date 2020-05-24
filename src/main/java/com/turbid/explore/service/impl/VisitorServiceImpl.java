@@ -1,10 +1,13 @@
 package com.turbid.explore.service.impl;
 
 import com.turbid.explore.pojo.Visitor;
+import com.turbid.explore.pojo.bo.BrandCountInfo;
 import com.turbid.explore.repository.VisitorRepository;
 import com.turbid.explore.service.VisitorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class VisitorServiceImpl implements VisitorService {
@@ -31,4 +34,11 @@ public class VisitorServiceImpl implements VisitorService {
     public int goodsCount(String time, String code) {
         return  visitorRepository.goodsCount(time,code);
     }
+
+    @Override
+    public List<BrandCountInfo> brandinfo(String name) {
+        return  visitorRepository.brandinfo(name);
+    }
+
+
 }
