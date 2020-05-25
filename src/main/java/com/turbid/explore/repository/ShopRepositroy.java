@@ -23,7 +23,7 @@ public interface ShopRepositroy extends JpaRepository<Shop,String> {
     List<Shop> getByLabel(@Param("label")String label,@Param("brandgroup") String brandgroup);
 
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
-    @Query("select s from Shop s where s.ischoose=1 and (s.label like %:label% or :label is null ) ")
+    @Query("select s from Shop s where s.ischoose=1 and (s.label  LIKE CONCAT(:label,'%') or :label is null ) ")
     Page<Shop> getByChoose(Pageable pageable, @Param("label") String label);
 
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
@@ -31,8 +31,8 @@ public interface ShopRepositroy extends JpaRepository<Shop,String> {
     Page<Shop> recommend(Pageable pageable);
 
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
-    @Query("select s from Shop s where (s.label like %:type% or :type is null )")
-    Page<Shop> zsjm(Pageable pageable, @Param("type") String type);
+    @Query("select s from Shop s where (s.label  LIKE CONCAT(:text,'%') or :text is null )")
+    Page<Shop> zsjm(Pageable pageable, @Param("text") String text);
 
     @Query("select s from Shop s where s.userSecurity.code=:usercode")
     Shop getByUsercode(@Param("usercode") String usercode);

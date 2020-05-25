@@ -90,7 +90,7 @@ public class QaaInfoController {
             v.setIsstar(v.getStars().contains(userSecurity));
         });
         data.put("data",answerList);
-        data.put("count",qaaInfoService.qaaByCode(code).getAnswersinfo().size());
+        data.put("count",answerService.answersCount(code));
         return Mono.just(Info.SUCCESS( data));
     }
 

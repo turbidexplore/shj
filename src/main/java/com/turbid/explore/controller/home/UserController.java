@@ -78,7 +78,11 @@ public class UserController {
                    UserBasic userBasic=new UserBasic();
                    userBasic.setNikename(CodeLib.getNikeName(stringRedisTemplate));
                    userBasic.setHeadportrait(CodeLib.getHeadimg());
-                   userBasic.setCity(jo.getString("city"));
+                   if(null!=jo.getString("city")&&""!=jo.getString("city")&&!"".equals(jo.getString("city"))) {
+                       userBasic.setCity(jo.getString("city"));
+                   }else {
+                       userBasic.setCity(CodeLib.getAddressByIp(jo.getString("ip")));
+                   }
                    userBasicService.save(userBasic);
                    userSecurity.setUserBasic(userBasic);
                    userSecurity=  userSecurityService.save(userSecurity);

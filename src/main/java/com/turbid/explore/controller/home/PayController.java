@@ -215,15 +215,21 @@ public class PayController {
             switch (order.getGoodscode()){
                 case "NEEDS_URGENT":
                     projectNeedsService.updateURGENT(order.getOrderno());
-                    noticeRepository.save(new Notice(order.getUserphone(),"您的需求加急订单已支付成功","支付通知",0,0));
+                    if(order.getStatus()==0) {
+                        noticeRepository.save(new Notice(order.getUserphone(), "您的需求加急订单已支付成功", "支付通知", 0, 0));
+                    }
                     break;
                 case "SEE_NEEDS":
                     needsRelationService.updateSEE(order.getOrderno());
-                    noticeRepository.save(new Notice(order.getUserphone(),"您的查看需求订单已支付成功","支付通知",0,0));
+                    if(order.getStatus()==0) {
+                        noticeRepository.save(new Notice(order.getUserphone(), "您的查看需求订单已支付成功", "支付通知", 0, 0));
+                    }
                     break;
                 case "SEE_STUDY":
                     studyService.updateSTUDY(order.getOrderno());
-                    noticeRepository.save(new Notice(order.getUserphone(),"您的课程订单已支付成功","支付通知",0,0));
+                    if(order.getStatus()==0) {
+                        noticeRepository.save(new Notice(order.getUserphone(), "您的课程订单已支付成功", "支付通知", 0, 0));
+                    }
                     break;
             }
             //////////////////////////////////////////////////////////////////////////////////////////
@@ -277,16 +283,21 @@ public class PayController {
             switch (order.getGoodscode()){
                 case "NEEDS_URGENT":
                     projectNeedsService.updateURGENT(order.getOrderno());
-                    noticeRepository.save(new Notice(order.getUserphone(),"您的需求加急订单已支付成功","支付通知",0,0));
+                    if(order.getStatus()==0) {
+                        noticeRepository.save(new Notice(order.getUserphone(), "您的需求加急订单已支付成功", "支付通知", 0, 0));
+                    }
                     break;
                 case "SEE_NEEDS":
                     needsRelationService.updateSEE(order.getOrderno());
-                    noticeRepository.save(new Notice(order.getUserphone(),"您的查看需求订单已支付成功","支付通知",0,0));
+                    if(order.getStatus()==0) {
+                        noticeRepository.save(new Notice(order.getUserphone(), "您的查看需求订单已支付成功", "支付通知", 0, 0));
+                    }
                     break;
                 case "SEE_STUDY":
                     studyService.updateSTUDY(order.getOrderno());
-                    noticeRepository.save(new Notice(order.getUserphone(),"您的课程订单已支付成功","支付通知",0,0));
-                    break;
+                    if(order.getStatus()==0) {
+                        noticeRepository.save(new Notice(order.getUserphone(), "您的课程订单已支付成功", "支付通知", 0, 0));
+                    }
             }
             order.setStatus(1);
             //////////////////////////////////////////////////////////////////////////////////////////
@@ -517,16 +528,21 @@ public class PayController {
                 switch (order.getGoodscode()){
                     case "NEEDS_URGENT":
                         projectNeedsService.updateURGENT(order.getOrderno());
-                        noticeRepository.save(new Notice(order.getUserphone(),"您的需求加急订单已支付成功","支付通知",0,0));
+                        if(order.getStatus()==0) {
+                            noticeRepository.save(new Notice(order.getUserphone(), "您的需求加急订单已支付成功", "支付通知", 0, 0));
+                        }
                         break;
                     case "SEE_NEEDS":
                         needsRelationService.updateSEE(order.getOrderno());
-                        noticeRepository.save(new Notice(order.getUserphone(),"您的查看需求订单已支付成功","支付通知",0,0));
+                        if(order.getStatus()==0) {
+                            noticeRepository.save(new Notice(order.getUserphone(), "您的查看需求订单已支付成功", "支付通知", 0, 0));
+                        }
                         break;
                     case "SEE_STUDY":
                         studyService.updateSTUDY(order.getOrderno());
-                        noticeRepository.save(new Notice(order.getUserphone(),"您的课程订单已支付成功","支付通知",0,0));
-                        break;
+                        if(order.getStatus()==0) {
+                            noticeRepository.save(new Notice(order.getUserphone(), "您的课程订单已支付成功", "支付通知", 0, 0));
+                        }
                 }
                 order.setStatus(1);
                 //后续具体自己实现

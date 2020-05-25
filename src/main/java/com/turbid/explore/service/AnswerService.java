@@ -16,4 +16,6 @@ public interface AnswerService {
     Answer get(String code);
 
     List<Answer> listByUser(String name, Integer page);
+
+    int answersCount(String code);
 }

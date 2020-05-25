@@ -73,7 +73,7 @@ public class BannerController {
                 banner.setCreate_time(new Date());
                 fileInfo.setCreate_time(new Date());
                 fileInfo.setType("banner图片");
-                fileInfo.setUrl("https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E8%BE%BE%E4%BA%BA%E7%A0%94%E4%B9%A0%E7%A4%BE/%E8%BE%BE%E4%BA%BA%E7%A0%94%E4%B9%A0%E7%A4%BE%E8%BD%AE%E6%92%AD%E4%B8%80.png");
+                fileInfo.setUrl("https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E8%BE%BE%E4%BA%BA%E7%A0%94%E4%B9%A0%E7%A4%BE/%E8%BD%AE%E6%92%AD%E5%9B%BE/%E8%BE%BE%E4%BA%BA%E7%A0%94%E4%B9%A0%E7%A4%BE%E8%BD%AE%E6%92%AD%E4%B8%80.png");
                 banner.setFileInfo(fileInfo);
                 bannerList.add(banner);
                 bannerList.add(banner);

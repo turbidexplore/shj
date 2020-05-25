@@ -24,4 +24,6 @@ public interface AnswerRepository extends JpaRepository<Answer,String> {
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
     @Query("SELECT a from Answer a where a.isdel=false and a.userSecurity.phonenumber=:name ")
     Page<Answer> listByUser(Pageable pageable, @Param("name")String name);
+
+    int countByQaacode(String code);
 }

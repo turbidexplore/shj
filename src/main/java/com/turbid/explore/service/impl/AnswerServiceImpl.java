@@ -48,4 +48,9 @@ public class AnswerServiceImpl implements AnswerService {
         Page<Answer> pages=  answerRepository.listByUser(pageable,name);
         return pages.getContent();
     }
+
+    @Override
+    public int answersCount(String code) {
+        return answerRepository.countByQaacode(code);
+    }
 }

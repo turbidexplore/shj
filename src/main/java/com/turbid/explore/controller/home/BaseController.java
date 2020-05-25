@@ -28,11 +28,11 @@ public class BaseController {
     @GetMapping(value = "/share")
     public Mono<Info> share()  {
         Map<String,String> info=new HashMap<>();
-        info.put("shop","https://www.deslibs.com/privacyprotocol");
-        info.put("goods","https://www.deslibs.com/privacyprotocol");
-        info.put("study","https://www.deslibs.com/privacyprotocol");
-        info.put("nativecontent","https://www.deslibs.com/privacyprotocol");
-        info.put("brand","https://www.deslibs.com/privacyprotocol");
+        info.put("shop","http://m.deslibs.com/#/shopHomePage");
+        info.put("goods","http://m.deslibs.com/#/salesDetails");
+        info.put("study","http://m.deslibs.com/#/study_details");
+        info.put("nativecontent","http://m.deslibs.com/#/lingganAlbum");
+        info.put("brand","http://m.deslibs.com/#/childBrand");
         return Mono.just(Info.SUCCESS(info));
     }
 
@@ -256,49 +256,49 @@ public class BaseController {
         map.put("name","新古典");
         map.put("name_en","Neoclassical");
         map.put("banner","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E5%93%81%E7%89%8C%E9%A6%86/%E4%B8%89%E7%BA%A7/%E6%96%B0%E5%8F%A4%E5%85%B8.png");
-        map.put("logo","https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3862065343,1024477825&fm=15&gp=0.jpg");
+        map.put("logo","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E5%93%81%E7%89%8C%E9%A6%86/%E9%A3%8E%E6%A0%BC/%E6%96%B0%E5%8F%A4%E5%85%B8.png");
         list.add(map);
         map=new HashMap<>();
         map.put("name","新中式");
         map.put("name_en","New Chinese style");
         map.put("banner","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E5%93%81%E7%89%8C%E9%A6%86/%E4%B8%89%E7%BA%A7/%E6%96%B0%E4%B8%AD%E5%BC%8F.png");
-        map.put("logo","https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3862065343,1024477825&fm=15&gp=0.jpg");
+        map.put("logo","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E5%93%81%E7%89%8C%E9%A6%86/%E9%A3%8E%E6%A0%BC/%E6%96%B0%E4%B8%AD%E5%BC%8F.png");
         list.add(map);
         map=new HashMap<>();
         map.put("name","美式");
         map.put("name_en","American style");
         map.put("banner","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E5%93%81%E7%89%8C%E9%A6%86/%E4%B8%89%E7%BA%A7/%E7%BE%8E%E5%BC%8F.png");
-        map.put("logo","https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3862065343,1024477825&fm=15&gp=0.jpg");
+        map.put("logo","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E5%93%81%E7%89%8C%E9%A6%86/%E9%A3%8E%E6%A0%BC/%E7%BE%8E%E5%BC%8F.png");
         list.add(map);
         map=new HashMap<>();
         map.put("name","轻奢");
         map.put("name_en","Light luxury");
         map.put("banner","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E5%93%81%E7%89%8C%E9%A6%86/%E4%B8%89%E7%BA%A7/%E8%BD%BB%E5%A5%A2.png");
-        map.put("logo","https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3862065343,1024477825&fm=15&gp=0.jpg");
+        map.put("logo","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E5%93%81%E7%89%8C%E9%A6%86/%E9%A3%8E%E6%A0%BC/%E8%BD%BB%E5%A5%A2.png");
         list.add(map);
         map=new HashMap<>();
         map.put("name","极简");
         map.put("name_en","Minimalism");
         map.put("banner","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E5%93%81%E7%89%8C%E9%A6%86/%E4%B8%89%E7%BA%A7/%E6%9E%81%E7%AE%80.png");
-        map.put("logo","https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3862065343,1024477825&fm=15&gp=0.jpg");
+        map.put("logo","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E5%93%81%E7%89%8C%E9%A6%86/%E9%A3%8E%E6%A0%BC/%E6%9E%81%E7%AE%80.png");
         list.add(map);
         map=new HashMap<>();
         map.put("name","北欧");
         map.put("name_en","Northern Europe");
         map.put("banner","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E5%93%81%E7%89%8C%E9%A6%86/%E4%B8%89%E7%BA%A7/%E5%8C%97%E6%AC%A7.png");
-        map.put("logo","https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3862065343,1024477825&fm=15&gp=0.jpg");
+        map.put("logo","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E5%93%81%E7%89%8C%E9%A6%86/%E9%A3%8E%E6%A0%BC/%E5%8C%97%E6%AC%A7.png");
         list.add(map);
         map=new HashMap<>();
         map.put("name","现代");
         map.put("name_en","Modern");
-        map.put("banner","https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3862065343,1024477825&fm=15&gp=0.jpg");
-        map.put("logo","https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3862065343,1024477825&fm=15&gp=0.jpg");
+        map.put("banner","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E5%93%81%E7%89%8C%E9%A6%86/%E4%B8%89%E7%BA%A7/%E7%8E%B0%E4%BB%A3.png");
+        map.put("logo","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E5%93%81%E7%89%8C%E9%A6%86/%E9%A3%8E%E6%A0%BC/%E7%8E%B0%E4%BB%A3.png");
         list.add(map);
         map=new HashMap<>();
         map.put("name","其他");
         map.put("name_en","Other");
         map.put("banner","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E5%93%81%E7%89%8C%E9%A6%86/%E4%B8%89%E7%BA%A7/%E5%85%B6%E4%BB%96.png");
-        map.put("logo","https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3862065343,1024477825&fm=15&gp=0.jpg");
+        map.put("logo","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E5%93%81%E7%89%8C%E9%A6%86/%E9%A3%8E%E6%A0%BC/%E5%85%B6%E4%BB%96.png");
         list.add(map);
         return Mono.just(Info.SUCCESS(list));
     }

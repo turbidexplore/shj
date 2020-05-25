@@ -1,5 +1,6 @@
 package com.turbid.explore.tools;
 
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 import javax.servlet.http.HttpServletRequest;
@@ -181,27 +182,13 @@ public class CodeLib {
             }
             reader.close();
             result = sbf.toString();
-            return ascii2native(result);
+            return  JSONObject.parseObject(result).getJSONObject("content").getJSONObject("address_detail").getString("city");
 
         } catch (Exception e) {
-            System.out.println("获取IP地址失败");
-            return "{'country':'','region':'','city':''}";
+            return "未知地区";
         }
 
     }
-
-    public static String ascii2native(String ascii) {
-        int n = ascii.length() / 6;
-        StringBuilder sb = new StringBuilder(n);
-        for (int i = 0, j = 2; i < n; i++, j += 6) {
-            String code = ascii.substring(j, j + 4);
-            char ch = (char) Integer.parseInt(code, 16);
-            sb.append(ch);
-        }
-        return sb.toString();
-    }
-
-
 
 
 
