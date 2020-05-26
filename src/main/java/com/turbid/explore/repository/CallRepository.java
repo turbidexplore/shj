@@ -22,4 +22,10 @@ public interface CallRepository extends JpaRepository<Call,String> {
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
     @Query("SELECT c.projectinfo from Call c where c.callusercode =:name order by c.callusercode,c.usercode")
     Page<ProjectNeeds> listByUserMe(Pageable pageable, @Param("name") String name);
+
+    @Query("SELECT count(c) from Call c where c.usercode =:name order by c.callusercode,c.usercode")
+    int mycallcount(@Param("name")String name);
+
+    @Query("SELECT count(c) from Call c where c.callusercode =:name order by c.callusercode,c.usercode")
+    int callmecount(@Param("name")String name);
 }

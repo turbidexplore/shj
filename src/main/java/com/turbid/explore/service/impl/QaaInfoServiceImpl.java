@@ -48,7 +48,7 @@ public class QaaInfoServiceImpl implements QaaInfoService {
 
     @Override
     public List<QaaInfo> search(String text, Integer page) {
-        Pageable pageable = new PageRequest(page,10, Sort.Direction.DESC,"create_time");
+        Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
         Page<QaaInfo> pages=  qaaInfoRepositroy.search(pageable,text);
         return pages.getContent();
     }

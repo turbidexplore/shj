@@ -25,4 +25,6 @@ public interface ProjectNeedsService {
     ProjectNeeds getByOrder(String orderno);
 
     List<ProjectNeeds> search(String text, Integer page);
+
+    int colseOverNeeds(String dateStr);
 }

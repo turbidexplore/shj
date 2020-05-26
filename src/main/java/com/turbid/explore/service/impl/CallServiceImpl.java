@@ -38,4 +38,14 @@ public class CallServiceImpl implements CallService {
         Page<ProjectNeeds> pages=  callRepository.listByUserMy(pageable,name);
         return pages.getContent();
     }
+
+    @Override
+    public int mycallcount(String name) {
+        return callRepository.mycallcount(name);
+    }
+
+    @Override
+    public int callmecount(String name) {
+        return callRepository.callmecount(name);
+    }
 }

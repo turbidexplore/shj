@@ -47,7 +47,7 @@ public class StudyServiceImpl implements StudyService {
 
     @Override
     public List<Study> search(String text, Integer page) {
-        Pageable pageable = new PageRequest(page,10, Sort.Direction.DESC,"seecount");
+        Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"seecount");
         Page<Study> pages=  studyRepository.search(pageable,text);
         return pages.getContent();
     }

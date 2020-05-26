@@ -3,6 +3,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.ImmutableMap;
 import com.turbid.explore.pojo.*;
+import com.turbid.explore.repository.LoginHisRepository;
 import com.turbid.explore.service.*;
 import com.turbid.explore.service.impl.SMSServiceImpl;
 import com.turbid.explore.tools.CodeLib;
@@ -130,9 +131,16 @@ public class UserController {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    private LoginHisRepository loginHisRepository;
+
     @ApiOperation(value = "登陆", notes="login_type为sms或password")
     @PostMapping("/login")
     public Mono<Info> login(@RequestBody JSONObject jsonObject){
+        LoginHis loginHis=new LoginHis();
+        loginHis.setPhone(jsonObject.getString("username"));
+        loginHis.setOs(jsonObject.getString("os"));
+        loginHis.setLogintype(jsonObject.getString("login_type"));
         try {
             MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
             map.add("grant_type","password");
@@ -146,13 +154,18 @@ public class UserController {
             HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
             JSONObject object=restTemplate.postForObject("http://127.0.0.1:10002/oauth/token",request,JSONObject.class);
             if (null==object){
+                loginHis.setStatus(0);
                 return Mono.just(Info.ERROR("登录失败"));
             }
+            loginHis.setStatus(1);
             object.put("userinfo",userSecurityService.findByPhone(jsonObject.getString("username")));
             return Mono.just(Info.SUCCESS(object));
         }catch (Exception e){
             e.getStackTrace();
+            loginHis.setStatus(0);
             return Mono.just(Info.ERROR("帐号或密码错误"));
+        }finally {
+            loginHisRepository.saveAndFlush(loginHis);
         }
     }
 

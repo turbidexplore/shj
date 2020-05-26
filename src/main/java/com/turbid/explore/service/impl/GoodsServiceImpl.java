@@ -50,7 +50,7 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public List<Goods> mylistByPage(String name, Integer page) {
-        Pageable pageable = new PageRequest(page,12, Sort.Direction.DESC,"create_time");
+        Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
         Page<Goods> pages=  goodsRepository.mylistByPage(pageable,name);
         return pages.getContent();
     }

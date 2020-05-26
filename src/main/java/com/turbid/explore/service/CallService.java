@@ -13,4 +13,8 @@ public interface CallService {
     List<ProjectNeeds> listByUserMe(String name, Integer page);
 
     List<ProjectNeeds> listByUserMy(String name, Integer page);
+
+    int mycallcount(String name);
+
+    int callmecount(String name);
 }

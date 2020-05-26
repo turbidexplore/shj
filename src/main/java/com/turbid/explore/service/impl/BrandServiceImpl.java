@@ -52,7 +52,7 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public List<Brand> search(String text, Integer page) {
-        Pageable pageable = new PageRequest(page,10, Sort.Direction.DESC,"create_time");
+        Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
         Page<Brand> pages=  brandRepositroy.search(pageable,text);
         return pages.getContent();
     }

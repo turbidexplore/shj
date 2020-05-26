@@ -41,4 +41,8 @@ public interface ProjectNeedsRepositroy extends JpaRepository<ProjectNeeds,Strin
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
     @Query("SELECT n from ProjectNeeds n where n.title LIKE CONCAT(:text,'%') or n.type LIKE CONCAT(:text,'%') or n.category  LIKE CONCAT(:text,'%') or n.style LIKE CONCAT(:text,'%') ")
     Page<ProjectNeeds> search(Pageable pageable,@Param("text") String text);
+
+    @Modifying
+    @Query("update ProjectNeeds p set p.status=1 where p.overtime>:time")
+    int colseOverNeeds(@Param("time") String time);
 }

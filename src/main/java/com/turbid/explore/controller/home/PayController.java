@@ -552,9 +552,11 @@ public class PayController {
         } catch (Exception e) {
             System.out.println(e.getMessage());
             order.setStatus(2);
+        }finally {
+            orderService.save(order);
         }
         //如果失败返回错误，微信会再次发送支付信息
-        orderService.save(order);
+
         return "fail";
     }
 

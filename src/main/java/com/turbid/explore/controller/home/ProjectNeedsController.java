@@ -40,6 +40,9 @@ public class ProjectNeedsController {
         projectNeeds.setOrderno(CodeLib.randomCode(18,1));
         projectNeeds.setStatus(0);
         projectNeeds.setUserSecurity(userSecurityService.findByPhone(principal.getName()));
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        long overtime= new Date().getTime()+(projectNeeds.getTimeout()*24*60*60*1000);
+        projectNeeds.setOvertime(sdf.format(overtime));
         noticeRepository.save(new Notice(principal.getName(),"您的需求添加成功","系统通知",0,0));
 
         return Mono.just(Info.SUCCESS(projectNeedsService.save(projectNeeds)));

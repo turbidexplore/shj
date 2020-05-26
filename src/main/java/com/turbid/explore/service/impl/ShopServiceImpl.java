@@ -71,7 +71,7 @@ public class ShopServiceImpl implements ShopService {
 
     @Override
     public List<Shop> search(String text, Integer page) {
-        Pageable pageable = new PageRequest(page,10, Sort.Direction.DESC,"create_time");
+        Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
         Page<Shop> pages=  shopRepositroy.search(pageable,text);
         return pages.getContent();
     }

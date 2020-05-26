@@ -35,18 +35,22 @@ public class UserCenterController {
     @Autowired
     private QaaInfoService qaaInfoService;
 
+    @Autowired
+    private CallService callService;
+
     @ApiOperation(value = "数据统计", notes="数据统计")
     @PostMapping(value = "/count")
     public Mono<Info> count(Principal principal)  {
         Map<String,Object> data=new HashMap<>();
-            data.put("shb",userSecurityService.findByPhone(principal.getName()).getShb());
+       UserSecurity userSecurity= userSecurityService.findByPhone(principal.getName());
+            data.put("shb",userSecurity.getShb());
             data.put("follow",followService.myfollowCount(principal.getName()));
             data.put("fans",followService.followmeCount(principal.getName()));
             data.put("star",caseService.starcount(principal.getName()));
             data.put("needing",projectNeedsService.countByStatus(principal.getName(),0));
             data.put("needed",projectNeedsService.countByStatus(principal.getName(),1));
-            data.put("myneed",caseService.starcount(principal.getName()));
-            data.put("needme",caseService.starcount(principal.getName()));
+            data.put("myneed",callService.mycallcount(userSecurity.getCode()));
+            data.put("needme",callService.callmecount(userSecurity.getCode()));
             data.put("casecount",caseService.casecount(principal.getName()));
         return Mono.just(Info.SUCCESS(data));
     }

@@ -73,6 +73,7 @@ public class NativeContentController {
             if( nativeContent.getSees().toString().contains(principal.getName())==false) {
                 nativeContent.getSees().add(userSecurityService.findByPhone(principal.getName()));
             }
+
             return Mono.just(Info.SUCCESS(nativeContentService.save(nativeContent)));
         }catch (Exception e){
             return Mono.just(Info.SUCCESS(e.getMessage()));

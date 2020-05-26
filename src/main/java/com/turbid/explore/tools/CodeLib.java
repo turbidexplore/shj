@@ -166,7 +166,7 @@ public class CodeLib {
         BufferedReader reader = null;
         String result = null;
         StringBuffer sbf = new StringBuffer();
-        String thisUrl ="http://api.map.baidu.com/location/ip?ip="+ip+"&ak=fVl33R4iStCXR9xkS9jGc0GiAp5Em0TB";
+        String thisUrl ="http://api.map.baidu.com/location/ip?ip="+ip.trim()+"&ak=fVl33R4iStCXR9xkS9jGc0GiAp5Em0TB";
         try {
             URL url = new URL(thisUrl);
             HttpURLConnection connection = (HttpURLConnection) url

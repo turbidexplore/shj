@@ -92,7 +92,7 @@ public class CaseServiceImpl implements CaseService {
 
     @Override
     public List<Case> search(String text, Integer page) {
-        Pageable pageable = new PageRequest(page,10, Sort.Direction.DESC,"create_time");
+        Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
         Page<Case> pages=  caseRepositroy.search(pageable,text);
         return pages.getContent();
     }

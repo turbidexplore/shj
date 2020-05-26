@@ -27,7 +27,7 @@ public class AnswerServiceImpl implements AnswerService {
     @Override
 //    @Cacheable(cacheNames = {"redis_cache"}, key = "'answersByQaacode'+#code+'.'+#page")
     public List<Answer> answersByQaacode(String code, Integer page) {
-        Pageable pageable = new PageRequest(page,10, Sort.Direction.DESC,"create_time");
+        Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
         Page<Answer> pages=  answerRepository.answersByQaacode(pageable,code);
         return pages.getContent();
     }
@@ -44,7 +44,7 @@ public class AnswerServiceImpl implements AnswerService {
 
     @Override
     public List<Answer> listByUser(String name, Integer page) {
-        Pageable pageable = new PageRequest(page,10, Sort.Direction.DESC,"create_time");
+        Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
         Page<Answer> pages=  answerRepository.listByUser(pageable,name);
         return pages.getContent();
     }

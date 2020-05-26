@@ -41,7 +41,7 @@ public class SMSServiceImpl implements SMSService {
     public int sendSMS(String mobile) throws InterruptedException {
         String authcode=CodeLib.randomCode(6,1);
         // 短信模板ID，需要在短信应用中申请
-        int templateId = 563529; // NOTE: 这里的模板ID`7839`只是一个示例，真实的模板ID需要在短信控制台中申请
+        int templateId = 616039; // NOTE: 这里的模板ID`7839`只是一个示例，真实的模板ID需要在短信控制台中申请
         SmsSingleSenderResult result=null;
         try {
             String[] params = {authcode};//数组具体的元素个数和模板中变量个数必须一致，例如事例中templateId:5678对应一个变量，参数数组中元素个数也必须是一个

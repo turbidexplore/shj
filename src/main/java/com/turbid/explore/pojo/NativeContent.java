@@ -1,5 +1,6 @@
 package com.turbid.explore.pojo;
 
+import com.alibaba.fastjson.JSONArray;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.turbid.explore.tools.CodeLib;
@@ -50,6 +51,7 @@ public class NativeContent extends BaseEntity{
     @OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
     private Set<Comment> comments;
 
+
     public int seecount;
     public int starcount;
     public int  commentcount;
@@ -88,5 +90,19 @@ public class NativeContent extends BaseEntity{
         return count;
     }
 
+    private String imgs;
 
+    public String getImgs() {
+        int i=0;
+        imgs="";
+        CodeLib.listImgSrc(this.content).forEach(v->{
+            if(imgs==""&&imgs.equals("")){
+                imgs=imgs+v;
+            }else {
+                imgs=imgs+","+v;
+            }
+
+        });
+        return imgs;
+    }
 }

@@ -45,9 +45,9 @@ public class ProjectNeedsServiceImpl implements ProjectNeedsService {
     public List<ProjectNeeds> getMyNeeds(String name, Integer page, Integer status) {
         Pageable pageable =null;
         if(status==0) {
-            pageable = new PageRequest(page, 10, Sort.Direction.DESC, "create_time");
+            pageable = new PageRequest(page, 15, Sort.Direction.DESC, "create_time");
         }else {
-            pageable = new PageRequest(page, 10, Sort.Direction.DESC, "overtime");
+            pageable = new PageRequest(page, 15, Sort.Direction.DESC, "overtime");
         }
         Page<ProjectNeeds> pages=  needsRepositroy.getMyNeeds(pageable,name,status);
         return pages.getContent();
@@ -78,8 +78,14 @@ public class ProjectNeedsServiceImpl implements ProjectNeedsService {
 
     @Override
     public List<ProjectNeeds> search(String text, Integer page) {
-        Pageable pageable = new PageRequest(page,10, Sort.Direction.DESC,"create_time");
+        Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
         Page<ProjectNeeds> pages=  needsRepositroy.search(pageable,text);
         return pages.getContent();
+    }
+
+    @Override
+    @Transactional
+    public int colseOverNeeds(String dateStr) {
+        return needsRepositroy.colseOverNeeds(dateStr);
     }
 }
