@@ -39,9 +39,14 @@ public class BaseController {
     @GetMapping(value = "/update")
     public Mono<Info> update(@RequestParam("version")Integer version)  {
         Map<String,Object> info=new HashMap<>();
-        info.put("version",version);
+       if (version==1){
+           info.put("isupdate",false);
+       }else {
+           info.put("isupdate",true);
+       }
+        info.put("version","1.0.1");
         info.put("desc","添加了达人研习社模块");
-        info.put("isupdate",false);
+
         return Mono.just(Info.SUCCESS(info));
     }
 
@@ -366,6 +371,9 @@ public class BaseController {
     @Autowired
     private CaseService caseService;
 
+    @Autowired
+    private NativeContentService nativeContentService;
+
     @ApiOperation(value = "热门搜索", notes="热门搜索")
     @GetMapping(value = "/searchhat")
     public Mono<Info> searchhat()  {
@@ -373,7 +381,7 @@ public class BaseController {
                 "餐饮空间","住宅空间","美式"}));
     }
 
-    @ApiOperation(value = "搜索", notes="搜索 0需求 2品牌 3特加仓 4问答 5课程 6案例")
+    @ApiOperation(value = "搜索", notes="搜索 0需求 2品牌 3特加仓 4问答 5课程 6案例 7灵感")
     @PostMapping(value = "/search")
     public Mono<Info> search(@RequestParam("text")String text,@RequestParam("type")Integer type,@RequestParam("page")Integer page)  {
         Map data =new HashMap();
@@ -399,6 +407,9 @@ public class BaseController {
                 break;
             case 6:
                 data.put("case",caseService.search(text,page));
+                break;
+            case 7:
+                data.put("lg",nativeContentService.search(text,page));
                 break;
             default:
                 data.put("needs",projectNeedsService.search(text,page));

@@ -109,13 +109,12 @@ public class ProjectNeedsController {
     }
 
 
-
     @ApiOperation(value = "获取我的产品需求信息", notes="获取我的产品需求信息")
     @PostMapping(value = "/getMyNeeds")
     public Mono<Info> getMyNeeds(Principal principal,@RequestParam(name = "page")Integer page,@RequestParam(name = "status")Integer status) {
         try {
             if(status==3) {
-                return Mono.just(Info.SUCCESS(callService.listByUserMe(userSecurityService.findByPhone(principal.getName()).getCode(), page)));
+                return Mono.just(Info.SUCCESS(callService.callme(userSecurityService.findByPhone(principal.getName()).getCode(), page)));
             }else if(status==2){
                 return Mono.just(Info.SUCCESS(callService.listByUserMy(userSecurityService.findByPhone(principal.getName()).getCode(), page)));
             }else {
@@ -164,7 +163,7 @@ public class ProjectNeedsController {
     @Autowired
     private CallService callService;
 
-    @ApiOperation(value = "联系", notes="需求加急")
+    @ApiOperation(value = "联系", notes="联系")
     @PostMapping(value = "/call")
     public Mono<Info> call(Principal principal,@RequestParam(name = "usercode")String usercode,@RequestParam("needscode")String needscode) {
         try {

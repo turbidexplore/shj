@@ -54,7 +54,7 @@ public interface FollowRepositroy extends JpaRepository<Follow,String> {
     @Query("SELECT count(c) from Follow c where c.userFollow.code= :name ")
     int followheCount(@Param("name")String name);
 
-    @Query("SELECT count(c) from Follow c where c.userFollow.phonenumber= :name and (c.create_time LIKE CONCAT(:time,'%') or :time is null ) or c.userFollow.code=:name and (c.create_time LIKE CONCAT(:time,'%') or :time is null )")
+    @Query("SELECT count(c) from Follow c where c.userFollow.phonenumber= :name and (c.create_time LIKE CONCAT('%',:time,'%') or :time is null ) or c.userFollow.code=:name and (c.create_time LIKE CONCAT('%',:time,'%') or :time is null )")
     int newfollowmeCount(@Param("name")String name,@Param("time") String time);
 
     @Query("select new AreaCount(u.userBasic.city,count(u)) from UserSecurity u where u.code in (SELECT c.userFollow.code from Follow c where c.user.phonenumber= :name ) group by u.userBasic.city")

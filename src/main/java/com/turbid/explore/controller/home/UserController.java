@@ -76,6 +76,22 @@ public class UserController {
                    userSecurity.setLikes(jo.getString("likes"));
                    userSecurity.setPhonenumber(jo.getString("username"));
                    userSecurity.setType(jo.getInteger("type"));
+                   String typename="";
+                   switch (jo.getInteger("type")){
+                       case 0:
+                           typename="设计师";
+                           break;
+                       case 1:
+                           typename="经销商";
+                           break;
+                       case 2:
+                           typename="工厂";
+                           break;
+                       case 3:
+                           typename="设计公司";
+                           break;
+                   }
+
                    UserBasic userBasic=new UserBasic();
                    userBasic.setNikename(CodeLib.getNikeName(stringRedisTemplate));
                    userBasic.setHeadportrait(CodeLib.getHeadimg());
@@ -84,6 +100,7 @@ public class UserController {
                    }else {
                        userBasic.setCity(CodeLib.getAddressByIp(jo.getString("ip")));
                    }
+
                    userBasicService.save(userBasic);
                    userSecurity.setUserBasic(userBasic);
                    userSecurity=  userSecurityService.save(userSecurity);
@@ -94,6 +111,18 @@ public class UserController {
                    JSONObject jsonObject= restTemplate.postForObject(baseUrl+"v4/im_open_login_svc/account_import"+config()
                            ,requestBody, JSONObject.class);
 
+                   JSONArray data =new JSONArray();
+                   JSONObject item=new JSONObject();
+                   item.put("Tag","Tag_Profile_Custom_usertype");
+                   item.put("Value",typename);
+                   data.add(item);
+
+                    requestBody = ImmutableMap.of(
+                           "From_Account", userSecurity.getCode(),
+                           "ProfileItem",data
+                   );
+                    jsonObject= restTemplate.postForObject(baseUrl+portrait_set+config()
+                           ,requestBody, JSONObject.class);
                    return Mono.just(Info.SUCCESS(userSecurity ));
                }else {
                    return Mono.just(Info.ERROR("手机号码已注册"));
@@ -215,6 +244,7 @@ public class UserController {
                userSecurity.setPhonenumber(shop.getContactphone());
                userSecurity.setPassword(CodeLib.encrypt("123456"));
                UserAuth userAuth =new UserAuth();
+
                userAuth.setStatus(0);
                userSecurity.setUserAuth(userAuth);
                userAuthService.save(userAuth);
@@ -224,12 +254,31 @@ public class UserController {
                userBasicService.save(userBasic);
                userSecurity.setUserBasic(userBasic);
                userSecurity.setType(2);
+
+
            }else {
                userSecurity.getUserAuth().setStatus(0);
                userAuthService.save( userSecurity.getUserAuth());
            }
             userSecurity= userSecurityService.save(userSecurity);
-           shop.setUserSecurity(userSecurity);
+            Map<String, Object> requestBody = ImmutableMap.of(
+                    "Identifier", userSecurity.getCode(),
+                    "Nick", shop.getName(),
+                    "FaceUrl",shop.getLogo());
+            JSONObject jsonObject= restTemplate.postForObject(baseUrl+"v4/im_open_login_svc/account_import"+config()
+                    ,requestBody, JSONObject.class);
+            JSONArray data =new JSONArray();
+            JSONObject item=new JSONObject();
+            item.put("Tag","Tag_Profile_Custom_usertype");
+            item.put("Value",2);
+            data.add(item);
+
+            requestBody = ImmutableMap.of(
+                    "From_Account", userSecurity.getCode(),
+                    "ProfileItem",data );
+            jsonObject= restTemplate.postForObject(baseUrl+portrait_set+config()
+                    ,requestBody, JSONObject.class);
+            shop.setUserSecurity(userSecurity);
             shop=shopService.save(shop);
             return Mono.just(Info.SUCCESS(shop));
         }catch (Exception e){
@@ -267,6 +316,7 @@ public class UserController {
             @ApiImplicitParam(paramType="query", name="sms", dataType="String", required=true, value="验证码"),
     })
     public Mono<Info> check(@RequestParam(name = "phone")String phone,@RequestParam(name = "sms")String sms)  {
+        System.out.println(checkService.findCodeByPhone(phone));
         return Mono.just(Info.SUCCESS(checkService.findMessagesByMebileAndAuthode(phone,sms)));
     }
 

@@ -14,4 +14,6 @@ public interface NativeContentService {
     List<NativeContent> listByPage(Integer page,String username);
 
     NativeContent newsByCode(String code);
+
+    List<NativeContent> search(String text, Integer page);
 }

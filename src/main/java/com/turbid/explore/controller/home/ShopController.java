@@ -37,7 +37,16 @@ public class ShopController {
     @ApiOperation(value = "获取商铺信息", notes="获取商铺信息")
     @GetMapping("/get")
     public Mono<Info> get(Principal principal) {
-        return Mono.just(Info.SUCCESS( shopService.getByUser(principal.getName())));
+        try {
+            Shop shop=shopService.getByUser(principal.getName());
+            shop.setSeecount(visitorService.companyCount(shop.getCode()));
+            shop.setFanscount(followService.followmeCount(principal.getName()));
+            shop.setHat(85);
+            return Mono.just(Info.SUCCESS(shop));
+        }catch (Exception e){
+            return Mono.just(Info.SUCCESS(null));
+        }
+
     }
 
     @ApiOperation(value = "通过商铺code获取商铺信息", notes="通过商铺code获取商铺信息")
@@ -55,19 +64,33 @@ public class ShopController {
     @ApiOperation(value = "通过商铺usercode获取商铺信息", notes="通过商铺usercode获取商铺信息")
     @GetMapping("/getbyusercode")
     public Mono<Info> getbyusercode(Principal principal,@RequestParam("usercode")String usercode) {
-        Shop shop=  shopService.getByUsercode(usercode);
-        Visitor visitor=new Visitor();
-        visitor.setUserSecurity(userSecurityService.findByPhone(principal.getName()));
-        visitor.setShopcode(shop.getCode());
-        visitorService.save(visitor);
+        try {
+            Shop shop=  shopService.getByUsercode(usercode);
+            Visitor visitor=new Visitor();
+            visitor.setUserSecurity(userSecurityService.findByPhone(principal.getName()));
+            visitor.setShopcode(shop.getCode());
+            visitorService.save(visitor);
 
-        return Mono.just(Info.SUCCESS( shop));
+            return Mono.just(Info.SUCCESS( shop));
+        }catch (Exception e){
+            return Mono.just(Info.SUCCESS( null));
+        }
+
     }
 
 
     @ApiOperation(value = "更新商铺信息", notes="更新商铺信息")
     @PutMapping("/update")
-    public Mono<Info> update(@RequestBody Shop shop) {
+    public Mono<Info> update(Principal principal,@RequestBody Shop shop) {
+        Shop old=shopService.getByCode(shop.getCode());
+        shop.setUserSecurity(old.getUserSecurity());
+        shop.setCreate_time(new Date());
+        shop.setIschoose(old.getIschoose());
+        shop.setStatus(old.getStatus());
+        shop.setHat(old.getHat());
+        shop.setFanscount(old.getFanscount());
+        shop.setSeecount(old.getSeecount());
+        shop.setVrweb(old.getVrweb());
         return Mono.just(Info.SUCCESS( shopService.save(shop)));
     }
 
@@ -88,7 +111,9 @@ public class ShopController {
     @ApiOperation(value = "官方严选", notes="官方严选")
     @GetMapping("/choose")
     public Mono<Info> choose(@RequestParam(value = "label",required = false)String label,@RequestParam(value = "page")Integer page) {
-        return Mono.just(Info.SUCCESS( shopService.getByChoose(label,page)));
+       List<Shop> shops= shopService.getByChoose(label,page);
+        System.out.println(shops.size());
+        return Mono.just(Info.SUCCESS(shops ));
     }
 
     @ApiOperation(value = "官方推荐", notes="官方推荐")

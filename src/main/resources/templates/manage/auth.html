@@ -84,11 +84,16 @@
                                 <select id="brandgroup" class="form-control">
 
                                 </select></div>
-                              <div class="form-group  col-md-4" >
+                              <div class="form-group  col-md-6" >
                                 <label for="label">标签</label>
                                 <select id="label" class="form-control">
 
-                                </select></div>
+                                </select>
+                                <select id="label1" class="form-control">
+
+                                </select>
+                              </div>
+
                               <div class="form-group col-md-5">
                                 <label for="city">所在城市</label>
                                 <input type="text" class="form-control" id="city" placeholder="城市" value=""> </div>
@@ -200,19 +205,27 @@
                   <div class="card-header border-bottom text-center">
                     <div class="mb-3 mx-auto">
                       <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1588743624402&di=d7eeb4dca9d478f6f431d0e4cad095e9&imgtype=0&src=http%3A%2F%2Fpic.qiantucdn.com%2F58pic%2F15%2F41%2F24%2F82G58PICnZi_1024.png%2521%2Ffw%2F1024%2Fwatermark%2Furl%2FL2ltYWdlcy93YXRlcm1hcmsvZGF0dS5wbmc%3D%2Frepeat%2Ftrue" alt="User Avatar" width="150" id="logoimg"> </div>
-                    <a href="javascript:;" class="file">商铺logo
+                    <a href="javascript:;" class="file">上传商铺logo
                       <input type="file" id="logo"  />
                     </a>
-                    <div class="mb-3 mx-auto">
-                      <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1588743624402&di=d7eeb4dca9d478f6f431d0e4cad095e9&imgtype=0&src=http%3A%2F%2Fpic.qiantucdn.com%2F58pic%2F15%2F41%2F24%2F82G58PICnZi_1024.png%2521%2Ffw%2F1024%2Fwatermark%2Furl%2FL2ltYWdlcy93YXRlcm1hcmsvZGF0dS5wbmc%3D%2Frepeat%2Ftrue" alt="User Avatar" width="150" id="bannerimg"> </div>
-                    <a href="javascript:;" class="file"> 店铺广告图<input type="file" id="banner"  /></a>
+                    <div class="mb-3 mx-auto" >
+                      <div id="bannerview">
+                      </div>
+                       </div>
+                    <a href="javascript:;" class="file"> 上传店铺广告图<input type="file" id="banner"  /></a>
+                    <br>
+                    <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1588743624402&di=d7eeb4dca9d478f6f431d0e4cad095e9&imgtype=0&src=http%3A%2F%2Fpic.qiantucdn.com%2F58pic%2F15%2F41%2F24%2F82G58PICnZi_1024.png%2521%2Ffw%2F1024%2Fwatermark%2Furl%2FL2ltYWdlcy93YXRlcm1hcmsvZGF0dS5wbmc%3D%2Frepeat%2Ftrue" alt="User Avatar" width="100" id="bannerimg">
+
                   </div>
                   <div class="card-header border-bottom text-center">
                     <div class="mb-3 mx-auto">
-                      <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1588743624402&di=d7eeb4dca9d478f6f431d0e4cad095e9&imgtype=0&src=http%3A%2F%2Fpic.qiantucdn.com%2F58pic%2F15%2F41%2F24%2F82G58PICnZi_1024.png%2521%2Ffw%2F1024%2Fwatermark%2Furl%2FL2ltYWdlcy93YXRlcm1hcmsvZGF0dS5wbmc%3D%2Frepeat%2Ftrue" alt="User Avatar" width="150" id="company_showimg"> </div>
-                    <a href="javascript:;" class="file">公司展示图
+                      <div id="shouview"></div>
+                      </div>
+                    <a href="javascript:;" class="file">上传公司展示图
                       <input type="file" id="company_show"  />
                     </a>
+                    <br>
+                    <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1588743624402&di=d7eeb4dca9d478f6f431d0e4cad095e9&imgtype=0&src=http%3A%2F%2Fpic.qiantucdn.com%2F58pic%2F15%2F41%2F24%2F82G58PICnZi_1024.png%2521%2Ffw%2F1024%2Fwatermark%2Furl%2FL2ltYWdlcy93YXRlcm1hcmsvZGF0dS5wbmc%3D%2Frepeat%2Ftrue" alt="User Avatar" width="100" id="company_showimg">
                   </div>
                 </div>
               </div>
@@ -253,6 +266,17 @@
     }).done(function(result) {
       result.data.forEach( function (v,i) {
         $("#label").append("<option value='"+v.name+"'>"+v.name+"</option>");
+      });
+
+    });
+    $.ajax({
+      type: 'GET',
+      url : "/base/categorys",
+      processData: false,
+      contentType: false,
+    }).done(function(result) {
+      result.data.forEach( function (v,i) {
+        $("#label1").append("<option value='"+v+"'>"+v+"</option>");
       });
 
     });
@@ -347,7 +371,6 @@
             processData: false,
             contentType: false,
           }).done(function(result) {
-            console.log(result);
             $("#idcardpositiveimg").attr("src",result.data);
           });
         }
@@ -397,7 +420,6 @@
             processData: false,
             contentType: false,
           }).done(function(result) {
-            console.log(result);
             $("#idcardreverseimg").attr("src",result.data);
           });
         }
@@ -497,7 +519,6 @@
             processData: false,
             contentType: false,
           }).done(function(result) {
-            console.log(result);
             $("#logoimg").attr("src",result.data);
           });
         }
@@ -547,13 +568,17 @@
             processData: false,
             contentType: false,
           }).done(function(result) {
-            console.log(result);
             $("#bannerimg").attr("src",result.data);
+            $("#bannerview").append("<img src='"+result.data+"' name='bannerviewimg' onclick='remove(this)' style='width:80px;'>  &nbsp;");
           });
         }
       };
       xhr.send();
     })
+
+    function remove(object){
+      $(object).remove();
+    }
 
     $("#company_show").on("change",function(){
       function getObjectURL(file) {
@@ -599,6 +624,7 @@
           }).done(function(result) {
             console.log(result);
             $("#company_showimg").attr("src",result.data);
+            $("#shouview").append("<img src='"+result.data+"' name='shouviewimg' onclick='remove(this)' style='width:80px;'>");
           });
         }
       };
@@ -691,19 +717,40 @@
 
         }).done(function(result) {
           if(result.data>0){
-              $.ajax({
+            var bannerviewimg='';
+            var i=0
+            $("img[name='bannerviewimg']").each(function(){
+              if(i==0) {
+                bannerviewimg =  $(this).attr('src');
+                i++;
+              }else {
+                bannerviewimg = bannerviewimg + ","+$(this).attr('src');
+              }
+            })
+
+            var shouviewimg='';
+             i=0
+            $("img[name='shouviewimg']").each(function(){
+              if(i==0) {
+                shouviewimg =  $(this).attr('src');
+                i++;
+              }else {
+                shouviewimg = shouviewimg + ","+$(this).attr('src');
+              }
+            })
+            $.ajax({
                 type: 'POST',
                 url: "/user/userauth",
                 data: JSON.stringify({
                   "city": $("#city").val(),
                   "name": $("#name").val(),
                   "brandgroup": $("#brandgroup").val(),
-                  "label": $("#label").val(),
+                  "label": $("#label").val()+','+$("#label1").val(),
                   "introduce": $("#introduce").val(),
                   "businesslicense": $("#businesslicenseimg").attr('src'),
                   "logo": $("#logoimg").attr('src'),
-                  "banner": $("#bannerimg").attr('src'),
-                  "company_show": $("#company_showimg").attr('src'),
+                  "banner": bannerviewimg,
+                  "company_show": shouviewimg,
                   "businessscope": $("#businessscope").val(),
                   "companyaddress": $("#companyaddress").val(),
                   "companyname": $("#companyname").val(),
@@ -720,7 +767,7 @@
                 contentType: "application/json; charset=UTF-8",
               }).done(function (result) {
                 layui.use("layer", function () {
-                  layer.alert('您的申请成功，我们将在一个工作日内进行审核。', {
+                  layer.alert('您的申请成功，我们将在一个工作日内进行审核。您的默认密码为123456，请登录设汇家APP进行修改！', {
                     skin: 'layui-layer-molv' //样式类名
                     , closeBtn: 0
                     , anim: 4 //动画类型

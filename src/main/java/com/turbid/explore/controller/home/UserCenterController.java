@@ -101,13 +101,13 @@ public class UserCenterController {
         feedback.setUserSecurity(userSecurityService.findByPhone(principal.getName()));
         return Mono.just(Info.SUCCESS(feedbackRepository.saveAndFlush(feedback)));
     }
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    String dateStr = sdf.format(new Date());
+
 
     @ApiOperation(value = "签到", notes="签到")
     @PostMapping(value = "signin")
     public Mono<Info> signin(Principal principal)  {
-
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String dateStr = sdf.format(new Date());
         UserSecurity userSecurity=userSecurityService.findByPhone(principal.getName());
         if(null==userSecurity.getShb()){
             userSecurity.setShb(1);
@@ -123,6 +123,8 @@ public class UserCenterController {
     @ApiOperation(value = "是否签到", notes="是否签到")
     @PostMapping(value = "issignin")
     public Mono<Info> issignin(Principal principal)  {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String dateStr = sdf.format(new Date());
         return Mono.just(Info.SUCCESS(userSecurityService.issignin(principal.getName(),dateStr)));
     }
 

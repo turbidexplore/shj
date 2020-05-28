@@ -36,6 +36,11 @@ public class VisitorServiceImpl implements VisitorService {
     }
 
     @Override
+    public int companyCount(String code) {
+        return visitorRepository.countByShopcode(code);
+    }
+
+    @Override
     public List<BrandCountInfo> brandinfo(String name) {
         return  visitorRepository.brandinfo(name);
     }

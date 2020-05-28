@@ -41,11 +41,20 @@ public class CallServiceImpl implements CallService {
 
     @Override
     public int mycallcount(String name) {
-        return callRepository.mycallcount(name);
+        return callRepository.mycallcount(name).size();
     }
 
     @Override
     public int callmecount(String name) {
-        return callRepository.callmecount(name);
+        return callRepository.callmecount(name).size();
     }
+
+    @Override
+    public List<Call> callme(String name, Integer page) {
+        Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
+        Page<Call> pages=  callRepository.callme(pageable,name);
+        return pages.getContent();
+    }
+
+
 }

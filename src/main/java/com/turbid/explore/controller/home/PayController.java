@@ -21,6 +21,7 @@ import com.turbid.explore.repository.StudyRelationRepository;
 import com.turbid.explore.service.*;
 import com.turbid.explore.tools.CodeLib;
 import com.turbid.explore.tools.Info;
+import com.turbid.explore.tools.IosVerifyUtil;
 import com.turbid.explore.tools.MD5;
 import io.micrometer.core.instrument.util.StringUtils;
 import io.swagger.annotations.Api;
@@ -42,6 +43,7 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -216,19 +218,19 @@ public class PayController {
                 case "NEEDS_URGENT":
                     projectNeedsService.updateURGENT(order.getOrderno());
                     if(order.getStatus()==0) {
-                        noticeRepository.save(new Notice(order.getUserphone(), "您的需求加急订单已支付成功", "支付通知", 0, 0));
+                        noticeRepository.save(new Notice(order.getUserphone(), "您的需求加急订单已支付成功。", "支付通知", 1, 0));
                     }
                     break;
                 case "SEE_NEEDS":
                     needsRelationService.updateSEE(order.getOrderno());
                     if(order.getStatus()==0) {
-                        noticeRepository.save(new Notice(order.getUserphone(), "您的查看需求订单已支付成功", "支付通知", 0, 0));
+                        noticeRepository.save(new Notice(order.getUserphone(), "您的查看需求订单已支付成功。", "支付通知", 1, 0));
                     }
                     break;
                 case "SEE_STUDY":
                     studyService.updateSTUDY(order.getOrderno());
                     if(order.getStatus()==0) {
-                        noticeRepository.save(new Notice(order.getUserphone(), "您的课程订单已支付成功", "支付通知", 0, 0));
+                        noticeRepository.save(new Notice(order.getUserphone(), "您的课程订单已支付成功。", "支付通知", 1, 0));
                     }
                     break;
             }
@@ -284,19 +286,19 @@ public class PayController {
                 case "NEEDS_URGENT":
                     projectNeedsService.updateURGENT(order.getOrderno());
                     if(order.getStatus()==0) {
-                        noticeRepository.save(new Notice(order.getUserphone(), "您的需求加急订单已支付成功", "支付通知", 0, 0));
+                        noticeRepository.save(new Notice(order.getUserphone(), "您的需求加急订单已支付成功。", "支付通知", 1, 0));
                     }
                     break;
                 case "SEE_NEEDS":
                     needsRelationService.updateSEE(order.getOrderno());
                     if(order.getStatus()==0) {
-                        noticeRepository.save(new Notice(order.getUserphone(), "您的查看需求订单已支付成功", "支付通知", 0, 0));
+                        noticeRepository.save(new Notice(order.getUserphone(), "您的查看需求订单已支付成功。", "支付通知", 1, 0));
                     }
                     break;
                 case "SEE_STUDY":
                     studyService.updateSTUDY(order.getOrderno());
                     if(order.getStatus()==0) {
-                        noticeRepository.save(new Notice(order.getUserphone(), "您的课程订单已支付成功", "支付通知", 0, 0));
+                        noticeRepository.save(new Notice(order.getUserphone(), "您的课程订单已支付成功。", "支付通知", 1, 0));
                     }
             }
             order.setStatus(1);
@@ -529,19 +531,19 @@ public class PayController {
                     case "NEEDS_URGENT":
                         projectNeedsService.updateURGENT(order.getOrderno());
                         if(order.getStatus()==0) {
-                            noticeRepository.save(new Notice(order.getUserphone(), "您的需求加急订单已支付成功", "支付通知", 0, 0));
+                            noticeRepository.save(new Notice(order.getOrderno(),order.getUserphone(), "您的需求加急订单已支付成功。", "支付通知", 1, 0));
                         }
                         break;
                     case "SEE_NEEDS":
                         needsRelationService.updateSEE(order.getOrderno());
                         if(order.getStatus()==0) {
-                            noticeRepository.save(new Notice(order.getUserphone(), "您的查看需求订单已支付成功", "支付通知", 0, 0));
+                            noticeRepository.save(new Notice(order.getOrderno(),order.getUserphone(), "您的查看需求订单已支付成功。", "支付通知", 1, 0));
                         }
                         break;
                     case "SEE_STUDY":
                         studyService.updateSTUDY(order.getOrderno());
                         if(order.getStatus()==0) {
-                            noticeRepository.save(new Notice(order.getUserphone(), "您的课程订单已支付成功", "支付通知", 0, 0));
+                            noticeRepository.save(new Notice(order.getOrderno(),order.getUserphone(), "您的课程订单已支付成功。", "支付通知", 1, 0));
                         }
                 }
                 order.setStatus(1);
@@ -899,5 +901,58 @@ public class PayController {
             return Mono.just(Info.ERROR("设汇币余额不足"));
         }
 
+    }
+
+
+    /**
+     * 苹果内购校验
+     * @param priceId 会员价格ID
+     * @param transactionId 苹果内购交易ID
+     * @param payload 校验体（base64字符串）
+     * @return
+     */
+    @PostMapping("/iospay")
+    public Mono<Info> iosPay(Long priceId,String transactionId, String payload) {
+         System.out.println("苹果内购校验开始，交易ID：" + transactionId + " base64校验体：" + payload);
+        //线上环境验证
+        String verifyResult = IosVerifyUtil.buyAppVerify(payload, 1);
+        if (verifyResult == null) {
+            return Mono.just(Info.ERROR("苹果验证失败，返回数据为空"));
+        } else {
+            System.out.println("线上，苹果平台返回JSON:" + verifyResult);
+            JSONObject appleReturn = JSONObject.parseObject(verifyResult);
+            String states = appleReturn.getString("status");
+            //无数据则沙箱环境验证
+            if ("21007".equals(states)) {
+                verifyResult = IosVerifyUtil.buyAppVerify(payload, 0);
+                 System.out.println("沙盒环境，苹果平台返回JSON:" + verifyResult);
+                appleReturn = JSONObject.parseObject(verifyResult);
+                states = appleReturn.getString("status");
+            }
+             System.out.println("苹果平台返回值：appleReturn" + appleReturn);
+            // 前端所提供的收据是有效的    验证成功
+            if (states.equals("0")) {
+                String receipt = appleReturn.getString("receipt");
+                JSONObject returnJson = JSONObject.parseObject(receipt);
+                String inApp = returnJson.getString("in_app");
+                List<HashMap> inApps = JSONObject.parseArray(inApp, HashMap.class);
+                if (!CollectionUtils.isEmpty(inApps)) {
+                    ArrayList<String> transactionIds = new ArrayList<String>();
+                    for (HashMap app : inApps) {
+                        transactionIds.add((String) app.get("transaction_id"));
+                    }
+                    //交易列表包含当前交易，则认为交易成功
+                    if (transactionIds.contains(transactionId)) {
+                        //处理业务逻辑
+
+                        return Mono.just(Info.SUCCESS("支付成功"));
+                    }
+                    return Mono.just(Info.ERROR("当前交易不在交易列表中"));
+                }
+                return Mono.just(Info.ERROR("未能获取获取到交易列表"));
+            } else {
+                return Mono.just(Info.ERROR("支付失败，错误码:"+states));
+            }
+        }
     }
 }

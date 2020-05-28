@@ -31,15 +31,15 @@ public class UserAuth extends BaseEntity {
     private String name;
 
     //身份证号码
-    @Column(name = "idcard",nullable = false,length = 255)
+    @Column(name = "idcard",length = 255)
     private String idcard;
 
     //身份证正面
-    @Column(name = "idcardpositive",nullable = false,length = 255)
+    @Column(name = "idcardpositive",length = 255)
     private String idcardpositive;
 
     //身份证正面
-    @Column(name = "idcardreverse",nullable = false,length = 255)
+    @Column(name = "idcardreverse",length = 255)
     private String idcardreverse;
 
 

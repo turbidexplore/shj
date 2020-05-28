@@ -59,7 +59,7 @@
               <li class="nav-item active">
                 <a class="nav-link " href="/managegoods">
                   <i class="material-icons">vertical_split</i>
-                  <span>特加仓管理</span>
+                  <span>特价仓管理</span>
                 </a>
               </li>
               <li class="nav-item">
@@ -131,31 +131,30 @@
                           <input type="text" class="form-control" id="title" placeholder="商品标题">
                         </div>
                       </div>
-                      <div class="form-row">
-                        <div class="form-group col-md-6">
-                          <label for="minprice">最小价格</label>
-                          <input type="text" class="form-control" id="minprice" placeholder="最小价格">
-                        </div>
-                        <div class="form-group col-md-6">
-                          <label for="maxprice">最大价格</label>
-                          <input type="text" class="form-control" id="maxprice" placeholder="最大价格">
-                        </div>
-                      </div>
 
                       <div class="form-row">
                         <div class="form-group col-md-6">
                           <label for="label">商品类型</label>
                           <select id="label" class="form-control">
-
                           </select>
                         </div>
 
                         <div class="form-group col-md-6">
                           <label for="title">价格类型</label>
-                         <select id="pricetype" class="form-control">
-                           <option value="0">一口价</option>
+                         <select id="pricetype" class="form-control" onchange="change(this)">
                            <option value="1">可议价</option>
+                           <option value="0">一口价</option>
                          </select>
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-6">
+                          <label for="minprice">最小价格</label>
+                          <input type="text" class="form-control" id="minprice" placeholder="最小价格">
+                        </div>
+                        <div class="form-group col-md-6" id="maxpriceview">
+                          <label for="maxprice">最大价格</label>
+                          <input type="text" class="form-control" id="maxprice" placeholder="最大价格">
                         </div>
                       </div>
                       <div class="form-row">
@@ -197,6 +196,14 @@
      <script src="../scripts/bootstrap.min.js"></script>
      <script src="../js/jquery.cookie.min.js"></script>
   <script>
+
+    function change(obj){
+      if($(obj).val()==0){
+        $("#maxpriceview").hide();
+      }else{
+        $("#maxpriceview").show();
+      }
+    }
 
     $.ajax({
       type: 'GET',
@@ -305,10 +312,19 @@
           layer.msg('请输入库存数量');
         }); return false;
       }
+
+
+      var i=0
+
       var imgs='';
       $('*[name="showimage"]').each(function(i,v){
-        console.log(v);
-        imgs=imgs+$(v).attr('src')+","
+        if(i==0) {
+          imgs=$(v).attr('src');
+          i++;
+        }else {
+          imgs=imgs+","+$(v).attr('src');
+        }
+
       })
       if (imgs == '') {
         layui.use("layer",function() {

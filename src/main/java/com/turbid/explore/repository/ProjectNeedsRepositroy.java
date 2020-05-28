@@ -17,7 +17,7 @@ import javax.persistence.QueryHint;
 public interface ProjectNeedsRepositroy extends JpaRepository<ProjectNeeds,String> {
 
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
-    @Query("SELECT n from ProjectNeeds n where n.type=:type and n.status=0 and (n.style like %:style% or :style is null ) and (n.category like %:category% or :category is null) ")
+    @Query("SELECT n from ProjectNeeds n where n.type=:type and n.status=0 and (n.style LIKE CONCAT('%',:style,'%') or :style is null ) and (n.category LIKE CONCAT('%',:category,'%') or :category is null) ")
     Page<ProjectNeeds> listByPage(Pageable pageable, @Param("style") String style, @Param("category") String category, @Param("type") String type);
 
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
@@ -32,14 +32,14 @@ public interface ProjectNeedsRepositroy extends JpaRepository<ProjectNeeds,Strin
     int updateURGENT( @Param("orderno")String orderno);
 
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
-    @Query("SELECT n from ProjectNeeds n ")
+    @Query("SELECT n from ProjectNeeds n where n.status=0")
     Page<ProjectNeeds> newneeds(Pageable pageable);
 
     @Query("SELECT n from ProjectNeeds n where n.orderno=:orderno  ")
     ProjectNeeds getByOrder( @Param("orderno")String orderno);
 
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
-    @Query("SELECT n from ProjectNeeds n where n.title LIKE CONCAT(:text,'%') or n.type LIKE CONCAT(:text,'%') or n.category  LIKE CONCAT(:text,'%') or n.style LIKE CONCAT(:text,'%') ")
+    @Query("SELECT n from ProjectNeeds n where n.title LIKE CONCAT('%',:text,'%') or n.type LIKE CONCAT('%',:text,'%') or n.category  LIKE CONCAT('%',:text,'%') or n.style LIKE CONCAT('%',:text,'%') ")
     Page<ProjectNeeds> search(Pageable pageable,@Param("text") String text);
 
     @Modifying

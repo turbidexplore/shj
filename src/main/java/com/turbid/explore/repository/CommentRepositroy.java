@@ -32,6 +32,6 @@ public interface CommentRepositroy extends JpaRepository<Comment,String> {
     @Query("SELECT c from Comment c where c.relation =:relation and c.userSecurity.phonenumber=:name  ")
     List<Comment> mycomments(@Param("name") String name, @Param("relation") String relation);
 
-    @Query("select count (v) from Comment v where (v.create_time LIKE CONCAT(:time,'%') or :time is null ) and v.relation in(select a.code from Brand a where a.company.code=:code)")
+    @Query("select count (v) from Comment v where (v.create_time LIKE CONCAT('%',:time,'%') or :time is null ) and v.relation in(select a.code from Brand a where a.company.code=:code)")
     int commentCount(@Param("time")String time,@Param("code") String code);
 }

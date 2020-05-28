@@ -15,7 +15,7 @@ import javax.persistence.QueryHint;
 public interface QaaInfoRepositroy extends JpaRepository<QaaInfo,String> {
 
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
-    @Query("SELECT q from QaaInfo q where q.isdel=false and (q.label like %:label% or :label is null ) ")
+    @Query("SELECT q from QaaInfo q where q.isdel=false and (q.label LIKE CONCAT('%',:label,'%') or :label is null ) ")
     Page<QaaInfo> listByPage(Pageable pageable,@Param("label") String label);
 
     @Query("SELECT q from QaaInfo q where q.code=:code ")
@@ -26,6 +26,6 @@ public interface QaaInfoRepositroy extends JpaRepository<QaaInfo,String> {
     Page<QaaInfo> listByUser(Pageable pageable,@Param("name") String name);
 
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
-    @Query("SELECT q from QaaInfo q where q.isdel=false and (q.title LIKE CONCAT(:text,'%') or q.content LIKE CONCAT(:text,'%') or q.label LIKE CONCAT(:text,'%') )")
+    @Query("SELECT q from QaaInfo q where q.isdel=false and (q.title LIKE CONCAT('%',:text,'%') or q.content LIKE CONCAT('%',:text,'%') or q.label LIKE CONCAT('%',:text,'%') )")
     Page<QaaInfo> search(Pageable pageable,@Param("text") String text);
 }

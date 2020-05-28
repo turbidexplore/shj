@@ -59,7 +59,7 @@
               <li class="nav-item active">
                 <a class="nav-link " href="/managegoods">
                   <i class="material-icons">vertical_split</i>
-                  <span>特加仓管理</span>
+                  <span>特价仓管理</span>
                 </a>
               </li>
               <li class="nav-item">
@@ -117,10 +117,7 @@
                     <span class="d-none d-md-inline-block">用户名</span>
                   </a>
                   <div class="dropdown-menu dropdown-menu-small">
-				  <a class="dropdown-item" href="usercenter.html">
-                      <i class="material-icons">&#xE7FD;</i> 企业认账</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item text-danger" href="#">
+                    <a class="dropdown-item text-danger" onclick="out()">
                       <i class="material-icons text-danger">&#xE879;</i> 退出 </a>
                   </div>
                 </li>
@@ -192,8 +189,8 @@
         response.data.forEach(function (v,i) {
           console.log(v);
           var img=v.imgs.split(",")[0];
-          var pricetype=v.pricetype?'一口价':'可议价';
-          var html= '<div class="col-lg-3 col-md-6 col-sm-12 mb-4">'+
+          var pricetype=v.pricetype?'可议价':'一口价';
+          var html= '<div class="col-lg-3 col-md-6 col-sm-12 mb-4" id="'+v.code+'">'+
                   '<div class="card card-small card-post card-post--1">'+
                   '<div class="card-post__image" style="background-image: url('+img+');">'+
                   '<a href="#" class="card-post__category badge badge-pill badge-dark">'+v.lable+'</a>'+
@@ -202,7 +199,7 @@
                   '<p class="card-title"><button type="button" class="mb-1 btn btn-sm btn-outline-danger mr-1">'+pricetype+'</button>'+
                   '<span>'+v.title+'</span></p>'+
                   '<p></strong> 最小价格:<strong style="color: #c69500;">'+v.price+'元</strong> <br>  最大价格:<strong style="color: #c69500;">'+v.maxprice+'元</strong> </p>'+
-                  '<span class="text-muted" style="font-size: 12px;">'+v.addtime+'  发布</span>'+
+                  '<span class="text-muted" style="font-size: 12px;">'+v.addtime+'  发布     <button type="button" class="mb-1 btn btn-sm btn-info mr-1" onclick="xj(\''+v.code+'\')"> 下架</button></span>'+
                   '</div></div></div>';
           $("#content").append(html);
         })
@@ -210,7 +207,25 @@
 
     }
 
+function xj(code) {
+  var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "/goods/updatastatus?code="+code+"&status=1",
+    "method": "PUT",
+    "processData": false,
+    "headers": {
+      "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
+      "cache-control": "no-cache",
+      "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
+    }
+  }
+  $.ajax(settings).done(function (response) {
+    alert("下架成功！")
+      $("#"+code).remove();
+  });
 
+}
 
   </script>
   </body>

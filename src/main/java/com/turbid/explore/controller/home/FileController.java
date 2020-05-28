@@ -7,6 +7,10 @@ import com.turbid.explore.tools.Info;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -28,9 +32,23 @@ public class FileController {
     @Autowired
     private FileService fileService;
 
+
+    @ApiOperation(value = "视频上传", notes="视频上传")
+    @PostMapping(value = "/vupload")
+    public ResponseEntity<String> vupload(@RequestParam("upload") MultipartFile file, @RequestParam("CKEditorFuncNum") String funNum) {
+        try {
+                String resp = "<script type=\"text/javascript\">window.parent.CKEDITOR.tools.callFunction(" + funNum + ",'" + fileService.images(file,"public") + "','')</script>";
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.TEXT_HTML);
+                return new ResponseEntity<String>(resp,headers, HttpStatus.OK);
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
     @ApiOperation(value = "文件上传", notes="文件上传")
     @PostMapping(value = "/upload")
-    public Mono<Info> images(@RequestParam("file") MultipartFile multipartFile) {
+    public Mono<Info> upload(@RequestParam("file") MultipartFile multipartFile) {
         try {
             return Mono.just(Info.SUCCESS(fileService.images(multipartFile,"public")));
         } catch (IOException e) {

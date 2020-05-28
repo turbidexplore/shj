@@ -11,21 +11,26 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.QueryHint;
+import java.util.List;
 
 @Repository
 public interface CallRepository extends JpaRepository<Call,String> {
 
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
-    @Query("SELECT c.projectinfo from Call c where c.usercode =:name order by c.callusercode,c.usercode")
+    @Query("SELECT c.projectinfo from Call c where c.usercode =:name group by c.callusercode,c.usercode,c.projectinfo.code")
     Page<ProjectNeeds> listByUserMy(Pageable pageable,@Param("name") String name);
 
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
-    @Query("SELECT c.projectinfo from Call c where c.callusercode =:name order by c.callusercode,c.usercode")
+    @Query("SELECT c.projectinfo from Call c where c.callusercode =:name group by c.callusercode,c.usercode,c.projectinfo.code")
     Page<ProjectNeeds> listByUserMe(Pageable pageable, @Param("name") String name);
 
-    @Query("SELECT count(c) from Call c where c.usercode =:name order by c.callusercode,c.usercode")
-    int mycallcount(@Param("name")String name);
+    @Query("SELECT c.code from Call c where c.usercode =:name group by c.callusercode,c.usercode,c.projectinfo.code")
+    List<String> mycallcount(@Param("name")String name);
 
-    @Query("SELECT count(c) from Call c where c.callusercode =:name order by c.callusercode,c.usercode")
-    int callmecount(@Param("name")String name);
+    @Query("SELECT c.code from Call c where c.callusercode =:name group by c.callusercode,c.usercode,c.projectinfo.code")
+    List<String> callmecount(@Param("name")String name);
+
+    @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
+    @Query("SELECT c from Call c where c.callusercode =:name group by c.callusercode,c.usercode,c.projectinfo.code")
+    Page<Call> callme(Pageable pageable,@Param("name") String name);
 }

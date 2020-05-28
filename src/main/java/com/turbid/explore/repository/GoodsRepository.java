@@ -16,7 +16,7 @@ import javax.persistence.QueryHint;
 public interface GoodsRepository extends JpaRepository<Goods,String> {
 
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
-    @Query("select g from Goods g where g.status=0 and (g.lable LIKE CONCAT(:label,'%')  or :label is null ) ")
+    @Query("select g from Goods g where g.status=0 and (g.lable LIKE CONCAT('%',:label,'%')  or :label is null ) ")
     Page<Goods> listByPage(Pageable pageable, @Param("label") String label);
 
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
@@ -32,6 +32,10 @@ public interface GoodsRepository extends JpaRepository<Goods,String> {
     int updatastatus(@Param("code")String code,@Param("status") Integer status);
 
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
-    @Query("select g from Goods g where  g.status=0 and ( g.content LIKE CONCAT(:text,'%') or g.title  LIKE CONCAT(:text,'%') or g.lable  LIKE CONCAT(:text,'%') )")
+    @Query("select g from Goods g where  g.status=0 and ( g.content LIKE CONCAT('%',:text,'%') or g.title  LIKE CONCAT('%',:text,'%') or g.lable  LIKE CONCAT('%',:text,'%') )")
     Page<Goods> search(Pageable pageable,@Param("text") String text);
+
+    @Modifying
+    @Query("update Goods p set p.del=:del where p.code=:code")
+    int updataDelete(@Param("del")Boolean del,@Param("code") String code);
 }

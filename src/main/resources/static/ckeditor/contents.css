@@ -127,7 +127,12 @@ figure > figcaption
 	display: block; /* For IE8 */
 }
 img{
-	width: 100%;
+	width: 80%;
+	height: auto;
+}
+video{
+	width: 80%;
+	height: auto;
 }
 a > img {
 	padding: 1px;

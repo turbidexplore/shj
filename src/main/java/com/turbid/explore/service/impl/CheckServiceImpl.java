@@ -1,8 +1,13 @@
 package com.turbid.explore.service.impl;
 
+import com.turbid.explore.pojo.Case;
 import com.turbid.explore.repository.MessageRepository;
 import com.turbid.explore.service.CheckService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
@@ -24,7 +29,9 @@ public class CheckServiceImpl implements CheckService {
 
     @Override
     public String findCodeByPhone(String username) {
-        return messageRepository.findCodeByPhone(username,new Date(new Date().getTime()-1000*60*10)).get(0).getAuthcode();
+        Pageable pageable = new PageRequest(0,1, Sort.Direction.DESC,"create_time");
+        Page<String> pages=  messageRepository.findCodeByPhone(pageable,username,new Date(new Date().getTime()-1000*60*10));
+        return pages.getContent().get(0);
     }
 
 }

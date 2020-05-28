@@ -1,9 +1,7 @@
 package com.turbid.explore.controller.home;
 
-import com.turbid.explore.pojo.Answer;
-import com.turbid.explore.pojo.Case;
-import com.turbid.explore.pojo.QaaInfo;
-import com.turbid.explore.pojo.UserSecurity;
+import com.turbid.explore.pojo.*;
+import com.turbid.explore.repository.NoticeRepository;
 import com.turbid.explore.service.AnswerService;
 import com.turbid.explore.service.CommentService;
 import com.turbid.explore.service.QaaInfoService;
@@ -66,13 +64,19 @@ public class QaaInfoController {
     @Autowired
     private AnswerService answerService;
 
+    @Autowired
+    private NoticeRepository noticeRepository;
+
     @ApiOperation(value = "回答答案", notes="回答答案")
     @PutMapping("/answer")
     public Mono<Info> answer(Principal principal,@RequestBody Answer answer) {
-        answer.setUserSecurity(userSecurityService.findByPhone(principal.getName()));
+        UserSecurity userSecurity=userSecurityService.findByPhone(principal.getName());
+        answer.setUserSecurity(userSecurity);
         QaaInfo qaaInfo= qaaInfoService.qaaByCode(answer.getQaacode());
         qaaInfo.getAnswersinfo().add(answerService.save(answer));
         qaaInfoService.save(qaaInfo);
+        noticeRepository.save(new Notice(qaaInfo.getUserSecurity().getPhonenumber(), "用户【 "+userSecurity.getUserBasic().getNikename()+" 】 回答了您提的问题，请去个人中心查看。", "回答通知", 1, 0));
+
         return Mono.just(Info.SUCCESS(answer));
     }
 

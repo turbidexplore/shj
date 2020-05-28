@@ -1,5 +1,6 @@
 server:
   port: 10002
+
 spring:
   application:
     name: explore
@@ -16,8 +17,8 @@ spring:
     static-locations: classpath:/META-INF/resources/,classpath:/resources/, classpath:/static/, classpath:/public/,file:D:/apple
   servlet:
     multipart:
-      maxFileSize: 1000MB
-      maxRequestSize: 1000MB
+      maxFileSize: 50MB
+      maxRequestSize: 50MB
       enabled: true
   datasource:
     url: jdbc:mysql://47.96.88.206:3306/jxkj?useUnicode=true&characterEncoding=utf8
@@ -61,7 +62,6 @@ spring:
       username: anoax
       password: zhangan28
       repositories: true
-
 security:
   oauth2:
     resource:

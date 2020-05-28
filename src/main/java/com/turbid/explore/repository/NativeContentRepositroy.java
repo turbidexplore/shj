@@ -4,6 +4,7 @@ import com.turbid.explore.pojo.NativeContent;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.repository.query.Param;
@@ -24,4 +25,12 @@ public interface NativeContentRepositroy extends JpaRepository<NativeContent,Str
 
     @Query("SELECT n from NativeContent n where n.code=:code ")
     NativeContent newsByCode(@Param("code") String code);
+
+    @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
+    @Query("SELECT n from NativeContent n where n.content LIKE CONCAT('%',:text,'%') or n.label LIKE CONCAT('%',:text,'%') or n.title LIKE CONCAT('%',:text,'%') or n.userSecurity.userBasic.nikename LIKE CONCAT('%',:text,'%')")
+    Page<NativeContent> search(Pageable pageable,@Param("text") String text);
+
+    @Modifying
+    @Query("update Brand p set p.del=:del where p.code=:code")
+    int updataDelete(@Param("del")Boolean del,@Param("code") String code);
 }

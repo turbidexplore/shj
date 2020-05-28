@@ -28,6 +28,9 @@ public class BaseEntity implements Serializable {
     @Column(name = "create_time",length = 32)
     private Date create_time;
 
+    @Column(name = "del")
+    private Boolean del;
+
     private String addftime;
 
     public String getAddftime() {
@@ -48,6 +51,12 @@ public class BaseEntity implements Serializable {
         }
     }
 
+    public Date getCreate_time() {
+        if(null!=this.create_time) {
+            return create_time;
+        }else {
+            return new Date();
+        }
 
-
+    }
 }

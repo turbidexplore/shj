@@ -58,7 +58,7 @@
               <li class="nav-item">
                 <a class="nav-link " href="/managegoods">
                   <i class="material-icons">vertical_split</i>
-                  <span>特加仓管理</span>
+                  <span>特价仓管理</span>
                 </a>
               </li>
               <li class="nav-item">
@@ -116,10 +116,7 @@
                     <span class="d-none d-md-inline-block">用户名</span>
                   </a>
                   <div class="dropdown-menu dropdown-menu-small">
-				  <a class="dropdown-item" href="usercenter.html">
-                      <i class="material-icons">&#xE7FD;</i> 企业认账</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item text-danger" href="#">
+                    <a class="dropdown-item text-danger" onclick="out()">
                       <i class="material-icons text-danger">&#xE879;</i> 退出 </a>
                   </div>
                 </li>
@@ -166,11 +163,13 @@
                                 <select id="brandgroup" class="form-control">
 
                                 </select></div>
-                              <div class="form-group  col-md-4" >
+                              <div class="form-group  col-md-6" >
                                 <label for="label">标签</label>
                                 <select id="label" class="form-control">
 
-                                </select></div>
+                                </select><select id="label1" class="form-control">
+
+                              </select></div>
                               <div class="form-group col-md-5">
                                 <label for="city">所在城市</label>
                                 <input type="text" class="form-control" id="city" placeholder="城市" value=""> </div>
@@ -273,13 +272,17 @@
                     <a href="javascript:;" class="file">商铺logo
                       <input type="file" id="logo"  />
                     </a>
+                  </div>
+                    <div class="card-header border-bottom text-center">
                     <div class="mb-3 mx-auto">
-                      <img src="" alt="User Avatar" width="200" id="bannerimg"> </div>
+                      <div id="bannerview"></div>
+                       </div>
                     <a href="javascript:;" class="file"> 店铺广告图<input type="file" id="banner"  /></a>
                   </div>
                   <div class="card-header border-bottom text-center">
                     <div class="mb-3 mx-auto">
-                      <img src="" alt="User Avatar" width="200" id="company_showimg"> </div>
+                      <div id="shouview"></div>
+                       </div>
                     <a href="javascript:;" class="file">公司展示图
                       <input type="file" id="company_show"  />
                     </a>
@@ -314,15 +317,12 @@
             "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
           }
         }).done(function(result) {
-            console.log(result);
                    $("#city").val(result.data.city);
                    $("#name").val(result.data.name);
                    $("#brandgroup").val(result.data.brandgroup);
                    $("#introduce").val(result.data.introduce);
                    $("#businesslicenseimg").attr('src',result.data.businesslicense);
                    $("#logoimg").attr('src',result.data.logo);
-                   $("#bannerimg").attr('src',result.data.banner),
-                   $("#company_showimg").attr('src',result.data.company_show),
                    $("#businessscope").val(result.data.businessscope);
                    $("#companyaddress").val(result.data.companyaddress);
                    $("#companyname").val(result.data.companyname);
@@ -335,6 +335,13 @@
                    $("#idcardreverseimg").attr('src',result.data.idcardreverse);
                    $("#unifiedcreditcode").val(result.data.unifiedcreditcode);
                    code=result.data.code;
+                  result.data.banner.split(",").forEach(function (v) {
+                    $("#bannerview").append("<img src='"+v+"' name='bannerviewimg' onclick='remove(this)' style='width:80px;'>  &nbsp;");
+                  })
+                  result.data.company_show.split(",").forEach(function (v) {
+                    $("#shouview").append("<img src='"+v+"' name='shouviewimg' onclick='remove(this)' style='width:80px;'>");
+
+                  });
         });
 
 
@@ -358,6 +365,18 @@
         }).done(function(result) {
           result.data.forEach( function (v,i) {
             $("#label").append("<option value='"+v.name+"'>"+v.name+"</option>");
+          });
+
+        });
+
+        $.ajax({
+          type: 'GET',
+          url : "/base/categorys",
+          processData: false,
+          contentType: false,
+        }).done(function(result) {
+          result.data.forEach( function (v,i) {
+            $("#label1").append("<option value='"+v+"'>"+v+"</option>");
           });
 
         });
@@ -652,13 +671,16 @@
                 processData: false,
                 contentType: false,
               }).done(function(result) {
-                console.log(result);
-                $("#bannerimg").attr("src",result.data);
+                $("#bannerview").append("<img src='"+result.data+"' name='bannerviewimg' onclick='remove(this)' style='width:80px;'>  &nbsp;");
               });
             }
           };
           xhr.send();
         })
+
+        function remove(object){
+          $(object).remove();
+        }
 
         $("#company_show").on("change",function(){
           function getObjectURL(file) {
@@ -703,7 +725,7 @@
                 contentType: false,
               }).done(function(result) {
                 console.log(result);
-                $("#company_showimg").attr("src",result.data);
+                $("#shouview").append("<img src='"+result.data+"' name='shouviewimg' onclick='remove(this)' style='width:80px;'>");
               });
             }
           };
@@ -775,16 +797,29 @@
             layui.use("layer",function() {
               layer.msg('请输入上传商铺logo');
             });return false;
-          } else if ($("#bannerimg").attr('src') == ""||$("#bannerimg").attr('src')== null ) {
-            layui.use("layer",function() {
-              layer.msg('请输入上商铺广告图');
-            });return false;
-          } else if ($("#company_showimg").attr('src') == ""||$("#company_showimg").attr('src')== null ) {
-            layui.use("layer",function() {
-              layer.msg('请输入上公司展示图');
-            });return false;
           }
 
+          var bannerviewimg='';
+          var i=0
+          $("img[name='bannerviewimg']").each(function(){
+            if(i==0) {
+              bannerviewimg =  $(this).attr('src');
+              i++;
+            }else {
+              bannerviewimg = bannerviewimg + ","+$(this).attr('src');
+            }
+          })
+
+          var shouviewimg='';
+          i=0
+          $("img[name='shouviewimg']").each(function(){
+            if(i==0) {
+              shouviewimg =  $(this).attr('src');
+              i++;
+            }else {
+              shouviewimg = shouviewimg + ","+$(this).attr('src');
+            }
+          })
               $.ajax({
                 type: 'PUT',
                 url: "/shop/update",
@@ -793,12 +828,12 @@
                   "city": $("#city").val(),
                   "name": $("#name").val(),
                   "brandgroup": $("#brandgroup").val(),
-                  "label": $("#label").val(),
+                  "label": $("#label").val()+","+$("#label1").val(),
                   "introduce": $("#introduce").val(),
                   "businesslicense": $("#businesslicenseimg").attr('src'),
                   "logo": $("#logoimg").attr('src'),
-                  "banner": $("#bannerimg").attr('src'),
-                  "company_show": $("#company_showimg").attr('src'),
+                  "banner": bannerviewimg,
+                  "company_show": shouviewimg,
                   "businessscope": $("#businessscope").val(),
                   "companyaddress": $("#companyaddress").val(),
                   "companyname": $("#companyname").val(),
@@ -819,8 +854,6 @@
                     skin: 'layui-layer-molv' //样式类名
                     , closeBtn: 0
                     , anim: 4 //动画类型
-                  }, function () {
-
                   });
                 });
               });

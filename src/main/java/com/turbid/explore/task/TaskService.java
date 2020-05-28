@@ -16,7 +16,7 @@ public class TaskService {
     private ProjectNeedsService projectNeedsService;
 
     @Async
-    @Scheduled(cron = "0 0 13 * * ?")
+    @Scheduled(cron = "0 0 23 * * ?")
     public void testTasks() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String dateStr = sdf.format(new Date());

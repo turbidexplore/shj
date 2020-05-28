@@ -17,6 +17,7 @@ public interface VisitorService {
 
     int goodsCount(String time, String code);
 
+    int companyCount(String code);
 
     List<BrandCountInfo> brandinfo(String name);
 }

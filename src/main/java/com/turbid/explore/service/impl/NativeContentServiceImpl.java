@@ -47,4 +47,11 @@ public class NativeContentServiceImpl implements NativeContentService {
     public NativeContent newsByCode(String code) {
         return nativeContentRepositroy.getOne(code);
     }
+
+    @Override
+    public List<NativeContent> search(String text, Integer page) {
+        Pageable pageable = new PageRequest(page,size, Sort.Direction.DESC,"create_time");
+        Page<NativeContent> pages=  nativeContentRepositroy.search(pageable,text);
+        return pages.getContent();
+    }
 }

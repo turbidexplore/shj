@@ -17,4 +17,6 @@ public interface CallService {
     int mycallcount(String name);
 
     int callmecount(String name);
+
+    List<Call> callme(String name, Integer page);
 }

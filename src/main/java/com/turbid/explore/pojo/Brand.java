@@ -58,4 +58,7 @@ public class Brand extends BaseEntity{
         this.logo=logo;
     }
 
+    public String getContent() {
+        return content.replace("<img","<br><img");
+    }
 }

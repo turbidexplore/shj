@@ -43,4 +43,13 @@ public class Notice extends BaseEntity {
         this.type=type;
         this.status=status;
     }
+
+    public Notice(String code,String userphone,String message,String form,Integer type,Integer status) {
+        this.setCode(code);
+        this.userphone=userphone;
+        this.message=message;
+        this.form=form;
+        this.type=type;
+        this.status=status;
+    }
 }

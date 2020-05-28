@@ -16,7 +16,7 @@ import java.util.List;
 public interface CaseRepositroy extends JpaRepository<Case,String> {
 
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
-    @Query("SELECT c from Case c where (c.subject like %:subject% or :subject is null ) and (c.label like %:label% or :label is null) ")
+    @Query("SELECT c from Case c where (c.subject like CONCAT('%',:subject,'%') or :subject is null ) and (c.label like  CONCAT('%',:label,'%') or :label is null) ")
     Page<Case> listByPage(Pageable pageable, @Param("subject") String subject,@Param("label") String label);
 
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
@@ -43,6 +43,6 @@ public interface CaseRepositroy extends JpaRepository<Case,String> {
     int commentcount( @Param("usercode")String usercode);
 
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
-    @Query("SELECT c from Case c where c.label LIKE CONCAT(:text,'%') or c.content LIKE CONCAT(:text,'%') or c.title LIKE CONCAT(:text,'%') or c.name LIKE CONCAT(:text,'%') or c.company LIKE CONCAT(:text,'%') or c.subject LIKE CONCAT(:text,'%') or c.address LIKE CONCAT(:text,'%') or c.team LIKE CONCAT(:text,'%')  ")
+    @Query("SELECT c from Case c where c.label LIKE CONCAT('%',:text,'%') or c.content LIKE CONCAT('%',:text,'%') or c.title LIKE CONCAT('%',:text,'%') or c.name LIKE CONCAT('%',:text,'%') or c.company LIKE CONCAT('%',:text,'%') or c.subject LIKE CONCAT('%',:text,'%') or c.address LIKE CONCAT('%',:text,'%') or c.team LIKE CONCAT('%',:text,'%')  ")
     Page<Case> search(Pageable pageable,@Param("text") String text);
 }
