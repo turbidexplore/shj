@@ -168,7 +168,7 @@ public class BaseController {
     @GetMapping(value = "/casesubject")
     public Mono<Info> casesubject()  {
         return Mono.just(Info.SUCCESS(new String[]{"民宿空间","酒店空间",
-                "餐饮空间","住宅空间","办公空间","商业空间"}));
+                "餐饮空间","住宅空间","办公空间","商业空间"})); 
     }
 
     @ApiOperation(value = "获取品牌馆信息", notes="获取品牌馆信息")
