@@ -56,6 +56,7 @@ public class FileController {
         }
     }
 
+
     @ApiOperation(value = "多文件上传", notes="多文件上传")
     @PostMapping(value = "/manyupload")
     public Mono<Info> images(@RequestParam("files") MultipartFile[] multipartFiles) {

@@ -53,11 +53,12 @@ public class ShopController {
     @GetMapping("/getbycode")
     public Mono<Info> getbycode(Principal principal,@RequestParam("code")String code) {
         Shop shop=  shopService.getByCode(code);
-        Visitor visitor=new Visitor();
-        visitor.setUserSecurity(userSecurityService.findByPhone(principal.getName()));
-        visitor.setShopcode(code);
-        visitorService.save(visitor);
-
+        if(null!=principal) {
+            Visitor visitor = new Visitor();
+            visitor.setUserSecurity(userSecurityService.findByPhone(principal.getName()));
+            visitor.setShopcode(code);
+            visitorService.save(visitor);
+        }
         return Mono.just(Info.SUCCESS( shop));
     }
 

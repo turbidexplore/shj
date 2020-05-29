@@ -1,13 +1,19 @@
 package com.turbid.explore.controller.home;
 
 import com.turbid.explore.pojo.Banner;
+import com.turbid.explore.pojo.Brand;
 import com.turbid.explore.pojo.FileInfo;
+import com.turbid.explore.repository.FileInfoRepositroy;
+import com.turbid.explore.service.BannerService;
+import com.turbid.explore.service.FileService;
 import com.turbid.explore.tools.Info;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -27,6 +33,8 @@ public class BannerController {
         switch (type){
             case 0:
                 banner = new Banner();
+                banner.setType("0");
+                banner.setCode("ff808081725046550172504f83060023");
                 fileInfo=new FileInfo();
                 banner.setCreate_time(new Date());
                 fileInfo.setCreate_time(new Date());
@@ -34,6 +42,8 @@ public class BannerController {
                 fileInfo.setUrl("https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E9%A6%96%E9%A1%B5/%E9%A6%96%E9%A1%B5%E8%BD%AE%E6%92%AD%E4%B8%80.png");
                 banner.setFileInfo(fileInfo);
                 banner = new Banner();
+                banner.setType("0");
+                banner.setCode("ff808081725046550172504f83060023");
                 bannerList.add(banner);
                 fileInfo=new FileInfo();
                 fileInfo.setCreate_time(new Date());
@@ -42,6 +52,8 @@ public class BannerController {
                 banner.setFileInfo(fileInfo);
                 bannerList.add(banner);
                 banner = new Banner();
+                banner.setType("0");
+                banner.setCode("ff808081725046550172504f83060023");
                 fileInfo=new FileInfo();
                 fileInfo.setCreate_time(new Date());
                 fileInfo.setType("banner图片");
@@ -49,6 +61,8 @@ public class BannerController {
                 banner.setFileInfo(fileInfo);
                 bannerList.add(banner);
                 banner = new Banner();
+                banner.setType("0");
+                banner.setCode("ff808081725046550172504f83060023");
                 fileInfo=new FileInfo();
                 fileInfo.setCreate_time(new Date());
                 fileInfo.setType("banner图片");
@@ -203,9 +217,34 @@ public class BannerController {
                 bannerList.add(banner);
                 bannerList.add(banner);
                 return Mono.just(Info.SUCCESS(bannerList));
+            case 6:
+                banner.setCreate_time(new Date());
+                fileInfo.setCreate_time(new Date());
+                banner.setFileInfo(fileInfo);
+                bannerList.add(banner);
+                bannerList.add(banner);
+                bannerList.add(banner);
+                bannerList.add(banner);
+                return Mono.just(Info.SUCCESS(bannerList));
             default:
                 return Mono.just(Info.SUCCESS(null));
         }
 
+    }
+
+    @Autowired
+    private BannerService bannerService;
+
+    @Autowired
+    private FileInfoRepositroy fileInfoRepositroy;
+
+    @PutMapping("/add")
+    public Mono<Info> add(Principal principal, @RequestBody Banner banner) {
+        FileInfo fileInfo=new FileInfo();
+        fileInfo.setType("banner图片");
+        fileInfo.setUrl(banner.getImgs());
+        fileInfoRepositroy.saveAndFlush(fileInfo);
+        banner.setFileInfo(fileInfo);
+        return Mono.just(Info.SUCCESS( bannerService.save(banner)));
     }
 }

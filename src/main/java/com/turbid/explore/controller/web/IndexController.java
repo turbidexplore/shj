@@ -137,4 +137,16 @@ public class IndexController {
         return "manage/study";
     }
 
+    @RequestMapping("/managebanners")
+    public String managebanners(){
+        return "manage/banners";
+    }
+
+    @RequestMapping("/managebanner")
+    public String managebanner(){
+        return "manage/banner";
+    }
+
+
+
 }

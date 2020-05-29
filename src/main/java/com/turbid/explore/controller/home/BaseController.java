@@ -37,17 +37,31 @@ public class BaseController {
     }
 
     @GetMapping(value = "/update")
-    public Mono<Info> update(@RequestParam("version")Integer version)  {
+    public Mono<Info> update(@RequestParam("version")String version)  {
+        Map<String,Object> data=new HashMap<>();
+
         Map<String,Object> info=new HashMap<>();
-       if (version==1){
+       if (version=="1.0.1"){
            info.put("isupdate",false);
        }else {
            info.put("isupdate",true);
        }
         info.put("version","1.0.1");
         info.put("desc","添加了达人研习社模块");
-
-        return Mono.just(Info.SUCCESS(info));
+        info.put("forceupdate",false);
+        info.put("url","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/shehuijia.apk");
+        data.put("android",info);
+        info=new HashMap<>();
+        if (version=="1.0.1"){
+            info.put("isupdate",false);
+        }else {
+            info.put("isupdate",true);
+        }
+        info.put("version","1.0.1");
+        info.put("desc","添加了达人研习社模块");
+        info.put("forceupdate",false);
+        data.put("ios",info);
+        return Mono.just(Info.SUCCESS(data));
     }
 
     @GetMapping(value = "/basic")
