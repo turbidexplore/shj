@@ -24,11 +24,11 @@ public interface CallRepository extends JpaRepository<Call,String> {
     @Query("SELECT c.projectinfo from Call c where c.callusercode =:name group by c.callusercode,c.usercode,c.projectinfo.code")
     Page<ProjectNeeds> listByUserMe(Pageable pageable, @Param("name") String name);
 
-    @Query("SELECT c.code from Call c where c.usercode =:name group by c.callusercode,c.usercode,c.projectinfo.code")
-    List<String> mycallcount(@Param("name")String name);
+    @Query("SELECT c.projectinfo from Call c where c.usercode =:name group by c.callusercode,c.usercode,c.projectinfo.code")
+    List<ProjectNeeds> mycallcount(@Param("name")String name);
 
-    @Query("SELECT c.code from Call c where c.callusercode =:name group by c.callusercode,c.usercode,c.projectinfo.code")
-    List<String> callmecount(@Param("name")String name);
+    @Query("SELECT c from Call c where c.callusercode =:name group by c.callusercode,c.usercode,c.projectinfo.code")
+    List<Call> callmecount(@Param("name")String name);
 
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
     @Query("SELECT c from Call c where c.callusercode =:name group by c.callusercode,c.usercode,c.projectinfo.code")
