@@ -56,10 +56,14 @@ public class BrandController {
     public Mono<Info> get(Principal principal,@RequestParam("code") String code) {
 
         Shop shop=  shopService.getByCode(code);
-        Visitor visitor=new Visitor();
-        visitor.setShopcode(shop.getCode());
-        visitor.setUserSecurity(userSecurityService.findByPhone(principal.getName()));
-        visitorService.save(visitor);
+        try {
+            Visitor visitor = new Visitor();
+            visitor.setShopcode(shop.getCode());
+            visitor.setUserSecurity(userSecurityService.findByPhone(principal.getName()));
+            visitorService.save(visitor);
+        }catch (Exception e){
+
+        }
         return Mono.just(Info.SUCCESS( brandService.get(code)));
     }
 

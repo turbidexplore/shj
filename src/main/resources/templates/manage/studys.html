@@ -56,16 +56,35 @@
                   <span>我的品牌</span>
                 </a>
               </li>
-              <li class="nav-item active">
+
+              <li class="nav-item ">
                 <a class="nav-link " href="/managegoods">
                   <i class="material-icons">vertical_split</i>
                   <span>特价仓管理</span>
                 </a>
               </li>
               <li class="nav-item">
+                <a class="nav-link " href="/managebanners">
+                  <i class="material-icons">vertical_split</i>
+                  <span>广告管理</span>
+                </a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link " href="/managestudys">
+                  <i class="material-icons">vertical_split</i>
+                  <span>课程管理</span>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link " href="/managecomments">
                   <i class="material-icons">note_add</i>
                   <span>评论管理</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="/managecases">
+                  <i class="material-icons">vertical_split</i>
+                  <span>案例管理</span>
                 </a>
               </li>
               <li class="nav-item">
@@ -134,7 +153,7 @@
             <!-- Page Header -->
             <div class="page-header row no-gutters py-4">
               <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
-                <a  class="mb-2 btn btn-sm btn-primary mr-1" href="/study">添加课程</a>
+                <a  class="mb-2 btn btn-sm btn-primary mr-1" href="/managestudy">添加课程</a>
               </div>
             </div>
             <div class="row" id="content">
@@ -176,7 +195,7 @@
       var settings = {
         "async": true,
         "crossDomain": true,
-        "url": "/goods/mylistByPage?page="+page,
+        "url": "/study/list?page="+page,
         "method": "POST",
         "processData": false,
         "headers": {
@@ -188,18 +207,17 @@
       $.ajax(settings).done(function (response) {
         response.data.forEach(function (v,i) {
           console.log(v);
-          var img=v.imgs.split(",")[0];
-          var pricetype=v.pricetype?'一口价':'可议价';
-          var html= '<div class="col-lg-3 col-md-6 col-sm-12 mb-4">'+
+          var pricetype=v.pricetype?'免费':'付费';
+          var html= '<div class="col-lg-3 col-md-6 col-sm-12 mb-4" id="'+v.code+'">'+
                   '<div class="card card-small card-post card-post--1">'+
-                  '<div class="card-post__image" style="background-image: url('+img+');">'+
-                  '<a href="#" class="card-post__category badge badge-pill badge-dark">'+v.lable+'</a>'+
+                  '<div class="card-post__image" style="background-image: url('+v.indeximgurl+');">'+
+                  '<a href="#" class="card-post__category badge badge-pill badge-dark">'+v.type+'</a>'+
                   '</div>'+
                   '<div class="card-body">'+
                   '<p class="card-title"><button type="button" class="mb-1 btn btn-sm btn-outline-danger mr-1">'+pricetype+'</button>'+
                   '<span>'+v.title+'</span></p>'+
-                  '<p></strong> 最小价格:<strong style="color: #c69500;">'+v.price+'元</strong> <br>  最大价格:<strong style="color: #c69500;">'+v.maxprice+'元</strong> </p>'+
-                  '<span class="text-muted" style="font-size: 12px;">'+v.addtime+'  发布</span>'+
+                  '<p></strong> 价格:<strong style="color: #c69500;">'+v.price+'元</strong> </p>'+
+                  '<span class="text-muted" style="font-size: 12px;">'+v.addtime+'  发布  <button type="button" class="mb-1 btn btn-sm btn-info mr-1" onclick="xj(\''+v.code+'\')"> 下架</button></span>'+
                   '</div></div></div>';
           $("#content").append(html);
         })
@@ -208,6 +226,25 @@
     }
 
 
+    function xj(code) {
+      var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": "/study/del?code="+code,
+        "method": "PUT",
+        "processData": false,
+        "headers": {
+          "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
+          "cache-control": "no-cache",
+          "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
+        }
+      }
+      $.ajax(settings).done(function (response) {
+        alert("下架成功！")
+        $("#"+code).remove();
+      });
+
+    }
 
   </script>
   </body>

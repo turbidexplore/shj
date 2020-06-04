@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import java.security.Principal;
+import java.util.Date;
 import java.util.List;
 
 @Api(description = "灵感相关接口")
@@ -29,6 +30,7 @@ public class NativeContentController {
     @ApiOperation(value = "发布文章", notes="发布文章")
     @PostMapping(value = "/add")
     public Mono<Info> add(Principal principal,@RequestBody NativeContent nativeContent) {
+        nativeContent.setCreate_time(new Date());
         nativeContent.setUserSecurity(userSecurityService.findByPhone(principal.getName()));
         List<String> imgs= CodeLib.listImgSrc(nativeContent.getContent());
         if(imgs.size()>2) {
@@ -45,11 +47,22 @@ public class NativeContentController {
         return Mono.just(Info.SUCCESS(null));
     }
 
+    @ApiOperation(value = "删除", notes="删除")
+    @PutMapping(value = "/del")
+    public Mono<Info> del(@RequestParam(name = "code")String code) {
+        try {
+            nativeContentService.del(code);
+            return Mono.just(Info.SUCCESS(null));
+        }catch (Exception e){
+            return Mono.just(Info.SUCCESS(e.getMessage()));
+        }
+    }
+
     @ApiOperation(value = "最新发布", notes="最新发布")
     @PostMapping(value = "/news")
-    public Mono<Info> news(@RequestParam(name = "page")Integer page) {
+    public Mono<Info> news(@RequestParam(name = "page")Integer page,@RequestParam(name = "label",required = false)String label) {
         try {
-            return Mono.just(Info.SUCCESS(nativeContentService.listByPage(page)));
+            return Mono.just(Info.SUCCESS(nativeContentService.listByPageLabel(page,label)));
         }catch (Exception e){
             return Mono.just(Info.SUCCESS(e.getMessage()));
         }
@@ -70,9 +83,14 @@ public class NativeContentController {
     public Mono<Info> newsByCode(Principal principal, @RequestParam(name = "code")String code) {
         try {
           NativeContent nativeContent=  nativeContentService.newsByCode(code);
-            if( nativeContent.getSees().toString().contains(principal.getName())==false) {
-                nativeContent.getSees().add(userSecurityService.findByPhone(principal.getName()));
-            }
+          try {
+              if( nativeContent.getSees().toString().contains(principal.getName())==false) {
+                  nativeContent.getSees().add(userSecurityService.findByPhone(principal.getName()));
+              }
+          }catch (Exception e){
+
+          }
+
 
             return Mono.just(Info.SUCCESS(nativeContentService.save(nativeContent)));
         }catch (Exception e){

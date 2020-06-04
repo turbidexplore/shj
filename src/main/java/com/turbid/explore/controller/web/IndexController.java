@@ -2,6 +2,10 @@ package com.turbid.explore.controller.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 
 @Controller
@@ -62,6 +66,18 @@ public class IndexController {
         return "manage/content";
     }
 
+    @RequestMapping("/manageeditcontent")
+    public String editcontent(@RequestParam("code")String code, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
+        httpServletRequest.setAttribute("code",code);
+        return "manage/content";
+    }
+
+    @RequestMapping("/manageeditcase")
+    public String editcase(@RequestParam("code")String code, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
+        httpServletRequest.setAttribute("code",code);
+        return "manage/case";
+    }
+
     @RequestMapping("/managenativecontent")
     public String nativecontent(){
         return "manage/nativecontent";
@@ -117,11 +133,6 @@ public class IndexController {
         return "manage/managecount";
     }
 
-    @RequestMapping("/managecases")
-    public String cases(){
-        return "managecount";
-    }
-
     @RequestMapping("/managecomments")
     public String comments(){
         return "manage/comments";
@@ -145,6 +156,16 @@ public class IndexController {
     @RequestMapping("/managebanner")
     public String managebanner(){
         return "manage/banner";
+    }
+
+    @RequestMapping("/managecases")
+    public String managecases(){
+        return "manage/cases";
+    }
+
+    @RequestMapping("/managecase")
+    public String managecase(){
+        return "manage/case";
     }
 
 

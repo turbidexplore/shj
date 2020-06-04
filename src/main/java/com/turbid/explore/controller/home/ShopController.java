@@ -155,12 +155,22 @@ public class ShopController {
                 item.put("brand",null);
             }
 
-            item.put("investmentamount","10万元");
+                item.put("investmentamount",v.getBzj());
+
+
             item.put("showimg",v.getCompany_show());
             item.put("shopcode",v.getCode());
             item.put("shopcount",50);
             item.put("dateofestablishment","2018-08-01");
-            item.put("bzj","10万元");
+            try {
+                if(null!=v.getUserSecurity().getUserAuth().getMargin()&&!"".equals(v.getUserSecurity().getUserAuth().getMargin())&&!v.getUserSecurity().getUserAuth().getMargin().equals(null)) {
+                    item.put("bzj", v.getUserSecurity().getUserAuth().getMargin());
+                }else {
+                    item.put("bzj","无");
+                }
+            }catch (Exception e){
+                item.put("bzj","无");
+            }
             data.add(item);
         });
         return Mono.just(Info.SUCCESS(data ));

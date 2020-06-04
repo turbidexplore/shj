@@ -25,31 +25,34 @@ public class Study extends BaseEntity {
     @Column(name = "shb",   length = 32)
     private Integer shb;
 
+    @Column(name = "status",   length = 32)
+    private Integer status;
+
     @Column(name = "pricetype",   length = 32)
     private String pricetype;
 
     @Column(name = "type",   length = 32)
     private String type;
 
-    @Column(name = "indeximgurl",   length = 5000)
+    @Column(name = "indeximgurl",   length = 2000)
     private String indeximgurl;
 
-    @Column(name = "videourl",   length = 5000)
+    @Column(name = "videourl",   length = 2000)
     private String videourl;
 
     @Column(name = "seecount",  length = 32)
     private Integer seecount;
 
-    @Column(name = "content",  length = 5000)
+    @Column(name = "content",  length = 2000)
     private String content;
 
-    @Column(name = "teachername",  length = 255)
+    @Column(name = "teachername")
     private String teachername;
 
-    @Column(name = "teacherheadurl",  length = 255)
+    @Column(name = "teacherheadurl")
     private String teacherheadurl;
 
-    @Column(name = "teacherdesc",  length = 5000)
+    @Column(name = "teacherdesc",  length = 2000)
     private String teacherdesc;
 
     public Study(String code, Date create_time, String indeximgurl, Integer seecount, Integer price, String pricetype, Integer shb, String title, String type,String teachername,String teacherheadurl) {

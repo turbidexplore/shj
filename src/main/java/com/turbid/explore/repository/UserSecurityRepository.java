@@ -20,4 +20,5 @@ public interface UserSecurityRepository extends JpaRepository<UserSecurity,Strin
 
     @Query("SELECT count(u) from UserSecurity u where u.phonenumber=:name and u.signintime =:dateStr  ")
     int issignin(@Param("name")String name,@Param("dateStr") String dateStr);
+
 }

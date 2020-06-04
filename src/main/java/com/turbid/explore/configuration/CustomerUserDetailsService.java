@@ -37,6 +37,8 @@ public class CustomerUserDetailsService implements UserDetailsService {
                 password=userSecurityService.findByPhone(username).getPassword();
             }else if(login_type=="sms"||login_type.equals("sms")){
                 password=checkService.findCodeByPhone(username);
+            }else if(login_type=="open"||login_type.equals("open")){
+                password="123456";
             }
         }
         return new org.springframework.security.core.userdetails.User(username,passwordEncoder.encode(password),true,true,true,true, AuthorityUtils.NO_AUTHORITIES);

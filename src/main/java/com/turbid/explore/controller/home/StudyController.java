@@ -3,6 +3,8 @@ package com.turbid.explore.controller.home;
 import com.turbid.explore.pojo.Case;
 import com.turbid.explore.pojo.Study;
 import com.turbid.explore.pojo.StudyRelation;
+import com.turbid.explore.repository.NoticeRepository;
+import com.turbid.explore.repository.StudyNoticeRepository;
 import com.turbid.explore.repository.StudyRelationRepository;
 import com.turbid.explore.service.StudyService;
 import com.turbid.explore.tools.CodeLib;
@@ -32,8 +34,15 @@ public class StudyController {
     @ApiOperation(value = "添加课程", notes="添加课程")
     @PutMapping("/add")
     public Mono<Info> add(@RequestBody Study study) {
-
+        study.setShb(study.getPrice()*100);
+        study.setSeecount(0);
         return Mono.just(Info.SUCCESS(studyService.save(study)));
+    }
+
+    @ApiOperation(value = "删除", notes="删除")
+    @PutMapping("/del")
+    public Mono<Info> del(@RequestParam("code") String code) {
+        return Mono.just(Info.SUCCESS(studyService.del(code)));
     }
 
 
@@ -68,6 +77,17 @@ public class StudyController {
         }
     }
 
+    @ApiOperation(value = "获取课程分页列表", notes="获取课程分页列表")
+    @PostMapping(value = "/list")
+    public Mono<Info> list(@RequestParam(name = "page")Integer page,
+                                  @RequestParam(name = "style", required = false)String style) {
+        try {
+            return Mono.just(Info.SUCCESS(studyService.list(page,style)));
+        }catch (Exception e){
+            return Mono.just(Info.SUCCESS(e.getMessage()));
+        }
+    }
+
     @ApiOperation(value = "热门课程", notes="热门课程")
     @PostMapping(value = "/hatstudyByPage")
     public Mono<Info> hatstudyByPage(@RequestParam(name = "page")Integer page) {
@@ -88,24 +108,15 @@ public class StudyController {
         }
     }
 
+    @Autowired
+    private StudyNoticeRepository noticeRepository;
+
     @ApiOperation(value = "预告", notes="预告")
     @PostMapping(value = "/notice")
     public Mono<Info> notice() {
         try {
-            List data =new ArrayList<>();
-            Map item=new HashMap();
-            item.put("title","hello");
-            item.put("img","https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1585200045047&di=d95aad5e2c1441a6159e49e29dd018a3&imgtype=0&src=http%3A%2F%2Fbpic.588ku.com%2Fback_pic%2F17%2F04%2F19%2Fa6dba3676baac65c938bb318a574296e.jpg");
-            data.add(item);
-            item=new HashMap();
-            item.put("title","hello432");
-            item.put("img","https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1585200045047&di=d95aad5e2c1441a6159e49e29dd018a3&imgtype=0&src=http%3A%2F%2Fbpic.588ku.com%2Fback_pic%2F17%2F04%2F19%2Fa6dba3676baac65c938bb318a574296e.jpg");
-            data.add(item);
-            item=new HashMap();
-            item.put("title","hello21");
-            item.put("img","https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1585200045047&di=d95aad5e2c1441a6159e49e29dd018a3&imgtype=0&src=http%3A%2F%2Fbpic.588ku.com%2Fback_pic%2F17%2F04%2F19%2Fa6dba3676baac65c938bb318a574296e.jpg");
-            data.add(item);
-            return Mono.just(Info.SUCCESS(data));
+
+            return Mono.just(Info.SUCCESS(noticeRepository.findAll()));
         }catch (Exception e){
             return Mono.just(Info.SUCCESS(e.getMessage()));
         }

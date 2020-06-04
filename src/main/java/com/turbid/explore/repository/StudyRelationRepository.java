@@ -18,4 +18,8 @@ public interface StudyRelationRepository extends JpaRepository<StudyRelation,Str
     @Modifying
     @Query("update StudyRelation p set p.status=1 where p.orderno=:orderno")
     int updateSTUDY(@Param("orderno")String orderno);
+
+    @Modifying
+    @Query("update StudyRelation o set o.phone=:phone where o.phone=:oldphone")
+    int updatephone(@Param("oldphone") String oldphone, @Param("phone") String phone);
 }

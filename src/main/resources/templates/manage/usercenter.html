@@ -62,9 +62,27 @@
                 </a>
               </li>
               <li class="nav-item">
+                <a class="nav-link " href="/managebanners">
+                  <i class="material-icons">vertical_split</i>
+                  <span>广告管理</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="/managestudys">
+                  <i class="material-icons">vertical_split</i>
+                  <span>课程管理</span>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link " href="/managecomments">
                   <i class="material-icons">note_add</i>
                   <span>评论管理</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="/managecases">
+                  <i class="material-icons">vertical_split</i>
+                  <span>案例管理</span>
                 </a>
               </li>
               <li class="nav-item " >
@@ -225,12 +243,17 @@
                                 <label for="contactphone">手机号码</label>
                                 <input type="text" disabled="" class="form-control" id="contactphone" placeholder="请输入手机号码">
                               </div>
-                            </div>
-
-                            <div class="form-row">
                               <div class="form-group col-md-6">
                                 <label for="idcard">身份证号码</label>
                                 <input type="text" class="form-control" id="idcard" placeholder="身份证号码"> </div>
+                            </div>
+                            <div class="form-row">
+                              <div class="form-group col-md-6">
+                                <label for="vrweb">vrweb</label>
+                                <input type="text" class="form-control" id="vrweb" placeholder="vrweb"> </div>
+                              <div class="form-group col-md-6">
+                                <label for="bzj">招商加盟保证金</label>
+                                <input type="text" class="form-control" id="bzj" placeholder="招商加盟保证金"> </div>
                             </div>
                             <div class="form-row">
                               <div class="form-group col-md-6">
@@ -319,7 +342,6 @@
         }).done(function(result) {
                    $("#city").val(result.data.city);
                    $("#name").val(result.data.name);
-                   $("#brandgroup").val(result.data.brandgroup);
                    $("#introduce").val(result.data.introduce);
                    $("#businesslicenseimg").attr('src',result.data.businesslicense);
                    $("#logoimg").attr('src',result.data.logo);
@@ -334,6 +356,8 @@
                    $("#idcardpositiveimg").attr('src',result.data.idcardpositive);
                    $("#idcardreverseimg").attr('src',result.data.idcardreverse);
                    $("#unifiedcreditcode").val(result.data.unifiedcreditcode);
+                   $("#vrweb").val(result.data.vrweb);
+                  $("#bzj").val(result.data.bzj);
                    code=result.data.code;
                   result.data.banner.split(",").forEach(function (v) {
                     $("#bannerview").append("<img src='"+v+"' name='bannerviewimg' onclick='remove(this)' style='width:80px;'>  &nbsp;");
@@ -342,44 +366,57 @@
                     $("#shouview").append("<img src='"+v+"' name='shouviewimg' onclick='remove(this)' style='width:80px;'>");
 
                   });
-        });
+          $.ajax({
+            type: 'GET',
+            url : "/base/brandgroup",
+            processData: false,
+            contentType: false,
+          }).done(function(a) {
+            a.data.forEach( function (v,i) {
+              if(v.name==result.data.brandgroup) {
+                $("#brandgroup").append("<option value='" + v.name + "' selected='selected'>" + v.name + "</option>");
+              }else{
+                $("#brandgroup").append("<option value='" + v.name + "' >" + v.name + "</option>");
+              }
+            });
 
-
-        $.ajax({
-          type: 'GET',
-          url : "/base/brandgroup",
-          processData: false,
-          contentType: false,
-        }).done(function(result) {
-          result.data.forEach( function (v,i) {
-            $("#brandgroup").append("<option value='"+v.name+"'>"+v.name+"</option>");
           });
 
-        });
+          $.ajax({
+            type: 'GET',
+            url : "/base/styles",
+            processData: false,
+            contentType: false,
+          }).done(function(a) {
+            a.data.forEach( function (v,i) {
+              if(result.data.label.indexOf(v) != -1) {
+                $("#label").append("<option value='" + v + "' selected='selected'>" + v + "</option>");
+              }else {
+                $("#label").append("<option value='" + v + "'>" + v + "</option>");
+              }
+            });
 
-        $.ajax({
-          type: 'GET',
-          url : "/base/classgroup",
-          processData: false,
-          contentType: false,
-        }).done(function(result) {
-          result.data.forEach( function (v,i) {
-            $("#label").append("<option value='"+v.name+"'>"+v.name+"</option>");
           });
 
-        });
+          $.ajax({
+            type: 'GET',
+            url : "/base/categorys",
+            processData: false,
+            contentType: false,
+          }).done(function(a) {
+            a.data.forEach( function (v,i) {
+              if(result.data.label.indexOf(v) != -1) {
+                $("#label1").append("<option value='" + v + "' selected='selected'>" + v + "</option>");
+              }else {
+                $("#label1").append("<option value='" + v + "'>" + v + "</option>");
+              }
+            });
 
-        $.ajax({
-          type: 'GET',
-          url : "/base/categorys",
-          processData: false,
-          contentType: false,
-        }).done(function(result) {
-          result.data.forEach( function (v,i) {
-            $("#label1").append("<option value='"+v+"'>"+v+"</option>");
           });
-
         });
+
+
+
         function check() {
           $.ajax({
             type: 'POST',
@@ -845,6 +882,8 @@
                   "idcardpositive": $("#idcardpositiveimg").attr('src'),
                   "idcardreverse": $("#idcardreverseimg").attr('src'),
                   "unifiedcreditcode": $("#unifiedcreditcode").val()
+                  ,"vrweb": $("#vrweb").val()
+                  ,"bzj": $("#bzj").val()
                 }),
                 processData: false,
                 contentType: "application/json; charset=UTF-8",

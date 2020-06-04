@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -28,9 +29,9 @@ public class NativeContentServiceImpl implements NativeContentService {
 
     @Override
 //    @Cacheable(cacheNames = {"redis_cache"}, key = "'NativeContentlistByPage'+#page")
-    public List<NativeContent> listByPage(Integer page) {
+    public List<NativeContent> listByPageLabel(Integer page,String label) {
         Pageable pageable = new PageRequest(page,size, Sort.Direction.DESC,"create_time");
-        Page<NativeContent> pages=  nativeContentRepositroy.listByPage(pageable);
+        Page<NativeContent> pages=  nativeContentRepositroy.listByPageLabel(pageable,label);
         return pages.getContent();
     }
 
@@ -53,5 +54,11 @@ public class NativeContentServiceImpl implements NativeContentService {
         Pageable pageable = new PageRequest(page,size, Sort.Direction.DESC,"create_time");
         Page<NativeContent> pages=  nativeContentRepositroy.search(pageable,text);
         return pages.getContent();
+    }
+
+    @Override
+    @Transactional
+    public void del(String code) {
+        nativeContentRepositroy.deleteById(code);
     }
 }

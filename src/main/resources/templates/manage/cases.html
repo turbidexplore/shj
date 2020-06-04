@@ -6,7 +6,7 @@
     <title>设汇家 ｜ 泛家居行业供应链平台</title>
     <meta name="keywords" content="浑浊探索,苏州浑浊信息科技有限公司,turbid,explore,科技">
     <meta name="description" content="设汇家官网">
-    <meta name="author" content="设汇家">    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <meta name="author" content="设汇家">    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="../styles/all.css" rel="stylesheet">
     <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
@@ -14,6 +14,7 @@
     <link rel="stylesheet" id="main-stylesheet" data-version="1.1.0" href="../styles/shards-dashboards.1.1.0.min.css">
     <link rel="stylesheet" href="../styles/extras.1.1.0.min.css">
     <link rel="stylesheet" href="../layui/css/layui.css">
+
   </head>
   <body class="h-100">
      <div class="container-fluid">
@@ -55,7 +56,7 @@
                   <span>我的品牌</span>
                 </a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item ">
                 <a class="nav-link " href="/managegoods">
                   <i class="material-icons">vertical_split</i>
                   <span>特价仓管理</span>
@@ -73,19 +74,19 @@
                   <span>课程管理</span>
                 </a>
               </li>
-              <li class="nav-item active">
+              <li class="nav-item">
                 <a class="nav-link " href="/managecomments">
                   <i class="material-icons">note_add</i>
                   <span>评论管理</span>
                 </a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item active">
                 <a class="nav-link " href="/managecases">
                   <i class="material-icons">vertical_split</i>
                   <span>案例管理</span>
                 </a>
               </li>
-              <li class="nav-item " >
+              <li class="nav-item">
                 <a class="nav-link " href="/managenativecontent">
                   <i class="material-icons">note_add</i>
                   <span>内容中心</span>
@@ -97,19 +98,19 @@
                   <span>数据中心</span>
                 </a>
               </li>
-              <li class="nav-item ">
+              <li class="nav-item">
                 <a class="nav-link " href="/managetables">
                   <i class="material-icons">table_chart</i>
                   <span>子账号管理</span>
                 </a>
               </li>
-              <li class="nav-item ">
+              <li class="nav-item">
                 <a class="nav-link " href="/manageusercenter">
                   <i class="material-icons">person</i>
                   <span>账户信息</span>
                 </a>
               </li>
-
+             
             </ul>
           </div>
         </aside>
@@ -130,7 +131,7 @@
               <ul class="navbar-nav border-left flex-row ">
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                    <img class="user-avatar rounded-circle mr-2" src="images/avatars/0.jpg" alt="User Avatar">
+                    <img class="user-avatar rounded-circle mr-2" src="../images/avatars/0.jpg" alt="User Avatar">
                     <span class="d-none d-md-inline-block">用户名</span>
                   </a>
                   <div class="dropdown-menu dropdown-menu-small">
@@ -151,134 +152,96 @@
             <!-- Page Header -->
             <div class="page-header row no-gutters py-4">
               <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
-                <span class="text-uppercase page-subtitle">Overview</span>
-                <h3 class="page-title">评论管理</h3>
+                <a  class="mb-2 btn btn-sm btn-primary mr-1" href="/managecase">添加案例</a>
               </div>
             </div>
-            <!-- End Page Header -->
-            <!-- Default Light Table -->
-            <div class="row">
-              <div class="col">
-                <div class="card card-small mb-4">
-                  <div class="card-header border-bottom">
-                    <h6 class="m-0">评论信息(共<span id="datacount"></span>条)</h6>
-                  </div>
-                  <div class="card-body p-0 pb-3 text-center">
-                    <table class="table mb-0">
-                      <thead class="bg-light">
-                        <tr>
-                          <th scope="col" class="border-0">用户信息</th>
-                          <th scope="col" class="border-0">评论内容</th>
-                          <th scope="col" class="border-0">回复内容</th>
-                          <th scope="col" class="border-0">评论时间</th>
-                          <th scope="col" class="border-0">操作</th>
-                        </tr>
-                      </thead>
-                      <tbody id="dataview">
+            <div class="row" id="content">
 
-                      </tbody>
-                    </table>
-                    <div id="pages"></div>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </main>
       </div>
     </div>
 
-     <script src="../js/jquery-3.3.1.min.js" ></script>
-     <script src="../layui/layui.js"></script>
-     <script src="../scripts/popper.min.js"></script>
-     <script src="../scripts/bootstrap.min.js"></script>
-     <script src="../js/jquery.cookie.min.js"></script>
-  <script>
-    var count=0;
-     function show(page) {
-       $.ajax({
-         type: 'Post',
-         url : "/comment/shopcomments?page="+page,
-         async: true,
-         crossDomain: true,
-         headers: {
-           "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
-           "cache-control": "no-cache",
-           "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
-         }
-       }).done(function(result) {
-         $("#datacount").html(result.data.count)
-         $("#dataview").html("");
-         result.data.data.forEach(function (v,i) {
-           var mycomments
-           $.ajax({
-             type: 'Post',
-             url : "/comment/mycomments?relation="+v.code,
-             async: true,
-             crossDomain: true,
-             headers: {
-               "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
-               "cache-control": "no-cache",
-               "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
-             }
-           }).done(function(result) {
-              console.log(result)
-           });
-           $("#dataview").append('<tr>'+
-                   ' <td><img src="'+v.userSecurity.userBasic.headportrait+'" style="width:40px;" class=" rounded-circle"> '+v.userSecurity.userBasic.nikename+'</td>'+
-                   '<td>'+v.content+'</td>'+
-                   '<td>'+v.content+'</td>'+
-                   '<td>'+v.addftime+'</td>'+
-                   '<td><button type="button" class="mb-2 btn btn-sm btn-success mr-1" onclick="huifu(\''+v.code+'\')">回复</button></td>'+
-                   '</tr>')
-         });
-       });
-     }
+    <script src="../js/jquery-3.3.1.min.js" ></script>
+    <script src="../layui/layui.js"></script>
+    <script src="../scripts/popper.min.js"></script>
+    <script src="../scripts/bootstrap.min.js"></script>
+    <script src="../js/jquery.cookie.min.js"></script>
 
-    layui.use(['laypage', 'layer'], function(){
-      var laypage = layui.laypage
-              ,layer = layui.layer;
-      $.ajax({
-        type: 'Post',
-        url : "/comment/shopcommentscount",
-        async: true,
-        crossDomain: true,
-        headers: {
+  <script>
+    var index=0;
+    list(index);
+
+    $(window).scroll(function () {
+
+      var scrollTop = $(this).scrollTop();
+      //console.log(scrollTop);
+      var scrollHeight = $(document).height();
+      //console.log('['+scrollHeight+']');
+      var windowHeight = screen.availHeight;
+      //console.log('【'+windowHeight+'】');
+      if (scrollTop+ windowHeight >= scrollHeight) {
+        if (stop == true && ipage <= totalPage) {
+          stop = false;
+        } else {
+          index++;
+          list(index)
+        }
+      }
+    });
+    function list(page) {
+      var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": "/caseByPage?page="+page,
+        "method": "POST",
+        "processData": false,
+        "headers": {
           "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
           "cache-control": "no-cache",
           "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
         }
-      }).done(function(result) {
-        laypage.render({
-          elem: 'pages'
-          ,count: result.data
-          ,theme: '#FF5722'
-          ,jump: function(obj, first){
-            show(obj.curr-1);
-          }
-        });
+      }
+      $.ajax(settings).done(function (response) {
+        response.data.forEach(function (v,i) {
+          console.log(v);
+          var html= '<div class="col-lg-3 col-md-6 col-sm-12 mb-4" id="'+v.code+'">'+
+                  '<div class="card card-small card-post card-post--1">'+
+                  '<div class="card-post__image" style="background-image: url('+v.indexurl+');">'+
+                  '<a href="#" class="card-post__category badge badge-pill badge-dark">'+v.subject+'|'+v.label+'</a>'+
+                  '</div>'+
+                  '<div class="card-body">'+
+                  '<p class="card-title"><button type="button" class="mb-1 btn btn-sm btn-outline-danger mr-1">'+v.name+'</button>'+
+                  '<span>'+v.title+'</span></p>'+
+                  '<span class="text-muted" style="font-size: 12px;">'+v.addftime+'  发布     <button type="button" class="mb-1 btn btn-sm btn-info mr-1" onclick="xj(\''+v.code+'\')"> 删除</button> <a href="/manageeditcase?code='+v.code+'" class="mb-1 btn btn-sm btn-info mr-1" >修改</a></span>'+
+                  '</div></div></div>';
+          $("#content").append(html);
+        })
       });
-    });
 
-     function huifu(obj) {
-       layer.prompt({title: '请输入回复内容', formType: 2}, function(pass, index){
-         layer.close(index);
-         $.ajax({
-           type: 'PUT',
-           url : "/comment/addcomment",
-           processData: false,
-           contentType: "application/json; charset=UTF-8",
-           data:JSON.stringify({"relation":obj,"comentType":"coment","content":pass}),
-           headers: {
-             "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
-             "cache-control": "no-cache",
-             "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
-           }
-         }).done(function(result) {
-           layer.msg("回复成功");
-         });
-       });
-     }
+    }
+
+function xj(code) {
+  var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "/remove?code="+code,
+    "method": "Delete",
+    "processData": false,
+    "headers": {
+      "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
+      "cache-control": "no-cache",
+      "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
+    }
+  }
+  $.ajax(settings).done(function (response) {
+    alert("删除成功！")
+      $("#"+code).remove();
+  });
+
+}
+
   </script>
   </body>
 </html>

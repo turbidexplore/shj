@@ -3,7 +3,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.ImmutableMap;
 import com.turbid.explore.pojo.*;
-import com.turbid.explore.repository.LoginHisRepository;
+import com.turbid.explore.repository.*;
 import com.turbid.explore.service.*;
 import com.turbid.explore.service.impl.SMSServiceImpl;
 import com.turbid.explore.tools.CodeLib;
@@ -19,6 +19,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
@@ -68,71 +69,71 @@ public class UserController {
     @ApiOperation(value = "注册", notes="通过手机号注册")
     @PostMapping(value = "/register")
     public Mono<Info> register(@RequestBody JSONObject jo) {
-       try {
-           if(checkService.findMessagesByMebileAndAuthode(jo.getString("username"),jo.getString("sms"))>0) {
-               if(userSecurityService.findByPhoneCount(jo.getString("username"))==0){
-                   UserSecurity userSecurity = new UserSecurity();
-                   userSecurity.setPassword(jo.getString("password"));
-                   userSecurity.setLikes(jo.getString("likes"));
-                   userSecurity.setPhonenumber(jo.getString("username"));
-                   userSecurity.setType(jo.getInteger("type"));
-                   String typename="";
-                   switch (jo.getInteger("type")){
-                       case 0:
-                           typename="设计师";
-                           break;
-                       case 1:
-                           typename="经销商";
-                           break;
-                       case 2:
-                           typename="工厂";
-                           break;
-                       case 3:
-                           typename="设计公司";
-                           break;
-                   }
+        try {
+            if(checkService.findMessagesByMebileAndAuthode(jo.getString("username"),jo.getString("sms"))>0) {
+                if(userSecurityService.findByPhoneCount(jo.getString("username"))==0){
+                    UserSecurity userSecurity = new UserSecurity();
+                    userSecurity.setPassword(jo.getString("password"));
+                    userSecurity.setLikes(jo.getString("likes"));
+                    userSecurity.setPhonenumber(jo.getString("username"));
+                    userSecurity.setType(jo.getInteger("type"));
+                    String typename="";
+                    switch (jo.getInteger("type")){
+                        case 0:
+                            typename="设计师";
+                            break;
+                        case 1:
+                            typename="经销商";
+                            break;
+                        case 2:
+                            typename="工厂";
+                            break;
+                        case 3:
+                            typename="设计公司";
+                            break;
+                    }
 
-                   UserBasic userBasic=new UserBasic();
-                   userBasic.setNikename(CodeLib.getNikeName(stringRedisTemplate));
-                   userBasic.setHeadportrait(CodeLib.getHeadimg());
-                   if(null!=jo.getString("city")&&""!=jo.getString("city")&&!"".equals(jo.getString("city"))) {
-                       userBasic.setCity(jo.getString("city"));
-                   }else {
-                       userBasic.setCity(CodeLib.getAddressByIp(jo.getString("ip")));
-                   }
+                    UserBasic userBasic=new UserBasic();
+                    userBasic.setNikename(CodeLib.getNikeName(stringRedisTemplate));
+                    userBasic.setHeadportrait(CodeLib.getHeadimg());
+                    if(null!=jo.getString("city")&&""!=jo.getString("city")&&!"".equals(jo.getString("city"))) {
+                        userBasic.setCity(jo.getString("city"));
+                    }else {
+                        userBasic.setCity(CodeLib.getAddressByIp(jo.getString("ip")));
+                    }
 
-                   userBasicService.save(userBasic);
-                   userSecurity.setUserBasic(userBasic);
-                   userSecurity=  userSecurityService.save(userSecurity);
-                   Map<String, Object> requestBody = ImmutableMap.of(
-                           "Identifier", userSecurity.getCode(),
-                           "Nick", userBasic.getNikename(),
-                           "FaceUrl","https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1588763946885&di=11fc71844ac400e62d61e5abbff4e4fb&imgtype=0&src=http%3A%2F%2Fpic.90sjimg.com%2Fdesign%2F00%2F67%2F59%2F63%2F58e89bee922a2.png");
-                   JSONObject jsonObject= restTemplate.postForObject(baseUrl+"v4/im_open_login_svc/account_import"+config()
-                           ,requestBody, JSONObject.class);
+                    userBasicService.save(userBasic);
+                    userSecurity.setUserBasic(userBasic);
+                    userSecurity=  userSecurityService.save(userSecurity);
+                    Map<String, Object> requestBody = ImmutableMap.of(
+                            "Identifier", userSecurity.getCode(),
+                            "Nick", userBasic.getNikename(),
+                            "FaceUrl","https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1588763946885&di=11fc71844ac400e62d61e5abbff4e4fb&imgtype=0&src=http%3A%2F%2Fpic.90sjimg.com%2Fdesign%2F00%2F67%2F59%2F63%2F58e89bee922a2.png");
+                    JSONObject jsonObject= restTemplate.postForObject(baseUrl+"v4/im_open_login_svc/account_import"+config()
+                            ,requestBody, JSONObject.class);
 
-                   JSONArray data =new JSONArray();
-                   JSONObject item=new JSONObject();
-                   item.put("Tag","Tag_Profile_Custom_usertype");
-                   item.put("Value",typename);
-                   data.add(item);
+                    JSONArray data =new JSONArray();
+                    JSONObject item=new JSONObject();
+                    item.put("Tag","Tag_Profile_Custom_usertype");
+                    item.put("Value",typename);
+                    data.add(item);
 
                     requestBody = ImmutableMap.of(
-                           "From_Account", userSecurity.getCode(),
-                           "ProfileItem",data
-                   );
+                            "From_Account", userSecurity.getCode(),
+                            "ProfileItem",data
+                    );
                     jsonObject= restTemplate.postForObject(baseUrl+portrait_set+config()
-                           ,requestBody, JSONObject.class);
-                   return Mono.just(Info.SUCCESS(userSecurity ));
-               }else {
-                   return Mono.just(Info.ERROR("手机号码已注册"));
-               }
-           }else{
-               return Mono.just(Info.ERROR("验证码错误"));
-           }
-       }catch (Exception e){
-           return Mono.just(Info.ERROR(e.getMessage()));
-       }
+                            ,requestBody, JSONObject.class);
+                    return Mono.just(Info.SUCCESS(userSecurity ));
+                }else {
+                    return Mono.just(Info.ERROR("手机号码已注册"));
+                }
+            }else{
+                return Mono.just(Info.ERROR("验证码错误"));
+            }
+        }catch (Exception e){
+            return Mono.just(Info.ERROR(e.getMessage()));
+        }
 
     }
 
@@ -144,6 +145,20 @@ public class UserController {
     public Mono<Info> sms(@RequestParam(name = "phone") String phone) throws InterruptedException {
         smsService.sendSMS(phone);
         return Mono.just(Info.SUCCESS(null));
+    }
+
+    @ApiOperation(value = "判断是否注册", notes="判断是否注册")
+    @PostMapping(value = "/isregister")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name="phone", dataType="String", required=true, value="手机号码"),
+    })
+    public Mono<Info> isregister(@RequestParam(name = "phone") String phone) {
+        if(userSecurityService.findByPhoneCount(phone)==0){
+            return Mono.just(Info.SUCCESS(false));
+        }else {
+            return Mono.just(Info.SUCCESS(true));
+        }
+
     }
 
 
@@ -181,13 +196,203 @@ public class UserController {
             headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
             headers.setBasicAuth("turbid","turbid_anoax!@#321");
             HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
-            JSONObject object=restTemplate.postForObject("http://127.0.0.1:10002/oauth/token",request,JSONObject.class);
+            JSONObject object=restTemplate.postForObject("http://127.0.0.1:10003/oauth/token",request,JSONObject.class);
             if (null==object){
                 loginHis.setStatus(0);
                 return Mono.just(Info.ERROR("登录失败"));
             }
             loginHis.setStatus(1);
             object.put("userinfo",userSecurityService.findByPhone(jsonObject.getString("username")));
+            return Mono.just(Info.SUCCESS(object));
+        }catch (Exception e){
+            e.getStackTrace();
+            loginHis.setStatus(0);
+            return Mono.just(Info.ERROR("帐号或密码错误"));
+        }finally {
+            loginHisRepository.saveAndFlush(loginHis);
+        }
+    }
+
+    @Autowired
+    private OpenUserRepository openUserRepository;
+
+    @ApiOperation(value = "第三方注册", notes="第三方注册")
+    @PostMapping(value = "/openregister")
+    public Mono<Info> openregister(@RequestBody JSONObject jo) {
+        try {
+            if(checkService.findMessagesByMebileAndAuthode(jo.getString("username"),jo.getString("sms"))>0) {
+                if(userSecurityService.findByPhoneCount(jo.getString("username"))==0){
+                    UserSecurity userSecurity = new UserSecurity();
+                    userSecurity.setPassword(jo.getString("password"));
+                    userSecurity.setLikes(jo.getString("likes"));
+                    userSecurity.setPhonenumber(jo.getString("username"));
+                    userSecurity.setType(jo.getInteger("type"));
+
+                    String typename="";
+                    switch (jo.getInteger("type")){
+                        case 0:
+                            typename="设计师";
+                            break;
+                        case 1:
+                            typename="经销商";
+                            break;
+                        case 2:
+                            typename="工厂";
+                            break;
+                        case 3:
+                            typename="设计公司";
+                            break;
+                    }
+
+                    UserBasic userBasic=new UserBasic();
+                    userBasic.setNikename(CodeLib.getNikeName(stringRedisTemplate));
+                    userBasic.setHeadportrait(CodeLib.getHeadimg());
+                    if(null!=jo.getString("city")&&""!=jo.getString("city")&&!"".equals(jo.getString("city"))) {
+                        userBasic.setCity(jo.getString("city"));
+                    }else {
+                        userBasic.setCity(CodeLib.getAddressByIp(jo.getString("ip")));
+                    }
+
+                    userBasicService.save(userBasic);
+                    userSecurity.setUserBasic(userBasic);
+                    userSecurity=  userSecurityService.save(userSecurity);
+
+                    OpenUser openUser=new OpenUser();
+                    openUser.setPhone(jo.getString("username"));
+                    openUser.setOpenid(jo.getString("openid"));
+                    openUser.setOpentype(jo.getString("opentype"));
+                    openUser.setUserSecurity(userSecurity);
+                    openUserRepository.saveAndFlush(openUser);
+                    Map<String, Object> requestBody = ImmutableMap.of(
+                            "Identifier", userSecurity.getCode(),
+                            "Nick", userBasic.getNikename(),
+                            "FaceUrl","https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1588763946885&di=11fc71844ac400e62d61e5abbff4e4fb&imgtype=0&src=http%3A%2F%2Fpic.90sjimg.com%2Fdesign%2F00%2F67%2F59%2F63%2F58e89bee922a2.png");
+                    restTemplate.postForObject(baseUrl+"v4/im_open_login_svc/account_import"+config()
+                            ,requestBody, JSONObject.class);
+
+                    JSONArray data =new JSONArray();
+                    JSONObject item=new JSONObject();
+                    item.put("Tag","Tag_Profile_Custom_usertype");
+                    item.put("Value",typename);
+                    data.add(item);
+
+                    requestBody = ImmutableMap.of(
+                            "From_Account", userSecurity.getCode(),
+                            "ProfileItem",data
+                    );
+                    restTemplate.postForObject(baseUrl+portrait_set+config()
+                            ,requestBody, JSONObject.class);
+
+                    MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
+                    map.add("grant_type","password");
+                    map.add("scope","web");
+                    map.add("login_type","open");
+                    map.add("username",userSecurity.getPhonenumber());
+                    map.add("password", "123456");
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+                    headers.setBasicAuth("turbid","turbid_anoax!@#321");
+                    HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+                    JSONObject object=restTemplate.postForObject("http://127.0.0.1:10003/oauth/token",request,JSONObject.class);
+                    if (null==object){
+                        return Mono.just(Info.ERROR("登录失败"));
+                    }
+                    object.put("userinfo",userSecurity);
+                    return Mono.just(Info.SUCCESS(object));
+                }else {
+                    return Mono.just(Info.ERROR("手机号码已注册"));
+                }
+            }else{
+                return Mono.just(Info.ERROR("验证码错误"));
+            }
+        }catch (Exception e){
+            return Mono.just(Info.ERROR(e.getMessage()));
+        }
+
+    }
+
+    @ApiOperation(value = "第三方绑定")
+    @PostMapping("/addopenuser")
+    public Mono<Info> addopenuser(@RequestParam("phone")String phone,@RequestParam("smscode")String smscode,@RequestParam("openid")String openid,@RequestParam("opentype")String opentype,@RequestParam("os")String os){
+        if(checkService.findMessagesByMebileAndAuthode(phone,smscode)>0) {
+            UserSecurity userSecurity =userSecurityService.findByPhone(phone);
+            if(0<openUserRepository.countByPhoneAndOpentype(phone,opentype)){
+                return Mono.just(Info.ERROR("该用户已绑定第三方账号"));
+            }
+            OpenUser openUser=new OpenUser();
+            openUser.setPhone(phone);
+            openUser.setOpenid(openid);
+            openUser.setOpentype(opentype);
+            openUser.setUserSecurity(userSecurity);
+            openUserRepository.saveAndFlush(openUser);
+            if (null == userSecurity) {
+                return Mono.just(Info.ERROR("未注册"));
+            }
+            LoginHis loginHis = new LoginHis();
+            loginHis.setPhone(openid);
+            loginHis.setOs(os);
+            loginHis.setLogintype(opentype);
+            try {
+                MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+                map.add("grant_type", "password");
+                map.add("scope", "web");
+                map.add("login_type", "open");
+                map.add("username", userSecurity.getPhonenumber());
+                map.add("password", "123456");
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+                headers.setBasicAuth("turbid", "turbid_anoax!@#321");
+                HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+                JSONObject object = restTemplate.postForObject("http://127.0.0.1:10003/oauth/token", request, JSONObject.class);
+                if (null == object) {
+                    loginHis.setStatus(0);
+                    return Mono.just(Info.ERROR("登录失败"));
+                }
+                loginHis.setStatus(1);
+                object.put("userinfo", userSecurity);
+                return Mono.just(Info.SUCCESS(object));
+            } catch (Exception e) {
+                e.getStackTrace();
+                loginHis.setStatus(0);
+                return Mono.just(Info.ERROR("帐号或密码错误"));
+            } finally {
+                loginHisRepository.saveAndFlush(loginHis);
+            }
+        }else {
+            return Mono.just(Info.ERROR("验证码错误"));
+        }
+    }
+
+    @ApiOperation(value = "第三方登陆", notes="login_type为sms或password")
+    @PostMapping("/openlogin")
+    public Mono<Info> openlogin(@RequestParam("openid")String openid,@RequestParam("os")String os){
+        OpenUser openUser= openUserRepository.findByOpenid(openid);
+        if (null==openUser){
+            return Mono.just(Info.ERROR("未注册"));
+        }
+        UserSecurity userSecurity=openUser.getUserSecurity();
+        LoginHis loginHis=new LoginHis();
+        loginHis.setPhone(openid);
+        loginHis.setOs(os);
+        loginHis.setLogintype("open");
+        try {
+            MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
+            map.add("grant_type","password");
+            map.add("scope","web");
+            map.add("login_type","open");
+            map.add("username",userSecurity.getPhonenumber());
+            map.add("password", "123456");
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+            headers.setBasicAuth("turbid","turbid_anoax!@#321");
+            HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+            JSONObject object=restTemplate.postForObject("http://127.0.0.1:10003/oauth/token",request,JSONObject.class);
+            if (null==object){
+                loginHis.setStatus(0);
+                return Mono.just(Info.ERROR("登录失败"));
+            }
+            loginHis.setStatus(1);
+            object.put("userinfo",userSecurity);
             return Mono.just(Info.SUCCESS(object));
         }catch (Exception e){
             e.getStackTrace();
@@ -209,9 +414,9 @@ public class UserController {
         try {
             if(checkService.findMessagesByMebileAndAuthode(phone,sms)>0) {
                 if (userSecurityService.findByPhoneCount(phone) > 0) {
-                      UserSecurity userSecurity= userSecurityService.findByPhone(phone);
-                        userSecurity.setPassword(password);
-                        userSecurityService.save(userSecurity);
+                    UserSecurity userSecurity= userSecurityService.findByPhone(phone);
+                    userSecurity.setPassword(password);
+                    userSecurityService.save(userSecurity);
                     return Mono.just(Info.SUCCESS(null));
                 }else {
                     return Mono.just(Info.ERROR("帐号不存在"));
@@ -237,29 +442,29 @@ public class UserController {
     @PostMapping(value = "/userauth")
     public Mono<Info> userauth(@RequestBody Shop shop)  {
         try {
-           UserSecurity userSecurity= userSecurityService.findByPhone(shop.getContactphone());
+            UserSecurity userSecurity= userSecurityService.findByPhone(shop.getContactphone());
 
-           if(null==userSecurity||userSecurity.equals(null)){
-               userSecurity=new UserSecurity();
-               userSecurity.setPhonenumber(shop.getContactphone());
-               userSecurity.setPassword(CodeLib.encrypt("123456"));
-               UserAuth userAuth =new UserAuth();
+            if(null==userSecurity||userSecurity.equals(null)){
+                userSecurity=new UserSecurity();
+                userSecurity.setPhonenumber(shop.getContactphone());
+                userSecurity.setPassword(CodeLib.encrypt("123456"));
+                UserAuth userAuth =new UserAuth();
 
-               userAuth.setStatus(0);
-               userSecurity.setUserAuth(userAuth);
-               userAuthService.save(userAuth);
-               UserBasic userBasic=new UserBasic();
-               userBasic.setNikename(CodeLib.getNikeName(stringRedisTemplate));
-               userBasic.setHeadportrait( CodeLib.getHeadimg());
-               userBasicService.save(userBasic);
-               userSecurity.setUserBasic(userBasic);
-               userSecurity.setType(2);
+                userAuth.setStatus(0);
+                userSecurity.setUserAuth(userAuth);
+                userAuthService.save(userAuth);
+                UserBasic userBasic=new UserBasic();
+                userBasic.setNikename(CodeLib.getNikeName(stringRedisTemplate));
+                userBasic.setHeadportrait( CodeLib.getHeadimg());
+                userBasicService.save(userBasic);
+                userSecurity.setUserBasic(userBasic);
+                userSecurity.setType(2);
 
 
-           }else {
-               userSecurity.getUserAuth().setStatus(0);
-               userAuthService.save( userSecurity.getUserAuth());
-           }
+            }else {
+                userSecurity.getUserAuth().setStatus(0);
+                userAuthService.save( userSecurity.getUserAuth());
+            }
             userSecurity= userSecurityService.save(userSecurity);
             Map<String, Object> requestBody = ImmutableMap.of(
                     "Identifier", userSecurity.getCode(),
@@ -402,14 +607,14 @@ public class UserController {
     @PostMapping(value = "/isvip")
     public Mono<Info> vip(@RequestParam("usercode")String usercode) throws ParseException {
         boolean vip=false;
-      UserSecurity userSecurity = userSecurityService.findByCode(usercode);
-      UserAuth userAuth=userSecurity.getUserAuth();
-      if(null!=userAuth){
-          if (null!=userAuth.getVipday()){
+        UserSecurity userSecurity = userSecurityService.findByCode(usercode);
+        UserAuth userAuth=userSecurity.getUserAuth();
+        if(null!=userAuth){
+            if (null!=userAuth.getVipday()){
                 vip=isvip(userAuth.getVipday());
-          }
-      }
-      return Mono.just(Info.SUCCESS(vip));
+            }
+        }
+        return Mono.just(Info.SUCCESS(vip));
     }
 
     @Autowired
@@ -426,16 +631,16 @@ public class UserController {
     @ApiOperation(value = "修改用户信息", notes="修改用户信息")
     @PostMapping(value = "/update")
     public Mono<Info> update(Principal principal,@RequestParam(value = "nikename",required = false)String nikename,@RequestParam(value = "logo",required = false)String logo,@RequestParam(value = "likes",required = false)String likes)  {
-       UserSecurity userSecurity=userSecurityService.findByPhone(principal.getName());
+        UserSecurity userSecurity=userSecurityService.findByPhone(principal.getName());
         JSONArray data =new JSONArray();
         JSONObject item=null;
-       if(nikename!=null&&!nikename.equals(null)){
-           userSecurity.getUserBasic().setNikename(nikename);
-           item=new JSONObject();
-           item.put("Tag","Tag_Profile_IM_Nick");
-           item.put("Value",nikename);
-           data.add(item);
-       }
+        if(nikename!=null&&!nikename.equals(null)){
+            userSecurity.getUserBasic().setNikename(nikename);
+            item=new JSONObject();
+            item.put("Tag","Tag_Profile_IM_Nick");
+            item.put("Value",nikename);
+            data.add(item);
+        }
         if(logo!=null&&!logo.equals(null)){
             userSecurity.getUserBasic().setHeadportrait(logo);
             userBasicService.save(userSecurity.getUserBasic());
@@ -456,10 +661,84 @@ public class UserController {
         return Mono.just(Info.SUCCESS(userSecurityService.save(userSecurity)));
     }
 
-    @PostMapping(value = "/testip")
-    public Mono<Info> testip(@RequestParam("ip")String ip)  {
-        return Mono.just(Info.SUCCESS(CodeLib.getAddressByIp(ip)));
+
+    @ApiOperation(value = "所有第三方用户", notes="所有第三方用户")
+    @PostMapping(value = "/allopenuser")
+    public Mono<Info> allopenuser(Principal principal)  {
+        return Mono.just(Info.SUCCESS(openUserRepository.findByPhone(principal.getName())));
+    }
+
+    @ApiOperation(value = "第三方用户解除绑定", notes="第三方用户解除绑定")
+    @DeleteMapping(value = "/removeopenuser")
+    @Transactional
+    public Mono<Info> removeopenuser(Principal principal,@RequestParam("openid")String openid)  {
+        return Mono.just(Info.SUCCESS(openUserRepository.deleteByPhoneAndOpenid(principal.getName(),openid)));
+    }
+
+    @ApiOperation(value = "第三方用户绑定", notes="第三方用户绑定")
+    @PutMapping(value = "/addopen")
+    @Transactional
+    public Mono<Info> addopenuser(Principal principal,@RequestParam("openid")String openid,@RequestParam("opentype")String opentype)  {
+        if(0<openUserRepository.countByPhoneAndOpentype(principal.getName(),opentype)){
+            return Mono.just(Info.ERROR("该用户已绑定第三方账号"));
+        }
+        OpenUser openUser=new OpenUser();
+        openUser.setPhone(principal.getName());
+        openUser.setOpenid(openid);
+        openUser.setOpentype(opentype);
+        openUser.setUserSecurity(userSecurityService.findByPhone(principal.getName()));
+        return Mono.just(Info.SUCCESS(openUserRepository.saveAndFlush(openUser)));
+    }
+
+    @Autowired
+    private NeedsRelationRepositroy needsRelationRepositroy;
+
+    @Autowired
+    private StudyRelationRepository studyRelationRepository;
+
+    @Autowired
+    private OrderRepository orderRepository;
+
+    @Autowired
+    private NoticeRepository noticeRepository;
+
+
+    @ApiOperation(value = "修改手机号码", notes="修改手机号码")
+    @PutMapping(value = "/updatephone")
+    @Transactional
+    public Mono<Info> updatephone(Principal principal,@RequestParam("phone")String phone,@RequestParam("smscode")String smscode)  {
+        if(checkService.findMessagesByMebileAndAuthode(phone,smscode)>0) {
+            UserSecurity userSecurity=userSecurityService.findByPhone(principal.getName());
+            userSecurity.setPhonenumber(phone);
+            userSecurityService.save(userSecurity);
+//            MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
+//            map.add("grant_type","password");
+//            map.add("scope","web");
+//            map.add("login_type","open");
+//            map.add("username",phone);
+//            map.add("password", "123456");
+//            HttpHeaders headers = new HttpHeaders();
+//            headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+//            headers.setBasicAuth("turbid","turbid_anoax!@#321");
+//            HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+//            JSONObject object=restTemplate.postForObject("http://127.0.0.1:10003/oauth/token",request,JSONObject.class);
+//            if (null==object){
+//                return Mono.just(Info.ERROR("登录失败"));
+//            }
+//            object.put("userinfo",userSecurity);
+            openUserRepository.updatephone(principal.getName(),phone);
+            needsRelationRepositroy.updatephone(principal.getName(),phone);
+            studyRelationRepository.updatephone(principal.getName(),phone);
+            orderRepository.updatephone(principal.getName(),phone);
+            noticeRepository.updatephone(principal.getName(),phone);
+
+
+            return Mono.just(Info.SUCCESS(null));
+        }else {
+            return Mono.just(Info.ERROR("验证码错误"));
+        }
     }
 
 
 }
+

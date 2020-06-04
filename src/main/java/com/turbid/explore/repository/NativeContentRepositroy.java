@@ -16,8 +16,8 @@ import javax.persistence.QueryHint;
 public interface NativeContentRepositroy extends JpaRepository<NativeContent,String> {
 
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
-    @Query("SELECT n from NativeContent n  ")
-    Page<NativeContent> listByPage(Pageable pageable);
+    @Query("SELECT n from NativeContent n where ( n.label LIKE CONCAT('%',:label,'%') or :label is null )")
+    Page<NativeContent> listByPageLabel(Pageable pageable,@Param("label")String label);
 
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
     @Query("SELECT n from NativeContent n where n.userSecurity.phonenumber= :username ")

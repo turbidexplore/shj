@@ -21,4 +21,8 @@ public interface StudyService {
     void updateSTUDY(String out_trade_no);
 
     Study getByOrder(String orderno);
+
+    List<Study> list(Integer page, String style);
+
+    int del(String code);
 }

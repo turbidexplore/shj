@@ -49,15 +49,6 @@ public class FileServiceImpl implements FileService {
                 PutObjectResult putObjectResult =cosClient .putObject(putObjectRequest);
                 cosClient.shutdown();
                 CodeLib.deleteFile(file);
-                FileGroup fileGroup= new FileGroup();
-                FileInfo fileInfo=new FileInfo();
-                fileInfo.setSize(file.length());
-                fileInfo.setType(name[1]);
-                fileInfo.setFileGroup(fileGroup);
-                fileInfo.setUrl(url+key);
-                fileGroup.setFileInfos(new ArrayList<>());
-                fileGroup.getFileInfos().add(fileInfo);
-                fileGroupRepositroy.save(fileGroup);
                 return url+key;
             }
         }

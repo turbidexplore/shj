@@ -9,11 +9,14 @@ import java.util.List;
 public interface NativeContentService {
     NativeContent save(NativeContent nativeContent);
 
-    List<NativeContent> listByPage(Integer page);
+    List<NativeContent> listByPageLabel(Integer page,String label);
 
     List<NativeContent> listByPage(Integer page,String username);
 
     NativeContent newsByCode(String code);
 
     List<NativeContent> search(String text, Integer page);
+
+    void del(String code);
+
 }

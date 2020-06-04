@@ -65,4 +65,17 @@ public class StudyServiceImpl implements StudyService {
     public Study getByOrder(String orderno) {
         return studyRepository.getByOrder(orderno);
     }
+
+    @Override
+    public List<Study> list(Integer page, String style) {
+        Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
+        Page<Study> pages=  studyRepository.list(pageable,style);
+        return pages.getContent();
+    }
+
+    @Override
+    @Transactional
+    public int del(String code) {
+        return studyRepository.del(code);
+    }
 }

@@ -15,4 +15,5 @@ public interface UserSecurityService {
     UserSecurity findByCode(String usercode);
 
     int issignin(String name, String dateStr);
+
 }

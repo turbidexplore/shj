@@ -43,6 +43,6 @@ public interface ProjectNeedsRepositroy extends JpaRepository<ProjectNeeds,Strin
     Page<ProjectNeeds> search(Pageable pageable,@Param("text") String text);
 
     @Modifying
-    @Query("update ProjectNeeds p set p.status=1 where p.overtime>:time")
+    @Query("update ProjectNeeds p set p.status=1 where p.overtime<=:time")
     int colseOverNeeds(@Param("time") String time);
 }

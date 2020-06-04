@@ -2,7 +2,9 @@ package com.turbid.explore.controller.home;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.turbid.explore.pojo.Configinfo;
 import com.turbid.explore.pojo.Shop;
+import com.turbid.explore.repository.ConfiginfoRepository;
 import com.turbid.explore.service.*;
 import com.turbid.explore.tools.CodeLib;
 import com.turbid.explore.tools.Info;
@@ -36,22 +38,33 @@ public class BaseController {
         return Mono.just(Info.SUCCESS(info));
     }
 
+    @Autowired
+    private ConfiginfoRepository configinfoRepository;
+
     @GetMapping(value = "/update")
     public Mono<Info> update(@RequestParam("version")String version)  {
+        Configinfo configinfo=configinfoRepository.getOne(0);
         Map<String,Object> data=new HashMap<>();
 
         Map<String,Object> info=new HashMap<>();
-       if (version=="1.0.1"||version.equals("1.0.1")){
-           info.put("isupdate",false);
-       }else {
+       if (version!=configinfo.getAndroidversion()&&!version.equals(configinfo.getAndroidversion())){
            info.put("isupdate",true);
+       }else {
+           info.put("isupdate",false);
        }
-        info.put("version","1.0.1");
-        info.put("desc","添加了达人研习社模块");
+        info.put("version",configinfo.getAndroidversion());
+        info.put("desc",configinfo.getAndroidcontent());
         info.put("forceupdate",false);
         info.put("url","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/shehuijia.apk");
         data.put("android",info);
         info=new HashMap<>();
+        if (version!=configinfo.getIosversion()&&!version.equals(configinfo.getIosversion())){
+            info.put("isupdate",true);
+        }else {
+            info.put("isupdate",false);
+        }
+        info.put("desc",configinfo.getIoscontent());
+        info.put("version",configinfo.getIosversion());
         info.put("forceupdate",false);
         data.put("ios",info);
         return Mono.just(Info.SUCCESS(data));
@@ -110,13 +123,18 @@ public class BaseController {
     @ApiOperation(value = "获取产品风格", notes="获取产品风格")
     @GetMapping(value = "/styles")
     public Mono<Info> styles()  {
-        return Mono.just(Info.SUCCESS(new String[]{"新古典","美式","轻奢","极简","北欧","现代","新中式"}));
+        return Mono.just(Info.SUCCESS(new String[]{"全风格","新古典","美式","轻奢","极简","北欧","现代","新中式"}));
     }
 
 
     @ApiOperation(value = "获取产品品类", notes="获取产品品类")
     @GetMapping(value = "/categorys")
     public Mono<Info> categorys()  {
+        return Mono.just(Info.SUCCESS(new String[]{"全品类","成品家具","全屋定制","成品定制","窗帘","墙布","画品","灯具","生活用品","饰品","地毯","其他"}));
+    }
+    @ApiOperation(value = "获取特价仓产品品类", notes="获取特价仓产品品类")
+    @GetMapping(value = "/tjccategorys")
+    public Mono<Info> tjccategorys()  {
         return Mono.just(Info.SUCCESS(new String[]{"成品家具","全屋定制","成品定制","窗帘","墙布","画品","灯具","生活用品","饰品","地毯","其他"}));
     }
 

@@ -42,6 +42,7 @@ public class UserCenterController {
     @PostMapping(value = "/count")
     public Mono<Info> count(Principal principal)  {
         Map<String,Object> data=new HashMap<>();
+        System.out.println(principal.getName());
        UserSecurity userSecurity= userSecurityService.findByPhone(principal.getName());
             data.put("shb",userSecurity.getShb());
             data.put("follow",followService.myfollowCount(principal.getName()));

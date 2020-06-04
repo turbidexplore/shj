@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 import java.security.Principal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,10 +30,11 @@ public class CaseController {
     @PutMapping("/addcase")
     public Mono<Info> addcase(Principal principal, @RequestBody Case obj) {
         obj.setUserSecurity(userSecurityService.findByPhone(principal.getName()));
+        obj.setCreate_time(new Date());
         return Mono.just(Info.SUCCESS(caseService.save(obj)));
     }
 
-    @ApiOperation(value = "新增案例", notes="新增案例")
+    @ApiOperation(value = "删除", notes="新增案例")
     @DeleteMapping("/remove")
     public Mono<Info> remove(Principal principal,@RequestParam("code")String code) {
         return Mono.just(Info.SUCCESS(caseService.remove(code)));

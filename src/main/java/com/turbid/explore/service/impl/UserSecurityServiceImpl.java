@@ -36,4 +36,6 @@ public class UserSecurityServiceImpl implements UserSecurityService {
     public int issignin(String name, String dateStr) {
         return userSecurityRepository.issignin(name,dateStr);
     }
+
+
 }

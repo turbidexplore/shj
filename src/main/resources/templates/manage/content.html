@@ -61,12 +61,30 @@
                     <span>特价仓管理</span>
                   </a>
                 </li>
+              <li class="nav-item">
+                <a class="nav-link " href="/managebanners">
+                  <i class="material-icons">vertical_split</i>
+                  <span>广告管理</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="/managestudys">
+                  <i class="material-icons">vertical_split</i>
+                  <span>课程管理</span>
+                </a>
+              </li>
                 <li class="nav-item">
                   <a class="nav-link " href="/managecomments">
                     <i class="material-icons">note_add</i>
                     <span>评论管理</span>
                   </a>
                 </li>
+              <li class="nav-item">
+                <a class="nav-link " href="/managecases">
+                  <i class="material-icons">vertical_split</i>
+                  <span>案例管理</span>
+                </a>
+              </li>
                 <li class="nav-item active" >
                   <a class="nav-link " href="/managenativecontent">
                     <i class="material-icons">note_add</i>
@@ -151,7 +169,8 @@
 
       </div>
     </div>
-   
+   <input type="hidden" id="code" value="" th:value="${code}">
+
     <script src="../js/jquery-3.3.1.min.js" ></script>
      <script src="../ckeditor/ckeditor.js"></script>
      <script src="../layui/layui.js"></script>
@@ -159,6 +178,8 @@
      <script src="../scripts/bootstrap.min.js"></script>
      <script src="../js/jquery.cookie.min.js"></script>
   <script>
+
+
     layui.use('form', function(){
       var form = layui.form;
     });
@@ -167,6 +188,30 @@
       filebrowserImageUploadUrl :  "/file/image",
       disallowedContent:'img{width,height};img[width,height]'
     });
+
+    if($("#code").val()!=""&&$("#code").val()!=null&&$("#code").val()!=undefined){
+      $.ajax({
+        type: 'GET',
+        url : "/nativecontent/newsByCode?code="+$("#code").val(),
+        async: true,
+        crossDomain: true,
+        headers: {
+          "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
+          "cache-control": "no-cache",
+          "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
+        }
+      }).done(function(result) {
+        $("#title").val(result.data.title);
+        CKEDITOR.instances.newsMatter.setData(result.data.content);
+        $("input:checkbox[name='label']").each(function(i){
+          if(result.data.label.indexOf($(this).val()) != -1){
+            $(this).attr("checked","checked");
+            $(this).prop("checked",true);
+          }
+        });
+      });
+    }
+
 
 
     $('#newsMatter').each(function () {
@@ -204,33 +249,66 @@
         });
         return false;
       }
-      $.ajax({
-        type: 'POST',
-        url: "/nativecontent/add",
-        data: JSON.stringify({
-          "status":status,
-          "content": content,
-          "title": $("#title").val(),
-          "label":label
-        }),
-        processData: false,
-        contentType: "application/json; charset=UTF-8",
-        headers: {
-          "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
-          "cache-control": "no-cache",
-          "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
-        }
-      }).done(function (result) {
-        layui.use("layer", function () {
-          layer.alert('发布成功', {
-            skin: 'layui-layer-molv' //样式类名
-            , closeBtn: 0
-            , anim: 4 //动画类型
-          }, function () {
-            window.location.replace("/managenativecontent");
+
+      if($("#code").val()!=""&&$("#code").val()!=null&&$("#code").val()!=undefined){
+        $.ajax({
+          type: 'POST',
+          url: "/nativecontent/add",
+          data: JSON.stringify({
+            "code": $("#code").val(),
+            "status": status,
+            "content": content,
+            "title": $("#title").val(),
+            "label": label
+          }),
+          processData: false,
+          contentType: "application/json; charset=UTF-8",
+          headers: {
+            "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
+            "cache-control": "no-cache",
+            "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
+          }
+        }).done(function (result) {
+          layui.use("layer", function () {
+            layer.alert('发布成功', {
+              skin: 'layui-layer-molv' //样式类名
+              , closeBtn: 0
+              , anim: 4 //动画类型
+            }, function () {
+              window.location.replace("/managenativecontent");
+            });
           });
         });
-      });
+
+      }else {
+        $.ajax({
+          type: 'POST',
+          url: "/nativecontent/add",
+          data: JSON.stringify({
+            "status": status,
+            "content": content,
+            "title": $("#title").val(),
+            "label": label
+          }),
+          processData: false,
+          contentType: "application/json; charset=UTF-8",
+          headers: {
+            "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
+            "cache-control": "no-cache",
+            "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
+          }
+        }).done(function (result) {
+          layui.use("layer", function () {
+            layer.alert('发布成功', {
+              skin: 'layui-layer-molv' //样式类名
+              , closeBtn: 0
+              , anim: 4 //动画类型
+            }, function () {
+              window.location.replace("/managenativecontent");
+            });
+          });
+        });
+      }
     }
     
     function preview() {

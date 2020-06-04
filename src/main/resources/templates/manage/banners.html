@@ -70,9 +70,21 @@
                 </a>
               </li>
               <li class="nav-item">
+                <a class="nav-link " href="/managestudys">
+                  <i class="material-icons">vertical_split</i>
+                  <span>课程管理</span>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link " href="/managecomments">
                   <i class="material-icons">note_add</i>
                   <span>评论管理</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="/managecases">
+                  <i class="material-icons">vertical_split</i>
+                  <span>案例管理</span>
                 </a>
               </li>
               <li class="nav-item">
@@ -141,7 +153,16 @@
             <!-- Page Header -->
             <div class="page-header row no-gutters py-4">
               <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
-                <a  class="mb-2 btn btn-sm btn-primary mr-1" href="/managegood">新建商品</a>
+                <select onchange="list(this.value)" id="type">
+                  <option value="0">首页</option>
+                  <option value="1">需求</option>
+                  <option value="2">品牌馆</option>
+                  <option value="3">特价仓</option>
+                  <option value="4">达人研习社</option>
+                  <option value="5">官方严选</option>
+                  <option value="6">新品招商</option>
+                </select>
+                <a href="javascript:;" class="file">上传图片 <input type="file" id="logo" /> </a>
               </div>
             </div>
             <div class="row" id="content">
@@ -159,32 +180,16 @@
     <script src="../js/jquery.cookie.min.js"></script>
 
   <script>
-    var index=0;
-    list(index);
 
-    $(window).scroll(function () {
+    list(0);
 
-      var scrollTop = $(this).scrollTop();
-      //console.log(scrollTop);
-      var scrollHeight = $(document).height();
-      //console.log('['+scrollHeight+']');
-      var windowHeight = screen.availHeight;
-      //console.log('【'+windowHeight+'】');
-      if (scrollTop+ windowHeight >= scrollHeight) {
-        if (stop == true && ipage <= totalPage) {
-          stop = false;
-        } else {
-          index++;
-          list(index)
-        }
-      }
-    });
-    function list(page) {
+    function list(obj) {
+
       var settings = {
         "async": true,
         "crossDomain": true,
-        "url": "/goods/mylistByPage?page="+page,
-        "method": "POST",
+        "url": "/banner/list?type="+obj,
+        "method": "GET",
         "processData": false,
         "headers": {
           "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
@@ -193,32 +198,98 @@
         }
       }
       $.ajax(settings).done(function (response) {
+        $("#content").html("");
         response.data.forEach(function (v,i) {
-          console.log(v);
-          var img=v.imgs.split(",")[0];
-          var pricetype=v.pricetype?'可议价':'一口价';
-          var html= '<div class="col-lg-3 col-md-6 col-sm-12 mb-4" id="'+v.code+'">'+
+
+          var html= '<div class="col-lg-6 col-md-6 col-sm-12 mb-4" id="'+v.code+'">'+
                   '<div class="card card-small card-post card-post--1">'+
-                  '<div class="card-post__image" style="background-image: url('+img+');">'+
-                  '<a href="#" class="card-post__category badge badge-pill badge-dark">'+v.lable+'</a>'+
-                  '</div>'+
-                  '<div class="card-body">'+
-                  '<p class="card-title"><button type="button" class="mb-1 btn btn-sm btn-outline-danger mr-1">'+pricetype+'</button>'+
-                  '<span>'+v.title+'</span></p>'+
-                  '<p></strong> 最小价格:<strong style="color: #c69500;">'+v.price+'元</strong> <br>  最大价格:<strong style="color: #c69500;">'+v.maxprice+'元</strong> </p>'+
-                  '<span class="text-muted" style="font-size: 12px;">'+v.addtime+'  发布     <button type="button" class="mb-1 btn btn-sm btn-info mr-1" onclick="xj(\''+v.code+'\')"> 下架</button></span>'+
-                  '</div></div></div>';
+                  '<img  style="width: 100%;" src="'+v.fileInfo.url+'"/>'+
+                  '    <button type="button" class="mb-1 btn btn-sm btn-info mr-1" onclick="xj(\''+v.code+'\')"> 删除</button></span>'+
+                  '</div></div>';
           $("#content").append(html);
         })
       });
 
     }
 
+
+
+
+    $("#logo").on("change",function(){
+      function getObjectURL(file) {
+        var url = null;
+        if (window.createObjcectURL != undefined) {
+          url = window.createOjcectURL(file);
+        } else if (window.URL != undefined) {
+          url = window.URL.createObjectURL(file);
+        } else if (window.webkitURL != undefined) {
+          url = window.webkitURL.createObjectURL(file);
+        }
+        return url;
+      }
+      var blobURL = getObjectURL(this.files[0]);
+      var imgUTL = '';
+
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', blobURL);
+      xhr.responseType = 'blob';
+
+      xhr.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+          var imageBlob = this.response;
+          var imageType = imageBlob.type;
+          var imageName = null;
+          if (imageType.includes('png')) {
+            imageName = 'uploaded-image.png';
+          } else if (imageType.includes('gif')) {
+            imageName = 'uploaded-image.gif';
+          } else if (imageType.includes('bmp')) {
+            imageName = 'uploaded-image.bmp';
+          } else {
+            imageName = 'uploaded-image.jpg';
+          }
+          var form = new FormData();
+          form.append('file', imageBlob, imageName); // 第三个参数为文件名
+          $.ajax({
+            type: 'POST',
+            url : "/file/upload",
+            data: form ,
+            processData: false,
+            contentType: false,
+          }).done(function(result) {
+            $("#logoimg").attr("src",);
+
+            var settings = {
+              "async": true,
+              "crossDomain": true,
+              "url": "/banner/add?url="+result.data+"&type="+$("#type").val(),
+              "method": "PUT",
+              "processData": false,
+              "headers": {
+                "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
+                "cache-control": "no-cache",
+                "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
+              }
+            }
+            $.ajax(settings).done(function (response) {
+             var v=response.data;
+              var html= '<div class="col-lg-6 col-md-6 col-sm-12 mb-4" id="'+v.code+'">'+
+                      '<div class="card card-small card-post card-post--1">'+
+                      '<img  style="width: 100%;" src="'+v.fileInfo.url+'"/>'+
+                      '    <button type="button" class="mb-1 btn btn-sm btn-info mr-1" onclick="xj(\''+v.code+'\')"> 删除</button></span>'+
+                      '</div></div>';
+              $("#content").html(html+$("#content").html());
+            });
+          });
+        }
+      };
+      xhr.send();
+    })
 function xj(code) {
   var settings = {
     "async": true,
     "crossDomain": true,
-    "url": "/goods/updatastatus?code="+code+"&status=1",
+    "url": "/banner/del?code="+code,
     "method": "PUT",
     "processData": false,
     "headers": {
@@ -228,7 +299,7 @@ function xj(code) {
     }
   }
   $.ajax(settings).done(function (response) {
-    alert("下架成功！")
+    alert("删除成功！")
       $("#"+code).remove();
   });
 

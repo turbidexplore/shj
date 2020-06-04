@@ -128,6 +128,10 @@ public class Shop extends BaseEntity{
     @Column(name = "vrweb")
     private String vrweb;
 
+    @ApiModelProperty(value = "bzj")
+    @Column(name = "bzj",length = 255)
+    private String bzj;
+
 
     public Shop(String code,String companyname,String logo) {
         super();

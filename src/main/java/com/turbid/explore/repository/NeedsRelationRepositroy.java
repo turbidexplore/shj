@@ -20,4 +20,8 @@ public interface NeedsRelationRepositroy extends JpaRepository<NeedsRelation,Str
 
     @Query("select n from ProjectNeeds n where n.orderno in(select p.needsorderno from NeedsRelation p where p.orderno=:orderno) ")
     ProjectNeeds getByOrder(@Param("orderno")String orderno);
+
+    @Modifying
+    @Query("update NeedsRelation o set o.phone=:phone where o.phone=:oldphone")
+    int updatephone(@Param("oldphone") String oldphone, @Param("phone") String phone);
 }

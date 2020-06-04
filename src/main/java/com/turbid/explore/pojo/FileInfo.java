@@ -12,10 +12,6 @@ import javax.persistence.*;
 @Data
 public class FileInfo extends BaseEntity {
 
-    //文件组
-    @ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH},optional=false)
-    @JoinColumn(name="group_code")
-    private FileGroup fileGroup;
 
     //文件标题
     @Column(name = "title",  length = 32)

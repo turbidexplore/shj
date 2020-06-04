@@ -56,10 +56,13 @@ public class GoodsController {
         Goods goods=  goodsService.get(code);
         goods.setBrowses(goods.getBrowses()+1);
         goods.setLikes(collectionService.count(code));
-        Visitor visitor=new Visitor();
-        visitor.setShopcode(code);
-        visitor.setUserSecurity(userSecurityService.findByPhone(principal.getName()));
-        visitorService.save(visitor);
+        try {
+            Visitor visitor=new Visitor();
+            visitor.setShopcode(code);
+            visitor.setUserSecurity(userSecurityService.findByPhone(principal.getName()));
+            visitorService.save(visitor);
+        }catch (Exception e){}
+
         return Mono.just(Info.SUCCESS(goodsService.save(goods)));
     }
 

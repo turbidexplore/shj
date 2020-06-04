@@ -166,6 +166,14 @@
                             </div>
                             <div class="form-row">
                               <div class="form-group col-md-6">
+                                <label for="vrweb">vrweb</label>
+                                <input type="text" class="form-control" id="vrweb" placeholder="vrweb"> </div>
+                              <div class="form-group col-md-6">
+                                <label for="bzj">招商加盟保证金</label>
+                                <input type="text" class="form-control" id="bzj" placeholder="招商加盟保证金"> </div>
+                            </div>
+                            <div class="form-row">
+                              <div class="form-group col-md-6">
                                 <label for="contactaddress">联系地址</label>
                                 <input type="text" class="form-control" id="contactaddress" placeholder="请输入联系地址"> </div>
                             </div>
@@ -260,12 +268,12 @@
 
     $.ajax({
       type: 'GET',
-      url : "/base/classgroup",
+      url : "/base/styles",
       processData: false,
       contentType: false,
     }).done(function(result) {
       result.data.forEach( function (v,i) {
-        $("#label").append("<option value='"+v.name+"'>"+v.name+"</option>");
+        $("#label").append("<option value='"+v+"'>"+v+"</option>");
       });
 
     });
@@ -762,6 +770,8 @@
                   "idcardpositive": $("#idcardpositiveimg").attr('src'),
                   "idcardreverse": $("#idcardreverseimg").attr('src'),
                   "unifiedcreditcode": $("#unifiedcreditcode").val()
+                  ,"vrweb": $("#vrweb").val()
+                  ,"bzj": $("#bzj").val()
                 }),
                 processData: false,
                 contentType: "application/json; charset=UTF-8",

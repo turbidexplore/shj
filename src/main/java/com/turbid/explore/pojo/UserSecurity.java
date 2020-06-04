@@ -2,6 +2,7 @@ package com.turbid.explore.pojo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import javax.persistence.*;
+import java.util.List;
 
 
 /**
@@ -51,6 +52,10 @@ public class UserSecurity extends BaseEntity {
     @OneToOne(targetEntity = UserAuth.class)
     @JoinColumn(name = "auth_id",referencedColumnName = "code")
     private UserAuth userAuth;
+
+
+    @OneToMany(cascade= CascadeType.ALL,fetch=FetchType.EAGER)
+    private List<OpenUser> openUsers;
 
 
 }
