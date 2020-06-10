@@ -219,14 +219,14 @@
              }
 
              var vip="无vip信息";
-             if(v.userSecurity.userAuth.vipday!=null){
-               vip="<span style='font-weight: bold;color: orange;border: orange 1px solid;'> &nbsp;"+v.userSecurity.userAuth.vipday+"到期&nbsp;</span>"
+             if(v.vipday!=null){
+               vip="<span style='font-weight: bold;color: orange;border: orange 1px solid;'> &nbsp;"+v.vipday+"到期&nbsp;</span>"
              }
              vip=vip+"<br><button type=\"button\" class=\"mb-2 btn btn-sm btn-success mr-1\" onclick=\"go('"+v.code+"')\">充值会员</button>";
 
              var margin="未缴纳保证金"+"<br><button type=\"button\" class=\"mb-2 btn btn-sm btn-success mr-1\" onclick=\"bzj('"+v.code+"')\">缴纳保证金</button>";
-             if(v.userSecurity.userAuth.margin!=null&&v.userSecurity.userAuth.margin!=0){
-               margin=v.userSecurity.userAuth.margin+"<br><button type=\"button\" class=\"mb-2 btn btn-sm btn-danger mr-1\" onclick=\"tbzj('"+v.code+"')\">退还保证金</button>";;
+             if(v.margin!=null&&v.margin!=0){
+               margin=v.margin+"<br><button type=\"button\" class=\"mb-2 btn btn-sm btn-danger mr-1\" onclick=\"tbzj('"+v.code+"')\">退还保证金</button>";;
              }
              $("#dataview").append('<tr>'+
                      ' <td><img src="'+v.logo+'" style="width:30px;" class=" rounded-circle"> '+v.name+'<br>'+v.companyname+'</td>'+

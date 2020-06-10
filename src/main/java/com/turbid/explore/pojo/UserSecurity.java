@@ -53,6 +53,10 @@ public class UserSecurity extends BaseEntity {
     @JoinColumn(name = "auth_id",referencedColumnName = "code")
     private UserAuth userAuth;
 
+    //用户认证信息
+    @ManyToOne(targetEntity = Shop.class)
+    @JoinColumn(name = "shop_id",referencedColumnName = "code")
+    private Shop shop;
 
     @OneToMany(cascade= CascadeType.ALL,fetch=FetchType.EAGER)
     private List<OpenUser> openUsers;

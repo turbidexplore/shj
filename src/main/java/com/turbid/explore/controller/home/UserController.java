@@ -486,6 +486,8 @@ public class UserController {
                     ,requestBody, JSONObject.class);
             shop.setUserSecurity(userSecurity);
             shop=shopService.save(shop);
+            userSecurity.setShop(shop);
+            userSecurityService.save(userSecurity);
             return Mono.just(Info.SUCCESS(shop));
         }catch (Exception e){
             e.printStackTrace();

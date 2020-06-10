@@ -132,6 +132,13 @@ public class Shop extends BaseEntity{
     @Column(name = "bzj",length = 255)
     private String bzj;
 
+    //保证金
+    @Column(name = "margin",length = 10)
+    private Integer margin;
+
+    //vip有效期
+    @Column(name = "vipday",length = 32)
+    private String vipday;
 
     public Shop(String code,String companyname,String logo) {
         super();

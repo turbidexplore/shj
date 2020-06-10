@@ -167,8 +167,8 @@ public class ShopController {
             item.put("shopcount",50);
             item.put("dateofestablishment","2018-08-01");
             try {
-                if(null!=v.getUserSecurity().getUserAuth().getMargin()&&!"".equals(v.getUserSecurity().getUserAuth().getMargin())&&!v.getUserSecurity().getUserAuth().getMargin().equals(null)) {
-                    item.put("bzj", v.getUserSecurity().getUserAuth().getMargin());
+                if(null!=v.getMargin()&&!"".equals(v.getMargin())&&!v.getMargin().equals(null)) {
+                    item.put("bzj", v.getMargin());
                 }else {
                     item.put("bzj","无");
                 }
@@ -308,26 +308,23 @@ public class ShopController {
         return Mono.just(Info.SUCCESS(shopService.save(shop)));
     }
 
-    @Autowired
-    private UserAuthService userAuthService;
 
     @ApiOperation(value = "设置保证金和vip", notes="设置保证金和vip")
     @PostMapping("/bzjandvip")
     public Mono<Info> bzjandvip(Principal principal,@RequestParam("code")String code,@RequestParam(value = "m",required = false)Integer m,@RequestParam(value = "bzj",required = false)Integer bzj) throws ParseException {
         Shop shop=shopService.getByCode(code);
-        UserAuth userAuth=shop.getUserSecurity().getUserAuth();
+
         if(m!=null){
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            if (userAuth.getVipday()==null||new Date().compareTo(sdf.parse(userAuth.getVipday()))>0) {
-                userAuth.setVipday(sdf.format(CodeLib.addMonth(new Date(),m)));
+            if (shop.getVipday()==null||new Date().compareTo(sdf.parse(shop.getVipday()))>0) {
+                shop.setVipday(sdf.format(CodeLib.addMonth(new Date(),m)));
             }else {
-                userAuth.setVipday(sdf.format(CodeLib.addMonth(sdf.parse(userAuth.getVipday()),m)));
+                shop.setVipday(sdf.format(CodeLib.addMonth(sdf.parse(shop.getVipday()),m)));
             }
         }else if(bzj!=null){
-            userAuth.setMargin(bzj);
+            shop.setMargin(bzj);
         }
-
-        return Mono.just(Info.SUCCESS(userAuthService.save(userAuth)));
+        return Mono.just(Info.SUCCESS(shopService.save(shop)));
     }
 
 
