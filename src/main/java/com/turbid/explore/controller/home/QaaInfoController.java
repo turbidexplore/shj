@@ -76,7 +76,6 @@ public class QaaInfoController {
         qaaInfo.getAnswersinfo().add(answerService.save(answer));
         qaaInfoService.save(qaaInfo);
         noticeRepository.save(new Notice(qaaInfo.getUserSecurity().getPhonenumber(), "用户【 "+userSecurity.getUserBasic().getNikename()+" 】 回答了您提的问题，请去个人中心查看。", "回答通知", 1, 0));
-
         return Mono.just(Info.SUCCESS(answer));
     }
 

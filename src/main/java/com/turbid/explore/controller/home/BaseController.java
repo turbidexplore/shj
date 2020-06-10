@@ -30,11 +30,11 @@ public class BaseController {
     @GetMapping(value = "/share")
     public Mono<Info> share()  {
         Map<String,String> info=new HashMap<>();
-        info.put("shop","http://m.deslibs.com/#/shopHomePage");
-        info.put("goods","http://m.deslibs.com/#/salesDetails");
-        info.put("study","http://m.deslibs.com/#/study_details");
-        info.put("nativecontent","http://m.deslibs.com/#/lingganAlbum");
-        info.put("brand","http://m.deslibs.com/#/childBrand");
+        info.put("shop","http://m.deslibs.com/shopHomePage");
+        info.put("goods","http://m.deslibs.com/salesDetails");
+        info.put("study","http://m.deslibs.com/study_details");
+        info.put("nativecontent","http://m.deslibs.com/lingganAlbum");
+        info.put("brand","http://m.deslibs.com/childBrand");
         return Mono.just(Info.SUCCESS(info));
     }
 
@@ -123,14 +123,14 @@ public class BaseController {
     @ApiOperation(value = "获取产品风格", notes="获取产品风格")
     @GetMapping(value = "/styles")
     public Mono<Info> styles()  {
-        return Mono.just(Info.SUCCESS(new String[]{"全风格","新古典","美式","轻奢","极简","北欧","现代","新中式"}));
+        return Mono.just(Info.SUCCESS(new String[]{"新古典","美式","轻奢","极简","北欧","现代","新中式"}));
     }
 
 
     @ApiOperation(value = "获取产品品类", notes="获取产品品类")
     @GetMapping(value = "/categorys")
     public Mono<Info> categorys()  {
-        return Mono.just(Info.SUCCESS(new String[]{"全品类","成品家具","全屋定制","成品定制","窗帘","墙布","画品","灯具","生活用品","饰品","地毯","其他"}));
+        return Mono.just(Info.SUCCESS(new String[]{"成品家具","全屋定制","成品定制","窗帘","墙布","画品","灯具","生活用品","饰品","地毯","其他"}));
     }
     @ApiOperation(value = "获取特价仓产品品类", notes="获取特价仓产品品类")
     @GetMapping(value = "/tjccategorys")

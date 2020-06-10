@@ -42,11 +42,11 @@ public class QaaInfo extends BaseEntity{
     UserSecurity userSecurity;
 
     //点赞者信息
-    @OneToMany(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
-    private Set<UserSecurity> stars;
+    @OneToMany(fetch=FetchType.LAZY)
+    private List<UserSecurity> stars;
 
     //评论信息
-    @OneToMany(cascade= CascadeType.ALL,fetch= FetchType.EAGER)
+    @OneToMany(fetch= FetchType.LAZY)
     private List<Answer> answers;
 
     public List<Answer> getAnswers() {
@@ -61,15 +61,17 @@ public class QaaInfo extends BaseEntity{
 
     public int getStarcount() {
         if(null!=stars){
-        return stars.size();}else {return 0; }
+            return CodeLib.removeDuplicate(stars).size();}else {return 0; }
     }
 
 
-  private int answercount;
+    private int answercount;
 
     public int getAnswercount() {
+
         if(null!=answers){
-        return answers.size();
+
+        return CodeLib.removeDuplicate(answers).size();
         }else {return 0;}
     }
 

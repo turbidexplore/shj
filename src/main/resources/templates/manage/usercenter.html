@@ -14,6 +14,41 @@
     <link rel="stylesheet" id="main-stylesheet" data-version="1.1.0" href="../styles/shards-dashboards.1.1.0.min.css">
     <link rel="stylesheet" href="../styles/extras.1.1.0.min.css">
     <link rel="stylesheet" href="../layui/css/layui.css">
+    <style>  input[type="checkbox"] {
+      text-indent:0;
+      margin: 0;
+      width: 17px;
+      height: 17px;
+      text-align:center;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 15px;
+      position: relative;
+    }
+    input[type="checkbox"]::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: #fff;
+      width: 100%;
+      height: 100%;
+      border: 1px solid #bdbfc2;
+    }
+    input[type="checkbox"]:checked::before {
+      content: "\2713";
+      background-color: #37b048;
+      color: #fff;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      font-size: 12px;
+      font-weight: bold;
+      outline: none;
+      border-color:#ccc;
+      border: 1px solid #bdbfc2;
+    }</style>
   </head>
   <body class="h-100">
       <div class="container-fluid">
@@ -47,6 +82,12 @@
                 <a class="nav-link " href="/manageindex">
                   <i class="material-icons">edit</i>
                   <span>首页</span>
+                </a>
+              </li>
+              <li class="nav-item ">
+                <a class="nav-link " href="/manageuser">
+                  <i class="material-icons">table_chart</i>
+                  <span>企业管理</span>
                 </a>
               </li>
               <li class="nav-item">
@@ -176,21 +217,21 @@
                                 <input type="text" disabled="" class="form-control" id="companyname" placeholder="企业名称" value=""> </div>
                             </div>
                             <div class="form-row">
-                              <div class="form-group col-md-4" >
+                              <div class="form-group col-md-5" >
                                 <label for="brandgroup">品牌馆</label>
                                 <select id="brandgroup" class="form-control">
 
                                 </select></div>
-                              <div class="form-group  col-md-6" >
-                                <label for="label">标签</label>
-                                <select id="label" class="form-control">
-
-                                </select><select id="label1" class="form-control">
-
-                              </select></div>
                               <div class="form-group col-md-5">
                                 <label for="city">所在城市</label>
                                 <input type="text" class="form-control" id="city" placeholder="城市" value=""> </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group  col-md-10">
+                                  <label for="labelview">标签</label>
+                                  <div  id="labelview">
+                                  </div>
+                                </div>
                             </div>
                             <div class="form-row">
                               <div class="form-group col-md-10">
@@ -231,10 +272,10 @@
                         <div class="col">
                           <form>
                             <div class="form-row">
-                              <div class="form-group col-md-4">
+                              <div class="form-group col-md-6">
                                 <label for="contactname">联系人名称</label>
                                 <input type="text" class="form-control" id="contactname" placeholder="请输入联系人名称" value=""> </div>
-                              <div class="form-group col-md-4">
+                              <div class="form-group col-md-6">
                                 <label for="contactemail">联系人邮箱</label>
                                 <input type="email" class="form-control" id="contactemail" placeholder="请输入联系人邮箱"> </div>
                             </div>
@@ -283,10 +324,10 @@
                   </div>
                   <div class="card-header border-bottom text-center">
                     <div class="mb-3 mx-auto">
-                      <img src="https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/public/202004021610593523840642784547502.jpg" alt="User Avatar" width="200" id="idcardpositiveimg"> </div> <span>联系人身份证正面</span>
+                      <img src="https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/icon/webwxgetmsgimg12.jpg" alt="User Avatar" width="200" id="idcardpositiveimg"> </div> <span>联系人身份证正面</span>
 
                     <div class="mb-3 mx-auto">
-                      <img src="https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/public/202004021612128178511606060969560.jpg" alt="User Avatar" width="200" id="idcardreverseimg"> </div> <span>联系人身份证背面</span>
+                      <img src="https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/icon/webwxgetmsgimg.jpg.jpg" alt="User Avatar" width="200" id="idcardreverseimg"> </div> <span>联系人身份证背面</span>
 
                   </div>
                   <div class="card-header border-bottom text-center">
@@ -390,9 +431,10 @@
           }).done(function(a) {
             a.data.forEach( function (v,i) {
               if(result.data.label.indexOf(v) != -1) {
-                $("#label").append("<option value='" + v + "' selected='selected'>" + v + "</option>");
+                $("#labelview").append('<div style="width: 85px;float: left;"><input id="labelviewitem'+i+'" type="checkbox" name="label" title="'+v+'" value="'+v+'"  checked><label for="labelviewitem'+i+'">'+v+'</label></div>');
               }else {
-                $("#label").append("<option value='" + v + "'>" + v + "</option>");
+                $("#labelview").append('<div style="width: 85px;float: left;"><input id="labelviewitem'+i+'" type="checkbox" name="label" title="'+v+'" value="'+v+'" ><label for="labelviewitem'+i+'">'+v+'</label></div>');
+
               }
             });
 
@@ -406,9 +448,9 @@
           }).done(function(a) {
             a.data.forEach( function (v,i) {
               if(result.data.label.indexOf(v) != -1) {
-                $("#label1").append("<option value='" + v + "' selected='selected'>" + v + "</option>");
+                $("#labelview").append('<div style="width: 80px;float: left;"><input id="alabelviewitem'+i+'" type="checkbox" name="label" title="'+v+'" value="'+v+'" checked><label for="alabelviewitem'+i+'">'+v+'</label></div>');
               }else {
-                $("#label1").append("<option value='" + v + "'>" + v + "</option>");
+                $("#labelview").append('<div style="width: 80px;float: left;"><input id="alabelviewitem'+i+'" type="checkbox" name="label" title="'+v+'" value="'+v+'" ><label for="alabelviewitem'+i+'">'+v+'</label></div>');
               }
             });
 
@@ -822,11 +864,11 @@
             layui.use("layer",function() {
               layer.msg('请输入联系人地址');
             });return false;
-          } else if ($("#idcardpositiveimg").attr('src') == "https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/public/202004021610593523840642784547502.jpg" ) {
+          } else if ($("#idcardpositiveimg").attr('src') == "https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/icon/webwxgetmsgimg12.jpg" ) {
             layui.use("layer",function() {
               layer.msg('请输入上传身份证正面');
             });return false;
-          } else if ($("#idcardreverseimg").attr('src') == "https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/public/202004021612128178511606060969560.jpg") {
+          } else if ($("#idcardreverseimg").attr('src') == "https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/icon/webwxgetmsgimg.jpg") {
             layui.use("layer",function() {
               layer.msg('请输入上传身份证反面');
             });return false;
@@ -857,6 +899,19 @@
               shouviewimg = shouviewimg + ","+$(this).attr('src');
             }
           })
+
+          i=0
+          var label='';
+          $("input:checkbox[name='label']:checked").each(function(i){
+            if(i==0) {
+              label = label+$(this).val();
+              i++;
+            }else {
+              label = label+","+$(this).val();
+            }
+
+
+          });
               $.ajax({
                 type: 'PUT',
                 url: "/shop/update",
@@ -865,7 +920,7 @@
                   "city": $("#city").val(),
                   "name": $("#name").val(),
                   "brandgroup": $("#brandgroup").val(),
-                  "label": $("#label").val()+","+$("#label1").val(),
+                  "label": label,
                   "introduce": $("#introduce").val(),
                   "businesslicense": $("#businesslicenseimg").attr('src'),
                   "logo": $("#logoimg").attr('src'),

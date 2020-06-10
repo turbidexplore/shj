@@ -10,6 +10,9 @@ import java.security.MessageDigest;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 快递工具类
+ */
 public class Expressage {
 
     //电商ID
@@ -20,20 +23,37 @@ public class Expressage {
     private String ReqURL="http://api.kdniao.com/Ebusiness/EbusinessOrderHandle.aspx";
 
 
-    //DEMO
-    public static void main(String[] args) {
-        Expressage api = new Expressage();
+    public static String info(String kdd){
+
         try {
-            String result = api.getOrderTracesByJson("YT4003963891868");
+            Expressage api = new Expressage();
+            String result = api.getOrderTracesByJson(kdd);
             JSONObject jsonObject=JSONObject.parseObject(result);
             JSONObject a= (JSONObject) jsonObject.getJSONArray("Shippers").get(0);
-            result= api.getOrderTracesByJson( a.getString("ShipperCode"),"YT4003963891868");
-            System.out.print(result);
-
+            result= api.getOrderTracesByJson( a.getString("ShipperCode"),kdd);
+            return result;
         } catch (Exception e) {
             e.printStackTrace();
+            return "无";
         }
     }
+
+
+//    //DEMO
+//    public static void main(String[] args) {
+//        Expressage api = new Expressage();
+//        try {
+//            String result = api.getOrderTracesByJson("75341255684562");
+//            System.out.println(result);
+//            JSONObject jsonObject=JSONObject.parseObject(result);
+//            JSONObject a= (JSONObject) jsonObject.getJSONArray("Shippers").get(0);
+//            result= api.getOrderTracesByJson( a.getString("ShipperCode"),"75341255684562");
+//            System.out.print(result);
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     /**
      * Json方式 查询订单物流轨迹

@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -55,5 +56,11 @@ public class BrandServiceImpl implements BrandService {
         Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
         Page<Brand> pages=  brandRepositroy.search(pageable,text);
         return pages.getContent();
+    }
+
+    @Override
+    @Transactional
+    public void remove(String code) {
+        brandRepositroy.deleteById(code);
     }
 }

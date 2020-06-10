@@ -15,10 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Api(description = "品牌接口")
 @RestController
@@ -35,8 +32,18 @@ public class BrandController {
     @ApiOperation(value = "添加品牌信息", notes="添加品牌信息")
     @PutMapping("/add")
     public Mono<Info> add(Principal principal, @RequestBody Brand brand) {
+        String content=brand.getContent().replace(String.format("height: ^\\d{n}$px;"),"height: auto;");
+        brand.setContent(content);
+        brand.setCreate_time(new Date());
         brand.setCompany(shopService.getByUser(principal.getName()));
         return Mono.just(Info.SUCCESS( brandService.save(brand)));
+    }
+
+    @ApiOperation(value = "删除品牌信息", notes="删除品牌信息")
+    @DeleteMapping("/delete")
+    public Mono<Info> delete(Principal principal, @RequestParam("code") String code) {
+        brandService.remove(code);
+        return Mono.just(Info.SUCCESS(null ));
     }
 
     @ApiOperation(value = "通过code获取品牌", notes="通过code获取品牌")
@@ -54,7 +61,6 @@ public class BrandController {
     @ApiOperation(value = "通过code获取品牌", notes="通过code获取品牌")
     @GetMapping("/get")
     public Mono<Info> get(Principal principal,@RequestParam("code") String code) {
-
         Shop shop=  shopService.getByCode(code);
         try {
             Visitor visitor = new Visitor();

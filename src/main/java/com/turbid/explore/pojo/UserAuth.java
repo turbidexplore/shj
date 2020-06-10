@@ -27,7 +27,7 @@ public class UserAuth extends BaseEntity {
     private String vipday;
 
     //身份证号码
-    @Column(name = "name",nullable = false,length = 255)
+    @Column(name = "name",length = 255)
     private String name;
 
     //身份证号码

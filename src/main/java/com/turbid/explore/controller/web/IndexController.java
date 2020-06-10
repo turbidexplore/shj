@@ -118,6 +118,12 @@ public class IndexController {
         return "manage/brand";
     }
 
+    @RequestMapping("/manageeditbrand")
+    public String editbrand(@RequestParam("code")String code, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
+        httpServletRequest.setAttribute("code",code);
+        return "manage/brand";
+    }
+
     @RequestMapping("/managegoods")
     public String goods(){
         return "manage/goods";
@@ -166,6 +172,11 @@ public class IndexController {
     @RequestMapping("/managecase")
     public String managecase(){
         return "manage/case";
+    }
+
+    @RequestMapping("/manageuser")
+    public String manageuser(){
+        return "manage/usermanage";
     }
 
 

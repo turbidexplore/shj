@@ -11,11 +11,9 @@ import com.alipay.api.response.*;
 import com.qcloud.cos.utils.Base64;
 import com.turbid.explore.configuration.AlipayConfig;
 import com.turbid.explore.configuration.WeChatPayConfig;
-import com.turbid.explore.pojo.Notice;
-import com.turbid.explore.pojo.Order;
-import com.turbid.explore.pojo.StudyRelation;
-import com.turbid.explore.pojo.UserSecurity;
+import com.turbid.explore.pojo.*;
 import com.turbid.explore.pojo.bo.*;
+import com.turbid.explore.repository.IntegralGoodsOrderRepository;
 import com.turbid.explore.repository.NoticeRepository;
 import com.turbid.explore.repository.StudyRelationRepository;
 import com.turbid.explore.service.*;
@@ -125,6 +123,9 @@ public class PayController {
         return Mono.just(Info.SUCCESS(orderService.findByOrderNo(orderno)));
     }
 
+    @Autowired
+    private IntegralGoodsOrderRepository integralGoodsOrderRepository;
+
     @ApiOperation(value = "查询我的订单", notes="查询我的订单")
     @PostMapping("/order/my")
     @ResponseBody
@@ -142,6 +143,9 @@ public class PayController {
                     break;
                 case "SEE_STUDY":
                     item.put("body",studyService.getByOrder(v.getOrderno()));
+                    break;
+                case "JF_GOODS":
+                    item.put("body",integralGoodsOrderRepository.findByOrderno(v.getOrderno()));
                     break;
             }
             data.add(item);

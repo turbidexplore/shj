@@ -20,4 +20,5 @@ public interface BrandService {
 
     List<Brand> search(String text, Integer page);
 
+    void remove(String code);
 }

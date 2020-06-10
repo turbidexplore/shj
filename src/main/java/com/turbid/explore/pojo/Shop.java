@@ -31,7 +31,7 @@ public class Shop extends BaseEntity{
     private String unifiedcreditcode;
 
     //注册地址
-    @Column(name = "companyaddress",  nullable = false, length = 32)
+    @Column(name = "companyaddress",  nullable = false, length = 255)
     private String companyaddress;
 
     //经营范围

@@ -49,6 +49,12 @@
                   <span>首页</span>
                 </a>
               </li>
+              <li class="nav-item ">
+                <a class="nav-link " href="/manageuser">
+                  <i class="material-icons">table_chart</i>
+                  <span>企业管理</span>
+                </a>
+              </li>
               <li class="nav-item">
                 <a class="nav-link active" href="/managebrands">
                   <i class="material-icons">vertical_split</i>
@@ -186,7 +192,7 @@
 
       </div>
     </div>
-   
+     <input type="hidden" id="code" value="" th:value="${code}">
     <script src="../js/jquery-3.3.1.min.js" ></script>
      <script src="../ckeditor/ckeditor.js"></script>
      <script src="../layui/layui.js"></script>
@@ -194,30 +200,87 @@
      <script src="../scripts/bootstrap.min.js"></script>
      <script src="../js/jquery.cookie.min.js"></script>
   <script>
-
-    $.ajax({
-      type: 'GET',
-      url : "/base/brandgroup",
-      processData: false,
-      contentType: false,
-    }).done(function(result) {
-      result.data.forEach( function (v,i) {
-        $("#brandgroup").append("<option value='"+v.name+"'>"+v.name+"</option>");
-      });
-
+    CKEDITOR.replace('newsMatter', {
+      height : 600,
+      filebrowserImageUploadUrl :  "/file/image"
     });
 
-    $.ajax({
-      type: 'GET',
-      url : "/base/classgroup",
-      processData: false,
-      contentType: false,
-    }).done(function(result) {
-      result.data.forEach( function (v,i) {
-        $("#label").append("<option value='"+v.name+"'>"+v.name+"</option>");
+    if($("#code").val()!=""&&$("#code").val()!=null&&$("#code").val()!=undefined){
+      $.ajax({
+        type: 'GET',
+        url : "/brand/get?code="+$("#code").val(),
+        async: true,
+        crossDomain: true,
+        headers: {
+          "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
+          "cache-control": "no-cache",
+          "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
+        }
+      }).done(function(result) {
+        CKEDITOR.instances.newsMatter.setData(result.data.content);
+        $("#logoimg").attr('src',result.data.logo),
+        $("#name").val(result.data.name),
+        $("#introduce").val(result.data.introduce),
+        $("#business").val(result.data.business)
+
+        $.ajax({
+          type: 'GET',
+          url : "/base/brandgroup",
+          processData: false,
+          contentType: false,
+        }).done(function(a) {
+          a.data.forEach( function (v,i) {
+            if(result.data.brandgroup==v.name) {
+              $("#brandgroup").append("<option value='" + v.name + "' selected='selected'>" + v.name + "</option>");
+            }else {
+              $("#brandgroup").append("<option value='" + v.name + "' >" + v.name + "</option>");
+            }
+          });
+        });
+
+        $.ajax({
+          type: 'GET',
+          url : "/base/classgroup",
+          processData: false,
+          contentType: false,
+        }).done(function(a) {
+          a.data.forEach( function (v,i) {
+            if(result.data.label==v.name) {
+              $("#label").append("<option value='"+v.name+"' selected='selected'>"+v.name+"</option>");
+            }else {
+              $("#label").append("<option value='"+v.name+"'>"+v.name+"</option>");
+            }
+          });
+        });
+
+      });
+    }else {
+      $.ajax({
+        type: 'GET',
+        url : "/base/brandgroup",
+        processData: false,
+        contentType: false,
+      }).done(function(result) {
+        result.data.forEach( function (v,i) {
+          $("#brandgroup").append("<option value='"+v.name+"'>"+v.name+"</option>");
+        });
+
       });
 
-    });
+      $.ajax({
+        type: 'GET',
+        url : "/base/classgroup",
+        processData: false,
+        contentType: false,
+      }).done(function(result) {
+        result.data.forEach( function (v,i) {
+          $("#label").append("<option value='"+v.name+"'>"+v.name+"</option>");
+        });
+
+      });
+    }
+
+
 
     $("#logo").on("change",function(){
       function getObjectURL(file) {
@@ -272,10 +335,7 @@
     layui.use('form', function(){
       var form = layui.form;
     });
-    CKEDITOR.replace('newsMatter', {
-      height : 600,
-      filebrowserImageUploadUrl :  "/file/image"
-    });
+
 
     $('#newsMatter').each(function () {
       var $textarea = $(this);
@@ -311,39 +371,87 @@
           layer.msg('请输入招商信息');
         }); return false;
       }
-      $.ajax({
-        type: 'Put',
-        url: "/brand/add",
-        data: JSON.stringify({
-          "logo": $("#logoimg").attr('src'),
-          "brandgroup": $("#brandgroup").val(),
-          "label": $("#label").val(),
-          "content": content,
-          "name": $("#name").val(),
-          "introduce":$("#introduce").val(),
-          "business":$("#business").val()
-        }),
-        processData: false,
-        contentType: "application/json; charset=UTF-8",
-        headers: {
-          "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
-          "cache-control": "no-cache",
-          "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
-        }
-      }).done(function (result) {
-        layui.use("layer", function () {
-          layer.alert('发布成功', {
-            skin: 'layui-layer-molv' //样式类名
-            , closeBtn: 0
-            , anim: 4 //动画类型
-          }, function () {
-            window.location.replace("/managebrands");
-          });
+      if($("#code").val()!=""&&$("#code").val()!=null&&$("#code").val()!=undefined) {
+        $.ajax({
+          type: 'Put',
+          url: "/brand/add",
+          data: JSON.stringify({
+            "code": $("#code").val(),
+            "logo": $("#logoimg").attr('src'),
+            "brandgroup": $("#brandgroup").val(),
+            "label": $("#label").val(),
+            "content": content,
+            "name": $("#name").val(),
+            "introduce": $("#introduce").val(),
+            "business": $("#business").val()
+          }),
+          processData: false,
+          contentType: "application/json; charset=UTF-8",
+          headers: {
+            "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
+            "cache-control": "no-cache",
+            "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
+          }
+        }).done(function (result) {
+          layui.use("layer", function () {
+            layer.alert('修改成功', {
+              skin: 'layui-layer-molv' //样式类名
+              , closeBtn: 0
+              , anim: 4 //动画类型
+            }, function () {
+              window.location.replace("/managebrands");
+            });
 
+          });
         });
-      });
+      }else {
+        $.ajax({
+          type: 'Put',
+          url: "/brand/add",
+          data: JSON.stringify({
+            "logo": $("#logoimg").attr('src'),
+            "brandgroup": $("#brandgroup").val(),
+            "label": $("#label").val(),
+            "content": content,
+            "name": $("#name").val(),
+            "introduce": $("#introduce").val(),
+            "business": $("#business").val()
+          }),
+          processData: false,
+          contentType: "application/json; charset=UTF-8",
+          headers: {
+            "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
+            "cache-control": "no-cache",
+            "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
+          }
+        }).done(function (result) {
+          layui.use("layer", function () {
+            layer.alert('发布成功', {
+              skin: 'layui-layer-molv' //样式类名
+              , closeBtn: 0
+              , anim: 4 //动画类型
+            }, function () {
+              window.location.replace("/managebrands");
+            });
+
+          });
+        });
+      }
     }
-    
+    $.ajax({
+      type: 'GET',
+      url: "/qaa/qaaByCode?code=2c907355727dd90501727eaf63700057",
+      processData: false,
+      contentType: "application/json; charset=UTF-8",
+      headers: {
+        "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
+        "cache-control": "no-cache",
+        "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
+      }
+    }).done(function (result) {
+      console.log(result);
+    });
+
 
   </script>
   </body>

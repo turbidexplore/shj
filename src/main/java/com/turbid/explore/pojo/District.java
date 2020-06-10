@@ -23,12 +23,27 @@ public class District {
     @Column(name = "district_name")
     private String district_name;
 
+    @Column(name = "district_sqe")
+    private String district_sqe;
+
     @Column(name = "type")
     private Integer type;
 
-    @Column(name = "hierarchy")
-    private Integer hierarchy;
+    @Column(name = "sname")
+    private String sname;
 
-    @Column(name = "district_sqe")
-    private String district_sqe; 
+    @Column(name = "mername")
+    private String mername;
+
+    @Column(name = "yzcode")
+    private String yzcode;
+
+    @Column(name = "Lng")
+    private String lng;
+
+    @Column(name = "Lat")
+    private String lat;
+
+    @Column(name = "pinyin")
+    private String pinyin;
 }

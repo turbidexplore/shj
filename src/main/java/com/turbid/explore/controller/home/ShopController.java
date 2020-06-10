@@ -1,9 +1,11 @@
 package com.turbid.explore.controller.home;
 
 import com.turbid.explore.pojo.Shop;
+import com.turbid.explore.pojo.UserAuth;
 import com.turbid.explore.pojo.UserSecurity;
 import com.turbid.explore.pojo.Visitor;
 import com.turbid.explore.service.*;
+import com.turbid.explore.tools.CodeLib;
 import com.turbid.explore.tools.Info;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -13,6 +15,7 @@ import reactor.core.publisher.Mono;
 
 import java.security.Principal;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -120,7 +123,8 @@ public class ShopController {
     @ApiOperation(value = "官方推荐", notes="官方推荐")
     @GetMapping("/recommend")
     public Mono<Info> recommend(Principal principal,@RequestParam(value = "page")Integer page) {
-        return Mono.just(Info.SUCCESS( shopService.recommend(principal,page)));
+        UserSecurity userSecurity=userSecurityService.findByPhone(principal.getName());
+        return Mono.just(Info.SUCCESS( shopService.recommend(principal,page,userSecurity.getLikes())));
     }
 
     @ApiOperation(value = "查看招商加盟", notes="查看招商加盟")
@@ -139,7 +143,7 @@ public class ShopController {
         List<Map<String,Object>> data=new ArrayList<>();
         shopService.zsjm(principal,page,type).forEach(v->{
             Map<String,Object> item=new HashMap<>();
-            item.put("compamyname",v.getCompanyname());
+            item.put("companyname",v.getCompanyname());
             item.put("name",v.getName());
             item.put("logo",v.getLogo());
             item.put("area","全国");
@@ -251,7 +255,12 @@ public class ShopController {
             }
             System.out.println(toyear);
             fansadd.add(followService.newfollowmeCount(principal.getName(),toyear));
-            fanssee.add(visitorService.count(toyear,shop.getCode()));
+            try {
+                fanssee.add(visitorService.count(toyear,shop.getCode()));
+            }catch (Exception e){
+                fanssee.add("0");
+            }
+
         }
         data.put("area",area);
         data.put("fansadd",fansadd);
@@ -267,7 +276,6 @@ public class ShopController {
     @ApiOperation(value = "店铺访问数据统计", notes="店铺访问数据统计")
     @GetMapping("/fwl")
     public Mono<Info> fwl(Principal principal,@RequestParam("code")String code) {
-
         List data =new ArrayList();
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         for(int i =14;i>=0;i--){
@@ -276,6 +284,50 @@ public class ShopController {
         }
 
         return Mono.just(Info.SUCCESS( data));
+    }
+
+
+    @ApiOperation(value = "所有店铺信息", notes="所有店铺信息")
+    @PostMapping("/shops")
+    public Mono<Info> shops(Principal principal,@RequestParam("text")String text,@RequestParam("page")Integer page) {
+        return Mono.just(Info.SUCCESS( shopService.findByText(text,page)));
+    }
+
+    @ApiOperation(value = "所有店铺信息总数", notes="所有店铺信息总数")
+    @GetMapping("/shopscount")
+    public Mono<Info> shopscount(Principal principal,@RequestParam("text")String text) {
+        return Mono.just(Info.SUCCESS( shopService.findByTextCount(text)));
+    }
+
+
+    @ApiOperation(value = "设置严选", notes="设置严选")
+    @PostMapping("/yanxuan")
+    public Mono<Info> yanxuan(Principal principal,@RequestParam("code")String code,@RequestParam("status")Integer status) {
+        Shop shop=shopService.getByCode(code);
+        shop.setIschoose(status);
+        return Mono.just(Info.SUCCESS(shopService.save(shop)));
+    }
+
+    @Autowired
+    private UserAuthService userAuthService;
+
+    @ApiOperation(value = "设置保证金和vip", notes="设置保证金和vip")
+    @PostMapping("/bzjandvip")
+    public Mono<Info> bzjandvip(Principal principal,@RequestParam("code")String code,@RequestParam(value = "m",required = false)Integer m,@RequestParam(value = "bzj",required = false)Integer bzj) throws ParseException {
+        Shop shop=shopService.getByCode(code);
+        UserAuth userAuth=shop.getUserSecurity().getUserAuth();
+        if(m!=null){
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            if (userAuth.getVipday()==null||new Date().compareTo(sdf.parse(userAuth.getVipday()))>0) {
+                userAuth.setVipday(sdf.format(CodeLib.addMonth(new Date(),m)));
+            }else {
+                userAuth.setVipday(sdf.format(CodeLib.addMonth(sdf.parse(userAuth.getVipday()),m)));
+            }
+        }else if(bzj!=null){
+            userAuth.setMargin(bzj);
+        }
+
+        return Mono.just(Info.SUCCESS(userAuthService.save(userAuth)));
     }
 
 

@@ -18,11 +18,15 @@ public interface ShopService {
 
     List<Shop> getByChoose(String label, Integer page);
 
-    List<Shop> recommend(Principal principal, Integer page);
+    List<Shop> recommend(Principal principal, Integer page, String likes);
 
     List<Shop> zsjm(Principal principal, Integer page, String type);
 
     Shop getByUsercode(String usercode);
 
     List<Shop> search(String text, Integer page);
+
+    List<Shop> findByText(String text, Integer page);
+
+    int findByTextCount(String text);
 }
