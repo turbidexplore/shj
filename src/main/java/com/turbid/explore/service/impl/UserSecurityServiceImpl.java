@@ -1,10 +1,17 @@
 package com.turbid.explore.service.impl;
 
+import com.turbid.explore.pojo.Study;
 import com.turbid.explore.pojo.UserSecurity;
 import com.turbid.explore.repository.UserSecurityRepository;
 import com.turbid.explore.service.UserSecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 用户安全信息服务实现
@@ -37,5 +44,16 @@ public class UserSecurityServiceImpl implements UserSecurityService {
         return userSecurityRepository.issignin(name,dateStr);
     }
 
+    @Override
+    public List<UserSecurity> shopusers(String code, String text, Integer page) {
+        Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
+        Page<UserSecurity> pages=  userSecurityRepository.listByPage(pageable,text,code);
+        return pages.getContent();
+    }
+
+    @Override
+    public int shopuserscount(String code, String text) {
+        return userSecurityRepository.shopuserscount(text,code);
+    }
 
 }

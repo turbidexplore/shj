@@ -208,7 +208,6 @@
              "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
            }
          }).done(function(result) {
-           console.log(result);
            $("#dataview").html("");
            result.data.forEach(function (v,i) {
              var ischoose="<span style='font-weight: bold;color: grey;border: grey 1px solid;'>&nbsp;非严选&nbsp;</span>" +
@@ -294,7 +293,7 @@
           layui.use("layer", function () {
           viewa= layer.open({
               type: 1,
-              title: "会员价格表",
+              title: "会员充值",
               skin: 'layui-layer-rim', //加上边框
               area: ['500px', '300px'], //宽高
               content: '<table class="layui-table">\n' +

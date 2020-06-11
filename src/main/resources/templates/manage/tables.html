@@ -6,11 +6,12 @@
     <title>设汇家 ｜ 泛家居行业供应链平台</title>
     <meta name="keywords" content="浑浊探索,苏州浑浊信息科技有限公司,turbid,explore,科技">
     <meta name="description" content="设汇家官网">
-    <meta name="author" content="设汇家">    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+    <meta name="author" content="设汇家">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" id="main-stylesheet" data-version="1.1.0" href="../styles/shards-dashboards.1.1.0.min.css">
     <link rel="stylesheet" href="../styles/extras.1.1.0.min.css">
+    <link rel="stylesheet" href="../layui/css/layui.css">
   </head>
   <body class="h-100">
      <div class="container-fluid">
@@ -36,7 +37,7 @@
                   <i class="fas fa-search"></i>
                 </div>
               </div>
-              <input class="navbar-search form-control" type="text" placeholder="Search for something..." aria-label="Search"> </div>
+              <input class="navbar-search form-control" type="text" id="text" placeholder="Search for something..." aria-label="Search"> </div>
           </form>
           <div class="nav-wrapper">
             <ul class="nav flex-column">
@@ -164,50 +165,24 @@
               <div class="col">
                 <div class="card card-small mb-4">
                   <div class="card-header border-bottom">
-                    <h6 class="m-0">用户列表</h6>
+                    <h6 class="m-0">用户列表&nbsp;<button  class="mb-2 btn btn-sm btn-primary mr-1" onclick="bd()" >新绑定子账号</button></h6>
                   </div>
                   <div class="card-body p-0 pb-3 text-center">
                     <table class="table mb-0">
                       <thead class="bg-light">
                         <tr>
                           <th scope="col" class="border-0">用户名</th>
+                          <th scope="col" class="border-0">姓名</th>
                           <th scope="col" class="border-0">手机号码</th>
-                          <th scope="col" class="border-0">账号类型</th>
                           <th scope="col" class="border-0">注册时间</th>
                           <th scope="col" class="border-0">操作</th>
                         </tr>
                       </thead>
-                      <tbody>
-                        <tr>
-                          <td>Ali</td>
-                          <td>Kerry</td>
-                          <td>Russian Federation</td>
-                          <td>Gdańsk</td>
-                          <td>107-0339</td>
-                        </tr>
-                        <tr>
-                          <td>Clark</td>
-                          <td>Angela</td>
-                          <td>Estonia</td>
-                          <td>Borghetto di Vara</td>
-                          <td>1-660-850-1647</td>
-                        </tr>
-                        <tr>
-                          <td>Jerry</td>
-                          <td>Nathan</td>
-                          <td>Cyprus</td>
-                          <td>Braunau am Inn</td>
-                          <td>214-4225</td>
-                        </tr>
-                        <tr>
-                          <td>Colt</td>
-                          <td>Angela</td>
-                          <td>Liberia</td>
-                          <td>Bad Hersfeld</td>
-                          <td>1-848-473-7416</td>
-                        </tr>
+                      <tbody id="dataview">
+
                       </tbody>
                     </table>
+                    <div id="pages"></div>
                   </div>
                 </div>
               </div>
@@ -220,12 +195,101 @@
      <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
-     <script src="https://unpkg.com/shards-ui@latest/dist/js/shards.min.js"></script>
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sharrre/2.0.1/jquery.sharrre.min.js"></script>
-     <script src="../scripts/extras.1.1.0.min.js"></script>
-     <script src="../scripts/shards-dashboards.1.1.0.min.js"></script>
-     <script src="../scripts/app/app-blog-overview.1.1.0.js"></script>
      <script src="../js/jquery.cookie.min.js"></script>
+     <script src="../layui/layui.js"></script>
+
+  <script>
+    var index=0;
+    function find(page) {
+      var text='';
+      if($("#text").val()!=''&&$("#text").val()!=null){
+        text="&text="+$("#text").val();
+      }
+      $.ajax({
+        type: 'GET',
+        url : "/user/shopusers?page="+page+text,
+        async: true,
+        crossDomain: true,
+        headers: {
+          "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
+          "cache-control": "no-cache",
+          "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
+        }
+      }).done(function(result) {
+        console.log(result);
+        $("#dataview").html("");
+        result.data.forEach(function (v,i) {
+          $("#dataview").append('<tr>'+
+                  ' <td><img src="'+v.userBasic.headportrait+'" style="width:30px;" class=" rounded-circle"> '+v.userBasic.nikename+'</td>'+
+                  '<td>'+v.userAuth.name+'</td>'+
+                  '<td>'+v.phonenumber+'</td>'+
+                  '<td>'+v.addftime+'</td>'+
+                  "<td><button type=\"button\" class=\"mb-2 btn btn-sm btn-danger mr-1\" onclick=\"delguanlian(\'"+v.code+"')\">取消绑定</button></td>"+
+                  '</tr>')
+        });
+      });
+    }
+
+    layui.use(['laypage', 'layer'], function(){
+      var laypage = layui.laypage
+              ,layer = layui.layer;
+
+      var text='';
+      if($("#text").val()!=''&&$("#text").val()!=null){
+        text="?text="+$("#text").val();
+      }
+      $.ajax({
+        type: 'GET',
+        url : "/user/shopuserscount"+text,
+        async: true,
+        crossDomain: true,
+        headers: {
+          "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
+          "cache-control": "no-cache",
+          "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
+        }
+      }).done(function(result) {
+        laypage.render({
+          elem: 'pages'
+          ,count: result.data
+          ,theme: '#FF5722'
+          ,jump: function(obj, first){
+            index=obj.curr-1;
+            find(obj.curr-1);
+          }
+        });
+      });
+    });
+
+    function delguanlian(code) {
+      $.ajax({
+        type: 'PUT',
+        url : "/user/delshopuser?code="+code,
+        async: true,
+        crossDomain: true,
+        headers: {
+          "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
+          "cache-control": "no-cache",
+          "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
+        }
+      }).done(function(result) {
+        layer.msg("取消绑定成功！");
+        find(index);
+      });
+    }
+
+    function bd() {
+      layui.use("layer", function () {
+        viewa= layer.open({
+          type: 1,
+          title: "新增绑定账号",
+          skin: 'layui-layer-rim', //加上边框
+          area: ['500px', '300px'], //宽高
+          content: ''
+        });
+      });
+    }
+
+  </script>
   </body>
 </html>

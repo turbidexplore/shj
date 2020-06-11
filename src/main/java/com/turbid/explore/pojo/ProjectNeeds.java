@@ -53,6 +53,10 @@ public class ProjectNeeds extends BaseEntity{
     @Column(name = "excelurl",length = 5000)
     private String excelurl;
 
+    @ApiModelProperty(value = "excelname")
+    @Column(name = "excelname",length = 200)
+    private String excelname;
+
     @ApiModelProperty(value = "结束时间")
     @Column(name = "overtime")
     private String overtime;

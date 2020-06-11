@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -139,6 +140,7 @@ public class Shop extends BaseEntity{
     //vip有效期
     @Column(name = "vipday",length = 32)
     private String vipday;
+
 
     public Shop(String code,String companyname,String logo) {
         super();
