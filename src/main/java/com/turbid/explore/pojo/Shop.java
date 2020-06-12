@@ -142,6 +142,7 @@ public class Shop extends BaseEntity{
     private String vipday;
 
 
+
     public Shop(String code,String companyname,String logo) {
         super();
         this.setCode(code);

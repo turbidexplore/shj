@@ -193,7 +193,7 @@
         console.log(v);
         var html= '<div class="col-lg-4" id="'+v.code+'"><div class="card card-small card-post mb-4">'+
                   ' <div class="card-body">'+
-                  ' <h5 class="card-title"> <img src="'+v.logo+'" class=" rounded-circle mr-2" style="width: 40px;height: 40px;">  '+v.name+'</h5>'+
+                  ' <h5 class="card-title"> <img src="'+v.logo+'" class=" rounded-circle mr-2" style="width: 40px;height: 40px;">  '+v.name+'<a class="mb-2 btn btn-danger mr-2" href="#" style="float: right">'+v.brandgroup+' </a></h5>'+
                   '  <p class="card-text text-muted"> '+v.introduce+'</p>'+
                   '   </div>'+
                   '  <div class="card-footer border-top d-flex">'+
@@ -202,7 +202,7 @@
                   ' <span class="card-post__author-name">'+v.label+'</span>  '+
                   '  <small class="text-muted">发布于 '+v.addftime+'</small>  </div></div>'+
                   '   <div class="my-auto ml-auto">'+
-                  '      <a class="mb-2 btn btn-danger mr-2" href="#">'+v.brandgroup+' </a>  <button type="button" class="mb-1 btn btn-sm btn-info mr-1" onclick="xj(\''+v.code+'\')"> 删除</button> <a href="/manageeditbrand?code='+v.code+'" class="mb-1 btn btn-sm btn-info mr-1" >修改</a>'+
+                  '        <button type="button" class="mb-1 btn btn-sm btn-info mr-1" onclick="xj(\''+v.code+'\')"> 删除</button> <a href="/manageeditbrand?code='+v.code+'" class="mb-1 btn btn-sm btn-info mr-1" >修改</a>'+
                   '</div></div></div></div>';
         $("#content").append(html);
       })

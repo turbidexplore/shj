@@ -21,4 +21,6 @@ public interface UserSecurityService {
     List<UserSecurity> shopusers(String code, String text, Integer page);
 
     int shopuserscount(String code, String text);
+
+    List<UserSecurity> finduserbyphone(String phone);
 }

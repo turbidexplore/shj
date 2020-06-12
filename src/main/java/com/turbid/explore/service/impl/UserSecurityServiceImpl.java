@@ -4,12 +4,14 @@ import com.turbid.explore.pojo.Study;
 import com.turbid.explore.pojo.UserSecurity;
 import com.turbid.explore.repository.UserSecurityRepository;
 import com.turbid.explore.service.UserSecurityService;
+import com.turbid.explore.tools.Info;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -54,6 +56,13 @@ public class UserSecurityServiceImpl implements UserSecurityService {
     @Override
     public int shopuserscount(String code, String text) {
         return userSecurityRepository.shopuserscount(text,code);
+    }
+
+    @Override
+    public List<UserSecurity> finduserbyphone(String phone) {
+        Pageable pageable = new PageRequest(0,15, Sort.Direction.DESC,"create_time");
+        Page<UserSecurity> pages=  userSecurityRepository.findByUserSecurityPhone(pageable,phone);
+        return pages.getContent();
     }
 
 }

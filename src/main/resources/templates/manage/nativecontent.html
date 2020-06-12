@@ -198,12 +198,12 @@
                 '<div class="card-post__image" style="background-image: url('+img+');">'+
                 '<a href="#" class="card-post__category badge badge-pill badge-dark" onclick="preview(\''+v.code+'\')">预览</a>'+
                 '<div class="card-post__author d-flex">'+
-                '<a href="#" class="card-post__author-avatar card-post__author-avatar--small" style="background-image: url('+v.userSecurity.userBasic.headportrait+');">Written by Anna Kunis</a> &nbsp;<strong style="margin-top: 10px;">'+v.userSecurity.userBasic.nikename+
+                '<a href="#" class="card-post__author-avatar card-post__author-avatar--small" style="background-image: url('+v.userSecurity.userBasic.headportrait+');">Written by Anna Kunis</a> &nbsp;<strong style="margin-top: 15px;">'+v.userSecurity.userBasic.nikename+
                 '</strong></div></div>'+
                 '<div class="card-body">'+
                 '<p class="card-title">'+
                 '<a class="text-fiord-blue" href="#">'+v.title+'</a></p>'+
-                '<span class="text-muted">'+v.addftime+'  发布    <button type="button" class="mb-1 btn btn-sm btn-info mr-1" onclick="xj(\''+v.code+'\')"> 删除</button><a href="/manageeditcontent?code='+v.code+'" class="mb-1 btn btn-sm btn-info mr-1" >修改</a></span>'+
+                '<span style="font-size: 12px;">'+v.addftime+'  发布    <button type="button" class="mb-1 btn btn-sm btn-info mr-1" onclick="xj(\''+v.code+'\')"> 删除</button><a href="/manageeditcontent?code='+v.code+'" class="mb-1 btn btn-sm btn-info mr-1" >修改</a></span>'+
                 '</div></div></div>';
         $("#content").append(html);
       })

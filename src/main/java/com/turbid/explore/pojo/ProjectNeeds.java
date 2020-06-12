@@ -86,6 +86,9 @@ public class ProjectNeeds extends BaseEntity{
     @JoinColumn(name="usercode")
     private UserSecurity userSecurity;
 
+    @OneToMany
+    private List<UserBasic> userBasics;
+
     public ProjectNeeds() {
     }
 

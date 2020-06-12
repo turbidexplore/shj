@@ -217,9 +217,9 @@
                   '<div class="card-post__image" style="background-image: url('+v.indexurl+');">'+
                   '<a href="#" class="card-post__category badge badge-pill badge-dark">'+v.subject+'|'+v.label+'</a>'+
                   '</div>'+
-                  '<div class="card-body">'+
-                  '<p class="card-title"><button type="button" class="mb-1 btn btn-sm btn-outline-danger mr-1">'+v.name+'</button>'+
-                  '<span>'+v.title+'</span></p>'+
+                  '<div class="card-body" style="margin-top: -10px!important;">'+
+                  '<p class="card-title" style="font-weight: bold;font-size: 16px;margin-bottom: 3px;">'+v.name+'<br>'+
+                  '<span style="font-size: 12px;color: #c69500;">'+v.title+'</span></p>'+
                   '<span class="text-muted" style="font-size: 12px;">'+v.addftime+'  发布     <button type="button" class="mb-1 btn btn-sm btn-info mr-1" onclick="xj(\''+v.code+'\')"> 删除</button> <a href="/manageeditcase?code='+v.code+'" class="mb-1 btn btn-sm btn-info mr-1" >修改</a></span>'+
                   '</div></div></div>';
           $("#content").append(html);

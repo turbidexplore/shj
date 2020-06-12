@@ -178,7 +178,7 @@
                           <th scope="col" class="border-0">操作</th>
                         </tr>
                       </thead>
-                      <tbody id="dataview">
+                      <tbody id="dataview" >
 
                       </tbody>
                     </table>
@@ -216,15 +216,18 @@
           "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
         }
       }).done(function(result) {
-        console.log(result);
         $("#dataview").html("");
         result.data.forEach(function (v,i) {
+          var shopuserinfo= "<td><button type=\"button\" class=\"mb-2 btn btn-sm btn-danger mr-1\" onclick=\"delguanlian(\'"+v.code+"')\">取消绑定</button></td>";
+          if(v.shopcode==result.message){
+            var shopuserinfo= "<td><span style='font-weight: bold;color: orange;border: orange 1px solid;'>&nbsp;&nbsp;管理员&nbsp;&nbsp;</span></td>";
+          }
           $("#dataview").append('<tr>'+
                   ' <td><img src="'+v.userBasic.headportrait+'" style="width:30px;" class=" rounded-circle"> '+v.userBasic.nikename+'</td>'+
                   '<td>'+v.userAuth.name+'</td>'+
                   '<td>'+v.phonenumber+'</td>'+
                   '<td>'+v.addftime+'</td>'+
-                  "<td><button type=\"button\" class=\"mb-2 btn btn-sm btn-danger mr-1\" onclick=\"delguanlian(\'"+v.code+"')\">取消绑定</button></td>"+
+                   shopuserinfo+
                   '</tr>')
         });
       });
@@ -277,16 +280,56 @@
         find(index);
       });
     }
-
+    var viewa;
     function bd() {
+      var html="<p><input id='serchuser' type='text' oninput='serchuser(this)' placeholder='搜索手机号码' class='navbar-search form-control'></p>"
+      +"<div id='userview'></div>";
       layui.use("layer", function () {
         viewa= layer.open({
           type: 1,
-          title: "新增绑定账号",
+          title: "新增绑定账号【用户需在APP注册且认证成功】",
           skin: 'layui-layer-rim', //加上边框
-          area: ['500px', '300px'], //宽高
-          content: ''
+          area: ['600px', '400px'], //宽高
+          content: html
         });
+      });
+    }
+    
+    function serchuser(obj) {
+    $.ajax({
+        type: 'GET',
+        url : "/user/finduserbyphone?phone="+$(obj).val(),
+        async: true,
+        crossDomain: true,
+        headers: {
+          "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
+          "cache-control": "no-cache",
+          "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
+        }
+      }).done(function(result) {
+        $("#userview").html("");
+        result.data.forEach(function (v,i) {
+          $("#userview").append("<div style='width: 23%;margin:1%;padding: 10px;float: left;border: grey 1px solid;'><button type=\"button\" class=\"mb-2 btn btn-outline-success mr-2\" onclick=\"guanlian('"+v.code+"')\">绑定子账号</button><br><img src='"+v.userBasic.headportrait+"' style='width:30px;' class='rounded-circle'/><strong> "+v.userAuth.name+"</strong><br>"+v.phonenumber+"</div>");
+        })
+      });
+    }
+    
+    
+    function guanlian(code) {
+      $.ajax({
+        type: 'PUT',
+        url : "/user/addshopuser?code="+code,
+        async: true,
+        crossDomain: true,
+        headers: {
+          "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
+          "cache-control": "no-cache",
+          "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
+        }
+      }).done(function(result) {
+        layer.close(viewa);
+        layer.msg("绑定成功！");
+        find(index);
       });
     }
 

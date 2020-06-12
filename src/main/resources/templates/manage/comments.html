@@ -228,15 +228,22 @@
                "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
              }
            }).done(function(result) {
-              console.log(result)
+              var hfcontent="";
+             result.data.forEach(function (v,i) {
+                hfcontent=hfcontent+v.content+"：<span style='width:120px;color:#FF5722;'>"+v.addftime+"</span><br>";
+             })
+             if(hfcontent==""){
+               hfcontent="无";
+             }
+             $("#dataview").append('<tr>'+
+                     ' <td><img src="'+v.userSecurity.userBasic.headportrait+'" style="width:40px;" class=" rounded-circle"> '+v.userSecurity.userBasic.nikename+'</td>'+
+                     '<td style="font-weight: bold;">'+v.content+'</td>'+
+                     '<td style="text-align: right;font-weight: bold;">'+hfcontent+'</td>'+
+                     '<td>'+v.addftime+'</td>'+
+                     '<td><button type="button" class="mb-2 btn btn-sm btn-success mr-1" onclick="huifu(\''+v.code+'\')">回复</button></td>'+
+                     '</tr>')
            });
-           $("#dataview").append('<tr>'+
-                   ' <td><img src="'+v.userSecurity.userBasic.headportrait+'" style="width:40px;" class=" rounded-circle"> '+v.userSecurity.userBasic.nikename+'</td>'+
-                   '<td>'+v.content+'</td>'+
-                   '<td>'+v.content+'</td>'+
-                   '<td>'+v.addftime+'</td>'+
-                   '<td><button type="button" class="mb-2 btn btn-sm btn-success mr-1" onclick="huifu(\''+v.code+'\')">回复</button></td>'+
-                   '</tr>')
+
          });
        });
      }

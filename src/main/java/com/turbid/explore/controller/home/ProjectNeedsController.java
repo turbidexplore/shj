@@ -92,7 +92,13 @@ public class ProjectNeedsController {
     @PostMapping(value = "/getneeds")
     public Mono<Info> getNeeds(@RequestParam(name = "code")String code) {
         try {
-            return Mono.just(Info.SUCCESS(projectNeedsService.getNeedsByCode(code)));
+            ProjectNeeds projectNeeds=projectNeedsService.getNeedsByCode(code);
+            if(null==projectNeeds.getBrowsecount()) {
+                projectNeeds.setBrowsecount( 1);
+            }else {
+                projectNeeds.setBrowsecount(projectNeeds.getBrowsecount() + 1);
+            }
+            return Mono.just(Info.SUCCESS(projectNeedsService.save(projectNeeds)));
         }catch (Exception e){
             return Mono.just(Info.SUCCESS(e.getMessage()));
         }
@@ -178,7 +184,17 @@ public class ProjectNeedsController {
             call.setCallusername(calluserinfo.getUserBasic().getNikename());
             call.setCalluserhredimg(calluserinfo.getUserBasic().getHeadportrait());
             call.setCallusertype(calluserinfo.getType().toString());
-            call.setProjectinfo(projectNeedsService.getNeedsByCode(needscode));
+
+            ProjectNeeds projectNeeds=projectNeedsService.getNeedsByCode(needscode);
+            if(null==projectNeeds.getChatcount()||0==projectNeeds.getChatcount()){
+                projectNeeds.setChatcount(1);
+            }else if(!projectNeeds.getUserBasics().contains(userinfo.getUserBasic())){
+                projectNeeds.setChatcount(projectNeeds.getChatcount()+1);
+            }
+            if (projectNeeds.getUserBasics().size()<4&&!projectNeeds.getUserBasics().contains(userinfo.getUserBasic())){
+                projectNeeds.getUserBasics().add(userinfo.getUserBasic());
+            }
+            call.setProjectinfo(projectNeedsService.save(projectNeeds));
             return Mono.just(Info.SUCCESS(callService.save(call)));
         }catch (Exception e){
             return Mono.just(Info.SUCCESS(e.getMessage()));

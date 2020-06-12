@@ -15,6 +15,10 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -195,7 +199,7 @@ public class UserController {
             HttpHeaders headers = new HttpHeaders();
             headers.setBasicAuth("turbid","turbid_anoax!@#321");
             HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
-            JSONObject object=restTemplate.postForObject("http://127.0.0.1:10003/oauth/token",request,JSONObject.class);
+            JSONObject object=restTemplate.postForObject("http://127.0.0.1:10002/oauth/token",request,JSONObject.class);
             if (null==object){
                 loginHis.setStatus(0);
                 return Mono.just(Info.ERROR("登录失败"));
@@ -292,7 +296,7 @@ public class UserController {
                     headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
                     headers.setBasicAuth("turbid","turbid_anoax!@#321");
                     HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
-                    JSONObject object=restTemplate.postForObject("http://127.0.0.1:10003/oauth/token",request,JSONObject.class);
+                    JSONObject object=restTemplate.postForObject("http://127.0.0.1:10002/oauth/token",request,JSONObject.class);
                     if (null==object){
                         return Mono.just(Info.ERROR("登录失败"));
                     }
@@ -342,7 +346,7 @@ public class UserController {
                 headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
                 headers.setBasicAuth("turbid", "turbid_anoax!@#321");
                 HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
-                JSONObject object = restTemplate.postForObject("http://127.0.0.1:10003/oauth/token", request, JSONObject.class);
+                JSONObject object = restTemplate.postForObject("http://127.0.0.1:10002/oauth/token", request, JSONObject.class);
                 if (null == object) {
                     loginHis.setStatus(0);
                     return Mono.just(Info.ERROR("登录失败"));
@@ -385,7 +389,7 @@ public class UserController {
             headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
             headers.setBasicAuth("turbid","turbid_anoax!@#321");
             HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
-            JSONObject object=restTemplate.postForObject("http://127.0.0.1:10003/oauth/token",request,JSONObject.class);
+            JSONObject object=restTemplate.postForObject("http://127.0.0.1:10002/oauth/token",request,JSONObject.class);
             if (null==object){
                 loginHis.setStatus(0);
                 return Mono.just(Info.ERROR("登录失败"));
@@ -724,7 +728,7 @@ public class UserController {
 //            headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 //            headers.setBasicAuth("turbid","turbid_anoax!@#321");
 //            HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
-//            JSONObject object=restTemplate.postForObject("http://127.0.0.1:10003/oauth/token",request,JSONObject.class);
+//            JSONObject object=restTemplate.postForObject("http://127.0.0.1:10002/oauth/token",request,JSONObject.class);
 //            if (null==object){
 //                return Mono.just(Info.ERROR("登录失败"));
 //            }
@@ -744,8 +748,8 @@ public class UserController {
     @ApiOperation(value = "店铺用户", notes="店铺用户")
     @GetMapping(value = "/shopusers")
     public Mono<Info> shopusers(Principal principal,@RequestParam(value = "text",required = false)String text,@RequestParam("page")Integer page)  {
-
-        return Mono.just(Info.SUCCESS(userSecurityService.shopusers(shopService.getByUser(principal.getName()).getCode(),text,page)));
+        String shopcode=shopService.getByUser(principal.getName()).getCode();
+        return Mono.just(Info.SUCCESS(shopcode,userSecurityService.shopusers(shopcode,text,page)));
     }
 
     @ApiOperation(value = "店铺用户总数", notes="店铺用户总数")
@@ -756,13 +760,37 @@ public class UserController {
         return Mono.just(Info.SUCCESS(userSecurityService.shopuserscount(shopcode,text)));
     }
 
+    @ApiOperation(value = "绑定用户", notes="绑定用户")
+    @PutMapping(value = "/addshopuser")
+    public Mono<Info> addshopuser(Principal principal,@RequestParam(value = "code")String code)  {
+        UserSecurity userSecurity= userSecurityService.findByCode(code);
+        Shop shop=shopService.getByUser(principal.getName());
+        userSecurity.setType(2);
+        userSecurity.setShopcode(shop.getCode());
+        userSecurityService.save(userSecurity);
+        noticeRepository.save(new Notice(userSecurity.getPhonenumber(), "您已经成功成为【"+shop.getName()+"】店铺的子账号。", "系统通知", 0, 0));
+        return Mono.just(Info.SUCCESS(null));
+    }
+
+
     @ApiOperation(value = "取消绑定", notes="取消绑定")
     @PutMapping(value = "/delshopuser")
     public Mono<Info> delshopuser(Principal principal,@RequestParam(value = "code")String code)  {
         UserSecurity userSecurity= userSecurityService.findByCode(code);
+        Shop shop=shopService.getByCode(userSecurity.getShopcode());
         userSecurity.setShopcode(null);
         userSecurityService.save(userSecurity);
+        noticeRepository.save(new Notice(userSecurity.getPhonenumber(), "您已与【"+shop.getName()+"】店铺解除账号绑定。", "系统通知", 0, 0));
         return Mono.just(Info.SUCCESS(null));
     }
+
+    @ApiOperation(value = "通过手机号码搜索用户", notes="通过手机号码搜索用户")
+    @GetMapping(value = "/finduserbyphone")
+    public Mono<Info> finduserbyphone(Principal principal,@RequestParam(value = "phone")String phone)  {
+
+        return Mono.just(Info.SUCCESS(userSecurityService.finduserbyphone(phone)));
+    }
+
+
 
 }

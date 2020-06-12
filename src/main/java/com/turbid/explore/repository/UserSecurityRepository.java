@@ -33,4 +33,8 @@ public interface UserSecurityRepository extends JpaRepository<UserSecurity,Strin
 
     @Query("SELECT count(u) from UserSecurity u where (u.userAuth.name =:text or :text is null ) and u.shopcode=:code ")
     int shopuserscount(@Param("text") String text,@Param("code") String code);
+
+    @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
+    @Query("SELECT u from UserSecurity u where (u.phonenumber LIKE CONCAT('%',:phone,'%') or :phone is null ) and u.userAuth.name is not null and u.shopcode is null ")
+    Page<UserSecurity> findByUserSecurityPhone(Pageable pageable,@Param("phone") String phone);
 }

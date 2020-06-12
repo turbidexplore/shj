@@ -1,15 +1,17 @@
 package com.turbid.explore.controller.home;
 
-import com.turbid.explore.pojo.Shop;
-import com.turbid.explore.pojo.UserAuth;
-import com.turbid.explore.pojo.UserSecurity;
-import com.turbid.explore.pojo.Visitor;
+import com.turbid.explore.pojo.*;
+import com.turbid.explore.repository.ShopFansRepository;
 import com.turbid.explore.service.*;
 import com.turbid.explore.tools.CodeLib;
 import com.turbid.explore.tools.Info;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -50,6 +52,57 @@ public class ShopController {
             return Mono.just(Info.SUCCESS(null));
         }
 
+    }
+
+    @Autowired
+    private ShopFansRepository shopFansRepository;
+
+    @ApiOperation(value = "关注店铺", notes="关注店铺")
+    @PutMapping("/follow")
+    public Mono<Info> follow(Principal principal,@RequestParam("shopcode")String shopcode) {
+        try {
+            ShopFans shopFans=new ShopFans();
+            shopFans.setUserSecurity(userSecurityService.findByPhone(principal.getName()));
+            shopFans.setShop(shopService.getByCode(shopcode));
+            return Mono.just(Info.SUCCESS(shopFansRepository.saveAndFlush(shopFans)));
+        }catch (Exception e){
+            return Mono.just(Info.SUCCESS(null));
+        }
+    }
+
+    @ApiOperation(value = "个人获取关注店铺", notes="个人获取关注店铺")
+    @GetMapping("/myfollow")
+    public Mono<Info> myfollow(Principal principal,@RequestParam("page")Integer page) {
+        try {
+            Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
+            Page<ShopFans> pages=  shopFansRepository.findByUserSecurityPage(pageable,principal.getName());
+            return Mono.just(Info.SUCCESS(pages.getContent()));
+        }catch (Exception e){
+            return Mono.just(Info.SUCCESS(null));
+        }
+    }
+
+    @ApiOperation(value = "获取店铺粉丝", notes="获取店铺粉丝")
+    @GetMapping("/getfollow")
+    public Mono<Info> getfollow(Principal principal,@RequestParam("shopcode")String shopcode,@RequestParam("page")Integer page) {
+        try {
+            Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
+            Page<ShopFans> pages=  shopFansRepository.findByShopPage(pageable,shopcode);
+            return Mono.just(Info.SUCCESS(pages.getContent()));
+        }catch (Exception e){
+            return Mono.just(Info.SUCCESS(null));
+        }
+    }
+
+    @ApiOperation(value = "获取店铺粉丝总数", notes="获取店铺粉丝总数")
+    @GetMapping("/getfollowcount")
+    public Mono<Info> getfollowcount(Principal principal,@RequestParam("shopcode")String shopcode) {
+        try {
+
+            return Mono.just(Info.SUCCESS(shopFansRepository.countByShopCode(shopcode)));
+        }catch (Exception e){
+            return Mono.just(Info.SUCCESS(null));
+        }
     }
 
     @ApiOperation(value = "通过商铺code获取商铺信息", notes="通过商铺code获取商铺信息")
@@ -94,7 +147,6 @@ public class ShopController {
         shop.setHat(old.getHat());
         shop.setFanscount(old.getFanscount());
         shop.setSeecount(old.getSeecount());
-        shop.setVrweb(old.getVrweb());
         return Mono.just(Info.SUCCESS( shopService.save(shop)));
     }
 
@@ -159,9 +211,7 @@ public class ShopController {
                 item.put("brand",null);
             }
 
-                item.put("investmentamount",v.getBzj());
-
-
+            item.put("investmentamount",v.getBzj());
             item.put("showimg",v.getCompany_show());
             item.put("shopcode",v.getCode());
             item.put("shopcount",50);
@@ -190,7 +240,7 @@ public class ShopController {
     @GetMapping("/count")
     public Mono<Info> count(Principal principal,@RequestParam("code")String code) {
         Map<String,Object> data =new HashMap<>();
-        data.put("followcount",followService.followmeCount(principal.getName()));
+        data.put("followcount",shopFansRepository.findByShopCode(code));
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String dateStr = sdf.format(new Date());
         data.put("today",visitorService.count(dateStr,code));
@@ -225,7 +275,7 @@ public class ShopController {
         data.put("goodslike",collectionService.goodslikes(time, code));
         data.put("businessvisitor",visitorService.count(time, code+"zsjm"));
         data.put("shopvisitor",visitorService.count(time, code));
-        data.put("newfans",followService.newfollowmeCount(principal.getName(),time));
+        data.put("newfans",shopFansRepository.newfollowmeCount(principal.getName(),time));
         data.put("casecount",caseService.casecount(principal.getName()));
         return Mono.just(Info.SUCCESS( data));
     }

@@ -3,6 +3,7 @@ package com.turbid.explore.controller.home;
 import com.turbid.explore.pojo.Feedback;
 import com.turbid.explore.pojo.UserSecurity;
 import com.turbid.explore.repository.FeedbackRepository;
+import com.turbid.explore.repository.ShopFansRepository;
 import com.turbid.explore.service.*;
 import com.turbid.explore.tools.Info;
 import io.swagger.annotations.Api;
@@ -37,6 +38,9 @@ public class UserCenterController {
 
     @Autowired
     private CallService callService;
+
+    @Autowired
+    private ShopFansRepository shopFansRepository;
 
     @ApiOperation(value = "数据统计", notes="数据统计")
     @PostMapping(value = "/count")
@@ -105,7 +109,7 @@ public class UserCenterController {
 
 
     @ApiOperation(value = "签到", notes="签到")
-    @PostMapping(value = "signin")
+    @PostMapping(value = "/signin")
     public Mono<Info> signin(Principal principal)  {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String dateStr = sdf.format(new Date());
@@ -122,7 +126,7 @@ public class UserCenterController {
     }
 
     @ApiOperation(value = "是否签到", notes="是否签到")
-    @PostMapping(value = "issignin")
+    @PostMapping(value = "/issignin")
     public Mono<Info> issignin(Principal principal)  {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String dateStr = sdf.format(new Date());

@@ -26,6 +26,14 @@ public class Info {
         return info;
     }
 
+    public static Info SUCCESS(String message,Object data){
+        Info info=new Info();
+        info.setStatus(200);
+        info.setMessage(message);
+        info.setData(data);
+        return info;
+    }
+
     public static Info ERROR(String msg){
         Info info=new Info();
         info.setStatus(-1);
