@@ -19,11 +19,11 @@ public interface ShopRepositroy extends JpaRepository<Shop,String> {
     @Query("select s from Shop s where s.userSecurity.phonenumber=:name")
     Shop getByUser(@Param("name") String name);
 
-    @Query("select new Shop(s.code,s.companyname,s.logo) from Shop s where s.label  like '%全品类%' and s.status=1  and ( s.brandgroup LIKE CONCAT('%',:brandgroup,'%') or :brandgroup is null ) or  s.status=1  and (s.label LIKE CONCAT('%',:label,'%') or :label is null ) and ( s.brandgroup LIKE CONCAT('%',:brandgroup,'%') or :brandgroup is null ) ")
+    @Query("select new Shop(s.code,s.companyname,s.logo) from Shop s where  s.status=1  and ( s.brandgroup LIKE CONCAT('%',:brandgroup,'%') or :brandgroup is null ) or  s.status=1  and (s.label LIKE CONCAT('%',:label,'%') or :label is null ) and ( s.brandgroup LIKE CONCAT('%',:brandgroup,'%') or :brandgroup is null ) ")
     List<Shop> getByLabel(@Param("label")String label,@Param("brandgroup") String brandgroup);
 
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
-    @Query("select s from Shop s where  s.ischoose=1 and s.label  like '%全品类%' or s.ischoose=1 and (s.label LIKE CONCAT('%',:text,'%') or :text is null ) ")
+    @Query("select s from Shop s where s.ischoose=1 and (s.label LIKE CONCAT('%',:text,'%') or :text is null ) ")
     Page<Shop> getByChoose(Pageable pageable, @Param("text") String text);
 
 //    @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})

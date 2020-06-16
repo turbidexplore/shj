@@ -179,6 +179,11 @@ public class IndexController {
         return "manage/usermanage";
     }
 
+    @RequestMapping("/manageshopfans")
+    public String manageshopfans(){
+        return "manage/shopfans";
+    }
+
 
 
 }

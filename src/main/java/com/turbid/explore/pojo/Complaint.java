@@ -20,6 +20,12 @@ public class Complaint extends  BaseEntity {
 
     @Column(name = "urls",length = 5000)
     private String urls;
+    
+    @Column(name = "type")
+    private String type;
+
+    @Column(name = "rcode")
+    private String rcode;
 
     @OneToOne(targetEntity = UserSecurity.class)
     @JoinColumn(name = "user_id",referencedColumnName = "code")

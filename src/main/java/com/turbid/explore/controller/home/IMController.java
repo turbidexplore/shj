@@ -91,6 +91,22 @@ public class IMController {
     }
 
     @ApiOperation(value = "设置资料", notes="设置资料")
+    @PutMapping("/deleteuser")
+    public Mono<Info> deleteuser(@RequestParam("identifier") String identifier) {
+        JSONArray data =new JSONArray();
+        JSONObject item=new JSONObject();
+        item.put("UserID",identifier);
+        data.add(item);
+
+        Map<String, Object> requestBody = ImmutableMap.of(
+                "DeleteItem", data
+        );
+        JSONObject jsonObject= restTemplate.postForObject(baseUrl+"v4/im_open_login_svc/account_delete"+config()
+                ,requestBody, JSONObject.class);
+        return Mono.just(Info.SUCCESS(jsonObject));
+    }
+
+    @ApiOperation(value = "设置资料", notes="设置资料")
     @PutMapping("/portrait_set")
     public Mono<Info> portrait_set(@RequestParam("identifier") String identifier,@RequestParam("type") String type) {
         JSONArray data =new JSONArray();

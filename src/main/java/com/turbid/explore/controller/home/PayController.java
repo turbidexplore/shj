@@ -13,9 +13,7 @@ import com.turbid.explore.configuration.AlipayConfig;
 import com.turbid.explore.configuration.WeChatPayConfig;
 import com.turbid.explore.pojo.*;
 import com.turbid.explore.pojo.bo.*;
-import com.turbid.explore.repository.IntegralGoodsOrderRepository;
-import com.turbid.explore.repository.NoticeRepository;
-import com.turbid.explore.repository.StudyRelationRepository;
+import com.turbid.explore.repository.*;
 import com.turbid.explore.service.*;
 import com.turbid.explore.tools.CodeLib;
 import com.turbid.explore.tools.Info;
@@ -53,6 +51,8 @@ import java.io.*;
 import java.net.*;
 import java.security.KeyStore;
 import java.security.Principal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -916,7 +916,7 @@ public class PayController {
      * @return
      */
     @PostMapping("/iospay")
-    public Mono<Info> iosPay(Long priceId,String transactionId, String payload) {
+    public Mono<Info> iosPay(Principal principal,Long priceId,String transactionId, String payload) {
          System.out.println("苹果内购校验开始，交易ID：" + transactionId + " base64校验体：" + payload);
         //线上环境验证
         String verifyResult = IosVerifyUtil.buyAppVerify(payload, 1);
@@ -958,5 +958,111 @@ public class PayController {
                 return Mono.just(Info.ERROR("支付失败，错误码:"+states));
             }
         }
+    }
+
+    @Autowired
+    private NeedsRelationRepositroy needsRelationRepositroy;
+
+    @Autowired
+    private StudyRelationRepository studyRelationRepository;
+
+    @Autowired
+    private StudyRepository studyRepository;
+
+    @Autowired
+    private ShopService shopService;
+
+    public boolean isvip(String day){
+        if(day==null||day==""){
+            return false;
+        }
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");//注意月份是MM
+        try {
+            Date date = simpleDateFormat.parse(day);
+            if(date.getTime()>new Date().getTime()){ return true; }else { return false; }
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @ApiOperation(value = "是否需要支付", notes="是否需要支付 0不需要支付 1需要支付")
+    @ResponseBody
+    @PostMapping(value = "/ispay")
+    public Mono<Info> ispay(Principal principal,@RequestParam(name = "code")String code,@RequestParam("type")Integer type) {
+        try {
+          UserSecurity userSecurity=  userSecurityService.findByPhone(principal.getName());
+            switch (type){
+                case 0:
+                    if(2<=userSecurity.getType()) {
+                        if(null!=userSecurity.getUserAuth()&&null!=userSecurity.getShopcode()) {
+                            Shop shop=shopService.getByCode(userSecurity.getShopcode());
+                            if(!isvip(shop.getVipday())){
+                                Map map = new HashMap<>();
+                                map.put("type", 4);
+                                return Mono.just(Info.SUCCESS(map));
+                            }else{
+                                Map map = new HashMap<>();
+                                map.put("type", 0);
+                                return Mono.just(Info.SUCCESS(map));
+                            }
+                        }else {
+                            Map map=new HashMap<>();
+                            map.put("type",2);
+                            return Mono.just(Info.SUCCESS(map));
+                        }
+                    }else {
+                        if (0 < needsRelationRepositroy.findneedsR(principal.getName(), code)) {
+                            Map map = new HashMap<>();
+                            map.put("type", 0);
+                            return Mono.just(Info.SUCCESS(map));
+                        } else {
+                            Map map = new HashMap<>();
+                            map.put("type", 1);
+                            map.put("key", "逐条查看信息");
+                            map.put("value", "SEE_NEEDS");
+                            map.put("price", 0.01);
+                            map.put("costprice", 0.01);
+                            return Mono.just(Info.SUCCESS(map));
+                        }
+                    }
+                case 1:
+                    if(0<studyRelationRepository.issee(principal.getName(),code)){
+                        Map map=new HashMap<>();
+                        map.put("type",0);
+                        return Mono.just(Info.SUCCESS(map));
+                    }else {
+                        Study study=studyRepository.getOne(code);
+                        Map map=new HashMap<>();
+                        map.put("type",1);
+                        map.put("key","课程购买");
+                        map.put("value","SEE_STUDY");
+                        map.put("price",study.getPrice());
+                        map.put("shb",study.getShb());
+                        map.put("costprice",0.01);
+                        return Mono.just(Info.SUCCESS(map));
+                    }
+                case 2:
+                    if(0<0){
+                        Map map=new HashMap<>();
+                        map.put("type",0);
+                        projectNeedsService.updateURGENT(code);
+                        return Mono.just(Info.SUCCESS(map));
+                    }else {
+                        Map map=new HashMap<>();
+                        map.put("type",1);
+                        map.put("key","需求加急");
+                        map.put("value","NEEDS_URGENT");
+                        map.put("price",0.01);
+                        map.put("costprice",0.01);
+                        return Mono.just(Info.SUCCESS(map));
+                    }
+            }
+            return Mono.just(Info.SUCCESS(true));
+        }catch (Exception e){
+            return Mono.just(Info.SUCCESS(e.getMessage()));
+        }
+
+
     }
 }

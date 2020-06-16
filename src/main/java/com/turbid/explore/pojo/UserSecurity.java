@@ -57,6 +57,10 @@ public class UserSecurity extends BaseEntity {
     @Column(name = "shopcode")
     private String shopcode;
 
+    //用户认证信息
+    @Column(name = "balance")
+    private Integer balance;
+
 
 
 }

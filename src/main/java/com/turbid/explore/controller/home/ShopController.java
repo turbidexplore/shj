@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -63,8 +64,46 @@ public class ShopController {
         try {
             ShopFans shopFans=new ShopFans();
             shopFans.setUserSecurity(userSecurityService.findByPhone(principal.getName()));
-            shopFans.setShop(shopService.getByCode(shopcode));
-            return Mono.just(Info.SUCCESS(shopFansRepository.saveAndFlush(shopFans)));
+            Shop shop=shopService.getByCode(shopcode);
+            shopFans.setShop(shop);
+            shopFansRepository.saveAndFlush(shopFans);
+            if (shop.getFanscount()==null) {
+            shop.setFanscount(1);
+            }else { shop.setFanscount(shop.getFanscount()+1); }
+            shopService.save(shopFans.getShop());
+            return Mono.just(Info.SUCCESS(null));
+        }catch (Exception e){
+            return Mono.just(Info.ERROR(null));
+        }
+    }
+
+    @ApiOperation(value = "取消关注店铺", notes="取消关注店铺")
+    @PutMapping("/delfollow")
+    @Transactional
+    public Mono<Info> delfollow(Principal principal,@RequestParam("shopcode")String shopcode) {
+        try {
+            shopFansRepository.delfollow(userSecurityService.findByPhone(principal.getName()).getCode(),shopcode);
+            Shop shop=shopService.getByCode(shopcode);
+            shop.setFanscount(shop.getFanscount()-1);
+            shopService.save(shop);
+            return Mono.just(Info.SUCCESS(null));
+        }catch (Exception e){
+            e.getStackTrace();
+            return Mono.just(Info.ERROR(null));
+        }
+    }
+
+    @ApiOperation(value = "是否关注店铺", notes="是否关注店铺")
+    @PostMapping("/isfollow")
+    public Mono<Info> isfollow(Principal principal,@RequestParam("shopcode")String shopcode) {
+        try {
+           int count= shopFansRepository.countByShopCodeAndUserSecurityPhonenumber(principal.getName(),shopcode);
+           if(count==0){
+               return Mono.just(Info.SUCCESS(false));
+           }else {
+               return Mono.just(Info.SUCCESS(true));
+           }
+
         }catch (Exception e){
             return Mono.just(Info.SUCCESS(null));
         }
@@ -104,6 +143,42 @@ public class ShopController {
             return Mono.just(Info.SUCCESS(null));
         }
     }
+
+    @ApiOperation(value = "获取店铺粉丝", notes="获取店铺粉丝")
+    @GetMapping("/getfollowByUser")
+    public Mono<Info> getfollowByUser(Principal principal,@RequestParam("page")Integer page) {
+        try {
+            Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
+            Page<ShopFans> pages=  shopFansRepository.findByShopPage(pageable,userSecurityService.findByPhone(principal.getName()).getShopcode());
+            return Mono.just(Info.SUCCESS(pages.getContent()));
+        }catch (Exception e){
+            return Mono.just(Info.SUCCESS(null));
+        }
+    }
+
+    @ApiOperation(value = "获取店铺粉丝总数", notes="获取店铺粉丝总数")
+    @GetMapping("/getfollowcountByUser")
+    public Mono<Info> getfollowcountByUser(Principal principal) {
+        try {
+            return Mono.just(Info.SUCCESS(shopFansRepository.countByShopCode(userSecurityService.findByPhone(principal.getName()).getShopcode())));
+        }catch (Exception e){
+            return Mono.just(Info.SUCCESS(null));
+        }
+    }
+
+    @ApiOperation(value = "设置粉丝备注", notes="设置粉丝备注")
+    @PutMapping("/setremarksinfo")
+    public Mono<Info> setremarksinfo(Principal principalm,@RequestParam("code")String code,@RequestParam("text")String text) {
+        try {
+            ShopFans shopFans=  shopFansRepository.getOne(code);
+            shopFans.setRemarks(text);
+            return Mono.just(Info.SUCCESS(shopFansRepository.saveAndFlush(shopFans)));
+        }catch (Exception e){
+            return Mono.just(Info.SUCCESS(null));
+        }
+    }
+
+
 
     @ApiOperation(value = "通过商铺code获取商铺信息", notes="通过商铺code获取商铺信息")
     @GetMapping("/getbycode")
@@ -287,7 +362,7 @@ public class ShopController {
         Shop shop=shopService.getByUser(principal.getName());
         Map<String,Object> data =new HashMap<>();
         List area= new ArrayList();
-        followService.areaCount(principal).forEach(v->{
+        shopFansRepository.areaCount(shop.getCode()).forEach(v->{
             Map item=new HashMap();
             item.put("name",v.getName());
             item.put("y",v.getY());
@@ -304,7 +379,7 @@ public class ShopController {
                 toyear=toyear+"0"+i;
             }
             System.out.println(toyear);
-            fansadd.add(followService.newfollowmeCount(principal.getName(),toyear));
+            fansadd.add(shopFansRepository.newfollowmeCount(shop.getCode(),toyear));
             try {
                 fanssee.add(visitorService.count(toyear,shop.getCode()));
             }catch (Exception e){

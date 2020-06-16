@@ -6,15 +6,12 @@
     <title>设汇家 ｜ 泛家居行业供应链平台</title>
     <meta name="keywords" content="浑浊探索,苏州浑浊信息科技有限公司,turbid,explore,科技">
     <meta name="description" content="设汇家官网">
-    <meta name="author" content="设汇家">    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="设汇家">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="../styles/all.css" rel="stylesheet">
-    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" id="main-stylesheet" data-version="1.1.0" href="../styles/shards-dashboards.1.1.0.min.css">
     <link rel="stylesheet" href="../styles/extras.1.1.0.min.css">
     <link rel="stylesheet" href="../layui/css/layui.css">
-
   </head>
   <body class="h-100">
      <div class="container-fluid">
@@ -40,7 +37,7 @@
                   <i class="fas fa-search"></i>
                 </div>
               </div>
-              <input class="navbar-search form-control" type="text" placeholder="Search for something..." aria-label="Search"> </div>
+              <input class="navbar-search form-control" type="text" id="text" placeholder="Search for something..." aria-label="Search"> </div>
           </form>
           <div class="nav-wrapper">
             <ul class="nav flex-column">
@@ -92,13 +89,13 @@
                   <span>案例管理</span>
                 </a>
               </li>
-              <li class="nav-item active" >
+              <li class="nav-item " >
                 <a class="nav-link " href="/managenativecontent">
                   <i class="material-icons">note_add</i>
                   <span>内容中心</span>
                 </a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item active">
                 <a class="nav-link " href="/manageshopfans">
                   <i class="material-icons">table_chart</i>
                   <span>粉丝管理</span>
@@ -110,19 +107,19 @@
                   <span>数据中心</span>
                 </a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item ">
                 <a class="nav-link " href="/managetables">
                   <i class="material-icons">table_chart</i>
                   <span>子账号管理</span>
                 </a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item ">
                 <a class="nav-link " href="/manageusercenter">
                   <i class="material-icons">person</i>
                   <span>账户信息</span>
                 </a>
               </li>
-             
+
             </ul>
           </div>
         </aside>
@@ -143,7 +140,7 @@
               <ul class="navbar-nav border-left flex-row ">
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                    <img class="user-avatar rounded-circle mr-2" src="../images/avatars/0.jpg" alt="User Avatar">
+                    <img class="user-avatar rounded-circle mr-2" src="images/avatars/0.jpg" alt="User Avatar">
                     <span class="d-none d-md-inline-block">用户名</span>
                   </a>
                   <div class="dropdown-menu dropdown-menu-small">
@@ -164,104 +161,153 @@
             <!-- Page Header -->
             <div class="page-header row no-gutters py-4">
               <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
-                <a  class="mb-2 btn btn-sm btn-primary mr-1" href="/managecontent">新建图文</a>
+                <span class="text-uppercase page-subtitle">Overview</span>
+                <h3 class="page-title">粉丝管理</h3>
               </div>
             </div>
-            <div class="row" id="content">
+            <!-- End Page Header -->
+            <!-- Default Light Table -->
+            <div class="row">
+              <div class="col">
+                <div class="card card-small mb-4">
+                  <div class="card-header border-bottom">
+                    <h6 class="m-0">用户列表&nbsp;</h6>
+                  </div>
+                  <div class="card-body p-0 pb-3 text-center">
+                    <table class="table mb-0">
+                      <thead class="bg-light">
+                        <tr>
+                          <th scope="col" class="border-0">用户名</th>
+                          <th scope="col" class="border-0">手机号码</th>
+                          <th scope="col" class="border-0">用户身份</th>
+                          <th scope="col" class="border-0">关注时间</th>
+                          <th scope="col" class="border-0">备注</th>
+                          <th scope="col" class="border-0">操作</th>
+                        </tr>
+                      </thead>
+                      <tbody id="dataview" >
 
+                      </tbody>
+                    </table>
+                    <div id="pages"></div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </main>
       </div>
     </div>
 
-    <script src="../js/jquery-3.3.1.min.js" ></script>
-    <script src="../layui/layui.js"></script>
-    <script src="../scripts/popper.min.js"></script>
-    <script src="../scripts/bootstrap.min.js"></script>
-    <script src="../scripts/shards-dashboards.1.1.0.min.js"></script>
-    <script src="../js/jquery.cookie.min.js"></script>
-    <script src="../scripts/extras.1.1.0.min.js"></script>
+     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+     <script src="../js/jquery.cookie.min.js"></script>
+     <script src="../layui/layui.js"></script>
 
   <script>
-    var settings = {
-      "async": true,
-      "crossDomain": true,
-      "url": "/nativecontent/mynews?page="+0,
-      "method": "GET",
-      "processData": false,
-      "headers": {
-        "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
-        "cache-control": "no-cache",
-        "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
+    var index=0;
+    function find(page) {
+      var text='';
+      if($("#text").val()!=''&&$("#text").val()!=null){
+        text="&text="+$("#text").val();
       }
-    }
-    $.ajax(settings).done(function (response) {
-      response.data.forEach(function (v,i) {
-        var img=v.firstimage.split(",")[0];
-     var html= '<div class="col-lg-3 col-md-6 col-sm-12 mb-4" id="'+v.code+'">'+
-                '<div class="card card-small card-post card-post--1">'+
-                '<div class="card-post__image" style="background-image: url('+img+');">'+
-                '<a href="#" class="card-post__category badge badge-pill badge-dark" onclick="preview(\''+v.code+'\')">预览</a>'+
-                '<div class="card-post__author d-flex">'+
-                '<a href="#" class="card-post__author-avatar card-post__author-avatar--small" style="background-image: url('+v.userSecurity.userBasic.headportrait+');">Written by Anna Kunis</a> &nbsp;<strong style="margin-top: 15px;">'+v.userSecurity.userBasic.nikename+
-                '</strong></div></div>'+
-                '<div class="card-body">'+
-                '<p class="card-title">'+
-                '<a class="text-fiord-blue" href="#">'+v.title+'</a></p>'+
-                '<span style="font-size: 12px;">'+v.addftime+'  发布    <button type="button" class="mb-1 btn btn-sm btn-info mr-1" onclick="xj(\''+v.code+'\')"> 删除</button><a href="/manageeditcontent?code='+v.code+'" class="mb-1 btn btn-sm btn-info mr-1" >修改</a></span>'+
-                '</div></div></div>';
-        $("#content").append(html);
-      })
-    });
-
-    function xj(code) {
-      var settings = {
-        "async": true,
-        "crossDomain": true,
-        "url": "/nativecontent/del?code="+code,
-        "method": "PUT",
-        "processData": false,
-        "headers": {
+      $.ajax({
+        type: 'GET',
+        url : "/shop/getfollowByUser?page="+page,
+        async: true,
+        crossDomain: true,
+        headers: {
           "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
           "cache-control": "no-cache",
           "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
         }
-      }
-      $.ajax(settings).done(function (response) {
-        alert("下架成功！")
-        $("#"+code).remove();
+      }).done(function(result) {
+        $("#dataview").html("");
+        result.data.forEach(function (v,i) {
+          var type ='设计师';
+
+          if(v.userSecurity.type==0){
+            type ='设计师';
+          }else  if(v.userSecurity.type==1){
+            type ='经销商';
+          }else if(v.userSecurity.type==2){
+            type ='工厂';
+          }else if(v.userSecurity.type==3){
+            type ='设计公司';
+          }else{
+            type ='无';
+          }
+          var remarks='无';
+          if( v.remarks!=null){
+            remarks=v.remarks;
+          }
+
+            $("#dataview").append('<tr>'+
+                  ' <td><img src="'+v.userSecurity.userBasic.headportrait+'" style="width:30px;" class=" rounded-circle"> '+v.userSecurity.userBasic.nikename+'</td>'+
+                  '<td>'+v.userSecurity.phonenumber+'</td>'+
+                  '<td>'+type+'</td>'+
+                  '<td>'+v.userSecurity.addftime+'</td>'+
+                  '<td id="remarks'+v.code+'">'+remarks +'</td>'+
+                  '<td>'+"<button type=\"button\" class=\"mb-2 btn btn-sm btn-success  mr-1\" onclick=\"remarks(\'"+v.code+"')\">备注信息</button>"+'</td>'+
+                  '</tr>')
+        });
       });
-
     }
-    
-    function preview(code) {
-      var settings = {
-        "async": true,
-        "crossDomain": true,
-        "url": "/nativecontent/newsByCode?code="+code,
-        "method": "GET",
-        "processData": false,
-        "headers": {
-          "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
-          "cache-control": "no-cache",
-          "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
-        }
-      }
-      $.ajax(settings).done(function (response) {
-        layui.use("layer", function () {
-          layer.open({
-            type: 1,
-            title: response.data.title,
-            skin: 'layui-layer-rim', //加上边框
-            area: ['500px', '700px'], //宽高
-            content: response.data.content
+
+    function remarks(code){
+      layui.use("layer", function () {
+        layer.prompt({title: '请输入备注信息', formType: 2}, function(text, index){
+          $.ajax({
+            type: 'PUT',
+            url : "/shop/setremarksinfo?code="+code+"&text="+text,
+            async: true,
+            crossDomain: true,
+            headers: {
+              "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
+              "cache-control": "no-cache",
+              "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
+            }
+          }).done(function(result) {
+            $("#remarks"+code).html(text);
+            layer.close(index);
+            lay.msg("操作成功！");
           });
         });
       });
-
-
     }
+
+    layui.use(['laypage', 'layer'], function(){
+      var laypage = layui.laypage
+              ,layer = layui.layer;
+
+      var text='';
+      if($("#text").val()!=''&&$("#text").val()!=null){
+        text="?text="+$("#text").val();
+      }
+      $.ajax({
+        type: 'GET',
+        url : "/shop/getfollowcountByUser",
+        async: true,
+        crossDomain: true,
+        headers: {
+          "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
+          "cache-control": "no-cache",
+          "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
+        }
+      }).done(function(result) {
+        laypage.render({
+          elem: 'pages'
+          ,count: result.data
+          ,theme: '#FF5722'
+          ,jump: function(obj, first){
+            index=obj.curr-1;
+            find(obj.curr-1);
+          }
+        });
+      });
+    });
+
   </script>
   </body>
 </html>

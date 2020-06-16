@@ -21,7 +21,6 @@ public class AreaCount extends BaseEntity {
         }else {
             this.name="未知区域";
         }
-
         this.y = Integer.parseInt(y.toString());
     }
 }
