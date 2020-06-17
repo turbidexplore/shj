@@ -178,7 +178,12 @@ public class ShopController {
         }
     }
 
-
+    @ApiOperation(value = "通过商铺code获取商铺信息", notes="通过商铺code获取商铺信息")
+    @GetMapping("/infobycode")
+    public Mono<Info> infobycode(Principal principal,@RequestParam("code")String code) {
+        Shop shop=  shopService.getByCode(code);
+        return Mono.just(Info.SUCCESS( shop));
+    }
 
     @ApiOperation(value = "通过商铺code获取商铺信息", notes="通过商铺code获取商铺信息")
     @GetMapping("/getbycode")
@@ -350,7 +355,7 @@ public class ShopController {
         data.put("goodslike",collectionService.goodslikes(time, code));
         data.put("businessvisitor",visitorService.count(time, code+"zsjm"));
         data.put("shopvisitor",visitorService.count(time, code));
-        data.put("newfans",shopFansRepository.newfollowmeCount(principal.getName(),time));
+        data.put("newfans",shopFansRepository.newfollowmeCount(code,time));
         data.put("casecount",caseService.casecount(principal.getName()));
         return Mono.just(Info.SUCCESS( data));
     }
@@ -398,7 +403,7 @@ public class ShopController {
         return Mono.just(Info.SUCCESS( data));
     }
 
-    @ApiOperation(value = "店铺访问数据统计", notes="店铺访问数据统计")
+    @ApiOperation(value = "店铺15日访问数据统计", notes="店铺15日访问数据统计")
     @GetMapping("/fwl")
     public Mono<Info> fwl(Principal principal,@RequestParam("code")String code) {
         List data =new ArrayList();
@@ -407,7 +412,6 @@ public class ShopController {
             String time = df.format(new Date().getTime()-i*24*60*60*1000);
             data.add(new Object[]{time,visitorService.count(time,code)});
         }
-
         return Mono.just(Info.SUCCESS( data));
     }
 

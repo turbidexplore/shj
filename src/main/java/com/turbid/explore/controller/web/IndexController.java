@@ -184,6 +184,21 @@ public class IndexController {
         return "manage/shopfans";
     }
 
+    @RequestMapping("/manageintegralgoods")
+    public String manageintegralgoods(){
+        return "manage/integralgoods";
+    }
+
+    @RequestMapping("/manageintegralgood")
+    public String manageintegralgood(){
+        return "manage/integralgood";
+    }
+
+
+    @RequestMapping("/manageshopingmanage")
+    public String manageshopingmanage(){
+        return "manage/shopingmanage";
+    }
 
 
 }

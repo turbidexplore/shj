@@ -11,7 +11,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.QueryHint;
-import java.util.List;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order,String> {
@@ -20,11 +19,14 @@ public interface OrderRepository extends JpaRepository<Order,String> {
     Order findByOrderNo(@Param("orderno") String orderno);
 
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
-    @Query("SELECT o from Order o where o.userphone=:name ")
+    @Query("SELECT o from Order o where o.userphone=:name and o.paytype = 'iospay' and o.code not in(SELECT a.code from Order a where a.userphone=:name and a.paytype = 'iospay')")
     Page<Order> findByUser(Pageable pageable,@Param("name") String name);
 
-
     @Modifying
-    @Query("update Order o set o.userphone=:phone where o.userphone=:oldphone")
+    @Query("update Order o set o.userphone=:phone where o.userphone=:oldphone ")
     int updatephone(@Param("oldphone") String oldphone, @Param("phone") String phone);
+
+    @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
+    @Query("SELECT o from Order o where o.userphone=:name and o.paytype='iospay'")
+    Page<Order> findByUserIos(Pageable pageable,@Param("name")String name);
 }

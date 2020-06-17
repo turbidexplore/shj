@@ -56,5 +56,17 @@ public class CallServiceImpl implements CallService {
         return pages.getContent();
     }
 
+    @Override
+    public int callshopcount(String shopcode, String time) {
+        return callRepository.callshopcount(shopcode,time);
+    }
+
+    @Override
+    public List<String> callshop(String shopcode, String time) {
+        Pageable pageable = new PageRequest(0,6, Sort.Direction.DESC,"create_time");
+        Page<String> pages=  callRepository.callshop(pageable,shopcode,time);
+        return pages.getContent();
+    }
+
 
 }

@@ -19,4 +19,8 @@ public interface CallService {
     int callmecount(String name);
 
     List<Call> callme(String name, Integer page);
+
+    int callshopcount(String shopcode, String time);
+
+    List<String> callshop(String shopcode, String time);
 }

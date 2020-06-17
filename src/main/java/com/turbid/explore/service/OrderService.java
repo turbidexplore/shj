@@ -13,4 +13,6 @@ public interface OrderService {
     Order findByOrderNo(String orderno);
 
     List<Order> findByUser(String name, Integer page);
+
+    List<Order> findByUserIos(String name, Integer page);
 }

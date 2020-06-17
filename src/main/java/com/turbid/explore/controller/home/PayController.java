@@ -126,6 +126,14 @@ public class PayController {
     @Autowired
     private IntegralGoodsOrderRepository integralGoodsOrderRepository;
 
+
+    @ApiOperation(value = "查询我的订单", notes="查询我的订单")
+    @PostMapping("/order/myiospay")
+    @ResponseBody
+    public Mono<Info> myiospay(Principal principal,@RequestParam("page")Integer page) {
+        return Mono.just(Info.SUCCESS( orderService.findByUserIos(principal.getName(),page)));
+    }
+
     @ApiOperation(value = "查询我的订单", notes="查询我的订单")
     @PostMapping("/order/my")
     @ResponseBody
@@ -890,7 +898,7 @@ public class PayController {
     @Autowired
     private StudyService studyService;
 
-    @ApiOperation(value = "设汇币支付", notes="设汇币支付")
+    @ApiOperation(value = "积分支付", notes="积分支付")
     @PostMapping("/shbpay")
     @ResponseBody
     public Mono<Info> shbpay(Principal principal,@RequestBody WebpayBo webpayBo) {
@@ -907,6 +915,38 @@ public class PayController {
 
     }
 
+    @ApiOperation(value = "设汇币支付", notes="设汇币支付")
+    @PostMapping("/balancepay")
+    @ResponseBody
+    public Mono<Info> balancepay(Principal principal,@RequestBody WebpayBo webpayBo) {
+        webpayBo.setOut_trade_no(CodeLib.randomCode(12,1));
+        UserSecurity userSecurity=userSecurityService.findByPhone(principal.getName());
+        if(null!=userSecurity.getBalance()&&userSecurity.getBalance()>Integer.parseInt(webpayBo.getTotal_amount())){
+            userSecurity.setBalance(userSecurity.getBalance()-Integer.parseInt(webpayBo.getTotal_amount()));
+            userSecurityService.save(userSecurity);
+            studyService.updateSTUDY(webpayBo.getOut_trade_no());
+            orderinfo(webpayBo.getOut_trade_no(),webpayBo.getProduct_code(),webpayBo.getTotal_amount(),"balance",webpayBo.getBody(),principal.getName(),1);
+            switch (webpayBo.getProduct_code()){
+                case "NEEDS_URGENT":
+                        projectNeedsService.updateURGENT(webpayBo.getOut_trade_no());
+                        noticeRepository.save(new Notice(webpayBo.getOut_trade_no(),principal.getName(), "您的需求加急订单已支付成功。", "支付通知", 1, 0));
+                    break;
+                case "SEE_NEEDS":
+                        needsRelationService.updateSEE(webpayBo.getOut_trade_no());
+                        noticeRepository.save(new Notice(webpayBo.getOut_trade_no(),principal.getName(), "您的查看需求订单已支付成功。", "支付通知", 1, 0));
+                    break;
+                case "SEE_STUDY":
+                        studyService.updateSTUDY(webpayBo.getOut_trade_no());
+                        noticeRepository.save(new Notice(webpayBo.getOut_trade_no(),principal.getName(), "您的课程订单已支付成功。", "支付通知", 1, 0));
+            }
+            return Mono.just(Info.SUCCESS("支付成功"));
+        }else {
+            return Mono.just(Info.ERROR("设汇币余额不足"));
+        }
+
+    }
+
+
 
     /**
      * 苹果内购校验
@@ -916,10 +956,11 @@ public class PayController {
      * @return
      */
     @PostMapping("/iospay")
-    public Mono<Info> iosPay(Principal principal,Long priceId,String transactionId, String payload) {
+    @ResponseBody
+    public Mono<Info> iosPay(Principal principal,String priceId,String transactionId, String payload) {
          System.out.println("苹果内购校验开始，交易ID：" + transactionId + " base64校验体：" + payload);
         //线上环境验证
-        String verifyResult = IosVerifyUtil.buyAppVerify(payload, 1);
+        String verifyResult = IosVerifyUtil.buyAppVerify(payload, 0);
         if (verifyResult == null) {
             return Mono.just(Info.ERROR("苹果验证失败，返回数据为空"));
         } else {
@@ -948,7 +989,42 @@ public class PayController {
                     //交易列表包含当前交易，则认为交易成功
                     if (transactionIds.contains(transactionId)) {
                         //处理业务逻辑
-
+                        Integer price=0;
+                        switch (priceId){
+                            case "com.shehuijia.explore01":
+                                price=6;
+                                break;
+                            case "com.shehuijia.explore02":
+                                price=30;
+                                break;
+                            case "com.shehuijia.explore03":
+                                price=50;
+                                break;
+                            case "com.shehuijia.explore04":
+                                price=108;
+                                break;
+                            case "com.shehuijia.explore05":
+                                price=208;
+                                break;
+                            case "com.shehuijia.explore06":
+                                price=418;
+                                break;
+                            case "com.shehuijia.explore07":
+                                price=998;
+                                break;
+                            case "com.shehuijia.explore08":
+                                price=15980;
+                                break;
+                        }
+                        orderinfo(transactionId,priceId,price.toString(),"iospay","ios内购",principal.getName(),1);
+                        UserSecurity userSecurity=userSecurityService.findByPhone(principal.getName());
+                        if(null!=userSecurity.getBalance()) {
+                            userSecurity.setBalance(userSecurity.getBalance() + price);
+                        }else {
+                            userSecurity.setBalance(0 + price);
+                        }
+                        userSecurityService.save(userSecurity);
+                        noticeRepository.save(new Notice(transactionId, principal.getName(), "您的设汇币充值成功。", "支付通知", 1, 0));
                         return Mono.just(Info.SUCCESS("支付成功"));
                     }
                     return Mono.just(Info.ERROR("当前交易不在交易列表中"));

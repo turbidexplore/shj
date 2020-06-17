@@ -47,7 +47,7 @@ public class IntegralGoods extends BaseEntity {
     private String content;
 
     @ApiModelProperty(value = "图片集")
-    @Column(name = "imgs")
+    @Column(name = "imgs",length = 5000)
     private String imgs;
 
     @ApiModelProperty(value = "库存")

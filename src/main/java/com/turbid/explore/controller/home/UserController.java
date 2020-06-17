@@ -745,18 +745,26 @@ public class UserController {
             return Mono.just(Info.ERROR("验证码错误"));
         }
     }
+
+    @ApiOperation(value = "店铺用户", notes="店铺用户")
+    @GetMapping(value = "/shopuserlist")
+    public Mono<Info> shopuserlist(Principal principal,@RequestParam(value = "shopcode",required = false)String shopcode,@RequestParam("page")Integer page)  {
+        Shop shop=shopService.getByCode(shopcode);
+        return Mono.just(Info.SUCCESS(shop.getUserSecurity().getCode(),userSecurityService.shopusers(shop.getCode(),null,page)));
+    }
+
+
     @ApiOperation(value = "店铺用户", notes="店铺用户")
     @GetMapping(value = "/shopusers")
     public Mono<Info> shopusers(Principal principal,@RequestParam(value = "text",required = false)String text,@RequestParam("page")Integer page)  {
-        String shopcode=shopService.getByUser(principal.getName()).getCode();
-        return Mono.just(Info.SUCCESS(shopcode,userSecurityService.shopusers(shopcode,text,page)));
+        Shop shop=shopService.getByUser(principal.getName());
+        return Mono.just(Info.SUCCESS(shop.getUserSecurity().getCode(),userSecurityService.shopusers(shop.getCode(),text,page)));
     }
 
     @ApiOperation(value = "店铺用户总数", notes="店铺用户总数")
     @GetMapping(value = "/shopuserscount")
     public Mono<Info> shopuserscount(Principal principal,@RequestParam(value = "text",required = false)String text)  {
-      String shopcode=  shopService.getByUser(principal.getName()).getCode();
-        System.out.println(shopcode);
+        String shopcode=  shopService.getByUser(principal.getName()).getCode();
         return Mono.just(Info.SUCCESS(userSecurityService.shopuserscount(shopcode,text)));
     }
 

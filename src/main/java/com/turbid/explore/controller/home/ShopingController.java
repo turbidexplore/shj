@@ -99,6 +99,14 @@ public class ShopingController {
         return Mono.just(Info.SUCCESS( integralGoodsRepository.saveAndFlush(integralGoods)));
     }
 
+    @ApiOperation(value = "下架积分商品")
+    @DeleteMapping(value = "/delintegralgoods")
+    public Mono<Info> delintegralgoods(Principal principal,@RequestParam("code") String code) {
+        IntegralGoods integralGoods=   integralGoodsRepository.getOne(code);
+        integralGoods.setStatus(1);
+        return Mono.just(Info.SUCCESS( integralGoodsRepository.saveAndFlush(integralGoods)));
+    }
+
     @ApiOperation(value = "积分商品列表")
     @PostMapping(value = "/integralgoodslist")
     public Mono<Info> integralgoodslist(@RequestParam("page")Integer page) {
@@ -117,6 +125,13 @@ public class ShopingController {
     @GetMapping(value = "/getkdinfo")
     public Mono<Info> getkdinfo(@RequestParam("kdd")String kdd) {
         return Mono.just(Info.SUCCESS(JSONObject.parse(Expressage.info(kdd))));
+    }
+
+
+    @ApiOperation(value = "查询快递轨迹")
+    @GetMapping(value = "/getintegralgoodsorder")
+    public Mono<Info> getintegralgoodsorder() {
+        return Mono.just(Info.SUCCESS(null));
     }
 
     @ApiOperation(value = "兑换积分商品")

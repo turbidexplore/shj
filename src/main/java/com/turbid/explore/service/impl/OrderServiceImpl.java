@@ -36,4 +36,11 @@ public class OrderServiceImpl implements OrderService {
         Page<Order> pages=  orderRepository.findByUser(pageable,name);
         return pages.getContent();
     }
+
+    @Override
+    public List<Order> findByUserIos(String name, Integer page) {
+        Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
+        Page<Order> pages=  orderRepository.findByUserIos(pageable,name);
+        return pages.getContent();
+    }
 }
