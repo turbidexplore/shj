@@ -24,6 +24,20 @@ public class Shop extends BaseEntity{
     private String name;
 
     //企业名称
+    @Column(name = "shopcreatetime",  length = 32)
+    private String shopcreatetime;
+
+    @Column(name = "jmcount",   length = 32)
+    private int jmcount;
+
+//    public String getJmcount() {
+//        if (!jmcount.contains("+")){
+//            jmcount=jmcount+"家";
+//        }
+//        return jmcount;
+//    }
+
+    //企业名称
     @Column(name = "companyname",  nullable = false, length = 32)
     private String companyname;
 

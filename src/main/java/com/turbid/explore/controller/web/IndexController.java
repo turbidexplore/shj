@@ -53,7 +53,7 @@ public class IndexController {
 
     @RequestMapping("/auth")
     public String auth(){
-        return "manage/auth";
+        return "system/auth";
     }
 
     @RequestMapping("/manageindex")
@@ -63,13 +63,13 @@ public class IndexController {
 
     @RequestMapping("/managecontent")
     public String content(){
-        return "manage/content";
+        return "system/content";
     }
 
     @RequestMapping("/manageeditcontent")
     public String editcontent(@RequestParam("code")String code, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
         httpServletRequest.setAttribute("code",code);
-        return "manage/content";
+        return "system/content";
     }
 
     @RequestMapping("/manageeditcase")
@@ -80,7 +80,7 @@ public class IndexController {
 
     @RequestMapping("/managenativecontent")
     public String nativecontent(){
-        return "manage/nativecontent";
+        return "system/nativecontent";
     }
 
     @RequestMapping("/manageusercenter")
@@ -146,22 +146,22 @@ public class IndexController {
 
     @RequestMapping("/managestudys")
     public String studys(){
-        return "manage/studys";
+        return "system/studys";
     }
 
     @RequestMapping("/managestudy")
     public String study(){
-        return "manage/study";
+        return "system/study";
     }
 
     @RequestMapping("/managebanners")
     public String managebanners(){
-        return "manage/banners";
+        return "system/banners";
     }
 
     @RequestMapping("/managebanner")
     public String managebanner(){
-        return "manage/banner";
+        return "system/banner";
     }
 
     @RequestMapping("/managecases")
@@ -176,7 +176,7 @@ public class IndexController {
 
     @RequestMapping("/manageuser")
     public String manageuser(){
-        return "manage/usermanage";
+        return "system/usermanage";
     }
 
     @RequestMapping("/manageshopfans")
@@ -186,19 +186,22 @@ public class IndexController {
 
     @RequestMapping("/manageintegralgoods")
     public String manageintegralgoods(){
-        return "manage/integralgoods";
+        return "system/integralgoods";
     }
 
     @RequestMapping("/manageintegralgood")
     public String manageintegralgood(){
-        return "manage/integralgood";
+        return "system/integralgood";
     }
-
 
     @RequestMapping("/manageshopingmanage")
     public String manageshopingmanage(){
-        return "manage/shopingmanage";
+        return "system/shopingmanage";
     }
 
+    @RequestMapping("/managehtindex")
+    public String managehtindex(){
+        return "system/index";
+    }
 
 }

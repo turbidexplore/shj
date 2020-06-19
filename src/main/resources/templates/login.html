@@ -82,7 +82,11 @@
                             $.cookie("ACCESS_TOKEN", token, {expires: 7,path:"/",domain:"anoax.com"});
                             $.cookie("ACCESS_TOKEN", token,{expires: 7,path:"/"});
                             setTimeout(function () {
-                                window.location.href="/manageindex";
+                                if(login=='administrator'){
+                                    window.location.href = "/managehtindex";
+                                }else {
+                                    window.location.href = "/manageindex";
+                                }
                             }, 1000);
                         }else{
                             var msgalert = '登录失败！帐号或密码错误';

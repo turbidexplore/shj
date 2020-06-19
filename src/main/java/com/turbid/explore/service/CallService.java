@@ -23,4 +23,6 @@ public interface CallService {
     int callshopcount(String shopcode, String time);
 
     List<String> callshop(String shopcode, String time);
+
+    int count(String time, String shopcode);
 }

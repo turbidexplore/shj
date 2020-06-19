@@ -45,5 +45,10 @@ public class VisitorServiceImpl implements VisitorService {
         return  visitorRepository.brandinfo(name);
     }
 
+    @Override
+    public int countByTime(String time) {
+        return  visitorRepository.countByTime(time);
+    }
+
 
 }

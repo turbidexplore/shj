@@ -33,4 +33,7 @@ public class IntegralGoodsOrder extends BaseEntity {
 
     @Column(name = "kdd")
     private String kdd;
+
+    @Column(name = "fhtime")
+    private String fhtime;
 }

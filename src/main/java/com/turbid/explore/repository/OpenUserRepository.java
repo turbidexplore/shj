@@ -1,7 +1,6 @@
 package com.turbid.explore.repository;
 
 import com.turbid.explore.pojo.OpenUser;
-import com.turbid.explore.pojo.UserSecurity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -15,7 +14,8 @@ public interface OpenUserRepository extends JpaRepository<OpenUser,String> {
 
     OpenUser findByOpenid(String openid);
 
-    int countByPhoneAndOpentype(String phone,String type);
+    @Query("select count(o) from OpenUser o where o.openid=:openid ")
+    int countByPhoneAndOpentype(@Param("openid")String openid);
 
     List<OpenUser> findByPhone(String name);
 

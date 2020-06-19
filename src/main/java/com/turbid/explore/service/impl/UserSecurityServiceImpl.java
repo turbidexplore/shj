@@ -65,4 +65,14 @@ public class UserSecurityServiceImpl implements UserSecurityService {
         return pages.getContent();
     }
 
+    @Override
+    public Long countAll() {
+        return userSecurityRepository.count();
+    }
+
+    @Override
+    public Long countByTime(String time) {
+        return userSecurityRepository.countByTime(time);
+    }
+
 }

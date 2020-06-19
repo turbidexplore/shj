@@ -29,4 +29,7 @@ public interface ShopService {
     List<Shop> findByText(String text, Integer page);
 
     int findByTextCount(String text);
+
+    Long countAll();
+
 }

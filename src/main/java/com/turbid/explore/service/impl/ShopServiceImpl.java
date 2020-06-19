@@ -110,4 +110,9 @@ public class ShopServiceImpl implements ShopService {
     public int findByTextCount(String text) {
         return shopRepositroy.searchcount(text);
     }
+
+    @Override
+    public Long countAll() {
+        return shopRepositroy.count();
+    }
 }

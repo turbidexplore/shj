@@ -20,4 +20,6 @@ public interface VisitorService {
     int companyCount(String code);
 
     List<BrandCountInfo> brandinfo(String name);
+
+    int countByTime(String time);
 }

@@ -41,9 +41,9 @@
           </form>
           <div class="nav-wrapper">
             <ul class="nav flex-column">
-              <li class="nav-item">
-                <a class="nav-link " href="/manageindex">
-                  <i class="material-icons">edit</i>
+              <li class="nav-item ">
+                <a class="nav-link " href="/managehtindex">
+                  <i class="material-icons">vertical_split</i>
                   <span>首页</span>
                 </a>
               </li>
@@ -54,9 +54,9 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link " href="/managebrands">
+                <a class="nav-link " href="/manageintegralgoods">
                   <i class="material-icons">vertical_split</i>
-                  <span>我的品牌</span>
+                  <span>积分商品管理</span>
                 </a>
               </li>
               <li class="nav-item active">
@@ -65,65 +65,22 @@
                   <span>积分商品发货管理</span>
                 </a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link " href="/managegoods">
-                  <i class="material-icons">vertical_split</i>
-                  <span>特价仓管理</span>
-                </a>
-              </li>
-              <li class="nav-item">
+              <li class="nav-item ">
                 <a class="nav-link " href="/managebanners">
                   <i class="material-icons">vertical_split</i>
                   <span>广告管理</span>
                 </a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link " href="/managestudys">
-                  <i class="material-icons">vertical_split</i>
-                  <span>课程管理</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link " href="/managecomments">
-                  <i class="material-icons">note_add</i>
-                  <span>评论管理</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link " href="/managecases">
-                  <i class="material-icons">vertical_split</i>
-                  <span>案例管理</span>
-                </a>
-              </li>
-              <li class="nav-item " >
+              <li class="nav-item ">
                 <a class="nav-link " href="/managenativecontent">
                   <i class="material-icons">note_add</i>
                   <span>内容中心</span>
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link " href="/manageshopfans">
-                  <i class="material-icons">table_chart</i>
-                  <span>粉丝管理</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link " href="/managecount">
-                  <i class="material-icons">view_module</i>
-                  <span>数据中心</span>
-                </a>
-              </li>
-
-              <li class="nav-item active">
-                <a class="nav-link " href="/managetables">
-                  <i class="material-icons">table_chart</i>
-                  <span>子账号管理</span>
-                </a>
-              </li>
-              <li class="nav-item ">
-                <a class="nav-link " href="/manageusercenter">
-                  <i class="material-icons">person</i>
-                  <span>账户信息</span>
+                <a class="nav-link " href="/managestudys">
+                  <i class="material-icons">vertical_split</i>
+                  <span>课程管理</span>
                 </a>
               </li>
             </ul>
@@ -146,7 +103,7 @@
               <ul class="navbar-nav border-left flex-row ">
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                    <img class="user-avatar rounded-circle mr-2" src="images/avatars/0.jpg" alt="User Avatar">
+                    <img class="user-avatar rounded-circle mr-2" src="../../static/images/avatars/0.jpg" alt="User Avatar">
                     <span class="d-none d-md-inline-block">用户名</span>
                   </a>
                   <div class="dropdown-menu dropdown-menu-small">
@@ -162,44 +119,82 @@
               </nav>
             </nav>
           </div>
-          <!-- / .main-navbar -->
-          <div class="main-content-container container-fluid px-4">
-            <!-- Page Header -->
-            <div class="page-header row no-gutters py-4">
-              <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
-                <span class="text-uppercase page-subtitle">Overview</span>
-                <h3 class="page-title">子账号管理</h3>
-              </div>
-            </div>
-            <!-- End Page Header -->
-            <!-- Default Light Table -->
-            <div class="row">
-              <div class="col">
-                <div class="card card-small mb-4">
-                  <div class="card-header border-bottom">
-                    <h6 class="m-0">用户列表&nbsp;<button  class="mb-2 btn btn-sm btn-primary mr-1" onclick="bd()" >新绑定子账号</button></h6>
-                  </div>
-                  <div class="card-body p-0 pb-3 text-center">
-                    <table class="table mb-0">
-                      <thead class="bg-light">
-                        <tr>
-                          <th scope="col" class="border-0">用户名</th>
-                          <th scope="col" class="border-0">姓名</th>
-                          <th scope="col" class="border-0">手机号码</th>
-                          <th scope="col" class="border-0">注册时间</th>
-                          <th scope="col" class="border-0">操作</th>
-                        </tr>
-                      </thead>
-                      <tbody id="dataview" >
+          <div class="layui-tab">
+            <ul class="layui-tab-title">
+              <li class="layui-this">未发货列表</li>
+              <li>已发货列表</li>
 
-                      </tbody>
-                    </table>
-                    <div id="pages"></div>
+            </ul>
+            <div class="layui-tab-content">
+              <div class="layui-tab-item layui-show">
+                <div class="main-content-container container-fluid px-4">
+                  <!-- End Page Header -->
+                  <!-- Default Light Table -->
+                  <div class="row">
+                    <div class="col">
+                      <div class="card card-small mb-4">
+                        <div class="card-header border-bottom">
+                          <h6 class="m-0">未发货列表</h6>
+                        </div>
+                        <div class="card-body p-0 pb-3 text-center">
+                          <table class="table mb-0">
+                            <thead class="bg-light">
+                            <tr>
+                              <th scope="col" class="border-0">用户名</th>
+                              <th scope="col" class="border-0">商品信息</th>
+                              <th scope="col" class="border-0">发货信息</th>
+                              <th scope="col" class="border-0">兑换时间</th>
+                              <th scope="col" class="border-0">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody id="dataview" >
+
+                            </tbody>
+                          </table>
+                          <div id="pages"></div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
+              <div class="layui-tab-item">
+                <div class="main-content-container container-fluid px-4">
+                <!-- End Page Header -->
+                <!-- Default Light Table -->
+                <div class="row">
+                  <div class="col">
+                    <div class="card card-small mb-4">
+                      <div class="card-header border-bottom">
+                        <h6 class="m-0">已发货列表</h6>
+                      </div>
+                      <div class="card-body p-0 pb-3 text-center">
+                        <table class="table mb-0">
+                          <thead class="bg-light">
+                          <tr>
+                            <th scope="col" class="border-0">用户名</th>
+                            <th scope="col" class="border-0">商品信息</th>
+                            <th scope="col" class="border-0">发货信息</th>
+                            <th scope="col" class="border-0">兑换时间</th>
+                            <th scope="col" class="border-0">发货时间</th>
+                          </tr>
+                          </thead>
+                          <tbody id="dataviewa" >
+
+                          </tbody>
+                        </table>
+                        <div id="pagesa"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              </div>
+
             </div>
           </div>
+          <!-- / .main-navbar -->
+
         </main>
       </div>
     </div>
@@ -211,15 +206,54 @@
      <script src="../layui/layui.js"></script>
 
   <script>
+
+    layui.use('element', function(){
+      var $ = layui.jquery
+              ,element = layui.element; //Tab的切换功能，切换事件监听等，需要依赖element模块
+
+      //触发事件
+      var active = {
+        tabAdd: function(){
+          //新增一个Tab项
+          element.tabAdd('demo', {
+            title: '新选项'+ (Math.random()*1000|0) //用于演示
+            ,content: '内容'+ (Math.random()*1000|0)
+            ,id: new Date().getTime() //实际使用一般是规定好的id，这里以时间戳模拟下
+          })
+        }
+        ,tabDelete: function(othis){
+          //删除指定Tab项
+          element.tabDelete('demo', '44'); //删除：“商品管理”
+
+
+          othis.addClass('layui-btn-disabled');
+        }
+        ,tabChange: function(){
+          //切换到指定Tab项
+          element.tabChange('demo', '22'); //切换到：用户管理
+        }
+      };
+
+      $('.site-demo-active').on('click', function(){
+        var othis = $(this), type = othis.data('type');
+        active[type] ? active[type].call(this, othis) : '';
+      });
+
+      //Hash地址的定位
+      var layid = location.hash.replace(/^#test=/, '');
+      element.tabChange('test', layid);
+
+      element.on('tab(test)', function(elem){
+        location.hash = 'test='+ $(this).attr('lay-id');
+      });
+
+    });
+
     var index=0;
     function find(page) {
-      var text='';
-      if($("#text").val()!=''&&$("#text").val()!=null){
-        text="&text="+$("#text").val();
-      }
       $.ajax({
         type: 'GET',
-        url : "/user/shopusers?page="+page+text,
+        url : "/shoping/getintegralgoodsorder?page="+page+"&status=1",
         async: true,
         crossDomain: true,
         headers: {
@@ -230,16 +264,14 @@
       }).done(function(result) {
         $("#dataview").html("");
         result.data.forEach(function (v,i) {
-          var shopuserinfo= "<td><button type=\"button\" class=\"mb-2 btn btn-sm btn-danger mr-1\" onclick=\"delguanlian(\'"+v.code+"')\">取消绑定</button></td>";
-          if(v.code==result.message){
-            var shopuserinfo= "<td><span style='font-weight: bold;color: orange;border: orange 1px solid;'>&nbsp;&nbsp;管理员&nbsp;&nbsp;</span></td>";
-          }
-          $("#dataview").append('<tr>'+
-                  ' <td><img src="'+v.userBasic.headportrait+'" style="width:30px;" class=" rounded-circle"> '+v.userBasic.nikename+'</td>'+
-                  '<td>'+v.userAuth.name+'</td>'+
-                  '<td>'+v.phonenumber+'</td>'+
+          var img=v.integralGoods.imgs.split(",")[0];
+          console.log(v);
+          $("#dataview").append('<tr id="'+v.code+'">'+
+                  ' <td><img src="'+v.userSecurity.userBasic.headportrait+'" style="width:30px;" class=" rounded-circle"> '+v.userSecurity.userBasic.nikename+'</td>'+
+                  '<td style="font-weight: bold;">'+v.integralGoods.title+' | '+v.integralGoods.price+'积分<br><img src="'+img+'" style="width:80px;" ></td>'+
+                  '<td style="text-align: left;padding-left: 100px;">'+v.address.name+'&nbsp;'+v.address.phone+'<br>'+v.address.province+'&nbsp;'+v.address.city+'&nbsp;'+v.address.area+'<br>'+v.address.address+'</td>'+
                   '<td>'+v.addftime+'</td>'+
-                   shopuserinfo+
+                  "<td><button type=\"button\" class=\"mb-2 btn btn-sm btn-success mr-1\" onclick=\"fh('"+v.code+"')\">发货</button></td>"+
                   '</tr>')
         });
       });
@@ -248,14 +280,9 @@
     layui.use(['laypage', 'layer'], function(){
       var laypage = layui.laypage
               ,layer = layui.layer;
-
-      var text='';
-      if($("#text").val()!=''&&$("#text").val()!=null){
-        text="?text="+$("#text").val();
-      }
       $.ajax({
         type: 'GET',
-        url : "/user/shopuserscount"+text,
+        url : "/shoping/getintegralgoodsordercount?status=1",
         async: true,
         crossDomain: true,
         headers: {
@@ -276,61 +303,34 @@
       });
     });
 
-    function delguanlian(code) {
-      $.ajax({
-        type: 'PUT',
-        url : "/user/delshopuser?code="+code,
-        async: true,
-        crossDomain: true,
-        headers: {
-          "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
-          "cache-control": "no-cache",
-          "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
-        }
-      }).done(function(result) {
-        layer.msg("取消绑定成功！");
-        find(index);
-      });
-    }
-    var viewa;
-    function bd() {
-      var html="<p><input id='serchuser' type='text' oninput='serchuser(this)' placeholder='搜索手机号码' class='navbar-search form-control'></p>"
-      +"<div id='userview'></div>";
+    function fh(code) {
       layui.use("layer", function () {
-        viewa= layer.open({
-          type: 1,
-          title: "新增绑定账号【用户需在APP注册且认证成功】",
-          skin: 'layui-layer-rim', //加上边框
-          area: ['600px', '400px'], //宽高
-          content: html
+        layer.prompt({title: '请输入快递单号', formType: 2}, function(text, index){
+          $.ajax({
+            type: 'PUT',
+            url : "/shoping/integralgoodsorderfh?code="+code+"&kdd="+text,
+            async: true,
+            crossDomain: true,
+            headers: {
+              "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
+              "cache-control": "no-cache",
+              "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
+            }
+          }).done(function(result) {
+            $("#"+code).remove();
+            layer.close(index);
+            lay.msg("订单编号填写成功！发货中");
+          });
         });
       });
     }
-    
-    function serchuser(obj) {
-    $.ajax({
-        type: 'GET',
-        url : "/user/finduserbyphone?phone="+$(obj).val(),
-        async: true,
-        crossDomain: true,
-        headers: {
-          "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
-          "cache-control": "no-cache",
-          "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
-        }
-      }).done(function(result) {
-        $("#userview").html("");
-        result.data.forEach(function (v,i) {
-          $("#userview").append("<div style='width: 23%;margin:1%;padding: 10px;float: left;border: grey 1px solid;'><button type=\"button\" class=\"mb-2 btn btn-outline-success mr-2\" onclick=\"guanlian('"+v.code+"')\">绑定子账号</button><br><img src='"+v.userBasic.headportrait+"' style='width:30px;' class='rounded-circle'/><strong> "+v.userAuth.name+"</strong><br>"+v.phonenumber+"</div>");
-        })
-      });
-    }
-    
-    
-    function guanlian(code) {
+
+
+    var indexa=0;
+    function finda(page) {
       $.ajax({
-        type: 'PUT',
-        url : "/user/addshopuser?code="+code,
+        type: 'GET',
+        url : "/shoping/getintegralgoodsorder?page="+page+"&status=2",
         async: true,
         crossDomain: true,
         headers: {
@@ -339,11 +339,45 @@
           "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
         }
       }).done(function(result) {
-        layer.close(viewa);
-        layer.msg("绑定成功！");
-        find(index);
+        $("#dataviewa").html("");
+        result.data.forEach(function (v,i) {
+          var img=v.integralGoods.imgs.split(",")[0];
+          $("#dataviewa").append('<tr id="'+v.code+'">'+
+                  ' <td><img src="'+v.userSecurity.userBasic.headportrait+'" style="width:30px;" class=" rounded-circle"> '+v.userSecurity.userBasic.nikename+'</td>'+
+                  '<td style="font-weight: bold;">'+v.integralGoods.title+' | '+v.integralGoods.price+'积分<br><img src="'+img+'" style="width:80px;" ></td>'+
+                  '<td style="text-align: left;padding-left: 100px;">'+v.address.name+'&nbsp;'+v.address.phone+'<br>'+v.address.province+'&nbsp;'+v.address.city+'&nbsp;'+v.address.area+'<br>'+v.address.address+'</td>'+
+                  '<td>'+v.addftime+'</td>'+
+                  "<td>"+v.fhtime+"</td>"+
+                  '</tr>')
+        });
       });
     }
+
+    layui.use(['laypage', 'layer'], function(){
+      var laypage = layui.laypage
+              ,layer = layui.layer;
+      $.ajax({
+        type: 'GET',
+        url : "/shoping/getintegralgoodsordercount?status=2",
+        async: true,
+        crossDomain: true,
+        headers: {
+          "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
+          "cache-control": "no-cache",
+          "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
+        }
+      }).done(function(result) {
+        laypage.render({
+          elem: 'pagesa'
+          ,count: result.data
+          ,theme: '#FF5722'
+          ,jump: function(obj, first){
+            index=obj.curr-1;
+            finda(obj.curr-1);
+          }
+        });
+      });
+    });
 
   </script>
   </body>

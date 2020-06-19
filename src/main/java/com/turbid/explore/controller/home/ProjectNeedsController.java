@@ -185,6 +185,7 @@ public class ProjectNeedsController {
             call.setCalluserhredimg(calluserinfo.getUserBasic().getHeadportrait());
             call.setCallusertype(calluserinfo.getType().toString());
 
+
             ProjectNeeds projectNeeds=projectNeedsService.getNeedsByCode(needscode);
             if(null==projectNeeds.getChatcount()||0==projectNeeds.getChatcount()){
                 projectNeeds.setChatcount(1);

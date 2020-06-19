@@ -37,4 +37,7 @@ public interface UserSecurityRepository extends JpaRepository<UserSecurity,Strin
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
     @Query("SELECT u from UserSecurity u where (u.phonenumber LIKE CONCAT('%',:phone,'%') or :phone is null ) and u.userAuth.name is not null and u.shopcode is null ")
     Page<UserSecurity> findByUserSecurityPhone(Pageable pageable,@Param("phone") String phone);
+
+    @Query("select count (v) from UserSecurity v where (v.create_time LIKE CONCAT('%',:time,'%') or :time is null )")
+    Long countByTime(@Param("time") String time);
 }

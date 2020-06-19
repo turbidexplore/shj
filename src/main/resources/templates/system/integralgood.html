@@ -44,9 +44,9 @@
           </form>
           <div class="nav-wrapper">
             <ul class="nav flex-column">
-              <li class="nav-item">
-                <a class="nav-link " href="/manageindex">
-                  <i class="material-icons">edit</i>
+              <li class="nav-item ">
+                <a class="nav-link " href="/managehtindex">
+                  <i class="material-icons">vertical_split</i>
                   <span>首页</span>
                 </a>
               </li>
@@ -57,69 +57,33 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link " href="/managebrands">
+                <a class="nav-link active" href="/manageintegralgoods">
                   <i class="material-icons">vertical_split</i>
-                  <span>我的品牌</span>
+                  <span>积分商品管理</span>
                 </a>
               </li>
-              <li class="nav-item active">
-                <a class="nav-link " href="/managegoods">
-                  <i class="material-icons">vertical_split</i>
-                  <span>特价仓管理</span>
+              <li class="nav-item ">
+                <a class="nav-link " href="/manageshopingmanage">
+                  <i class="material-icons">table_chart</i>
+                  <span>积分商品发货管理</span>
                 </a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item ">
                 <a class="nav-link " href="/managebanners">
                   <i class="material-icons">vertical_split</i>
                   <span>广告管理</span>
                 </a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link " href="/managestudys">
-                  <i class="material-icons">vertical_split</i>
-                  <span>课程管理</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link " href="/managecomments">
-                  <i class="material-icons">note_add</i>
-                  <span>评论管理</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link " href="/managecases">
-                  <i class="material-icons">vertical_split</i>
-                  <span>案例管理</span>
-                </a>
-              </li>
-              <li class="nav-item">
+              <li class="nav-item ">
                 <a class="nav-link " href="/managenativecontent">
                   <i class="material-icons">note_add</i>
                   <span>内容中心</span>
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link " href="/manageshopfans">
-                  <i class="material-icons">table_chart</i>
-                  <span>粉丝管理</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link " href="/managecount">
-                  <i class="material-icons">view_module</i>
-                  <span>数据中心</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link " href="/managetables">
-                  <i class="material-icons">table_chart</i>
-                  <span>子账号管理</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link " href="/manageusercenter">
-                  <i class="material-icons">person</i>
-                  <span>账户信息</span>
+                <a class="nav-link " href="/managestudys">
+                  <i class="material-icons">vertical_split</i>
+                  <span>课程管理</span>
                 </a>
               </li>
             </ul>
@@ -308,6 +272,7 @@
       var content = CKEDITOR.instances.newsMatter.getData();
       content=content.replace(/&ldquo;/g,'\"');//转义&ldquo; 左双引号
       content=content.replace(/&rdquo;/g,'\"');//转义&ldquo; 右双引号
+      content=content.replace(new RegExp("height",("gm")),'width');//转义&ldquo; 右双引号
       if ($("#title").val() == "" || $("#title").val() == null) {
         layui.use("layer",function() {
           layer.msg('请输入标题');

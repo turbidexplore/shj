@@ -63,4 +63,9 @@ public class BrandServiceImpl implements BrandService {
     public void remove(String code) {
         brandRepositroy.deleteById(code);
     }
+
+    @Override
+    public Long countAll() {
+        return brandRepositroy.count();
+    }
 }

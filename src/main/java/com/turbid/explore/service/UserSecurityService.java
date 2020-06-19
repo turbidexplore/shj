@@ -23,4 +23,8 @@ public interface UserSecurityService {
     int shopuserscount(String code, String text);
 
     List<UserSecurity> finduserbyphone(String phone);
+
+    Long countAll();
+
+    Long countByTime(String time);
 }

@@ -79,15 +79,9 @@
           <div class="nav-wrapper">
             <ul class="nav flex-column">
               <li class="nav-item">
-                <a class="nav-link " href="/manageindex">
+                <a class="nav-link" href="/manageindex">
                   <i class="material-icons">edit</i>
                   <span>首页</span>
-                </a>
-              </li>
-              <li class="nav-item ">
-                <a class="nav-link " href="/manageuser">
-                  <i class="material-icons">table_chart</i>
-                  <span>企业管理</span>
                 </a>
               </li>
               <li class="nav-item">
@@ -97,39 +91,21 @@
                 </a>
               </li>
               <li class="nav-item">
+                <a class="nav-link " href="/managecases">
+                  <i class="material-icons">vertical_split</i>
+                  <span>案例管理</span>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link " href="/managegoods">
                   <i class="material-icons">vertical_split</i>
                   <span>特价仓管理</span>
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link " href="/managebanners">
-                  <i class="material-icons">vertical_split</i>
-                  <span>广告管理</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link " href="/managestudys">
-                  <i class="material-icons">vertical_split</i>
-                  <span>课程管理</span>
-                </a>
-              </li>
-              <li class="nav-item">
                 <a class="nav-link " href="/managecomments">
                   <i class="material-icons">note_add</i>
                   <span>评论管理</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link " href="/managecases">
-                  <i class="material-icons">vertical_split</i>
-                  <span>案例管理</span>
-                </a>
-              </li>
-              <li class="nav-item " >
-                <a class="nav-link " href="/managenativecontent">
-                  <i class="material-icons">note_add</i>
-                  <span>内容中心</span>
                 </a>
               </li>
               <li class="nav-item">
@@ -144,7 +120,7 @@
                   <span>数据中心</span>
                 </a>
               </li>
-              <li class="nav-item ">
+              <li class="nav-item">
                 <a class="nav-link " href="/managetables">
                   <i class="material-icons">table_chart</i>
                   <span>子账号管理</span>
@@ -261,7 +237,14 @@
                                 <textarea disabled="" class="form-control" id="introduce" rows="4"></textarea>
                               </div>
                             </div>
-
+                            <div class="form-row">
+                              <div class="form-group col-md-5">
+                                <label for="shopcreatetime">公司创立时间</label>
+                                <input type="text" class="form-control" id="shopcreatetime" placeholder="公司创立时间" value=""> </div>
+                              <div class="form-group col-md-5">
+                                <label for="jmcount">加盟数量</label>
+                                <input type="text" class="form-control" id="jmcount" placeholder="加盟数量" value=""> </div>
+                            </div>
                           </form>
                         </div>
                       </div>
@@ -288,7 +271,7 @@
                             <div class="form-row">
                               <div class="form-group col-md-6">
                                 <label for="contactphone">手机号码</label>
-                                <input type="text" disabled="" class="form-control" id="contactphone" placeholder="请输入手机号码">
+                                <input type="text"  class="form-control" id="contactphone" placeholder="请输入手机号码">
                               </div>
                               <div class="form-group col-md-6">
                                 <label for="idcard">身份证号码</label>
@@ -389,6 +372,8 @@
         }).done(function(result) {
                    $("#city").val(result.data.city);
                    $("#name").val(result.data.name);
+                   $("#shopcreatetime").val(result.data.shopcreatetime);
+                   $("#jmcount").val(result.data.jmcount);
                    $("#introduce").val(result.data.introduce);
                    $("#businesslicenseimg").attr('src',result.data.businesslicense);
                    $("#logoimg").attr('src',result.data.logo);
@@ -882,6 +867,14 @@
             layui.use("layer",function() {
               layer.msg('请输入上传商铺logo');
             });return false;
+          }else if ($("#shopcreatetime").val() == "" || $("#shopcreatetime").val() == null) {
+            layui.use("layer",function() {
+              layer.msg('请输入公司创立时间');
+            }); return false;
+          } else if ($("#jmcount").val() == "" || $("#jmcount").val() == null) {
+            layui.use("layer",function() {
+              layer.msg('请输入加盟数量');
+            }); return false;
           }
 
           var bannerviewimg='';
@@ -945,6 +938,8 @@
                   "unifiedcreditcode": $("#unifiedcreditcode").val()
                   ,"vrweb": $("#vrweb").val()
                   ,"bzj": $("#bzj").val()
+                  ,"shopcreatetime": $("#shopcreatetime").val()
+                  ,"jmcount": $("#jmcount").val()
                 }),
                 processData: false,
                 contentType: "application/json; charset=UTF-8",

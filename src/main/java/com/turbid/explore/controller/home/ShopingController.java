@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import java.security.Principal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Api(description = "积分商城模块")
 @RestController
@@ -128,10 +130,32 @@ public class ShopingController {
     }
 
 
-    @ApiOperation(value = "查询快递轨迹")
+    @ApiOperation(value = "查询发货信息")
     @GetMapping(value = "/getintegralgoodsorder")
-    public Mono<Info> getintegralgoodsorder() {
-        return Mono.just(Info.SUCCESS(null));
+    public Mono<Info> getintegralgoodsorder(Principal principal,@RequestParam("page")Integer page,@RequestParam("status")Integer status) {
+        Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
+        Page<IntegralGoodsOrder> pages=  integralGoodsOrderRepository.findByPage(pageable,status);
+        return Mono.just(Info.SUCCESS( pages.getContent()));
+    }
+
+    @ApiOperation(value = "查询发货信息")
+    @GetMapping(value = "/getintegralgoodsordercount")
+    public Mono<Info> getintegralgoodsordercount(Principal principal,@RequestParam("status")Integer status) {
+
+        return Mono.just(Info.SUCCESS( integralGoodsOrderRepository.integralgoodsordercount(status)));
+    }
+
+
+    @ApiOperation(value = "发货")
+    @PutMapping(value = "/integralgoodsorderfh")
+    public Mono<Info> integralgoodsorderfh(Principal principal,@RequestParam("code")String code,@RequestParam("kdd")String kdd) {
+       IntegralGoodsOrder integralGoodsOrder= integralGoodsOrderRepository.getOne(code);
+       integralGoodsOrder.setKdd(kdd);
+       integralGoodsOrder.setStatus(2);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateStr = sdf.format(new Date());
+       integralGoodsOrder.setFhtime(dateStr);
+        return Mono.just(Info.SUCCESS( integralGoodsOrderRepository.saveAndFlush(integralGoodsOrder)));
     }
 
     @ApiOperation(value = "兑换积分商品")

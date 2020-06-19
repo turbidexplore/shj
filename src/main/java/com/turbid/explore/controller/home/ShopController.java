@@ -294,8 +294,8 @@ public class ShopController {
             item.put("investmentamount",v.getBzj());
             item.put("showimg",v.getCompany_show());
             item.put("shopcode",v.getCode());
-            item.put("shopcount",50);
-            item.put("dateofestablishment","2018-08-01");
+            item.put("shopcount",v.getJmcount());
+            item.put("dateofestablishment",v.getShopcreatetime());
             try {
                 if(null!=v.getMargin()&&!"".equals(v.getMargin())&&!v.getMargin().equals(null)) {
                     item.put("bzj", v.getMargin());

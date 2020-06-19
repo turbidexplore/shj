@@ -3,8 +3,14 @@ package com.turbid.explore.controller.home;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.ImmutableMap;
+import com.turbid.explore.pojo.Call;
+import com.turbid.explore.pojo.CallCount;
+import com.turbid.explore.pojo.ProjectNeeds;
+import com.turbid.explore.pojo.UserSecurity;
 import com.turbid.explore.pojo.bo.Message;
+import com.turbid.explore.repository.CallCountRepository;
 import com.turbid.explore.repository.NoticeRepository;
+import com.turbid.explore.service.UserSecurityService;
 import com.turbid.explore.tools.CodeLib;
 import com.turbid.explore.tools.Info;
 import com.turbid.explore.tools.TLSSigAPIv2;
@@ -172,5 +178,39 @@ public class IMController {
         data.put("sys",sys);
         data.put("msg",msg);
         return Mono.just(Info.SUCCESS(data));
+    }
+
+    @Autowired
+    private UserSecurityService userSecurityService;
+
+    @Autowired
+    private CallCountRepository callCountRepository;
+
+
+    @ApiOperation(value = "联系", notes="联系 0需求查看 \n" +
+            "1需求企业推荐\n" +
+            "2新品招商\n" +
+            "3特价仓详情\n" +
+            "4企业主页")
+    @PostMapping(value = "/call")
+    public Mono<Info> call(Principal principal,@RequestParam(name = "usercode")String usercode,@RequestParam(name = "type")String type,@RequestParam("shopcode")String shopcode) {
+        try {
+            CallCount call=new CallCount();
+            UserSecurity userinfo= userSecurityService.findByPhone(principal.getName());
+            call.setUsercode(userinfo.getCode());
+            call.setUsername(userinfo.getUserBasic().getNikename());
+            call.setUserhredimg(userinfo.getUserBasic().getHeadportrait());
+            call.setUsertype(userinfo.getType().toString());
+            UserSecurity calluserinfo= userSecurityService.findByCode(usercode);
+            call.setCallusercode(calluserinfo.getCode());
+            call.setCallusername(calluserinfo.getUserBasic().getNikename());
+            call.setCalluserhredimg(calluserinfo.getUserBasic().getHeadportrait());
+            call.setCallusertype(calluserinfo.getType().toString());
+            call.setType(type);
+            call.setShopcode(shopcode);
+            return Mono.just(Info.SUCCESS(callCountRepository.saveAndFlush(call)));
+        }catch (Exception e){
+            return Mono.just(Info.SUCCESS(e.getMessage()));
+        }
     }
 }

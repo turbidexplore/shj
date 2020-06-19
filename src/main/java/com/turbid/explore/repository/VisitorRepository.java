@@ -25,4 +25,7 @@ public interface VisitorRepository extends JpaRepository<Visitor,String> {
     List<BrandCountInfo> brandinfo(@Param("name") String name);
 
     int countByShopcode(String code);
+
+    @Query("select count (v) from Visitor v where (v.create_time LIKE CONCAT('%',:time,'%') or :time is null )")
+    int countByTime(@Param("time") String time);
 }

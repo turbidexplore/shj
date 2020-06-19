@@ -154,7 +154,14 @@
                                 <textarea class="form-control" id="introduce" rows="4"></textarea>
                               </div>
                             </div>
-
+                            <div class="form-row">
+                              <div class="form-group col-md-5">
+                                <label for="shopcreatetime">公司创立时间</label>
+                                <input type="text" class="form-control" id="shopcreatetime" placeholder="公司创立时间" value=""> </div>
+                              <div class="form-group col-md-5">
+                                <label for="jmcount">加盟数量</label>
+                                <input type="text" class="form-control" id="jmcount" placeholder="加盟数量" value=""> </div>
+                            </div>
                           </form>
                         </div>
                       </div>
@@ -748,7 +755,15 @@
           layui.use("layer",function() {
             layer.msg('请输入验证码');
           }); return false;
-        }
+        }else if ($("#shopcreatetime").val() == "" || $("#shopcreatetime").val() == null) {
+         layui.use("layer",function() {
+           layer.msg('请输入公司创立时间');
+         }); return false;
+       } else if ($("#jmcount").val() == "" || $("#jmcount").val() == null) {
+         layui.use("layer",function() {
+           layer.msg('请输入加盟数量');
+         }); return false;
+       }
         $.ajax({
           type: 'POST',
           url : "/user/check?phone="+$("#contactphone").val()+"&sms="+$("#smscode").val(),
@@ -816,6 +831,8 @@
                   "unifiedcreditcode": $("#unifiedcreditcode").val()
                   ,"vrweb": $("#vrweb").val()
                   ,"bzj": $("#bzj").val()
+                  ,"shopcreatetime": $("#shopcreatetime").val()
+                  ,"jmcount": $("#jmcount").val()
                 }),
                 processData: false,
                 contentType: "application/json; charset=UTF-8",

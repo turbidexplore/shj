@@ -15,10 +15,6 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -319,7 +315,7 @@ public class UserController {
     public Mono<Info> addopenuser(@RequestParam("phone")String phone,@RequestParam("smscode")String smscode,@RequestParam("openid")String openid,@RequestParam("opentype")String opentype,@RequestParam("os")String os){
         if(checkService.findMessagesByMebileAndAuthode(phone,smscode)>0) {
             UserSecurity userSecurity =userSecurityService.findByPhone(phone);
-            if(0<openUserRepository.countByPhoneAndOpentype(phone,opentype)){
+            if(0<openUserRepository.countByPhoneAndOpentype(openid)){
                 return Mono.just(Info.ERROR("该用户已绑定第三方账号"));
             }
             OpenUser openUser=new OpenUser();
@@ -686,7 +682,7 @@ public class UserController {
     @PutMapping(value = "/addopen")
     @Transactional
     public Mono<Info> addopenuser(Principal principal,@RequestParam("openid")String openid,@RequestParam("opentype")String opentype)  {
-        if(0<openUserRepository.countByPhoneAndOpentype(principal.getName(),opentype)){
+        if(0<openUserRepository.countByPhoneAndOpentype(openid)){
             return Mono.just(Info.ERROR("该用户已绑定第三方账号"));
         }
         OpenUser openUser=new OpenUser();

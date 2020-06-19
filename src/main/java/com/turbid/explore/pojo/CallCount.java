@@ -7,9 +7,9 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@Table(name = "callinfo")
+@Table(name = "callcountinfo")
 @JsonIgnoreProperties(value = { "hibernateEAGERInitializer"})
-public class Call extends BaseEntity{
+public class CallCount extends BaseEntity{
 
     @Column(name="username")
     private String username;
@@ -38,10 +38,12 @@ public class Call extends BaseEntity{
     @Column(name="type")
     private String type;
 
-    @ManyToOne(cascade= CascadeType.ALL,fetch= FetchType.LAZY)
-    @JoinColumn(name="projectinfo")
-    private ProjectNeeds projectinfo;
+    @Column(name="rcode")
+    private String rcode;
 
-    public Call() {
+    @Column(name="shopcode")
+    private String shopcode;
+
+    public CallCount() {
     }
 }

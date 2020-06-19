@@ -49,40 +49,10 @@
                   <span>首页</span>
                 </a>
               </li>
-              <li class="nav-item ">
-                <a class="nav-link " href="/manageuser">
-                  <i class="material-icons">table_chart</i>
-                  <span>企业管理</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active" href="/managebrands">
+              <li class="nav-item active">
+                <a class="nav-link " href="/managebrands">
                   <i class="material-icons">vertical_split</i>
                   <span>我的品牌</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link " href="/managegoods">
-                  <i class="material-icons">vertical_split</i>
-                  <span>特价仓管理</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link " href="/managebanners">
-                  <i class="material-icons">vertical_split</i>
-                  <span>广告管理</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link " href="/managestudys">
-                  <i class="material-icons">vertical_split</i>
-                  <span>课程管理</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link " href="/managecomments">
-                  <i class="material-icons">note_add</i>
-                  <span>评论管理</span>
                 </a>
               </li>
               <li class="nav-item">
@@ -92,9 +62,15 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link " href="/managenativecontent">
+                <a class="nav-link " href="/managegoods">
+                  <i class="material-icons">vertical_split</i>
+                  <span>特价仓管理</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="/managecomments">
                   <i class="material-icons">note_add</i>
-                  <span>内容中心</span>
+                  <span>评论管理</span>
                 </a>
               </li>
               <li class="nav-item">
@@ -348,6 +324,7 @@
       var data=CKEDITOR.instances[$textarea.attr('name')].getData();
       data=data.replace(/&ldquo;/g,'\"');//转义&ldquo; 左双引号
       data=data.replace(/&rdquo;/g,'\"');//转义&ldquo; 右双引号
+
       $textarea.val(data);
     });
 
@@ -356,6 +333,7 @@
       var content = CKEDITOR.instances.newsMatter.getData();
       content=content.replace(/&ldquo;/g,'\"');//转义&ldquo; 左双引号
       content=content.replace(/&rdquo;/g,'\"');//转义&ldquo; 右双引号
+      content=content.replace(new RegExp("height",("gm")),'width');//转义&ldquo; 右双引号
       if ($("#name").val() == "" || $("#name").val() == null) {
         layui.use("layer",function() {
           layer.msg('请输入品牌名称');

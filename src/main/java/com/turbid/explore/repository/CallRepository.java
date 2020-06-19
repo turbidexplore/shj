@@ -41,4 +41,5 @@ public interface CallRepository extends JpaRepository<Call,String> {
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
     @Query("SELECT c.userhredimg from Call c where c.callusercode in(select u.code from UserSecurity u where u.shopcode=:shopcode) and (c.create_time LIKE CONCAT('%',:time,'%') or :time is null ) ")
     Page<String> callshop(Pageable pageable, @Param("shopcode") String shopcode, @Param("time") String time);
+
 }
