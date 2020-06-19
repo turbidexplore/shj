@@ -77,7 +77,7 @@ public class CountController {
                 }
                 System.out.println(stime);
                 atime.add(stime.replace(time+"-",""));
-                adata.add(callCountRepository.callshopcount(stime, shopcode));
+                adata.add(callCountRepository.callshopcount(shopcode,stime));
             }
         }else if(time.length()==7){
             int count=30;
@@ -95,7 +95,7 @@ public class CountController {
                 }
                 System.out.println(stime);
                 atime.add(stime.replace(time+"-",""));
-                adata.add(callCountRepository.callshopcount(stime, shopcode));
+                adata.add(callCountRepository.callshopcount(shopcode,stime));
             }
         }else if(time.length()==10){
             for (int i = 1; i <=24; i++) {
@@ -106,7 +106,7 @@ public class CountController {
                     stime=stime+" "+i;
                 }
                 System.out.println(stime);
-                adata.add(callCountRepository.callshopcount(stime, shopcode));
+                adata.add(callCountRepository.callshopcount(shopcode,stime));
                 atime.add(stime.replace(time,""));
             }
         }else {
@@ -114,7 +114,7 @@ public class CountController {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
                 String dateStr = sdf.format(new Date());
                 atime.add(Integer.parseInt(dateStr)-i);
-                adata.add( callCountRepository.callshopcount(String.valueOf(Integer.parseInt(dateStr)-i), shopcode));
+                adata.add( callCountRepository.callshopcount( shopcode,String.valueOf(Integer.parseInt(dateStr)-i)));
 
             }
         }
