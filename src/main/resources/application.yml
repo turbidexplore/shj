@@ -1,5 +1,5 @@
 server:
-  port: 10003
+  port: 10002
 
 spring:
   application:
@@ -21,7 +21,7 @@ spring:
       maxRequestSize: 200MB
       enabled: true
   datasource:
-    url: jdbc:mysql://47.96.88.206:3306/shj_data?useUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://47.96.88.206:3306/jxkj?useUnicode=true&characterEncoding=utf8
     type: com.alibaba.druid.pool.DruidDataSource
     username: root
     password: shj123
@@ -83,3 +83,6 @@ com:
       appid: 1400284009
       appkey: 39932b40c6bbdad0ca10da22888660b0
       smsSign: 设汇家
+#  2c907355727dd90501727e6dd5c80037	2020-06-19 11:10:06		https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/public/202006051006425337982812492938579.png,https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/public/202006051006494894065110516344223.png	https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/public/202006041607362812221995969324817.png	生产、销售：家具、家具材料、五金配件；国内商业、物资供销业。（依法须经批准的项目，经相关部门批准后方可开展经营活动）	佛山市	https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/public/202006051925352720745651132836736.jpg,https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/public/202006051925583232105913695068458.jpg,https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/public/202006051926137476730880787957410.jpg,https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/public/202006051926237030713070197695508.jpg,https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/public/202006051926365850475269381457475.jpg,https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/public/202006051926438031685282138683610.jpg,https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/public/202006051926598818130213957021911.jpg,https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/public/202006051927194387556772886334754.jpg	佛山市顺德区龙江镇东涌居委会涌口工业区东竣路4号首层（住所申报）	佛山市御悦臻品家具有限公司	湖南省邵东县黑田铺乡木塘村1组1号	2861616766@qq.com	谢连喜	18942429455	430521197901212395	https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/public/202006041609031064016770136495233.png	https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/public/202006041609098839261909244785790.png	"佛山市御悦臻品家具有限公司 位于“家具市场”--广东顺德，旗下两大品牌：【欧意公馆】【御悦臻品】是一家集设计、制造、销售、服务为一体的欧式家具生产企业，现有专卖店160多家。公司以“心诚于客户，优质于市场，服务赢市场”的理念，不断强化企业管理，引进现代化的生产设备，依靠先进技术不断改进，锐意创新从而提高市场竞争力，采用国际时尚的设计风格，产品高贵大气、端庄典雅、简约时尚。为客户营造富有格调的理想家居。
+#
+#  御悦臻品坚信企业的竞争就是人才的竞争，专业的设计队伍、高素质的管理人才、不断提高的销售业绩以及良好的品牌口碑，成为御悦臻品发展的基石，御悦臻品将全方位整合技术、生产、营销和服务优势，让御悦臻品走进千家万户！"		新古典,新中式,成品家具	https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/public/20200604161238716331002455647957.png	91440606MA54CYN71X	2c907355727dd90501727e6dd3a20036			高端定制馆	1				""	御悦臻品		""			180	2016年
