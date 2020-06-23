@@ -75,4 +75,16 @@ public class UserSecurityServiceImpl implements UserSecurityService {
         return userSecurityRepository.countByTime(time);
     }
 
+    @Override
+    public List<UserSecurity> alluserbypage(Integer page, String text) {
+        Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
+        Page<UserSecurity> pages=  userSecurityRepository.alluserbypage(pageable,text);
+        return pages.getContent();
+    }
+
+    @Override
+    public int allusercount(String text) {
+        return userSecurityRepository.allusercount(text);
+    }
+
 }

@@ -63,7 +63,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" href="/manageintegralgoods">
+                <a class="nav-link " href="/manageintegralgoods">
                   <i class="material-icons">vertical_split</i>
                   <span>积分商品管理</span>
                 </a>
@@ -80,7 +80,7 @@
                   <span>广告管理</span>
                 </a>
               </li>
-              <li class="nav-item ">
+              <li class="nav-item">
                 <a class="nav-link " href="/managenativecontent">
                   <i class="material-icons">note_add</i>
                   <span>内容中心</span>
@@ -92,12 +92,13 @@
                   <span>课程管理</span>
                 </a>
               </li>
-              <li class="nav-item ">
+              <li class="nav-item active">
                 <a class="nav-link " href="/managescaseauth">
                   <i class="material-icons">vertical_split</i>
                   <span>案例审查</span>
                 </a>
               </li>
+             
             </ul>
           </div>
         </aside>
@@ -139,7 +140,6 @@
             <!-- Page Header -->
             <div class="page-header row no-gutters py-4">
               <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
-                <a  class="mb-2 btn btn-sm btn-primary mr-1" href="/manageintegralgoodv">添加商品</a>
               </div>
             </div>
             <div class="row" id="content">
@@ -181,7 +181,7 @@
       var settings = {
         "async": true,
         "crossDomain": true,
-        "url": "/shoping/integralgoodslist?page="+page,
+        "url": "/caseByPage?page="+page,
         "method": "POST",
         "processData": false,
         "headers": {
@@ -192,18 +192,15 @@
       }
       $.ajax(settings).done(function (response) {
         response.data.forEach(function (v,i) {
-          console.log(v);
-          var img=v.imgs.split(",")[0];
           var html= '<div class="col-lg-3 col-md-6 col-sm-12 mb-4" id="'+v.code+'">'+
                   '<div class="card card-small card-post card-post--1">'+
-                  '<div class="card-post__image" style="background-image: url('+img+');">'+
-                  '<a href="#" class="card-post__category badge badge-pill badge-dark">'+v.lable+'</a>'+
+                  '<div class="card-post__image" style="background-image: url('+v.indexurl+');">'+
+                  '<a href="#" class="card-post__category badge badge-pill badge-dark">'+v.subject+'|'+v.label+'</a>'+
                   '</div>'+
-                  '<div class="card-body">'+
-                  '<p class="card-title">'+
-                  '<span>'+v.title+'</span></p>'+
-                  '<p></strong> 价格:<strong style="color: #c69500;">'+v.price+'积分</strong> </p>'+
-                  '<span class="text-muted" style="font-size: 12px;">'+v.addtime+'  发布     <button type="button" class="mb-1 btn btn-sm btn-info mr-1" onclick="xj(\''+v.code+'\')"> 下架</button></span>'+
+                  '<div class="card-body" style="margin-top: -10px!important;">'+
+                  '<p class="card-title" style="font-weight: bold;font-size: 16px;margin-bottom: 3px;">'+v.name+'<br>'+
+                  '<span style="font-size: 12px;color: #c69500;">'+v.title+'</span></p>'+
+                  '<span class="text-muted" style="font-size: 12px;">'+v.addftime+'  发布     <button type="button" class="mb-1 btn btn-sm btn-info mr-1" onclick="xj(\''+v.code+'\')"> 下架</button> <a href="/managescaseinfo?code='+v.code+'"> 查看</a></span>'+
                   '</div></div></div>';
           $("#content").append(html);
         })
@@ -215,8 +212,8 @@ function xj(code) {
   var settings = {
     "async": true,
     "crossDomain": true,
-    "url": "/shoping/delintegralgoods?code="+code,
-    "method": "DELETE",
+    "url": "/remove?code="+code,
+    "method": "Delete",
     "processData": false,
     "headers": {
       "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
@@ -225,7 +222,7 @@ function xj(code) {
     }
   }
   $.ajax(settings).done(function (response) {
-    alert("下架成功！")
+    alert("删除成功！")
       $("#"+code).remove();
   });
 

@@ -181,8 +181,7 @@ public class ShopController {
     @ApiOperation(value = "通过商铺code获取商铺信息", notes="通过商铺code获取商铺信息")
     @GetMapping("/infobycode")
     public Mono<Info> infobycode(Principal principal,@RequestParam("code")String code) {
-        Shop shop=  shopService.getByCode(code);
-        return Mono.just(Info.SUCCESS( shop));
+        return Mono.just(Info.SUCCESS( shopService.getByCode(code)));
     }
 
     @ApiOperation(value = "通过商铺code获取商铺信息", notes="通过商铺code获取商铺信息")

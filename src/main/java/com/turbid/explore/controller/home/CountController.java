@@ -8,6 +8,7 @@ import com.turbid.explore.service.*;
 import com.turbid.explore.tools.Info;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -124,6 +125,264 @@ public class CountController {
         return Mono.just(Info.SUCCESS( data));
     }
 
+    @ApiOperation(value = "数据分析", notes="数据分析")
+    @GetMapping("/datacount")
+    public Mono<Info> datacount(Principal principal, @RequestParam("type") Integer type, @RequestParam("shopcode")String shopcode, @RequestParam(value = "time",required = false)String time) {
+        Map<String,Object> data =new HashMap<>();
+        data.put("typecount", shopFansRepository.typeCount(shopcode,time));
+        Map area = new HashMap();
+        List areaname= new ArrayList();
+        List areacount= new ArrayList();
+        shopFansRepository.areaCountByV(shopcode).forEach(v->{
+            areaname.add(v.getName());
+            areacount.add(v.getY());
+        });
+
+        if (areaname.size()==0){
+            areaname.add("苏州");
+            areacount.add(0);
+            areaname.add("深圳");
+            areacount.add(0);
+            areaname.add("东莞");
+            areacount.add(0);
+            areaname.add("广州");
+            areacount.add(0);
+            areaname.add("温州");
+            areacount.add(0);
+        }
+        area.put("areaname", areaname);
+        area.put("areacount", areacount);
+        data.put("area",area);
+        Map visitor = new HashMap();
+        switch (type) {
+            case 0:
+                data.put("visitorcount",visitorService.count(time, shopcode));
+                List atime = new ArrayList();
+                List adata = new ArrayList();
+                if (time.length() == 4) {
+                    for (int i = 1; i <= 12; i++) {
+                        String stime = time;
+                        if (i < 10) {
+                            stime = stime + "-0" + i;
+                        } else {
+                            stime = stime + "-" + i;
+                        }
+                        System.out.println(stime);
+                        atime.add(stime.replace(time + "-", ""));
+                        adata.add(visitorService.count(stime, shopcode));
+                    }
+                } else if (time.length() == 7) {
+                    int count = 30;
+                    if (time.contains("-01") || time.contains("-03") || time.contains("-05") || time.contains("-07") || time.contains("-08") || time.contains("-10") || time.contains("-12")) {
+                        count = 31;
+                    } else if (time.contains("-02")) {
+                        count = 28;
+                    }
+                    for (int i = 1; i <= count; i++) {
+                        String stime = time;
+                        if (i < 10) {
+                            stime = stime + "-0" + i;
+                        } else {
+                            stime = stime + "-" + i;
+                        }
+                        System.out.println(stime);
+                        atime.add(stime.replace(time + "-", ""));
+                        adata.add(visitorService.count(stime, shopcode));
+                    }
+                } else if (time.length() == 10) {
+                    for (int i = 1; i <= 24; i++) {
+                        String stime = time;
+                        if (i < 10) {
+                            stime = stime + " 0" + i;
+                        } else {
+                            stime = stime + " " + i;
+                        }
+                        System.out.println(stime);
+                        adata.add(visitorService.count(stime, shopcode));
+                        atime.add(stime.replace(time, ""));
+                    }
+                } else {
+                    for (int i = 2; i >= 0; i--) {
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+                        String dateStr = sdf.format(new Date());
+                        atime.add(Integer.parseInt(dateStr) - i);
+                        adata.add(visitorService.count(String.valueOf(Integer.parseInt(dateStr) - i), shopcode));
+
+                    }
+                }
+                visitor.put("time", atime);
+                visitor.put("data", adata);
+                data.put("visitor", visitor);
+                break;
+            case 1:
+                List brandtime = new ArrayList();
+                List branddata = new ArrayList();
+                data.put("visitorcount",visitorService.brandCount(time, shopcode));
+                if (time.length() == 4) {
+                    for (int i = 1; i <= 12; i++) {
+                        String stime = time;
+                        if (i < 10) {
+                            stime = stime + "-0" + i;
+                        } else {
+                            stime = stime + "-" + i;
+                        }
+                        brandtime.add(stime.replace(time + "-", ""));
+                        branddata.add(visitorService.brandCount(stime, shopcode));
+                    }
+                } else if (time.length() == 7) {
+                    int count = 30;
+                    if (time.contains("-01") || time.contains("-03") || time.contains("-05") || time.contains("-07") || time.contains("-08") || time.contains("-10") || time.contains("-12")) {
+                        count = 31;
+                    } else if (time.contains("-02")) {
+                        count = 28;
+                    }
+                    for (int i = 1; i <= count; i++) {
+                        String stime = time;
+                        if (i < 10) {
+                            stime = stime + "-0" + i;
+                        } else {
+                            stime = stime + "-" + i;
+                        }
+                        brandtime.add(stime.replace(time + "-", ""));
+                        branddata.add(visitorService.brandCount(stime, shopcode));
+                    }
+                } else if (time.length() == 10) {
+                    for (int i = 1; i <= 24; i++) {
+                        String stime = time;
+                        if (i < 10) {
+                            stime = stime + " 0" + i;
+                        } else {
+                            stime = stime + " " + i;
+                        }
+                        branddata.add(visitorService.brandCount(stime, shopcode));
+                        brandtime.add(stime.replace(time, ""));
+                    }
+                } else {
+                    for (int i = 2; i >= 0; i--) {
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+                        String dateStr = sdf.format(new Date());
+                        brandtime.add(Integer.parseInt(dateStr) - i);
+                        branddata.add(visitorService.brandCount(String.valueOf(Integer.parseInt(dateStr) - i), shopcode));
+
+                    }
+                }
+                visitor.put("time", brandtime);
+                visitor.put("data", branddata);
+                break;
+            case 2:
+                data.put("visitorcount",shopFansRepository.newfollowmeCount(shopcode,time));
+                List shopfanstime = new ArrayList();
+                List shopfansdata = new ArrayList();
+                if (time.length() == 4) {
+                    for (int i = 1; i <= 12; i++) {
+                        String stime = time;
+                        if (i < 10) {
+                            stime = stime + "-0" + i;
+                        } else {
+                            stime = stime + "-" + i;
+                        }
+                        shopfanstime.add(stime.replace(time + "-", ""));
+                        shopfansdata.add(shopFansRepository.newfollowmeCount(shopcode,stime));
+                    }
+                } else if (time.length() == 7) {
+                    int count = 30;
+                    if (time.contains("-01") || time.contains("-03") || time.contains("-05") || time.contains("-07") || time.contains("-08") || time.contains("-10") || time.contains("-12")) {
+                        count = 31;
+                    } else if (time.contains("-02")) {
+                        count = 28;
+                    }
+                    for (int i = 1; i <= count; i++) {
+                        String stime = time;
+                        if (i < 10) {
+                            stime = stime + "-0" + i;
+                        } else {
+                            stime = stime + "-" + i;
+                        }
+                        shopfanstime.add(stime.replace(time + "-", ""));
+                        shopfansdata.add(shopFansRepository.newfollowmeCount(shopcode,stime));
+                    }
+                } else if (time.length() == 10) {
+                    for (int i = 1; i <= 24; i++) {
+                        String stime = time;
+                        if (i < 10) {
+                            stime = stime + " 0" + i;
+                        } else {
+                            stime = stime + " " + i;
+                        }
+                        shopfansdata.add(shopFansRepository.newfollowmeCount(shopcode,stime));
+                        shopfanstime.add(stime.replace(time, ""));
+                    }
+                } else {
+                    for (int i = 2; i >= 0; i--) {
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+                        String dateStr = sdf.format(new Date());
+                        shopfanstime.add(Integer.parseInt(dateStr) - i);
+                        shopfansdata.add(shopFansRepository.newfollowmeCount(shopcode,String.valueOf(Integer.parseInt(dateStr) - i)));
+
+                    }
+                }
+                visitor.put("time", shopfanstime);
+                visitor.put("data", shopfansdata);
+                break;
+            case 3:
+                data.put("visitorcount",commentService.commentCount(time,shopcode));
+                List commenttime = new ArrayList();
+                List commentdata = new ArrayList();
+                if (time.length() == 4) {
+                    for (int i = 1; i <= 12; i++) {
+                        String stime = time;
+                        if (i < 10) {
+                            stime = stime + "-0" + i;
+                        } else {
+                            stime = stime + "-" + i;
+                        }
+                        commenttime.add(stime.replace(time + "-", ""));
+                        commentdata.add(commentService.commentCount(stime,shopcode));
+                    }
+                } else if (time.length() == 7) {
+                    int count = 30;
+                    if (time.contains("-01") || time.contains("-03") || time.contains("-05") || time.contains("-07") || time.contains("-08") || time.contains("-10") || time.contains("-12")) {
+                        count = 31;
+                    } else if (time.contains("-02")) {
+                        count = 28;
+                    }
+                    for (int i = 1; i <= count; i++) {
+                        String stime = time;
+                        if (i < 10) {
+                            stime = stime + "-0" + i;
+                        } else {
+                            stime = stime + "-" + i;
+                        }
+                        commenttime.add(stime.replace(time + "-", ""));
+                        commentdata.add(commentService.commentCount(stime,shopcode));
+                    }
+                } else if (time.length() == 10) {
+                    for (int i = 1; i <= 24; i++) {
+                        String stime = time;
+                        if (i < 10) {
+                            stime = stime + " 0" + i;
+                        } else {
+                            stime = stime + " " + i;
+                        }
+                        commentdata.add(commentService.commentCount(stime,shopcode));
+                        commenttime.add(stime.replace(time, ""));
+                    }
+                } else {
+                    for (int i = 2; i >= 0; i--) {
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+                        String dateStr = sdf.format(new Date());
+                        commenttime.add(Integer.parseInt(dateStr) - i);
+                        commentdata.add(commentService.commentCount(String.valueOf(Integer.parseInt(dateStr) - i),shopcode));
+
+                    }
+                }
+                visitor.put("time", commenttime);
+                visitor.put("data", commentdata);
+                break;
+        }
+        data.put("visitor", visitor);
+        return Mono.just(Info.SUCCESS(data ));
+    }
 
     @ApiOperation(value = "联系我的", notes="联系我的")
     @GetMapping("/callmebytime")

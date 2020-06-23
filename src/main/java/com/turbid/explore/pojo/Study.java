@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 @Data
@@ -45,17 +43,21 @@ public class Study extends BaseEntity {
 
     @Column(name = "content",  length = 2000)
     private String content;
+//
+//    @Column(name = "teachername")
+//    private String teachername;
+//
+//    @Column(name = "teacherheadurl")
+//    private String teacherheadurl;
+//
+//    @Column(name = "teacherdesc",  length = 2000)
+//    private String teacherdesc;
 
-    @Column(name = "teachername")
-    private String teachername;
+    @ManyToOne(targetEntity = StudyGroup.class)
+    @JoinColumn(name = "group_id",referencedColumnName = "code")
+    private StudyGroup studyGroup;
 
-    @Column(name = "teacherheadurl")
-    private String teacherheadurl;
-
-    @Column(name = "teacherdesc",  length = 2000)
-    private String teacherdesc;
-
-    public Study(String code, Date create_time, String indeximgurl, Integer seecount, Integer price, String pricetype, Integer shb, String title, String type,String teachername,String teacherheadurl) {
+    public Study(String code, Date create_time, String indeximgurl, Integer seecount, Integer price, String pricetype, Integer shb, String title, String type,StudyGroup studyGroup) {
     this.setCode(code);
     this.setCreate_time(create_time);
     this.indeximgurl=indeximgurl;
@@ -65,8 +67,7 @@ public class Study extends BaseEntity {
     this.shb=shb;
     this.title=title;
     this.type=type;
-    this.teachername=teachername;
-    this.teacherheadurl=teacherheadurl;
+    this.studyGroup=studyGroup;
     }
 
     public Study(String videourl,String code, Date create_time, String indeximgurl, Integer seecount, Integer price, String pricetype, Integer shb, String title, String type) {

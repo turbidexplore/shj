@@ -144,13 +144,25 @@ public class IndexController {
         return "manage/comments";
     }
 
+    @RequestMapping("/managestudysgroup")
+    public String studysgroup(){
+        return "system/studysgroup";
+    }
+
+    @RequestMapping("/managestudygroup")
+    public String studygroup(){
+        return "system/studygroup";
+    }
+
     @RequestMapping("/managestudys")
-    public String studys(){
+    public String studys(@RequestParam("code")String code, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
+        httpServletRequest.setAttribute("code",code);
         return "system/studys";
     }
 
     @RequestMapping("/managestudy")
-    public String study(){
+    public String study(@RequestParam("code")String code, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
+        httpServletRequest.setAttribute("code",code);
         return "system/study";
     }
 
@@ -202,6 +214,22 @@ public class IndexController {
     @RequestMapping("/managehtindex")
     public String managehtindex(){
         return "system/index";
+    }
+
+    @RequestMapping("/manageuserinfos")
+    public String manageuserinfos(){
+        return "system/userinfos";
+    }
+
+    @RequestMapping("/managescaseauth")
+    public String managescaseauth(){
+        return "system/cases";
+    }
+
+    @RequestMapping("/managescaseinfo")
+    public String managescaseinfo(@RequestParam("code")String code, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
+        httpServletRequest.setAttribute("code",code);
+        return "system/case";
     }
 
 }

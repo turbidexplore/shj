@@ -19,12 +19,16 @@ public class Banner  extends BaseEntity {
     @Column(name = "type",length = 255)
     private String type;
 
+    //1商铺主页 2品牌主页 3特加仓 4课程组
+    @Column(name = "relationtype",length = 255)
+    private String relationtype;
+
     @Column(name = "url",length = 255)
     private String url;
 
     @Column(name = "imgs",length = 255)
     private String imgs;
 
-    @Column(name = "code",length = 255)
-    private String code;
+    @Column(name = "relationcode",length = 255)
+    private String relationcode;
 }

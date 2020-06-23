@@ -41,4 +41,11 @@ public class Info {
         info.setData(null);
         return info;
     }
+    public static Info ERROR(String msg,Object data){
+        Info info=new Info();
+        info.setStatus(-1);
+        info.setMessage(msg);
+        info.setData(data);
+        return info;
+    }
 }

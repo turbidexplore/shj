@@ -6,8 +6,7 @@
     <title>设汇家 ｜ 泛家居行业供应链平台</title>
     <meta name="keywords" content="浑浊探索,苏州浑浊信息科技有限公司,turbid,explore,科技">
     <meta name="description" content="设汇家官网">
-    <meta name="author" content="设汇家">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="设汇家">    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="../styles/all.css" rel="stylesheet">
     <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
@@ -63,7 +62,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" href="/manageintegralgoods">
+                <a class="nav-link " href="/manageintegralgoods">
                   <i class="material-icons">vertical_split</i>
                   <span>积分商品管理</span>
                 </a>
@@ -86,7 +85,7 @@
                   <span>内容中心</span>
                 </a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item active">
                 <a class="nav-link " href="/managestudysgroup">
                   <i class="material-icons">vertical_split</i>
                   <span>课程管理</span>
@@ -113,65 +112,68 @@
             <!-- End Page Header -->
             <div class="row" style="margin-top: 8px;">
 
-              <div class="col-lg-6 col-md-12">
+              <div class="col-lg-7 col-md-12">
                 <!-- Add New Post Form -->
                 <div class="card card-small mb-3">
                   <div class="card-body">
                     <form class="add-new-post">
-                      <span>商品展示内容</span>
+                      <div class="form-row">
+                        <div class="form-group col-md-7">
+                          <label for="title">课程组标题</label>
+                          <input type="text" class="form-control" id="title" placeholder="课程标题">
+                        </div>
+                        <div class="form-group col-md-5">
+                          <label for="type">课程组类型</label>
+                          <select id="type" class="form-control">
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-7">
+                          <label for="indeximgurl">封面</label>
+                          <div class="mb-3 mx-auto">
+                            <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1588743624402&di=d7eeb4dca9d478f6f431d0e4cad095e9&imgtype=0&src=http%3A%2F%2Fpic.qiantucdn.com%2F58pic%2F15%2F41%2F24%2F82G58PICnZi_1024.png%2521%2Ffw%2F1024%2Fwatermark%2Furl%2FL2ltYWdlcy93YXRlcm1hcmsvZGF0dS5wbmc%3D%2Frepeat%2Ftrue" alt="User Avatar" width="300" id="indeximgurl"> </div>
+                          <a href="javascript:;" class="file">上传图片
+                            <input type="file" id="indeximg"  />
+                          </a>
+                        </div>
+                      </div>
+
+                      <div class="form-row">
+                        <div class="form-group col-md-3">
+                          <label for="teacherheadurl">老师照片</label>
+                          <div class="mb-3 mx-auto">
+                            <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1588743624402&di=d7eeb4dca9d478f6f431d0e4cad095e9&imgtype=0&src=http%3A%2F%2Fpic.qiantucdn.com%2F58pic%2F15%2F41%2F24%2F82G58PICnZi_1024.png%2521%2Ffw%2F1024%2Fwatermark%2Furl%2FL2ltYWdlcy93YXRlcm1hcmsvZGF0dS5wbmc%3D%2Frepeat%2Ftrue" alt="User Avatar" width="80" id="teacherheadurl"> </div>
+                          <a href="javascript:;" class="file">上传图片
+                            <input type="file" id="logo"  />
+                          </a>
+                        </div>
+                        <div class="form-group col-md-3">
+                          <label for="teachername">老师名称</label>
+                          <input type="text" class="form-control" id="teachername" placeholder="老师名称">
+                        </div>
+                        <div class="form-group col-md-6">
+                          <label for="teacherdesc">老师介绍</label>
+                          <input type="text" class="form-control" id="teacherdesc" placeholder="老师介绍">
+                        </div>
+                      </div>
+
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-5 col-md-12">
+                <!-- Add New Post Form -->
+                <div class="card card-small mb-3">
+                  <div class="card-body">
+                    <form class="add-new-post">
+                      <span>课程组展示内容</span>
                       <textarea class="easyui-validatebox" name="newsMatter" id="newsMatter" rows="60" cols="70" data-options="required:true">  </textarea>
                     </form>
                   </div>
                 </div>
               </div>
-
-
-              <div class="col-lg-6 col-md-12">
-                <!-- Add New Post Form -->
-                <div class="card card-small mb-3">
-                  <div class="card-body">
-                    <form class="add-new-post">
-                      <div class="form-row">
-                        <div class="form-group col-md-12">
-                          <label for="title">商品标题</label>
-                          <input type="text" class="form-control" id="title" placeholder="商品标题">
-                        </div>
-                      </div>
-
-                      <div class="form-row">
-                        <div class="form-group col-md-6">
-                          <label for="label">副标题</label>
-                          <input type="text" class="form-control" id="label" placeholder="副标题">
-                        </div>
-
-                      </div>
-                      <div class="form-row">
-                        <div class="form-group col-md-6">
-                          <label for="price">积分价格</label>
-                          <input type="text" class="form-control" id="price" placeholder="积分价格">
-                        </div>
-
-                        <div class="form-group col-md-6">
-                          <label for="skucount">库存数量</label>
-                          <input type="text" class="form-control" id="skucount" placeholder="库存数量">
-                        </div>
-                      </div>
-                      <div class="form-row">
-                        <div class="form-group col-md-12">
-                          <div class="mb-3 mx-auto">
-                            <div id="imgview"></div>
-                            <a href="javascript:;" class="file">上传展示图片
-                            <input type="file" id="logo" />
-                          </a>
-                        </div>
-                        </div>
-                      </div>
-
-                    </form>
-                  </div>
-                </div>
-              </div>
-
 
 
               </div>
@@ -190,25 +192,66 @@
      <script src="../js/jquery.cookie.min.js"></script>
   <script>
 
-    function change(obj){
-      if($(obj).val()==0){
-        $("#maxpriceview").hide();
-      }else{
-        $("#maxpriceview").show();
-      }
-    }
-
     $.ajax({
       type: 'GET',
-      url : "/base/tjccategorys",
+      url : "/base/studysubject",
       processData: false,
       contentType: false,
     }).done(function(result) {
       result.data.forEach( function (v,i) {
-        $("#label").append("<option value='"+v+"'>"+v+"</option>");
+        $("#type").append("<option value='"+v.name+"'>"+v.name+"</option>");
       });
 
     });
+
+    $("#indeximg").on("change",function(){
+      function getObjectURL(file) {
+        var url = null;
+        if (window.createObjcectURL != undefined) {
+          url = window.createOjcectURL(file);
+        } else if (window.URL != undefined) {
+          url = window.URL.createObjectURL(file);
+        } else if (window.webkitURL != undefined) {
+          url = window.webkitURL.createObjectURL(file);
+        }
+        return url;
+      }
+      var blobURL = getObjectURL(this.files[0]);
+      var imgUTL = '';
+
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', blobURL);
+      xhr.responseType = 'blob';
+
+      xhr.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+          var imageBlob = this.response;
+          var imageType = imageBlob.type;
+          var imageName = null;
+          if (imageType.includes('png')) {
+            imageName = 'uploaded-image.png';
+          } else if (imageType.includes('gif')) {
+            imageName = 'uploaded-image.gif';
+          } else if (imageType.includes('bmp')) {
+            imageName = 'uploaded-image.bmp';
+          } else {
+            imageName = 'uploaded-image.jpg';
+          }
+          var form = new FormData();
+          form.append('file', imageBlob, imageName); // 第三个参数为文件名
+          $.ajax({
+            type: 'POST',
+            url : "/file/upload",
+            data: form ,
+            processData: false,
+            contentType: false,
+          }).done(function(result) {
+            $("#indeximgurl").attr("src",result.data);
+          });
+        }
+      };
+      xhr.send();
+    })
 
     $("#logo").on("change",function(){
       function getObjectURL(file) {
@@ -252,7 +295,7 @@
             processData: false,
             contentType: false,
           }).done(function(result) {
-            $("#imgview").append("<img src='"+result.data+"' style='width: 100px;' name='showimage' onclick='remove(this)'>");
+            $("#teacherheadurl").attr("src",result.data);
           });
         }
       };
@@ -296,47 +339,19 @@
         }); return false;
       }
 
-      if ($("#price").val() == "" || $("#price").val() == null) {
-        layui.use("layer",function() {
-          layer.msg('请输入价格');
-        }); return false;
-      }
-      if ($("#skucount").val() == "" || $("#skucount").val() == null) {
-        layui.use("layer",function() {
-          layer.msg('请输入库存数量');
-        }); return false;
-      }
 
-
-      var i=0
-
-      var imgs='';
-      $('*[name="showimage"]').each(function(i,v){
-        if(i==0) {
-          imgs=$(v).attr('src');
-          i++;
-        }else {
-          imgs=imgs+","+$(v).attr('src');
-        }
-
-      })
-      if (imgs == '') {
-        layui.use("layer",function() {
-          layer.msg('请至少上传一张展示图片');
-        }); return false;
-      }
 
       $.ajax({
         type: 'Put',
-        url: "/shoping/addintegralgoods",
+        url: "/study/addgroup",
         data: JSON.stringify({
           "title": $("#title").val(),
-          "price": $("#price").val(),
-          "lable": $("#label").val(),
           "content": content,
-          "skucount":$("#skucount").val(),
-          "imgs":imgs,
-          "status":0
+          "type":$("#type").val(),
+          "indeximgurl":$("#indeximgurl").attr('src'),
+          "teachername":$("#teachername").val(),
+          "teacherheadurl":$("#teacherheadurl").attr('src'),
+          "teacherdesc":$("#teacherdesc").val(),
         }),
         processData: false,
         contentType: "application/json; charset=UTF-8",
@@ -352,7 +367,7 @@
             , closeBtn: 0
             , anim: 4 //动画类型
           }, function () {
-            window.location.replace("/manageintegralgoods");
+            window.location.replace("/managestudysgroup");
           });
 
         });

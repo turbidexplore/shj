@@ -46,8 +46,8 @@ public class UserCenterController {
     @PostMapping(value = "/count")
     public Mono<Info> count(Principal principal)  {
         Map<String,Object> data=new HashMap<>();
-        System.out.println(principal.getName());
        UserSecurity userSecurity= userSecurityService.findByPhone(principal.getName());
+            data.put("balance",userSecurity.getBalance());
             data.put("shb",userSecurity.getShb());
             data.put("follow",followService.myfollowCount(principal.getName()));
             data.put("fans",followService.followmeCount(principal.getName()));
@@ -64,7 +64,9 @@ public class UserCenterController {
     @PostMapping(value = "/countbyuser")
     public Mono<Info> countbyuser(Principal principal,@RequestParam("usercode")String usercode)  {
         Map<String,Object> data=new HashMap<>();
-        data.put("shb",userSecurityService.findByPhone(principal.getName()).getShb());
+        UserSecurity userSecurity= userSecurityService.findByPhone(principal.getName());
+        data.put("balance",userSecurity.getBalance());
+        data.put("shb",userSecurity.getShb());
         data.put("follow",followService.myfollowCount(usercode));
         data.put("fans",followService.followmeCount(usercode));
         data.put("star",caseService.starcount(usercode));

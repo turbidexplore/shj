@@ -919,29 +919,30 @@ public class PayController {
     @PostMapping("/balancepay")
     @ResponseBody
     public Mono<Info> balancepay(Principal principal,@RequestBody WebpayBo webpayBo) {
-        webpayBo.setOut_trade_no(CodeLib.randomCode(12,1));
+
         UserSecurity userSecurity=userSecurityService.findByPhone(principal.getName());
         if(null!=userSecurity.getBalance()&&userSecurity.getBalance()>Integer.parseInt(webpayBo.getTotal_amount())){
             userSecurity.setBalance(userSecurity.getBalance()-Integer.parseInt(webpayBo.getTotal_amount()));
             userSecurityService.save(userSecurity);
-            studyService.updateSTUDY(webpayBo.getOut_trade_no());
-            orderinfo(webpayBo.getOut_trade_no(),webpayBo.getProduct_code(),webpayBo.getTotal_amount(),"balance",webpayBo.getBody(),principal.getName(),1);
-            switch (webpayBo.getProduct_code()){
+                       switch (webpayBo.getProduct_code()){
                 case "NEEDS_URGENT":
-                        projectNeedsService.updateURGENT(webpayBo.getOut_trade_no());
+                    orderinfo( webpayBo.getOut_trade_no(),webpayBo.getProduct_code(),webpayBo.getTotal_amount(),"balance",webpayBo.getBody(),principal.getName(),1);
+                    projectNeedsService.updateURGENT( webpayBo.getOut_trade_no());
                         noticeRepository.save(new Notice(webpayBo.getOut_trade_no(),principal.getName(), "您的需求加急订单已支付成功。", "支付通知", 1, 0));
                     break;
                 case "SEE_NEEDS":
-                        needsRelationService.updateSEE(webpayBo.getOut_trade_no());
-                        noticeRepository.save(new Notice(webpayBo.getOut_trade_no(),principal.getName(), "您的查看需求订单已支付成功。", "支付通知", 1, 0));
+                    orderinfo(webpayBo.getOut_trade_no(),webpayBo.getProduct_code(),webpayBo.getTotal_amount(),"balance",webpayBo.getBody(),principal.getName(),1);
+                    needsRelationService.updateSEE(webpayBo.getOut_trade_no());
+                    noticeRepository.save(new Notice(webpayBo.getOut_trade_no(),principal.getName(), "您的查看需求订单已支付成功。", "支付通知", 1, 0));
                     break;
                 case "SEE_STUDY":
-                        studyService.updateSTUDY(webpayBo.getOut_trade_no());
-                        noticeRepository.save(new Notice(webpayBo.getOut_trade_no(),principal.getName(), "您的课程订单已支付成功。", "支付通知", 1, 0));
+                    orderinfo(webpayBo.getOut_trade_no(),webpayBo.getProduct_code(),webpayBo.getTotal_amount(),"balance",webpayBo.getBody(),principal.getName(),1);
+                    studyService.updateSTUDY(webpayBo.getOut_trade_no());
+                    noticeRepository.save(new Notice(webpayBo.getOut_trade_no(),principal.getName(), "您的课程订单已支付成功。", "支付通知", 1, 0));
             }
             return Mono.just(Info.SUCCESS("支付成功"));
         }else {
-            return Mono.just(Info.ERROR("设汇币余额不足"));
+            return Mono.just(Info.ERROR("设汇币余额不足","recharge"));
         }
 
     }
@@ -1013,7 +1014,7 @@ public class PayController {
                                 price=998;
                                 break;
                             case "com.shehuijia.explore08":
-                                price=15980;
+                                price=1598;
                                 break;
                         }
                         orderinfo(transactionId,priceId,price.toString(),"iospay","ios内购",principal.getName(),1);
@@ -1097,8 +1098,8 @@ public class PayController {
                             map.put("type", 1);
                             map.put("key", "逐条查看信息");
                             map.put("value", "SEE_NEEDS");
-                            map.put("price", 0.01);
-                            map.put("costprice", 0.01);
+                            map.put("price", 1);
+                            map.put("balance",1);
                             return Mono.just(Info.SUCCESS(map));
                         }
                     }
@@ -1115,7 +1116,7 @@ public class PayController {
                         map.put("value","SEE_STUDY");
                         map.put("price",study.getPrice());
                         map.put("shb",study.getShb());
-                        map.put("costprice",0.01);
+
                         return Mono.just(Info.SUCCESS(map));
                     }
                 case 2:
@@ -1129,8 +1130,8 @@ public class PayController {
                         map.put("type",1);
                         map.put("key","需求加急");
                         map.put("value","NEEDS_URGENT");
-                        map.put("price",0.01);
-                        map.put("costprice",0.01);
+                        map.put("price",1);
+                        map.put("balance",1);
                         return Mono.just(Info.SUCCESS(map));
                     }
             }

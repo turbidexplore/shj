@@ -27,4 +27,8 @@ public interface UserSecurityService {
     Long countAll();
 
     Long countByTime(String time);
+
+    List<UserSecurity> alluserbypage(Integer page, String text);
+
+    int allusercount(String text);
 }

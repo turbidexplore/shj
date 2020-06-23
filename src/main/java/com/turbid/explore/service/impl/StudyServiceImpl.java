@@ -2,6 +2,7 @@ package com.turbid.explore.service.impl;
 
 import com.turbid.explore.pojo.NativeContent;
 import com.turbid.explore.pojo.Study;
+import com.turbid.explore.pojo.StudyGroup;
 import com.turbid.explore.repository.StudyRelationRepository;
 import com.turbid.explore.repository.StudyRepository;
 import com.turbid.explore.service.StudyService;
@@ -27,9 +28,9 @@ public class StudyServiceImpl implements StudyService {
     }
 
     @Override
-    public List<Study> listByPage(Integer page, String style) {
+    public List<Study> listByPage(Integer page, String style,String code) {
         Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
-        Page<Study> pages=  studyRepository.listByPage(pageable,style);
+        Page<Study> pages=  studyRepository.listByPage(pageable,style,code);
         return pages.getContent();
     }
 
@@ -39,9 +40,9 @@ public class StudyServiceImpl implements StudyService {
     }
 
     @Override
-    public List<Study> hatstudyByPage(Integer page) {
+    public List<StudyGroup> hatstudyByPage(Integer page) {
         Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"seecount");
-        Page<Study> pages=  studyRepository.hatstudyByPage(pageable);
+        Page<StudyGroup> pages=  studyRepository.hatstudyByPage(pageable);
         return pages.getContent();
     }
 
@@ -67,9 +68,9 @@ public class StudyServiceImpl implements StudyService {
     }
 
     @Override
-    public List<Study> list(Integer page, String style) {
+    public List<Study> list(Integer page, String style,String code) {
         Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
-        Page<Study> pages=  studyRepository.list(pageable,style);
+        Page<Study> pages=  studyRepository.list(pageable,style,code);
         return pages.getContent();
     }
 

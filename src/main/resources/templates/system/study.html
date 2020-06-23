@@ -55,6 +55,12 @@
                   <span>企业管理</span>
                 </a>
               </li>
+              <li class="nav-item ">
+                <a class="nav-link " href="/manageuserinfos">
+                  <i class="material-icons">vertical_split</i>
+                  <span>用户管理</span>
+                </a>
+              </li>
               <li class="nav-item">
                 <a class="nav-link " href="/manageintegralgoods">
                   <i class="material-icons">vertical_split</i>
@@ -80,9 +86,15 @@
                 </a>
               </li>
               <li class="nav-item active">
-                <a class="nav-link " href="/managestudys">
+                <a class="nav-link " href="/managestudysgroup">
                   <i class="material-icons">vertical_split</i>
                   <span>课程管理</span>
+                </a>
+              </li>
+              <li class="nav-item ">
+                <a class="nav-link " href="/managescaseauth">
+                  <i class="material-icons">vertical_split</i>
+                  <span>案例审查</span>
                 </a>
               </li>
             </ul>
@@ -151,24 +163,24 @@
                             <input type="text" class="form-control" id="price" placeholder="价格">
                           </div>
                         </div>
-                      <div class="form-row">
-                        <div class="form-group col-md-3">
-                          <label for="teacherheadurl">老师照片</label>
-                          <div class="mb-3 mx-auto">
-                            <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1588743624402&di=d7eeb4dca9d478f6f431d0e4cad095e9&imgtype=0&src=http%3A%2F%2Fpic.qiantucdn.com%2F58pic%2F15%2F41%2F24%2F82G58PICnZi_1024.png%2521%2Ffw%2F1024%2Fwatermark%2Furl%2FL2ltYWdlcy93YXRlcm1hcmsvZGF0dS5wbmc%3D%2Frepeat%2Ftrue" alt="User Avatar" width="80" id="teacherheadurl"> </div>
-                          <a href="javascript:;" class="file">上传图片
-                            <input type="file" id="logo"  />
-                          </a>
-                        </div>
-                        <div class="form-group col-md-3">
-                          <label for="teachername">老师名称</label>
-                          <input type="text" class="form-control" id="teachername" placeholder="老师名称">
-                        </div>
-                        <div class="form-group col-md-6">
-                          <label for="teacherdesc">老师介绍</label>
-                          <input type="text" class="form-control" id="teacherdesc" placeholder="老师介绍">
-                        </div>
-                      </div>
+<!--                      <div class="form-row">-->
+<!--                        <div class="form-group col-md-3">-->
+<!--                          <label for="teacherheadurl">老师照片</label>-->
+<!--                          <div class="mb-3 mx-auto">-->
+<!--                            <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1588743624402&di=d7eeb4dca9d478f6f431d0e4cad095e9&imgtype=0&src=http%3A%2F%2Fpic.qiantucdn.com%2F58pic%2F15%2F41%2F24%2F82G58PICnZi_1024.png%2521%2Ffw%2F1024%2Fwatermark%2Furl%2FL2ltYWdlcy93YXRlcm1hcmsvZGF0dS5wbmc%3D%2Frepeat%2Ftrue" alt="User Avatar" width="80" id="teacherheadurl"> </div>-->
+<!--                          <a href="javascript:;" class="file">上传图片-->
+<!--                            <input type="file" id="logo"  />-->
+<!--                          </a>-->
+<!--                        </div>-->
+<!--                        <div class="form-group col-md-3">-->
+<!--                          <label for="teachername">老师名称</label>-->
+<!--                          <input type="text" class="form-control" id="teachername" placeholder="老师名称">-->
+<!--                        </div>-->
+<!--                        <div class="form-group col-md-6">-->
+<!--                          <label for="teacherdesc">老师介绍</label>-->
+<!--                          <input type="text" class="form-control" id="teacherdesc" placeholder="老师介绍">-->
+<!--                        </div>-->
+<!--                      </div>-->
 
                     </form>
                   </div>
@@ -195,7 +207,7 @@
 
       </div>
     </div>
-   
+     <input type="hidden" id="gcode" value="" th:value="${code}">
     <script src="../js/jquery-3.3.1.min.js" ></script>
      <script src="../ckeditor/ckeditor.js"></script>
      <script src="../layui/layui.js"></script>
@@ -408,7 +420,7 @@
 
       $.ajax({
         type: 'Put',
-        url: "/study/add",
+        url: "/study/add?code="+$("#gcode").val(),
         data: JSON.stringify({
           "title": $("#title").val(),
           "price": $("#price").val(),
@@ -416,10 +428,11 @@
           "type":$("#type").val(),
           "indeximgurl":$("#indeximgurl").attr('src'),
           "videourl":$("#videourl").attr('src'),
-          "pricetype":$("#pricetype").val(),
-          "teachername":$("#teachername").val(),
-          "teacherheadurl":$("#teacherheadurl").attr('src'),
-          "teacherdesc":$("#teacherdesc").val(),
+          "pricetype":$("#pricetype").val()
+          // ,
+          // "teachername":$("#teachername").val(),
+          // "teacherheadurl":$("#teacherheadurl").attr('src'),
+          // "teacherdesc":$("#teacherdesc").val()
         }),
         processData: false,
         contentType: "application/json; charset=UTF-8",
@@ -435,7 +448,7 @@
             , closeBtn: 0
             , anim: 4 //动画类型
           }, function () {
-            window.location.replace("/managestudys");
+            window.location.replace("/managestudys?code="+$("#gcode").val());
           });
 
         });

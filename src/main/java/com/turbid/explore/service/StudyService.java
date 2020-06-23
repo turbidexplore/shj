@@ -1,6 +1,7 @@
 package com.turbid.explore.service;
 
 import com.turbid.explore.pojo.Study;
+import com.turbid.explore.pojo.StudyGroup;
 import com.turbid.explore.pojo.StudyRelation;
 import org.springframework.stereotype.Service;
 
@@ -10,11 +11,11 @@ import java.util.List;
 public interface StudyService {
     Study save(Study study);
 
-    List<Study> listByPage(Integer page, String style);
+    List<Study> listByPage(Integer page, String style,String code);
 
     Study get(String code);
 
-    List<Study> hatstudyByPage(Integer page);
+    List<StudyGroup> hatstudyByPage(Integer page);
 
     List<Study> search(String text, Integer page);
 
@@ -22,7 +23,7 @@ public interface StudyService {
 
     Study getByOrder(String orderno);
 
-    List<Study> list(Integer page, String style);
+    List<Study> list(Integer page, String style,String code);
 
     int del(String code);
 }

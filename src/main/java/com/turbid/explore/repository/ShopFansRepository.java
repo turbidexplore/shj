@@ -2,6 +2,7 @@ package com.turbid.explore.repository;
 
 import com.turbid.explore.pojo.ShopFans;
 import com.turbid.explore.pojo.bo.AreaCount;
+import com.turbid.explore.pojo.bo.TypeCount;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -49,4 +50,10 @@ public interface ShopFansRepository extends JpaRepository<ShopFans,String> {
 
     @Query("select new AreaCount(u.userBasic.city,count(u)) from UserSecurity u where u.code in (SELECT c.userSecurity.code from ShopFans c where c.shop.code=:code ) group by u.userBasic.city")
     List<AreaCount> areaCount(@Param("code")String code);
+
+    @Query("select new AreaCount(u.userBasic.city,count(u)) from UserSecurity u where u.code in (SELECT c.userSecurity.code from Visitor c where c.shopcode=:code ) group by u.userBasic.city")
+    List<AreaCount> areaCountByV(@Param("code")String code);
+
+    @Query("select new TypeCount(count(u),u.type) from UserSecurity u where u.code in(select s.userSecurity.code from ShopFans s where s.shop.code=:shopcode and (s.create_time LIKE CONCAT('%',:time,'%') or :time is null ) ) group by u.type")
+    List<TypeCount> typeCount(@Param("shopcode") String shopcode,@Param("time") String time);
 }
