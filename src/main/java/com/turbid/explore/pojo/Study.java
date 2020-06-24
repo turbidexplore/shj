@@ -20,6 +20,9 @@ public class Study extends BaseEntity {
     @Column(name = "price",   length = 32)
     private Integer price;
 
+    @Column(name = "balance",   length = 32)
+    private Integer balance;
+
     @Column(name = "shb",   length = 32)
     private Integer shb;
 
@@ -57,12 +60,17 @@ public class Study extends BaseEntity {
     @JoinColumn(name = "group_id",referencedColumnName = "code")
     private StudyGroup studyGroup;
 
-    public Study(String code, Date create_time, String indeximgurl, Integer seecount, Integer price, String pricetype, Integer shb, String title, String type,StudyGroup studyGroup) {
+    public Integer getBalance() {
+        return price;
+    }
+
+    public Study(String code, Date create_time, String indeximgurl, Integer seecount, Integer price, String pricetype, Integer shb, String title, String type, StudyGroup studyGroup) {
     this.setCode(code);
     this.setCreate_time(create_time);
     this.indeximgurl=indeximgurl;
     this.seecount=seecount;
     this.price=price;
+        this.balance=price;
     this.pricetype=pricetype;
     this.shb=shb;
     this.title=title;

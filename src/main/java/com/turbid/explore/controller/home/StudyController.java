@@ -45,7 +45,7 @@ public class StudyController {
     public Mono<Info> add(@RequestBody Study study,@RequestParam("code")String code) {
         study.setShb(study.getPrice()*100);
         study.setSeecount(0);
-       study.setStudyGroup(studyGroupRepository.getOne(code));
+        study.setStudyGroup(studyGroupRepository.getOne(code));
         return Mono.just(Info.SUCCESS(studyService.save(study)));
     }
 
