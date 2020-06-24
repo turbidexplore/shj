@@ -213,4 +213,13 @@ public class IMController {
             return Mono.just(Info.SUCCESS(e.getMessage()));
         }
     }
+
+
+
+    @PostMapping(value = "callhis")
+    public Mono<Info> callhis(Principal principal){
+
+        return Mono.just(Info.SUCCESS(null));
+    }
+
 }

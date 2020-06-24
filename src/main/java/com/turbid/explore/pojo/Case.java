@@ -61,6 +61,10 @@ public class Case extends BaseEntity {
     @Column(name = "urls",length = 5000)
     private String urls;
 
+    @ApiModelProperty(value = "文字")
+    @Column(name = "words",length = 5000)
+    private String words;
+
     @ApiModelProperty(value = "发布者")
     @OneToOne(fetch=FetchType.LAZY)
     private UserSecurity userSecurity;
