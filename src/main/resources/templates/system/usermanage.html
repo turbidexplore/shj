@@ -153,6 +153,7 @@
                           <th scope="col" class="border-0">保证金</th>
                           <th scope="col" class="border-0">会员信息</th>
                           <th scope="col" class="border-0">注册时间</th>
+                          <th scope="col" class="border-0">操作</th>
                         </tr>
                       </thead>
                       <tbody id="dataview">
@@ -198,6 +199,11 @@
                         "<br><button type=\"button\" class=\"mb-2 btn btn-sm btn-danger mr-1\" onclick=\"yanxuan(\'"+v.code+"',0)\">取消严选企业</button>";
              }
 
+             var m="<button type=\"button\" class=\"mb-2 btn btn-sm btn-success mr-1\" onclick=\"updatestatus('"+v.code+"',1)\">上架</button>";
+             if(v.status==1){
+               m="<button type=\"button\" class=\"mb-2 btn btn-sm btn-danger mr-1\" onclick=\"updatestatus(\'"+v.code+"',0)\">下架</button>";
+             }
+
              var vip="无vip信息";
              if(v.vipday!=null){
                vip="<span style='font-weight: bold;color: orange;border: orange 1px solid;'> &nbsp;"+v.vipday+"到期&nbsp;</span>"
@@ -215,6 +221,7 @@
                      '<td id="bzj'+v.code+'">'+margin+'</td>'+
                      '<td id="vip'+v.code+'">'+vip+'</td>'+
                      '<td>'+v.addftime+'</td>'+
+                     '<td id="m'+v.code+'">'+m+'</td>'+
                      '</tr>')
            });
          });
@@ -372,6 +379,27 @@
                 lay.msg("退还成功！");
               })
             });
+        }
+
+        function updatestatus(code,status) {
+          $.ajax({
+            type: 'Post',
+            url : "/shop/updatestatus?code="+code+"&status="+status,
+            async: true,
+            crossDomain: true,
+            headers: {
+              "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
+              "cache-control": "no-cache",
+              "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
+            }
+          }).done(function(result) {
+            var m="<button type=\"button\" class=\"mb-2 btn btn-sm btn-success mr-1\" onclick=\"updatestatus('"+result.data.code+"',1)\">上架</button>";
+            if(result.data.status==1){
+              m="<button type=\"button\" class=\"mb-2 btn btn-sm btn-danger mr-1\" onclick=\"updatestatus(\'"+result.data.code+"',0)\">下架</button>";
+            }
+
+            $("#m"+code).html(m);
+          });
         }
      </script>
   </body>

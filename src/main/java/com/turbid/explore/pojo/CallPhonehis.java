@@ -17,13 +17,9 @@ public class CallPhonehis extends BaseEntity {
     @Column(name = "shopcode")
     private String shopcode;
 
-    @ApiModelProperty(value = "店铺code")
-    @Column(name = "name")
-    private String name;
-
-    @ApiModelProperty(value = "店铺code")
-    @Column(name = "phone")
-    private String phone;
+    @OneToOne(targetEntity = UserSecurity.class)
+    @JoinColumn(name = "call_user_id",referencedColumnName = "code")
+    private UserSecurity callUserSecurity;
 
     @OneToOne(targetEntity = UserSecurity.class)
     @JoinColumn(name = "user_id",referencedColumnName = "code")

@@ -48,7 +48,7 @@ public class UserSecurityServiceImpl implements UserSecurityService {
 
     @Override
     public List<UserSecurity> shopusers(String code, String text, Integer page) {
-        Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
+        Pageable pageable = new PageRequest(page,10, Sort.Direction.DESC,"create_time");
         Page<UserSecurity> pages=  userSecurityRepository.listByPage(pageable,text,code);
         return pages.getContent();
     }
@@ -60,7 +60,7 @@ public class UserSecurityServiceImpl implements UserSecurityService {
 
     @Override
     public List<UserSecurity> finduserbyphone(String phone) {
-        Pageable pageable = new PageRequest(0,15, Sort.Direction.DESC,"create_time");
+        Pageable pageable = new PageRequest(0,10, Sort.Direction.DESC,"create_time");
         Page<UserSecurity> pages=  userSecurityRepository.findByUserSecurityPhone(pageable,phone);
         return pages.getContent();
     }
@@ -77,7 +77,7 @@ public class UserSecurityServiceImpl implements UserSecurityService {
 
     @Override
     public List<UserSecurity> alluserbypage(Integer page, String text) {
-        Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
+        Pageable pageable = new PageRequest(page,10, Sort.Direction.DESC,"create_time");
         Page<UserSecurity> pages=  userSecurityRepository.alluserbypage(pageable,text);
         return pages.getContent();
     }

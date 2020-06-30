@@ -67,12 +67,12 @@ public class ShopServiceImpl implements ShopService {
     @Override
     public List<Shop> recommend(Principal principal, Integer page, String likes) {
 
-        StringBuilder dataSql = new StringBuilder("SELECT * FROM SHOP WHERE 1 = 1");
+        StringBuilder dataSql = new StringBuilder("SELECT * FROM SHOP WHERE status=1 and ( 1=1 ");
         for (String v : likes.split(",")) {
             dataSql.append(" OR label LIKE '%"+v+"%' ");
         }
         //组装sql语句
-        dataSql.append(" order by ischoose desc limit 0,4");
+        dataSql.append(") order by ischoose desc limit 0,4");
 
         //创建本地sql查询实例
         Query dataQuery = entityManager.createNativeQuery(dataSql.toString(), Shop.class);
@@ -94,14 +94,14 @@ public class ShopServiceImpl implements ShopService {
 
     @Override
     public List<Shop> search(String text, Integer page) {
-        Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"ischoose");
+        Pageable pageable = new PageRequest(page,10, Sort.Direction.DESC,"ischoose");
         Page<Shop> pages=  shopRepositroy.search(pageable,text);
         return pages.getContent();
     }
 
     @Override
     public List<Shop> findByText(String text, Integer page) {
-        Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"ischoose");
+        Pageable pageable = new PageRequest(page,10, Sort.Direction.DESC,"ischoose");
         Page<Shop> pages=  shopRepositroy.search(pageable,text);
         return pages.getContent();
     }
@@ -114,5 +114,12 @@ public class ShopServiceImpl implements ShopService {
     @Override
     public Long countAll() {
         return shopRepositroy.count();
+    }
+
+    @Override
+    public List<Shop> getByIndexChoose(String label) {
+        Pageable pageable = new PageRequest(0,6, Sort.Direction.DESC,"ischoose");
+        Page<Shop> pages=   shopRepositroy.getByChoose(pageable,label);
+        return pages.getContent();
     }
 }

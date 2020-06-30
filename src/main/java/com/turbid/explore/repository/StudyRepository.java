@@ -22,7 +22,7 @@ public interface StudyRepository extends JpaRepository<Study,String> {
     Page<Study> listByPage(Pageable pageable,@Param("style") String style,@Param("code") String code);
 
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
-    @Query("SELECT s.studyGroup from Study s where s.status is null group by s.studyGroup.code")
+    @Query("SELECT s.studyGroup from Study s where s.status is null and s.studyGroup.code is not null group by s.studyGroup.code")
     Page<StudyGroup> hatstudyByPage(Pageable pageable);
 
 

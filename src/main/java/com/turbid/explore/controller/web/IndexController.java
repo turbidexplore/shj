@@ -166,6 +166,14 @@ public class IndexController {
         return "system/study";
     }
 
+    @RequestMapping("/manageeditstudy")
+    public String manageeditstudy(@RequestParam("code")String code, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
+        httpServletRequest.setAttribute("xcode",code);
+        return "system/study";
+    }
+
+
+
     @RequestMapping("/managebanners")
     public String managebanners(){
         return "system/banners";

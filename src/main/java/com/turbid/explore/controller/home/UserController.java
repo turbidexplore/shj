@@ -59,7 +59,7 @@ public class UserController {
 
     private String baseUrl="https://console.tim.qq.com/";;
     private String portrait_set="v4/profile/portrait_set";
-    private long appid=1400334582;
+    private long appid=1400390118;
 
     public String config(){
         return "?sdkappid="+appid+"&identifier=administrator"+"&usersig="+ TLSSigAPIv2.genSig("administrator",680000000)
@@ -813,6 +813,20 @@ public class UserController {
     @GetMapping(value = "/allusercount")
     public Mono<Info> allusercount(Principal principal,@RequestParam(value = "text",required = false)String text)  {
         return Mono.just(Info.SUCCESS(userSecurityService.allusercount(text)));
+    }
+
+    @ApiOperation(value = "获取im资料")
+    @GetMapping(value = "/getiminfo")
+    public Mono<Info> getiminfo(Principal principal,@RequestParam(value = "usercode")String usercode)  {
+        Map data =new HashMap();
+        UserSecurity userSecurity=userSecurityService.findByCode(usercode);
+        data.put("type",userSecurity.getType());
+        data.put("name",userSecurity.getUserBasic().getNikename());
+        data.put("headimg",userSecurity.getUserBasic().getHeadportrait());
+        if(userSecurity.getType()>=2) {
+            data.put("yx",shopService.getByCode(userSecurity.getShopcode()).getIschoose());
+        }
+        return Mono.just(Info.SUCCESS(data));
     }
 
 

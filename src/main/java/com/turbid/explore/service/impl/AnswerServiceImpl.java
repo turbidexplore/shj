@@ -11,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -52,5 +54,12 @@ public class AnswerServiceImpl implements AnswerService {
     @Override
     public int answersCount(String code) {
         return answerRepository.countByQaacode(code);
+    }
+
+    @Override
+    public int countByUser(String name) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String dateStr = sdf.format(new Date());
+        return answerRepository.countByUser(name,dateStr);
     }
 }

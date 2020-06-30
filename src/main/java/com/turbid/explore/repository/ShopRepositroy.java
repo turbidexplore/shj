@@ -38,9 +38,9 @@ public interface ShopRepositroy extends JpaRepository<Shop,String> {
     Shop getByUsercode(@Param("usercode") String usercode);
 
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
-    @Query("select s from Shop s where  s.name LIKE CONCAT('%',:text,'%') or s.label LIKE CONCAT('%',:text,'%') or s.introduce LIKE CONCAT('%',:text,'%')  or s.brandgroup LIKE CONCAT('%',:text,'%')  or s.companyname LIKE CONCAT('%',:text,'%') or s.businesslicense LIKE CONCAT('%',:text,'%') or s.businessscope LIKE CONCAT('%',:text,'%') ")
+    @Query("select s from Shop s where ( s.name LIKE CONCAT('%',:text,'%')  or s.label LIKE CONCAT('%',:text,'%') or s.introduce LIKE CONCAT('%',:text,'%')  or s.brandgroup LIKE CONCAT('%',:text,'%')  or s.companyname LIKE CONCAT('%',:text,'%') or s.businesslicense LIKE CONCAT('%',:text,'%') or s.businessscope LIKE CONCAT('%',:text,'%')) ")
     Page<Shop> search(Pageable pageable,@Param("text") String text);
 
-    @Query("select count(s) from Shop s where s.name LIKE CONCAT('%',:text,'%') or s.label LIKE CONCAT('%',:text,'%') or s.introduce LIKE CONCAT('%',:text,'%')  or s.brandgroup LIKE CONCAT('%',:text,'%')  or s.companyname LIKE CONCAT('%',:text,'%') or s.businesslicense LIKE CONCAT('%',:text,'%') or s.businessscope LIKE CONCAT('%',:text,'%') ")
+    @Query("select count(s) from Shop s where (s.name LIKE CONCAT('%',:text,'%') or s.label LIKE CONCAT('%',:text,'%') or s.introduce LIKE CONCAT('%',:text,'%')  or s.brandgroup LIKE CONCAT('%',:text,'%')  or s.companyname LIKE CONCAT('%',:text,'%') or s.businesslicense LIKE CONCAT('%',:text,'%') or s.businessscope LIKE CONCAT('%',:text,'%')) ")
     int searchcount(String text);
 }

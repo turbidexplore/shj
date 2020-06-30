@@ -3,12 +3,10 @@ package com.turbid.explore.controller.home;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.ImmutableMap;
-import com.turbid.explore.pojo.Call;
-import com.turbid.explore.pojo.CallCount;
-import com.turbid.explore.pojo.ProjectNeeds;
-import com.turbid.explore.pojo.UserSecurity;
+import com.turbid.explore.pojo.*;
 import com.turbid.explore.pojo.bo.Message;
 import com.turbid.explore.repository.CallCountRepository;
+import com.turbid.explore.repository.CallPhonehisRepository;
 import com.turbid.explore.repository.NoticeRepository;
 import com.turbid.explore.service.UserSecurityService;
 import com.turbid.explore.tools.CodeLib;
@@ -49,9 +47,9 @@ public class IMController {
 
     private String portrait_set="v4/profile/portrait_set";
 
-    private long appid=1400334582;
+    private long appid=1400390118;
 
-    private String key="72d736f1307d531aeb773c80f55a891a2c30a360a4a9d3841deb893c2cb54551";
+    private String key="53384497284f6f3fd803a4dd493fd070ae1a54e05434cf90ba31e5201d131c68";
 
     public String config(){
         return "?sdkappid="+appid+"&identifier=administrator"+"&usersig="+TLSSigAPIv2.genSig("administrator",680000000)
@@ -214,12 +212,17 @@ public class IMController {
         }
     }
 
+    @Autowired
+    private CallPhonehisRepository callPhonehisRepository;
 
 
     @PostMapping(value = "callhis")
-    public Mono<Info> callhis(Principal principal){
-
-        return Mono.just(Info.SUCCESS(null));
+    public Mono<Info> callhis(Principal principal,@RequestParam("usercode")String usercoce,@RequestParam("shopcode")String shopcode){
+        CallPhonehis callPhonehis=new CallPhonehis();
+        callPhonehis.setUserSecurity(userSecurityService.findByPhone(principal.getName()));
+        callPhonehis.setCallUserSecurity(userSecurityService.findByCode(usercoce));
+        callPhonehis.setShopcode(shopcode);
+        return Mono.just(Info.SUCCESS(callPhonehisRepository.saveAndFlush(callPhonehis)));
     }
 
 }

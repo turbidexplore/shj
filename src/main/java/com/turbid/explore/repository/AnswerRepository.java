@@ -26,4 +26,7 @@ public interface AnswerRepository extends JpaRepository<Answer,String> {
     Page<Answer> listByUser(Pageable pageable, @Param("name")String name);
 
     int countByQaacode(String code);
+
+    @Query("select count(a) from Answer a where a.isdel=false and a.userSecurity.phonenumber=:name and a.create_time LIKE CONCAT('%',:time,'%')")
+    int countByUser(@Param("name") String name,@Param("time") String time);
 }

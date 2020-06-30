@@ -76,26 +76,14 @@ public class BrandController {
     @ApiOperation(value = "通过商铺code获取品牌", notes="通过商铺code获取品牌")
     @GetMapping("/getByShop")
     public Mono<Info> getByShop(@RequestParam("code") String code) {
-
         return Mono.just(Info.SUCCESS( brandService.getByShop(code)));
     }
 
-
     @ApiOperation(value = "通过label获取品牌信息", notes="通过label获取品牌信息")
     @GetMapping("/getbylabel")
-    public Mono<Info> getbylabel(@RequestParam("classgroup")String classgroup,@RequestParam("brandgroup")String brandgroup) {
-        List list=new ArrayList();
-        brandService.getByLabel(classgroup,brandgroup).forEach(v->{
-            Map map=new HashMap();
-            map.put("code",v.getCode());
-            map.put("name",v.getName());
-            map.put("logo",v.getLogo());
-            list.add(map);
-        });
-        return Mono.just(Info.SUCCESS(list ));
+    public Mono<Info> getbylabel(@RequestParam(value = "classgroup",required = false)String classgroup,@RequestParam(value = "brandgroup",required = false)String brandgroup) {
+        return Mono.just(Info.SUCCESS(brandService.getByLabel(classgroup,brandgroup) ));
     }
-
-
 
 
 }

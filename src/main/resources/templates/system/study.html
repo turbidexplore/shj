@@ -208,6 +208,8 @@
       </div>
     </div>
      <input type="hidden" id="gcode" value="" th:value="${code}">
+     <input type="hidden" id="code" value="" th:value="${xcode}">
+     <input type="hidden" id="create_time">
     <script src="../js/jquery-3.3.1.min.js" ></script>
      <script src="../ckeditor/ckeditor.js"></script>
      <script src="../layui/layui.js"></script>
@@ -215,18 +217,61 @@
      <script src="../scripts/bootstrap.min.js"></script>
      <script src="../js/jquery.cookie.min.js"></script>
   <script>
-
-    $.ajax({
-      type: 'GET',
-      url : "/base/studysubject",
-      processData: false,
-      contentType: false,
-    }).done(function(result) {
-      result.data.forEach( function (v,i) {
-        $("#type").append("<option value='"+v.name+"'>"+v.name+"</option>");
-      });
-
+    CKEDITOR.replace('newsMatter', {
+      height : 600,
+      filebrowserImageUploadUrl :  "/file/image"
     });
+
+    if($("#code").val()!=""&&$("#code").val()!=null&&$("#code").val()!=undefined) {
+      $.ajax({
+        type: 'GET',
+        url: "/study/get?code=" + $("#code").val(),
+        async: true,
+        crossDomain: true,
+        headers: {
+          "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
+          "cache-control": "no-cache",
+          "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
+        }
+      }).done(function (value) {
+        $("#create_time").val(value.data.create_time);
+        $("#title").val(value.data.title);
+        $("#price").val(value.data.price);
+        $("#videoview").html(" <video id='videourl' controls='controls' src='"+value.data.videourl+"' style='width: 300px;' name='showimage' onclick='remove(this)'>您的浏览器不支持 video 标签。</video>");
+        $("#indeximgurl").attr('src', value.data.indeximgurl);
+        $("#gcode").val(value.data.studyGroup.code);
+        CKEDITOR.instances.newsMatter.setData(value.data.content);
+        $.ajax({
+          type: 'GET',
+          url : "/base/studysubject",
+          processData: false,
+          contentType: false,
+        }).done(function(result) {
+          result.data.forEach( function (v,i) {
+            if(v==value.data.type) {
+              $("#type").append("<option value='" + v.name + "' selected>" + v.name + "</option>");
+            }else {
+              $("#type").append("<option value='" + v.name + "'>" + v.name + "</option>");
+            }
+          });
+
+        });
+
+      });
+    }else{
+      $.ajax({
+        type: 'GET',
+        url : "/base/studysubject",
+        processData: false,
+        contentType: false,
+      }).done(function(result) {
+        result.data.forEach( function (v,i) {
+          $("#type").append("<option value='"+v.name+"'>"+v.name+"</option>");
+        });
+
+      });
+    }
+
 
     $("#indeximg").on("change",function(){
       function getObjectURL(file) {
@@ -386,10 +431,6 @@
     layui.use('form', function(){
       var form = layui.form;
     });
-    CKEDITOR.replace('newsMatter', {
-      height : 600,
-      filebrowserImageUploadUrl :  "/file/image"
-    });
 
     $('#newsMatter').each(function () {
       var $textarea = $(this);
@@ -415,44 +456,80 @@
           layer.msg('请编辑展示内容');
         }); return false;
       }
+      if($("#code").val()!=""&&$("#code").val()!=null&&$("#code").val()!=undefined) {
+        $.ajax({
+          type: 'Put',
+          url: "/study/add?code=" + $("#gcode").val(),
+          data: JSON.stringify({
+            "create_time": $("#create_time").val(),
+            "code": $("#code").val(),
+            "title": $("#title").val(),
+            "price": $("#price").val(),
+            "content": content,
+            "type": $("#type").val(),
+            "indeximgurl": $("#indeximgurl").attr('src'),
+            "videourl": $("#videourl").attr('src'),
+            "pricetype": $("#pricetype").val()
 
+          }),
+          processData: false,
+          contentType: "application/json; charset=UTF-8",
+          headers: {
+            "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
+            "cache-control": "no-cache",
+            "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
+          }
+        }).done(function (result) {
+          layui.use("layer", function () {
+            layer.alert('保存成功', {
+              skin: 'layui-layer-molv' //样式类名
+              , closeBtn: 0
+              , anim: 4 //动画类型
+            }, function () {
+              window.location.replace("/managestudys?code=" + $("#gcode").val());
+            });
 
-
-      $.ajax({
-        type: 'Put',
-        url: "/study/add?code="+$("#gcode").val(),
-        data: JSON.stringify({
-          "title": $("#title").val(),
-          "price": $("#price").val(),
-          "content": content,
-          "type":$("#type").val(),
-          "indeximgurl":$("#indeximgurl").attr('src'),
-          "videourl":$("#videourl").attr('src'),
-          "pricetype":$("#pricetype").val()
-          // ,
-          // "teachername":$("#teachername").val(),
-          // "teacherheadurl":$("#teacherheadurl").attr('src'),
-          // "teacherdesc":$("#teacherdesc").val()
-        }),
-        processData: false,
-        contentType: "application/json; charset=UTF-8",
-        headers: {
-          "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
-          "cache-control": "no-cache",
-          "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
-        }
-      }).done(function (result) {
-        layui.use("layer", function () {
-          layer.alert('保存成功', {
-            skin: 'layui-layer-molv' //样式类名
-            , closeBtn: 0
-            , anim: 4 //动画类型
-          }, function () {
-            window.location.replace("/managestudys?code="+$("#gcode").val());
           });
-
         });
-      });
+      }else {
+
+
+        $.ajax({
+          type: 'Put',
+          url: "/study/add?code=" + $("#gcode").val(),
+          data: JSON.stringify({
+            "title": $("#title").val(),
+            "price": $("#price").val(),
+            "content": content,
+            "type": $("#type").val(),
+            "indeximgurl": $("#indeximgurl").attr('src'),
+            "videourl": $("#videourl").attr('src'),
+            "pricetype": $("#pricetype").val()
+            // ,
+            // "teachername":$("#teachername").val(),
+            // "teacherheadurl":$("#teacherheadurl").attr('src'),
+            // "teacherdesc":$("#teacherdesc").val()
+          }),
+          processData: false,
+          contentType: "application/json; charset=UTF-8",
+          headers: {
+            "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
+            "cache-control": "no-cache",
+            "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
+          }
+        }).done(function (result) {
+          layui.use("layer", function () {
+            layer.alert('保存成功', {
+              skin: 'layui-layer-molv' //样式类名
+              , closeBtn: 0
+              , anim: 4 //动画类型
+            }, function () {
+              window.location.replace("/managestudys?code=" + $("#gcode").val());
+            });
+
+          });
+        });
+      }
     }
     
 

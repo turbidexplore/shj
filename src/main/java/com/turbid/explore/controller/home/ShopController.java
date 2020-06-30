@@ -52,6 +52,17 @@ public class ShopController {
         }catch (Exception e){
             return Mono.just(Info.SUCCESS(null));
         }
+    }
+
+    @PostMapping("/updatestatus")
+    public Mono<Info> updatestatus(Principal principal,@RequestParam("code")String code,@RequestParam("status")Integer status) {
+        try {
+            Shop shop=shopService.getByCode(code);
+           shop.setStatus(status);
+            return Mono.just(Info.SUCCESS(shopService.save(shop)));
+        }catch (Exception e){
+            return Mono.just(Info.SUCCESS(null));
+        }
 
     }
 
@@ -243,11 +254,17 @@ public class ShopController {
         return Mono.just(Info.SUCCESS( list));
     }
 
+    @ApiOperation(value = "首页官方严选", notes="首页官方严选")
+    @GetMapping("/indexchoose")
+    public Mono<Info> indexchoose(@RequestParam(value = "label",required = false)String label) {
+        List<Shop> shops= shopService.getByIndexChoose(label);
+        return Mono.just(Info.SUCCESS(shops ));
+    }
+
     @ApiOperation(value = "官方严选", notes="官方严选")
     @GetMapping("/choose")
     public Mono<Info> choose(@RequestParam(value = "label",required = false)String label,@RequestParam(value = "page")Integer page) {
        List<Shop> shops= shopService.getByChoose(label,page);
-        System.out.println(shops.size());
         return Mono.just(Info.SUCCESS(shops ));
     }
 

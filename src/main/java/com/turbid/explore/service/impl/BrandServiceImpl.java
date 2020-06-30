@@ -40,7 +40,7 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
 //    @Cacheable(cacheNames = {"redis_cache"}, key = "'getByLabel'+#classgroup+'.'+#brandgroup")
-    public List<Brand> getByLabel(String classgroup, String brandgroup) {
+    public List<Shop> getByLabel(String classgroup, String brandgroup) {
         return brandRepositroy.getByLabel(classgroup,brandgroup);
     }
 

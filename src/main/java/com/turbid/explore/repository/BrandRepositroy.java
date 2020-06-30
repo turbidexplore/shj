@@ -20,8 +20,8 @@ public interface BrandRepositroy extends JpaRepository<Brand,String> {
     @Query("select b from Brand b where b.company.code=:code")
     List<Brand> getByShop(@Param("code") String code);
 
-    @Query( "select new Brand(s.code,s.name,s.logo) from Brand s where (s.label LIKE CONCAT('%',:label,'%') or :label is null or :label ='' ) and (s.brandgroup LIKE CONCAT('%',:brandgroup,'%') or :brandgroup is null  or :brandgroup ='' ) ")
-    List<Brand> getByLabel(@Param("label")String label, @Param("brandgroup") String brandgroup);
+    @Query( "select s.company from Brand s where (s.label LIKE CONCAT('%',:label,'%') or :label is null  ) and (s.brandgroup LIKE CONCAT('%',:brandgroup,'%') or :brandgroup is null ) and s.company.status=1 group by s.company.code")
+    List<Shop> getByLabel(@Param("label")String label, @Param("brandgroup") String brandgroup);
 
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
     @Query("select b.name from Brand b where b.company.code=:code ")

@@ -33,11 +33,8 @@ public class BannerController {
     @ApiOperation(value = "Banner列表", notes="Banner列表[0首页 1需求 2品牌馆 3特加仓 4达人研习社 5官方严选 6]")
     @GetMapping(value = "/list")
     public Mono<Info> list(Principal principal,@RequestParam("type")String type) {
-
         return Mono.just(Info.SUCCESS(bannerService.listBytype(type)));
     }
-
-
 
     @PutMapping("/add")
     public Mono<Info> add(Principal principal, @RequestParam("url")String url,@RequestParam("type")String type) {

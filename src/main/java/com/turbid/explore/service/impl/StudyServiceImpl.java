@@ -1,6 +1,5 @@
 package com.turbid.explore.service.impl;
 
-import com.turbid.explore.pojo.NativeContent;
 import com.turbid.explore.pojo.Study;
 import com.turbid.explore.pojo.StudyGroup;
 import com.turbid.explore.repository.StudyRelationRepository;
@@ -29,7 +28,7 @@ public class StudyServiceImpl implements StudyService {
 
     @Override
     public List<Study> listByPage(Integer page, String style,String code) {
-        Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
+        Pageable pageable = new PageRequest(page,15, Sort.Direction.ASC,"create_time");
         Page<Study> pages=  studyRepository.listByPage(pageable,style,code);
         return pages.getContent();
     }
@@ -69,7 +68,7 @@ public class StudyServiceImpl implements StudyService {
 
     @Override
     public List<Study> list(Integer page, String style,String code) {
-        Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
+        Pageable pageable = new PageRequest(page,15, Sort.Direction.ASC,"create_time");
         Page<Study> pages=  studyRepository.list(pageable,style,code);
         return pages.getContent();
     }

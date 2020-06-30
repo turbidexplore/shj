@@ -62,7 +62,7 @@ public class Case extends BaseEntity {
     private String urls;
 
     @ApiModelProperty(value = "文字")
-    @Column(name = "words",length = 5000)
+    @Column(name = "words",length = 800)
     private String words;
 
     @ApiModelProperty(value = "发布者")

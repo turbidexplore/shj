@@ -4,8 +4,6 @@ import com.qcloud.cos.COSClient;
 import com.qcloud.cos.model.PutObjectRequest;
 import com.qcloud.cos.model.PutObjectResult;
 import com.turbid.explore.configuration.TencentCOSConfig;
-import com.turbid.explore.pojo.FileGroup;
-import com.turbid.explore.pojo.FileInfo;
 import com.turbid.explore.repository.FileGroupRepositroy;
 import com.turbid.explore.repository.FileInfoRepositroy;
 import com.turbid.explore.service.FileService;
@@ -17,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 @Service
 public class FileServiceImpl implements FileService {
@@ -40,7 +37,7 @@ public class FileServiceImpl implements FileService {
         if (multipartFile != null) {
             if (multipartFile.getOriginalFilename() != null || "".equals(multipartFile.getOriginalFilename())) {
                 String[] name = multipartFile.getOriginalFilename().split("\\.");
-                File file = File.createTempFile(CodeLib.getSHC() ,"."+ name[1]);
+                File file = File.createTempFile(CodeLib.getSHC() ,"."+ name[name.length-1]);
                 multipartFile.transferTo(file);
                 String bucketName =tencentOSS.QCLOUD_FILE_BUCKET;
                 String key = path+"/"+file.getName();

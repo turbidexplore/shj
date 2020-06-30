@@ -13,7 +13,7 @@ import javax.persistence.*;
 public class OpenUser extends BaseEntity {
 
     //手机号码
-    @Column(name = "openid",length = 50)
+    @Column(name = "openid",length = 255)
     private String openid;
 
     //手机号码

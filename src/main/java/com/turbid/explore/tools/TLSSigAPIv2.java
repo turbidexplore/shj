@@ -17,9 +17,9 @@ import org.json.JSONObject;
 
 public class TLSSigAPIv2 {
 
-    private static long sdkappid=1400334582;
+    private static long sdkappid=1400390118;
 
-    private static String key="72d736f1307d531aeb773c80f55a891a2c30a360a4a9d3841deb893c2cb54551";
+    private static String key="53384497284f6f3fd803a4dd493fd070ae1a54e05434cf90ba31e5201d131c68";
 
 
     private static String hmacsha256(String identifier, long currTime, long expire, String base64Userbuf) {

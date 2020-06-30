@@ -29,12 +29,13 @@ public class BaseController {
 
     @GetMapping(value = "/share")
     public Mono<Info> share()  {
-        Map<String,String> info=new HashMap<>();
+        Map<String,Object> info=new HashMap<>();
         info.put("shop","http://m.deslibs.com/shopHomePage");
         info.put("goods","http://m.deslibs.com/salesDetails");
         info.put("study","http://m.deslibs.com/study_details");
         info.put("nativecontent","http://m.deslibs.com/lingganAlbum");
         info.put("brand","http://m.deslibs.com/childBrand");
+        info.put("hidden",true);
         return Mono.just(Info.SUCCESS(info));
     }
 
@@ -218,12 +219,12 @@ public class BaseController {
         map.put("banner","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E5%93%81%E7%89%8C%E9%A6%86/%E4%BA%8C%E7%BA%A7/%E5%85%A8%E5%B1%8B%E5%AE%9A%E5%88%B6%E9%A6%86.png");
         map.put("logo","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/icon/%E5%93%81%E7%89%8C%E9%A6%86/%E5%85%A8%E5%B1%8B%E5%AE%9A%E5%88%B6%E9%A6%86.png");
         list.add(map);
-        map=new HashMap<>();
-        map.put("name","设计馆");
-        map.put("name_en","design");
-        map.put("banner","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E5%93%81%E7%89%8C%E9%A6%86/%E4%BA%8C%E7%BA%A7/%E8%AE%BE%E8%AE%A1%E9%A6%86.png");
-        map.put("logo","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/icon/%E5%93%81%E7%89%8C%E9%A6%86/%E8%AE%BE%E8%AE%A1%E9%A6%86.png");
-        list.add(map);
+//        map=new HashMap<>();
+//        map.put("name","设计馆");
+//        map.put("name_en","design");
+//        map.put("banner","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E5%93%81%E7%89%8C%E9%A6%86/%E4%BA%8C%E7%BA%A7/%E8%AE%BE%E8%AE%A1%E9%A6%86.png");
+//        map.put("logo","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/icon/%E5%93%81%E7%89%8C%E9%A6%86/%E8%AE%BE%E8%AE%A1%E9%A6%86.png");
+//        list.add(map);
         map=new HashMap<>();
         map.put("name","墙布馆");
         map.put("name_en","wall cloth");

@@ -32,4 +32,5 @@ public interface ShopService {
 
     Long countAll();
 
+    List<Shop> getByIndexChoose(String label);
 }
