@@ -59,7 +59,7 @@ public class UserController {
 
     private String baseUrl="https://console.tim.qq.com/";;
     private String portrait_set="v4/profile/portrait_set";
-    private long appid=1400390118;
+    private long appid=1400334582;
 
     public String config(){
         return "?sdkappid="+appid+"&identifier=administrator"+"&usersig="+ TLSSigAPIv2.genSig("administrator",680000000)
@@ -199,7 +199,7 @@ public class UserController {
             HttpHeaders headers = new HttpHeaders();
             headers.setBasicAuth("turbid","turbid_anoax!@#321");
             HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
-            JSONObject object=restTemplate.postForObject("http://127.0.0.1:10003/oauth/token",request,JSONObject.class);
+            JSONObject object=restTemplate.postForObject("http://127.0.0.1:10002/oauth/token",request,JSONObject.class);
             if (null==object){
                 loginHis.setStatus(0);
                 return Mono.just(Info.ERROR("登录失败"));
@@ -300,7 +300,7 @@ public class UserController {
                     headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
                     headers.setBasicAuth("turbid","turbid_anoax!@#321");
                     HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
-                    JSONObject object=restTemplate.postForObject("http://127.0.0.1:10003/oauth/token",request,JSONObject.class);
+                    JSONObject object=restTemplate.postForObject("http://127.0.0.1:10002/oauth/token",request,JSONObject.class);
                     if (null==object){
                         return Mono.just(Info.ERROR("登录失败"));
                     }
@@ -350,7 +350,7 @@ public class UserController {
                 headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
                 headers.setBasicAuth("turbid", "turbid_anoax!@#321");
                 HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
-                JSONObject object = restTemplate.postForObject("http://127.0.0.1:10003/oauth/token", request, JSONObject.class);
+                JSONObject object = restTemplate.postForObject("http://127.0.0.1:10002/oauth/token", request, JSONObject.class);
                 if (null == object) {
                     loginHis.setStatus(0);
                     return Mono.just(Info.ERROR("登录失败"));
@@ -393,7 +393,7 @@ public class UserController {
             headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
             headers.setBasicAuth("turbid","turbid_anoax!@#321");
             HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
-            JSONObject object=restTemplate.postForObject("http://127.0.0.1:10003/oauth/token",request,JSONObject.class);
+            JSONObject object=restTemplate.postForObject("http://127.0.0.1:10002/oauth/token",request,JSONObject.class);
             if (null==object){
                 loginHis.setStatus(0);
                 return Mono.just(Info.ERROR("登录失败"));
@@ -732,7 +732,7 @@ public class UserController {
 //            headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 //            headers.setBasicAuth("turbid","turbid_anoax!@#321");
 //            HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
-//            JSONObject object=restTemplate.postForObject("http://127.0.0.1:10003/oauth/token",request,JSONObject.class);
+//            JSONObject object=restTemplate.postForObject("http://127.0.0.1:10002/oauth/token",request,JSONObject.class);
 //            if (null==object){
 //                return Mono.just(Info.ERROR("登录失败"));
 //            }

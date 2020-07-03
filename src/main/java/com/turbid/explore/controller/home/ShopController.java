@@ -312,15 +312,8 @@ public class ShopController {
             item.put("shopcode",v.getCode());
             item.put("shopcount",v.getJmcount());
             item.put("dateofestablishment",v.getShopcreatetime());
-            try {
-                if(null!=v.getMargin()&&!"".equals(v.getMargin())&&!v.getMargin().equals(null)) {
-                    item.put("bzj", v.getMargin());
-                }else {
-                    item.put("bzj","无");
-                }
-            }catch (Exception e){
-                item.put("bzj","无");
-            }
+            item.put("bzj", v.getMargin());
+
             data.add(item);
         });
         return Mono.just(Info.SUCCESS(data ));

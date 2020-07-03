@@ -27,4 +27,10 @@ public class Configinfo {
 
     @Column(name = "ioscontent")
     private String ioscontent;
+
+    @Column(name = "iosupdate")
+    private boolean iosupdate;
+
+    @Column(name = "androidupdate")
+    private boolean androidupdate;
 }

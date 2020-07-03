@@ -47,9 +47,7 @@ public class IMController {
 
     private String portrait_set="v4/profile/portrait_set";
 
-    private long appid=1400390118;
-
-    private String key="53384497284f6f3fd803a4dd493fd070ae1a54e05434cf90ba31e5201d131c68";
+    private long appid=1400334582;
 
     public String config(){
         return "?sdkappid="+appid+"&identifier=administrator"+"&usersig="+TLSSigAPIv2.genSig("administrator",680000000)

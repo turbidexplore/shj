@@ -97,11 +97,7 @@ public class StudyController {
     @ApiOperation(value = "获取课程视频url", notes="获取课程视频url")
     @GetMapping("/getVideo")
     public Mono<Info> getVideo(Principal principal,@RequestParam(name = "code")String code) {
-        if(0<studyRelationRepository.issee(principal.getName(),code)){
-            return Mono.just(Info.SUCCESS(studyService.get(code).getVideourl()));
-        }else {
-            return Mono.just(Info.SUCCESS("请购买此课程"));
-        }
+        return Mono.just(Info.SUCCESS(studyService.get(code).getVideourl()));
     }
 
     @ApiOperation(value = "获取课程分页列表", notes="获取课程分页列表")

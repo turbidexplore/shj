@@ -55,7 +55,7 @@ public class BaseController {
        }
         info.put("version",configinfo.getAndroidversion());
         info.put("desc",configinfo.getAndroidcontent());
-        info.put("forceupdate",false);
+        info.put("forceupdate",configinfo.isAndroidupdate());
         info.put("url","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/shehuijia.apk");
         data.put("android",info);
         info=new HashMap<>();
@@ -66,7 +66,7 @@ public class BaseController {
         }
         info.put("desc",configinfo.getIoscontent());
         info.put("version",configinfo.getIosversion());
-        info.put("forceupdate",false);
+        info.put("forceupdate",configinfo.isIosupdate());
         data.put("ios",info);
         return Mono.just(Info.SUCCESS(data));
     }
