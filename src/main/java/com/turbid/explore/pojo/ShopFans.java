@@ -20,7 +20,7 @@ public class ShopFans extends BaseEntity{
     private Shop shop;
 
     //用户认证信息
-    @OneToOne(targetEntity = UserSecurity.class)
+    @ManyToOne(targetEntity = UserSecurity.class)
     @JoinColumn(name = "user_id",referencedColumnName = "code")
     private UserSecurity userSecurity;
 

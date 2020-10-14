@@ -128,6 +128,7 @@ public class ShopController {
             Page<ShopFans> pages=  shopFansRepository.findByUserSecurityPage(pageable,principal.getName());
             return Mono.just(Info.SUCCESS(pages.getContent()));
         }catch (Exception e){
+            e.printStackTrace();
             return Mono.just(Info.SUCCESS(null));
         }
     }
@@ -278,11 +279,50 @@ public class ShopController {
     @ApiOperation(value = "查看招商加盟", notes="查看招商加盟")
     @GetMapping("/seezsjm")
     public Mono<Info> seezsjm(Principal principal,@RequestParam(value = "code")String code) {
-        Visitor visitor=new Visitor();
-        visitor.setUserSecurity(userSecurityService.findByPhone(principal.getName()));
-        visitor.setShopcode(code+"zsjm");
-        visitorService.save(visitor);
-        return Mono.just(Info.SUCCESS( null));
+        if(null!=principal) {
+            Visitor visitor = new Visitor();
+            visitor.setUserSecurity(userSecurityService.findByPhone(principal.getName()));
+            visitor.setShopcode(code + "zsjm");
+            visitorService.save(visitor);
+        }
+        Shop v=shopService.getByCode(code);
+        Map<String,Object> item=new HashMap<>();
+        item.put("companyname",v.getCompanyname());
+        item.put("name",v.getName());
+        item.put("logo",v.getLogo());
+        item.put("area","全国");
+        item.put("content",v.getBusinessscope());
+        item.put("address",v.getCompanyaddress());
+        item.put("label",v.getLabel());
+        item.put("user",v.getUserSecurity());
+        item.put("ischoose",v.getIschoose());
+        item.put("banner",v.getBanner());
+        try {
+            String brand="";
+            List<Brand> brands= brandService.getByShop(v.getCode());
+
+            for (int i=0;i<brands.size();i++){
+                if(i==0){
+                    brand=brands.get(i).getName();
+                }else {
+                    brand+=","+brands.get(i).getName();
+                }
+            }
+            item.put("brand",brand);
+            item.put("desc",brands.get(0).getContent());
+        }catch (Exception e){
+            item.put("brand",null);
+            item.put("desc","");
+        }
+        item.put("investmentamount",v.getBzj());
+        item.put("showimg",v.getCompany_show());
+        item.put("shopcode",v.getCode());
+        item.put("shopcount",v.getJmcount());
+        item.put("dateofestablishment",v.getShopcreatetime());
+        item.put("bzj", v.getMargin());
+        item.put("mj", "100平米");
+
+        return Mono.just(Info.SUCCESS( item));
     }
 
     @ApiOperation(value = "招商加盟", notes="招商加盟")
@@ -302,9 +342,21 @@ public class ShopController {
             item.put("ischoose",v.getIschoose());
             item.put("banner",v.getBanner());
             try {
-                item.put("brand",brandService.getOneByShop(v.getCode()));
+           String brand="";
+           List<Brand> brands= brandService.getByShop(v.getCode());
+
+           for (int i=0;i<brands.size();i++){
+               if(i==0){
+                   brand=brands.get(i).getName();
+               }else {
+                   brand+=","+brands.get(i).getName();
+               }
+           }
+                item.put("brand",brand);
+                item.put("desc",brands.get(0).getContent());
             }catch (Exception e){
                 item.put("brand",null);
+                item.put("desc","");
             }
 
             item.put("investmentamount",v.getBzj());
@@ -313,6 +365,7 @@ public class ShopController {
             item.put("shopcount",v.getJmcount());
             item.put("dateofestablishment",v.getShopcreatetime());
             item.put("bzj", v.getMargin());
+
 
             data.add(item);
         });

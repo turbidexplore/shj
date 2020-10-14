@@ -13,11 +13,15 @@ public interface GoodsService {
 
     List<Goods> listByPage(String label, Integer page);
 
-    List<Goods> newGoods(String shopcode);
+    List<Goods> newGoods( String shopcode,String label);
 
     List<Goods> mylistByPage(String name, Integer page);
 
     int updatastatus(String code, Integer status);
 
     List<Goods> search(String text, Integer page);
+
+    List<String> goodsclassByShopcode(String shopcode);
+
+    List<Goods> newlistByPage();
 }

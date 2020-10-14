@@ -1,0 +1,499 @@
+<!doctype html>
+<html class="no-js h-100" lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>设汇家 ｜ 泛家居行业供应链平台</title>
+    <meta name="keywords" content="浑浊探索,苏州浑浊信息科技有限公司,turbid,explore,科技">
+    <meta name="description" content="设汇家官网">
+    <meta name="author" content="设汇家">    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="../styles/all.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" id="main-stylesheet" data-version="1.1.0" href="../styles/shards-dashboards.1.1.0.min.css">
+    <link rel="stylesheet" href="../styles/extras.1.1.0.min.css">
+    <link rel="stylesheet" href="../layui/css/layui.css">
+
+  <body class="h-100">
+     <div class="container-fluid">
+      <div class="row">
+        <!-- Main Sidebar -->
+        <aside class="main-sidebar col-12 col-md-3 col-lg-2 px-0">
+          <div class="main-navbar">
+            <nav class="navbar align-items-stretch navbar-light bg-white flex-md-nowrap border-bottom p-0">
+              <a class="navbar-brand w-100 mr-0" href="#" style="line-height: 25px;">
+                <div class="d-table m-auto">
+                  <span class="d-none d-md-inline ml-1">设汇+</span>
+                </div>
+              </a>
+              <a class="toggle-sidebar d-sm-inline d-md-none d-lg-none">
+                <i class="material-icons">&#xE5C4;</i>
+              </a>
+            </nav>
+          </div>
+          <form action="#" class="main-sidebar__search w-100 border-right d-sm-flex d-md-none d-lg-none">
+            <div class="input-group input-group-seamless ml-3">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <i class="fas fa-search"></i>
+                </div>
+              </div>
+              <input class="navbar-search form-control" type="text" placeholder="Search for something..." aria-label="Search"> </div>
+          </form>
+          <div class="nav-wrapper">
+            <ul class="nav flex-column">
+              <li class="nav-item ">
+                <a class="nav-link " href="/managehtindex">
+                  <i class="material-icons">vertical_split</i>
+                  <span>首页</span>
+                </a>
+              </li>
+              <li class="nav-item ">
+                <a class="nav-link " href="/manageuser">
+                  <i class="material-icons">table_chart</i>
+                  <span>企业管理</span>
+                </a>
+              </li>
+              <li class="nav-item ">
+                <a class="nav-link " href="/manageuserinfos">
+                  <i class="material-icons">vertical_split</i>
+                  <span>用户管理</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="/manageintegralgoods">
+                  <i class="material-icons">vertical_split</i>
+                  <span>积分商品管理</span>
+                </a>
+              </li>
+              <li class="nav-item ">
+                <a class="nav-link " href="/manageshopingmanage">
+                  <i class="material-icons">table_chart</i>
+                  <span>积分商品发货管理</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="/managebanners">
+                  <i class="material-icons">vertical_split</i>
+                  <span>广告管理</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="/managenativecontent">
+                  <i class="material-icons">note_add</i>
+                  <span>内容中心</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="/managestudysgroup">
+                  <i class="material-icons">vertical_split</i>
+                  <span>课程管理</span>
+                </a>
+              </li>
+              <li class="nav-item ">
+                <a class="nav-link " href="/managescaseauth">
+                  <i class="material-icons">vertical_split</i>
+                  <span>案例审查</span>
+                </a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link " href="/managescases">
+                  <i class="material-icons">vertical_split</i>
+                  <span>案例管理</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </aside>
+        <!-- End Main Sidebar -->
+
+        <main class="main-content col-lg-10 col-md-9 col-sm-12 p-0 offset-lg-2 offset-md-3">
+          <!-- / .main-navbar -->
+          <div class="main-content-container container-fluid px-4">
+            <!-- Page Header -->
+            <div class="col-lg-12 col-md-12" style="position: fixed;bottom: 0;z-index:100;background-color: #ffffff;padding: 5px;">
+              <button type="button"  class="mb-2 btn btn-sm btn-primary mr-1" onclick="savaData()">保存</button>
+            </div>
+            <!-- End Page Header -->
+            <div class="row" style="margin-top: 8px;">
+              <div class="col-lg-12 col-md-12">
+                <!-- Add New Post Form -->
+                <div class="card card-small mb-3">
+                  <div class="card-body">
+                    <form class="add-new-post">
+                      <div class="form-row">
+                        <div class="form-group col-md-3">
+                          <label for="name">项目名称</label>
+                          <input type="text" class="form-control" id="name" placeholder="商品标题">
+                        </div>
+                        <div class="form-group col-md-3">
+                          <label for="company">公司名称</label>
+                          <input type="text" class="form-control" id="company" placeholder="公司名称">
+                        </div>
+                        <div class="form-group col-md-3">
+                          <label for="team">项目团队</label>
+                          <input type="text" class="form-control" id="team" placeholder="项目团队">
+                        </div>
+                        <div class="form-group col-md-3" id="maxpriceview">
+                          <label for="area">项目面积</label>
+                          <input type="text" class="form-control" id="area" placeholder="项目面积">
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-6">
+                          <label for="address">项目地址</label>
+                          <input type="text" class="form-control" id="address" placeholder="项目地址">
+                        </div>
+                        <div class="form-group col-md-3">
+                          <label for="subject">项目主题</label>
+                          <select id="subject" class="form-control">
+                          </select>
+                        </div>
+                        <div class="form-group col-md-3">
+                          <label for="label">项目标签</label>
+                          <select id="label" class="form-control">
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-6">
+                          <label for="title">标题</label>
+                          <input type="text" class="form-control" id="title" placeholder="标题">
+                        </div>
+                        <div class="form-group col-md-6">
+                          <label for="content">内容</label>
+                          <textarea class="form-control" id="content" rows="4"></textarea>
+                        </div>
+                      </div>
+
+                      <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <div class="mb-3 mx-auto">
+                              <img src="" alt="User Avatar" width="200" id="indexurl"> </div>
+                            <a href="javascript:;" class="file">上传封面
+                              <input type="file" id="indexurlimg" />
+                            </a>
+                        </div>
+                        <div class="form-group col-md-9">
+                          <div class="mb-3 mx-auto">
+                            <div id="imgview"></div>
+                            <a href="javascript:;" class="file">上传展示图片
+                            <input type="file" id="logo" />
+                          </a>
+                        </div>
+                        </div>
+                      </div>
+
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+
+
+              </div>
+            </div>
+
+        </main>
+
+      </div>
+    </div>
+     <input type="hidden" id="code" value="" th:value="${code}">
+    <script src="../js/jquery-3.3.1.min.js" ></script>
+     <script src="../layui/layui.js"></script>
+     <script src="../scripts/popper.min.js"></script>
+     <script src="../scripts/bootstrap.min.js"></script>
+     <script src="../js/jquery.cookie.min.js"></script>
+  <script>
+    if($("#code").val()!=""&&$("#code").val()!=null&&$("#code").val()!=undefined){
+      $.ajax({
+        type: 'POST',
+        url : "/caseByCode?code="+$("#code").val(),
+        async: true,
+        crossDomain: true,
+        headers: {
+          "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
+          "cache-control": "no-cache",
+          "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
+        }
+      }).done(function(value) {
+        var result=value.data;
+        $("#title").val(result.data.title);
+        $("#name").val(result.data.name);
+        $("#company").val(result.data.company);
+        $("#indexurl").attr('src',result.data.indexurl);
+        $("#content").val(result.data.content);
+        $("#team").val(result.data.team);
+        $("#area").val(result.data.area);
+        $("#address").val(result.data.address);
+
+        result.data.urls.split(",").forEach(function (v) {
+          $("#imgview").append("<img src='"+v+"' style='width: 200px;' name='showimage' onclick='remove(this)'>");
+
+        })
+        $.ajax({
+          type: 'GET',
+          url : "/base/casesubject",
+          processData: false,
+          contentType: false,
+        }).done(function(a) {
+          a.data.forEach( function (v,i) {
+            if(result.data.subject==v) {
+              $("#subject").append("<option value='" + v + "' selected='selected'>" + v + "</option>");
+            }else {
+              $("#subject").append("<option value='" + v + "' >" + v + "</option>");
+            }
+          });
+        });
+
+        $.ajax({
+          type: 'GET',
+          url : "/base/classgroup",
+          processData: false,
+          contentType: false,
+        }).done(function(a) {
+          a.data.forEach( function (v,i) {
+            if(result.data.label==v.name) {
+              $("#label").append("<option value='"+v.name+"' selected='selected'>"+v.name+"</option>");
+            }else {
+              $("#label").append("<option value='"+v.name+"'>"+v.name+"</option>");
+            }
+          });
+        });
+
+      });
+    }else {
+      $.ajax({
+        type: 'GET',
+        url : "/base/casesubject",
+        processData: false,
+        contentType: false,
+      }).done(function(result) {
+        result.data.forEach( function (v,i) {
+          $("#subject").append("<option value='"+v+"'>"+v+"</option>");
+        });
+      });
+
+      $.ajax({
+        type: 'GET',
+        url : "/base/classgroup",
+        processData: false,
+        contentType: false,
+      }).done(function(result) {
+        result.data.forEach( function (v,i) {
+          $("#label").append("<option value='"+v.name+"'>"+v.name+"</option>");
+        });
+      });
+    }
+
+
+
+    $("#indexurlimg").on("change",function(){
+      function getObjectURL(file) {
+        var url = null;
+        if (window.createObjcectURL != undefined) {
+          url = window.createOjcectURL(file);
+        } else if (window.URL != undefined) {
+          url = window.URL.createObjectURL(file);
+        } else if (window.webkitURL != undefined) {
+          url = window.webkitURL.createObjectURL(file);
+        }
+        return url;
+      }
+      var blobURL = getObjectURL(this.files[0]);
+      var imgUTL = '';
+
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', blobURL);
+      xhr.responseType = 'blob';
+
+      xhr.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+          var imageBlob = this.response;
+          var imageType = imageBlob.type;
+          var imageName = null;
+          if (imageType.includes('png')) {
+            imageName = 'uploaded-image.png';
+          } else if (imageType.includes('gif')) {
+            imageName = 'uploaded-image.gif';
+          } else if (imageType.includes('bmp')) {
+            imageName = 'uploaded-image.bmp';
+          } else {
+            imageName = 'uploaded-image.jpg';
+          }
+          var form = new FormData();
+          form.append('file', imageBlob, imageName); // 第三个参数为文件名
+          $.ajax({
+            type: 'POST',
+            url : "/file/upload",
+            data: form ,
+            processData: false,
+            contentType: false,
+          }).done(function(result) {
+            $("#indexurl").attr("src",result.data);
+          });
+        }
+      };
+      xhr.send();
+    })
+
+    $("#logo").on("change",function(){
+      function getObjectURL(file) {
+        var url = null;
+        if (window.createObjcectURL != undefined) {
+          url = window.createOjcectURL(file);
+        } else if (window.URL != undefined) {
+          url = window.URL.createObjectURL(file);
+        } else if (window.webkitURL != undefined) {
+          url = window.webkitURL.createObjectURL(file);
+        }
+        return url;
+      }
+      var blobURL = getObjectURL(this.files[0]);
+      var imgUTL = '';
+
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', blobURL);
+      xhr.responseType = 'blob';
+
+      xhr.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+          var imageBlob = this.response;
+          var imageType = imageBlob.type;
+          var imageName = null;
+          if (imageType.includes('png')) {
+            imageName = 'uploaded-image.png';
+          } else if (imageType.includes('gif')) {
+            imageName = 'uploaded-image.gif';
+          } else if (imageType.includes('bmp')) {
+            imageName = 'uploaded-image.bmp';
+          } else {
+            imageName = 'uploaded-image.jpg';
+          }
+          var form = new FormData();
+          form.append('file', imageBlob, imageName); // 第三个参数为文件名
+          $.ajax({
+            type: 'POST',
+            url : "/file/upload",
+            data: form ,
+            processData: false,
+            contentType: false,
+          }).done(function(result) {
+            $("#imgview").append("<img src='"+result.data+"' style='width: 200px;' name='showimage' onclick='remove(this)'>");
+          });
+        }
+      };
+      xhr.send();
+    })
+
+    function remove(obj){
+      $(obj).remove();
+    }
+
+    layui.use('form', function(){
+      var form = layui.form;
+    });
+
+
+
+    function savaData(){
+
+
+      var i=0
+
+      var imgs='';
+      $('*[name="showimage"]').each(function(i,v){
+        if(i==0) {
+          imgs=$(v).attr('src');
+          i++;
+        }else {
+          imgs=imgs+","+$(v).attr('src');
+        }
+
+      })
+      if (imgs == '') {
+        layui.use("layer",function() {
+          layer.msg('请至少上传一张展示图片');
+        }); return false;
+      }
+      if($("#code").val()!=""&&$("#code").val()!=null&&$("#code").val()!=undefined){
+
+        $.ajax({
+          type: 'Put',
+          url: "/addcase",
+          data: JSON.stringify({
+            "code": $("#code").val(),
+            "name": $("#name").val(),
+            "company": $("#company").val(),
+            "subject": $("#subject").val(),
+            "label": $("#label").val(),
+            "indexurl": $("#indexurl").attr('src'),
+            "title": $("#title").val(),
+            "content": $("#content").val(),
+            "team": $("#team").val(),
+            "area": $("#area").val(),
+            "urls": imgs,
+            "address": $("#address").val()
+          }),
+          processData: false,
+          contentType: "application/json; charset=UTF-8",
+          headers: {
+            "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
+            "cache-control": "no-cache",
+            "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
+          }
+        }).done(function (result) {
+          layui.use("layer", function () {
+            layer.alert('保存成功', {
+              skin: 'layui-layer-molv' //样式类名
+              , closeBtn: 0
+              , anim: 4 //动画类型
+            }, function () {
+              window.location.replace("/managescases");
+            });
+
+          });
+        });
+      }else {
+        $.ajax({
+          type: 'Put',
+          url: "/addcase",
+          data: JSON.stringify({
+            "name": $("#name").val(),
+            "company": $("#company").val(),
+            "subject": $("#subject").val(),
+            "label": $("#label").val(),
+            "indexurl": $("#indexurl").attr('src'),
+            "title": $("#title").val(),
+            "content": $("#content").val(),
+            "team": $("#team").val(),
+            "area": $("#area").val(),
+            "urls": imgs,
+            "address": $("#address").val()
+          }),
+          processData: false,
+          contentType: "application/json; charset=UTF-8",
+          headers: {
+            "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
+            "cache-control": "no-cache",
+            "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
+          }
+        }).done(function (result) {
+          layui.use("layer", function () {
+            layer.alert('保存成功', {
+              skin: 'layui-layer-molv' //样式类名
+              , closeBtn: 0
+              , anim: 4 //动画类型
+            }, function () {
+              window.location.replace("/managescases");
+            });
+
+          });
+        });
+      }
+    }
+    
+
+  </script>
+  </body>
+</html>

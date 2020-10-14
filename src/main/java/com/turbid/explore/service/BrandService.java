@@ -16,7 +16,7 @@ public interface BrandService {
 
     List<Shop> getByLabel(String classgroup, String brandgroup);
 
-    String getOneByShop(String code);
+    Brand getOneByShop(String code);
 
     List<Brand> search(String text, Integer page);
 

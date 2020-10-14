@@ -66,7 +66,7 @@ public class ProjectNeedsServiceImpl implements ProjectNeedsService {
 
     @Override
     public List<ProjectNeeds> newneeds() {
-        Pageable pageable = new PageRequest(0,3, Sort.Direction.DESC,"create_time");
+        Pageable pageable = new PageRequest(0,2, Sort.Direction.DESC,"create_time");
         Page<ProjectNeeds> pages=  needsRepositroy.newneeds(pageable);
         return pages.getContent();
     }

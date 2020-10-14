@@ -140,8 +140,16 @@ public class Shop extends BaseEntity{
     private Integer hat;
 
     @ApiModelProperty(value = "vr地址")
-    @Column(name = "vrweb")
+    @Column(name = "vrweb",length = 3000)
     private String vrweb;
+
+    @ApiModelProperty(value = "vr地址")
+    @Column(name = "vrtitle",length = 2000)
+    private String vrtitle;
+
+    @ApiModelProperty(value = "vr图片")
+    @Column(name = "vrimage",length = 1500)
+    private String vrimage;
 
     @ApiModelProperty(value = "bzj")
     @Column(name = "bzj",length = 255)
@@ -154,8 +162,6 @@ public class Shop extends BaseEntity{
     //vip有效期
     @Column(name = "vipday",length = 32)
     private String vipday;
-
-
 
     public Shop(String code,String companyname,String logo) {
         super();

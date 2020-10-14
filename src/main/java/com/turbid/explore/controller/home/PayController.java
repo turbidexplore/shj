@@ -51,6 +51,7 @@ import java.io.*;
 import java.net.*;
 import java.security.KeyStore;
 import java.security.Principal;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -910,7 +911,7 @@ public class PayController {
             orderinfo(webpayBo.getOut_trade_no(),webpayBo.getProduct_code(),webpayBo.getTotal_amount(),"shb",webpayBo.getBody(),principal.getName(),1);
             return Mono.just(Info.SUCCESS("支付成功"));
         }else {
-            return Mono.just(Info.ERROR("设汇币余额不足"));
+            return Mono.just(Info.ERROR("积分不足"));
         }
 
     }
@@ -921,8 +922,8 @@ public class PayController {
     public Mono<Info> balancepay(Principal principal,@RequestBody WebpayBo webpayBo) {
 
         UserSecurity userSecurity=userSecurityService.findByPhone(principal.getName());
-        if(null!=userSecurity.getBalance()&&userSecurity.getBalance()>Integer.parseInt(webpayBo.getTotal_amount())){
-            userSecurity.setBalance(userSecurity.getBalance()-Integer.parseInt(webpayBo.getTotal_amount()));
+        if(null!=userSecurity.getBalance()&&Double.valueOf(userSecurity.getBalance())>Double.valueOf(webpayBo.getTotal_amount())){
+            userSecurity.setBalance(String.valueOf(new DecimalFormat("0.0").format(Double.valueOf(userSecurity.getBalance())-Double.valueOf(webpayBo.getTotal_amount()))));
             userSecurityService.save(userSecurity);
                        switch (webpayBo.getProduct_code()){
                 case "NEEDS_URGENT":
@@ -1022,7 +1023,7 @@ public class PayController {
                         if(null!=userSecurity.getBalance()) {
                             userSecurity.setBalance(userSecurity.getBalance() + price);
                         }else {
-                            userSecurity.setBalance(0 + price);
+                            userSecurity.setBalance(String.valueOf(0 + Double.valueOf(price)));
                         }
                         userSecurityService.save(userSecurity);
                         noticeRepository.save(new Notice(transactionId, principal.getName(), "您的设汇币充值成功。", "支付通知", 1, 0));
@@ -1098,8 +1099,8 @@ public class PayController {
                             map.put("type", 1);
                             map.put("key", "逐条查看信息");
                             map.put("value", "SEE_NEEDS");
-                            map.put("price", 1);
-                            map.put("balance",1);
+                            map.put("price", "1");
+                            map.put("balance","1");
                             return Mono.just(Info.SUCCESS(map));
                         }
                     }
@@ -1116,7 +1117,7 @@ public class PayController {
                         map.put("value","SEE_STUDY");
                         map.put("price",study.getPrice());
                         map.put("shb",study.getShb());
-
+                        map.put("balance",study.getBalance());
                         return Mono.just(Info.SUCCESS(map));
                     }
                 case 2:
@@ -1130,8 +1131,8 @@ public class PayController {
                         map.put("type",1);
                         map.put("key","需求加急");
                         map.put("value","NEEDS_URGENT");
-                        map.put("price",1);
-                        map.put("balance",1);
+                        map.put("price","1");
+                        map.put("balance","1");
                         return Mono.just(Info.SUCCESS(map));
                     }
             }

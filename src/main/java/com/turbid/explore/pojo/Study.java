@@ -18,13 +18,13 @@ public class Study extends BaseEntity {
     private String title;
 
     @Column(name = "price",   length = 32)
-    private Integer price;
+    private String price;
 
     @Column(name = "balance",   length = 32)
-    private Integer balance;
+    private String balance;
 
     @Column(name = "shb",   length = 32)
-    private Integer shb;
+    private String shb;
 
     @Column(name = "status",   length = 32)
     private Integer status;
@@ -41,45 +41,49 @@ public class Study extends BaseEntity {
     @Column(name = "videourl",   length = 2000)
     private String videourl;
 
+
     @Column(name = "seecount",  length = 32)
     private Integer seecount;
 
+    @Column(name = "commentcount",  length = 32)
+    private Integer commentcount;
+
     @Column(name = "content",  length = 2000)
     private String content;
-//
-//    @Column(name = "teachername")
-//    private String teachername;
-//
-//    @Column(name = "teacherheadurl")
-//    private String teacherheadurl;
-//
-//    @Column(name = "teacherdesc",  length = 2000)
-//    private String teacherdesc;
+
+    @Column(name = "istry")
+    private Boolean istry=true;
 
     @ManyToOne(targetEntity = StudyGroup.class)
     @JoinColumn(name = "group_id",referencedColumnName = "code")
     private StudyGroup studyGroup;
 
-    public Integer getBalance() {
+    public String getBalance() {
         return price;
     }
 
-    public Study(String code, Date create_time, String indeximgurl, Integer seecount, Integer price, String pricetype, Integer shb, String title, String type, StudyGroup studyGroup) {
-    this.setCode(code);
-    this.setCreate_time(create_time);
-    this.indeximgurl=indeximgurl;
-    this.seecount=seecount;
-    this.price=price;
+
+
+
+
+    public Study(String code, Date create_time, String indeximgurl, Integer seecount, String price, String pricetype, String shb, String title, String type, StudyGroup studyGroup,String videourl) {
+        this.setCode(code);
+        this.setCreate_time(create_time);
+        this.indeximgurl=indeximgurl;
+        this.seecount=seecount;
+        this.price=price;
         this.balance=price;
-    this.pricetype=pricetype;
-    this.shb=shb;
-    this.title=title;
-    this.type=type;
-    this.studyGroup=studyGroup;
+        this.pricetype=pricetype;
+        this.shb=shb;
+        this.title=title;
+        this.type=type;
+        this.studyGroup=studyGroup;
+        this.videourl=videourl;
+        this.audiourl=getAudiourl();
     }
 
-    public Study(String videourl,String code, Date create_time, String indeximgurl, Integer seecount, Integer price, String pricetype, Integer shb, String title, String type) {
-       this.videourl=videourl;
+    public Study(String videourl,String code, Date create_time, String indeximgurl, Integer seecount, String price, String pricetype, String shb, String title, String type) {
+        this.videourl=videourl;
         this.setCode(code);
         this.setCreate_time(create_time);
         this.indeximgurl=indeximgurl;
@@ -92,8 +96,25 @@ public class Study extends BaseEntity {
     }
 
     public Study() {
-
     }
 
+    private String audiourl;
+
+    private Integer urltype;
+    public String getAudiourl() {
+
+        if(null!=this.videourl){
+            if(this.videourl.contains("mp4")){
+                this.urltype=0;
+                this.audiourl= this.videourl.replace("mp4","mp3");
+            }else {
+                this.urltype=1;
+                this.audiourl= this.videourl;
+            }
+        }else {
+            this.audiourl=null;
+        }
+        return this.audiourl;
+    }
 
 }

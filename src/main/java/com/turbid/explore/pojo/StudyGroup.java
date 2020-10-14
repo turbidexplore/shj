@@ -31,6 +31,12 @@ public class StudyGroup extends BaseEntity {
     @Column(name = "content",  length = 2000)
     private String content;
 
+    @Column(name = "desc",  length = 2000)
+    private String desc;
+
+    @Column(name = "seecount")
+    private Integer seecount;
+
     @Column(name = "teachername")
     private String teachername;
 

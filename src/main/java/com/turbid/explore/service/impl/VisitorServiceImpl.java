@@ -7,6 +7,7 @@ import com.turbid.explore.service.VisitorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -48,6 +49,20 @@ public class VisitorServiceImpl implements VisitorService {
     @Override
     public int countByTime(String time) {
         return  visitorRepository.countByTime(time);
+    }
+
+    @Override
+    @Transactional
+    public void removestar(String name, String code) {
+        visitorRepository.removestar(visitorRepository.findByCode(name,code));
+    }
+
+    @Override
+    public boolean countByName(String name, String code) {
+        if(0<visitorRepository.countByName(name,code)){
+            return true;
+        }
+        return false;
     }
 
 

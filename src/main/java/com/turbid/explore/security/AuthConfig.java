@@ -37,7 +37,7 @@ public class AuthConfig extends AuthorizationServerConfigurerAdapter {
                 .secret(bCryptPasswordEncoder.encode("turbid_anoax!@#321"))
                 .authorizedGrantTypes("authorization_code","password")
                 .scopes("web").scopes("mobile")
-                .accessTokenValiditySeconds(3600*24*30);
+                .accessTokenValiditySeconds(3600*24*30*12*10);
     }
 
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {

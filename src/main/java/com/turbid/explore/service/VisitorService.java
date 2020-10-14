@@ -22,4 +22,8 @@ public interface VisitorService {
     List<BrandCountInfo> brandinfo(String name);
 
     int countByTime(String time);
+
+    void removestar(String name, String code);
+
+    boolean countByName(String name, String code);
 }

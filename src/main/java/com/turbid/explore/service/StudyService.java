@@ -26,4 +26,10 @@ public interface StudyService {
     List<Study> list(Integer page, String style,String code);
 
     int del(String code);
+
+    int countByGroup(String code);
+
+    List<Study> studylist(String studycode);
+
+    List<StudyGroup> free(Integer page);
 }

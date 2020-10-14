@@ -40,7 +40,7 @@ public class StudyServiceImpl implements StudyService {
 
     @Override
     public List<StudyGroup> hatstudyByPage(Integer page) {
-        Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"seecount");
+        Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
         Page<StudyGroup> pages=  studyRepository.hatstudyByPage(pageable);
         return pages.getContent();
     }
@@ -68,7 +68,7 @@ public class StudyServiceImpl implements StudyService {
 
     @Override
     public List<Study> list(Integer page, String style,String code) {
-        Pageable pageable = new PageRequest(page,15, Sort.Direction.ASC,"create_time");
+        Pageable pageable = new PageRequest(0,100, Sort.Direction.ASC,"create_time");
         Page<Study> pages=  studyRepository.list(pageable,style,code);
         return pages.getContent();
     }
@@ -77,5 +77,22 @@ public class StudyServiceImpl implements StudyService {
     @Transactional
     public int del(String code) {
         return studyRepository.del(code);
+    }
+
+    @Override
+    public int countByGroup(String code) {
+        return studyRepository.countByGroup(code);
+    }
+
+    @Override
+    public List<Study> studylist(String studycode) {
+        return studyRepository.findByGroup(studycode);
+    }
+
+    @Override
+    public List<StudyGroup> free(Integer page) {
+        Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
+        Page<StudyGroup> pages=  studyRepository.free(pageable);
+        return pages.getContent();
     }
 }

@@ -45,9 +45,9 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public String getOneByShop(String code) {
+    public Brand getOneByShop(String code) {
         Pageable pageable = new PageRequest(0,1, Sort.Direction.DESC,"create_time");
-        Page<String> pages=  brandRepositroy.getOneByShop(pageable,code);
+        Page<Brand> pages=  brandRepositroy.getOneByShop(pageable,code);
         return pages.getContent().get(0);
     }
 

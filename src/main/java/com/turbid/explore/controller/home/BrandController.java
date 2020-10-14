@@ -61,8 +61,8 @@ public class BrandController {
     @ApiOperation(value = "通过code获取品牌", notes="通过code获取品牌")
     @GetMapping("/get")
     public Mono<Info> get(Principal principal,@RequestParam("code") String code) {
-        Shop shop=  shopService.getByCode(code);
         try {
+            Shop shop=  shopService.getByCode(code);
             Visitor visitor = new Visitor();
             visitor.setShopcode(shop.getCode());
             visitor.setUserSecurity(userSecurityService.findByPhone(principal.getName()));

@@ -126,7 +126,7 @@
                                 <input type="text" class="form-control" id="city" placeholder="城市" value=""> </div>
                             </div>
                               <div class="form-row">
-                                <div class="form-group  col-md-9">
+                                <div class="form-group  col-md-12">
                                   <label for="labelview">标签</label>
                                   <div  id="labelview">
                                   </div>
@@ -208,13 +208,15 @@
                             </div>
                             <div class="form-row">
                               <div class="form-group col-md-6">
-                                <label for="vrweb">vrweb</label>
-                                <input type="text" class="form-control" id="vrweb" placeholder="vrweb"> </div>
-                              <div class="form-group col-md-6">
                                 <label for="bzj">招商加盟保证金</label>
                                 <input type="text" class="form-control" id="bzj" placeholder="招商加盟保证金"> </div>
                             </div>
+                            <a href="javascript:;" onclick="vrinit()" style="color: #c69500;font-size: 16px;"> ＋增加一条VR信息</a> <br>
+                            <div class="form-row" id="vr">
 
+                            </div>
+
+                            <br>
                             <button type="button" class="btn btn-accent" onclick="save()">提交认证</button>
                           </form>
                         </div>
@@ -249,7 +251,7 @@
                   </div>
                   <div class="card-header border-bottom text-center">
                     <div class="mb-3 mx-auto">
-                      <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1588743624402&di=d7eeb4dca9d478f6f431d0e4cad095e9&imgtype=0&src=http%3A%2F%2Fpic.qiantucdn.com%2F58pic%2F15%2F41%2F24%2F82G58PICnZi_1024.png%2521%2Ffw%2F1024%2Fwatermark%2Furl%2FL2ltYWdlcy93YXRlcm1hcmsvZGF0dS5wbmc%3D%2Frepeat%2Ftrue" alt="User Avatar" width="150" id="logoimg"> </div>
+                      <img src="https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/public/2020081713431717252898142438959731.jpg" alt="User Avatar" width="150" id="logoimg"> </div>
                     <a href="javascript:;" class="file">上传商铺logo
                       <input type="file" id="logo"  />
                     </a>
@@ -259,7 +261,7 @@
                        </div>
                     <a href="javascript:;" class="file"> 上传店铺广告图<input type="file" id="banner"  /></a>
                     <br>
-                    <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1588743624402&di=d7eeb4dca9d478f6f431d0e4cad095e9&imgtype=0&src=http%3A%2F%2Fpic.qiantucdn.com%2F58pic%2F15%2F41%2F24%2F82G58PICnZi_1024.png%2521%2Ffw%2F1024%2Fwatermark%2Furl%2FL2ltYWdlcy93YXRlcm1hcmsvZGF0dS5wbmc%3D%2Frepeat%2Ftrue" alt="User Avatar" width="100" id="bannerimg">
+                    <img src="https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/public/2020081713431717252898142438959731.jpg" alt="User Avatar" width="100" id="bannerimg">
 
                   </div>
                   <div class="card-header border-bottom text-center">
@@ -270,7 +272,7 @@
                       <input type="file" id="company_show"  />
                     </a>
                     <br>
-                    <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1588743624402&di=d7eeb4dca9d478f6f431d0e4cad095e9&imgtype=0&src=http%3A%2F%2Fpic.qiantucdn.com%2F58pic%2F15%2F41%2F24%2F82G58PICnZi_1024.png%2521%2Ffw%2F1024%2Fwatermark%2Furl%2FL2ltYWdlcy93YXRlcm1hcmsvZGF0dS5wbmc%3D%2Frepeat%2Ftrue" alt="User Avatar" width="100" id="company_showimg">
+                    <img src="https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/public/2020081713431717252898142438959731.jpg" alt="User Avatar" width="100" id="company_showimg">
                   </div>
                 </div>
               </div>
@@ -289,6 +291,80 @@
     <script src="/scripts/shards-dashboards.1.1.0.min.js"></script>
 
   <script>
+    function removeid(id){
+      $("#vra"+id).remove();
+      $("#vrb"+id).remove();
+      $("#vrc"+id).remove();
+    }
+
+    var idc=0;
+    function vrinit(){
+      $("#vr").append(" <div class=\"form-group col-md-4\" id='vrc"+idc+"'>\n  " +
+              "<label for=\"vrtitle\"><a href=\"javascript:;\" class=\"file\">上传公司展示图" +
+              "<input type=\"file\" onchange=\"imgup('"+idc+"',this)\" />" +
+              "</a>" +
+              "</label>" +
+              "<img src=\"https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/public/2020081713431717252898142438959731.jpg\" alt=\"User Avatar\" width=\"80\" name='vri' id='vri"+idc+"'>" +
+              "</div>" +
+              " <div class=\"form-group col-md-4\" id='vra"+idc+"'>\n" +
+      "                                <label for=\"vrtitle\">vr标题</label>\n" +
+      "                                <input type=\"text\" class=\"form-control\" name=\"vrtitle\" placeholder=\"vr标题\" > </div>\n" +
+      "                              <div class=\"form-group col-md-4\" id='vrb"+idc+"'>\n" +
+      "                                <label for=\"vrweb\">vrweb</label>\n" +
+      "                                <input type=\"text\" class=\"form-control\" name=\"vrweb\" placeholder=\"vrweb\"  > <a href=\"javascript:;\" onclick=\"removeid(\'"+idc+"\')\" style=\"color: red;font-size: 12px!important;\"> 删除</a> </div>");
+      idc++;
+    }
+
+    function imgup(id,obj){
+      function getObjectURL(file) {
+        var url = null;
+        if (window.createObjcectURL != undefined) {
+          url = window.createOjcectURL(file);
+        } else if (window.URL != undefined) {
+          url = window.URL.createObjectURL(file);
+        } else if (window.webkitURL != undefined) {
+          url = window.webkitURL.createObjectURL(file);
+        }
+        return url;
+      }
+      var blobURL = getObjectURL(obj.files[0]);
+      var imgUTL = '';
+
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', blobURL);
+      xhr.responseType = 'blob';
+
+      xhr.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+          var imageBlob = this.response;
+          var imageType = imageBlob.type;
+          var imageName = null;
+          if (imageType.includes('png')) {
+            imageName = 'uploaded-image.png';
+          } else if (imageType.includes('gif')) {
+            imageName = 'uploaded-image.gif';
+          } else if (imageType.includes('bmp')) {
+            imageName = 'uploaded-image.bmp';
+          } else {
+            imageName = 'uploaded-image.jpg';
+          }
+          var form = new FormData();
+          form.append('file', imageBlob, imageName); // 第三个参数为文件名
+          $.ajax({
+            type: 'POST',
+            url : "/file/upload",
+            data: form ,
+            processData: false,
+            contentType: false,
+          }).done(function(result) {
+
+            $("#vri"+id).attr("src",result.data);
+          });
+        }
+      };
+      xhr.send();
+    }
+
     layui.use('form', function(){
       var form = layui.form;
     });
@@ -312,21 +388,21 @@
       contentType: false,
     }).done(function(result) {
       result.data.forEach( function (v,i) {
-        $("#labelview").append('<div style="width: 85px;float: left;"><input id="labelviewitem'+i+'" type="checkbox" name="label" title="'+v+'" value="'+v+'" ><label for="labelviewitem'+i+'">'+v+'</label></div>&nbsp;&nbsp;');
+        $("#labelview").append('<div style="width: 70px;float: left;"><input id="labelviewitem'+i+'" type="checkbox" name="label" title="'+v+'" value="'+v+'" ><label for="labelviewitem'+i+'">'+v+'</label></div>&nbsp;&nbsp;');
       });
 
     });
-    $.ajax({
-      type: 'GET',
-      url : "/base/categorys",
-      processData: false,
-      contentType: false,
-    }).done(function(result) {
-      result.data.forEach( function (v,i) {
-        $("#labelview").append('<div style="width: 85px;float: left;"><input id="alabelviewitema'+i+'" type="checkbox" name="label" title="'+v+'" value="'+v+'" ><label for="alabelviewitem'+i+'">'+v+'</label></div>&nbsp;&nbsp;');
-      });
-
-    });
+    // $.ajax({
+    //   type: 'GET',
+    //   url : "/base/categorys",
+    //   processData: false,
+    //   contentType: false,
+    // }).done(function(result) {
+    //   result.data.forEach( function (v,i) {
+    //     $("#labelview").append('<div style="width: 85px;float: left;"><input id="alabelviewitema'+i+'" type="checkbox" name="label" title="'+v+'" value="'+v+'" ><label for="alabelviewitem'+i+'">'+v+'</label></div>&nbsp;&nbsp;');
+    //   });
+    //
+    // });
     function check() {
       $.ajax({
         type: 'POST',
@@ -802,9 +878,48 @@
               }else {
                 label = label+","+$(this).val();
               }
-
-
             });
+            var vrtitle='';
+            i=0
+            $("input[name='vrtitle']").each(function(){
+              if($(this).val()==""||$(this).val()==null){
+                layui.use("layer",function() {
+                  layer.msg('请输入VR标题');
+                }); return false;
+              }
+              if(i==0) {
+                vrtitle =  $(this).val();
+                i++;
+              }else {
+                vrtitle = vrtitle + ","+$(this).val();
+              }
+            })
+            var vrweb='';
+            i=0
+            $("input[name='vrweb']").each(function(){
+              if($(this).val()==""||$(this).val()==null){
+                layui.use("layer",function() {
+                  layer.msg('请输入VRWEB');
+                }); return false;
+              }
+              if(i==0) {
+                vrweb =  $(this).val();
+                i++;
+              }else {
+                vrweb = vrweb + ","+$(this).val();
+              }
+            })
+
+            var vrimage='';
+            i=0
+            $("img[name='vri']").each(function(){
+              if(i==0) {
+                vrimage =  $(this).attr('src');
+                i++;
+              }else {
+                vrimage = vrimage + ","+$(this).attr('src');
+              }
+            })
             $.ajax({
                 type: 'POST',
                 url: "/user/userauth",
@@ -829,7 +944,9 @@
                   "idcardpositive": $("#idcardpositiveimg").attr('src'),
                   "idcardreverse": $("#idcardreverseimg").attr('src'),
                   "unifiedcreditcode": $("#unifiedcreditcode").val()
-                  ,"vrweb": $("#vrweb").val()
+                  ,"vrtitle": vrtitle
+                  ,"vrweb": vrweb
+                  ,"vrimage": vrimage
                   ,"bzj": $("#bzj").val()
                   ,"shopcreatetime": $("#shopcreatetime").val()
                   ,"jmcount": $("#jmcount").val()

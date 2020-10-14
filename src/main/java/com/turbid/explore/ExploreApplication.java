@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
@@ -28,6 +29,7 @@ import java.util.List;
 @EnableJpaAuditing
 @SpringBootApplication
 @EnableScheduling
+@EnableAsync//异步
 public class ExploreApplication {
 
     @Bean

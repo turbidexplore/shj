@@ -67,7 +67,7 @@ public class Goods extends BaseEntity {
     @Column(name = "skucount")
     private Integer skucount;
 
-    public String getContent() {
-        return this.content.replace("<img","<br><img");
-    }
+//    public String getContent() {
+//        return this.content.replace("<img","<br><img");
+//    }
 }

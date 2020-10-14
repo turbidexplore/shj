@@ -2,6 +2,7 @@ package com.turbid.explore.controller.home;
 
 import com.turbid.explore.pojo.Feedback;
 import com.turbid.explore.pojo.UserSecurity;
+import com.turbid.explore.repository.CommunityReposity;
 import com.turbid.explore.repository.FeedbackRepository;
 import com.turbid.explore.repository.ShopFansRepository;
 import com.turbid.explore.service.*;
@@ -42,6 +43,9 @@ public class UserCenterController {
     @Autowired
     private ShopFansRepository shopFansRepository;
 
+    @Autowired
+    private CommunityReposity communityReposity;
+
     @ApiOperation(value = "数据统计", notes="数据统计")
     @PostMapping(value = "/count")
     public Mono<Info> count(Principal principal)  {
@@ -57,6 +61,7 @@ public class UserCenterController {
             data.put("myneed",callService.mycallcount(userSecurity.getCode()));
             data.put("needme",callService.callmecount(userSecurity.getCode()));
             data.put("casecount",caseService.casecount(principal.getName()));
+            data.put("communitycount",communityReposity.countbyuser(userSecurity.getCode()));
         return Mono.just(Info.SUCCESS(data));
     }
 

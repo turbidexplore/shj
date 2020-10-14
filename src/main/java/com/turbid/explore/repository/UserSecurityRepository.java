@@ -18,7 +18,7 @@ import java.util.List;
 @Repository
 public interface UserSecurityRepository extends JpaRepository<UserSecurity,String> {
 
-    @Query("SELECT u from UserSecurity u where u.phonenumber=:phone  ")
+    @Query("SELECT u from UserSecurity u where u.phonenumber=:phone or u.code=:phone ")
     UserSecurity findByPhone( @Param("phone")String phone);
 
     @Query("SELECT count(u) from UserSecurity u where u.phonenumber=:phone  ")
@@ -47,4 +47,7 @@ public interface UserSecurityRepository extends JpaRepository<UserSecurity,Strin
 
     @Query("select count (u) from UserSecurity u where (u.phonenumber LIKE CONCAT('%',:text,'%') or :text is null ) ")
     int allusercount(@Param("text")String text);
+
+    @Query("select a from UserSecurity a ")
+    List<UserSecurity> aaaaa();
 }

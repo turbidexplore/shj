@@ -1,11 +1,9 @@
 package com.turbid.explore.service.impl;
 
 import com.turbid.explore.pojo.Goods;
-import com.turbid.explore.pojo.ProjectNeeds;
 import com.turbid.explore.repository.GoodsRepository;
 import com.turbid.explore.service.GoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -42,10 +40,9 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
 //    @Cacheable(cacheNames = {"redis_cache"}, key = "'newGoods'+#shopcode")
-    public List<Goods> newGoods(String shopcode) {
-        Pageable pageable = new PageRequest(0,4, Sort.Direction.DESC,"create_time");
-        Page<Goods> pages=  goodsRepository.newGoods(pageable,shopcode);
-        return pages.getContent();
+    public List<Goods> newGoods(String shopcode,String label) {
+
+        return  goodsRepository.newGoods(shopcode,label);
     }
 
     @Override
@@ -65,6 +62,18 @@ public class GoodsServiceImpl implements GoodsService {
     public List<Goods> search(String text, Integer page) {
         Pageable pageable = new PageRequest(page,10, Sort.Direction.DESC,"create_time");
         Page<Goods> pages=  goodsRepository.search(pageable,text);
+        return pages.getContent();
+    }
+
+    @Override
+    public List<String> goodsclassByShopcode(String shopcode) {
+        return goodsRepository.goodsclassByShopcode(shopcode);
+    }
+
+    @Override
+    public List<Goods> newlistByPage() {
+        Pageable pageable = new PageRequest(0,8, Sort.Direction.DESC,"create_time");
+        Page<Goods> pages=  goodsRepository.search(pageable,null);
         return pages.getContent();
     }
 }

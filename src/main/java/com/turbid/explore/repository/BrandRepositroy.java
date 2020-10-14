@@ -20,12 +20,12 @@ public interface BrandRepositroy extends JpaRepository<Brand,String> {
     @Query("select b from Brand b where b.company.code=:code")
     List<Brand> getByShop(@Param("code") String code);
 
-    @Query( "select s.company from Brand s where (s.label LIKE CONCAT('%',:label,'%') or :label is null  ) and (s.brandgroup LIKE CONCAT('%',:brandgroup,'%') or :brandgroup is null ) and s.company.status=1 group by s.company.code")
+    @Query( "select s from Shop s where (s.label LIKE CONCAT('%',:label,'%') or :label is null  ) and (s.brandgroup LIKE CONCAT('%',:brandgroup,'%') or :brandgroup is null ) and s.status=1 group by s.code order by s.create_time asc")
     List<Shop> getByLabel(@Param("label")String label, @Param("brandgroup") String brandgroup);
 
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
-    @Query("select b.name from Brand b where b.company.code=:code ")
-    Page<String> getOneByShop(Pageable pageable, @Param("code") String code);
+    @Query("select b from Brand b where b.company.code=:code ")
+    Page<Brand> getOneByShop(Pageable pageable, @Param("code") String code);
 
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
     @Query("select b from Brand b where b.name LIKE CONCAT('%',:text,'%') or b.company.name LIKE CONCAT('%',:text,'%') or b.brandgroup LIKE CONCAT('%',:text,'%')  or b.business LIKE CONCAT('%',:text,'%')  or b.content LIKE CONCAT('%',:text,'%') or b.introduce LIKE CONCAT('%',:text,'%') ")

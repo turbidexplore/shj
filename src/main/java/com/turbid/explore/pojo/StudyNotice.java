@@ -17,6 +17,9 @@ public class StudyNotice extends BaseEntity{
     @Column(name = "title")
     private String title;
 
+    @Column(name = "desc")
+    private String desc;
+
     @Column(name = "img")
     private String img;
 }

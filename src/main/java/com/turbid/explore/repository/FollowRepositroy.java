@@ -30,14 +30,14 @@ public interface FollowRepositroy extends JpaRepository<Follow,String> {
     @Query("SELECT count(c) from Follow c where c.userFollow.phonenumber= :name or c.userFollow.code=:name ")
     int followmeCount(@Param("name")String name);
 
-    @Query("SELECT count(c) from Follow c where c.userFollow.phonenumber= :phone and c.user.phonenumber=:name ")
+    @Query("SELECT count(c) from Follow c where (c.userFollow.code= :phone or c.userFollow.phonenumber= :phone ) and c.user.phonenumber=:name ")
     int findByCount(@Param("name")String name,@Param("phone") String phone);
 
     @Query("delete from Follow c where c.code=:code")
     @Modifying
     int cancelfollow(@Param("code") String code);
 
-    @Query("SELECT c.code from Follow c where c.userFollow.phonenumber= :phone and c.user.phonenumber=:name ")
+    @Query("SELECT c.code from Follow c where (c.userFollow.code= :phone or c.userFollow.phonenumber= :phone ) and c.user.phonenumber=:name ")
     String find(@Param("name")String name,@Param("phone") String phone);
 
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})

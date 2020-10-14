@@ -13,10 +13,13 @@ import javax.persistence.*;
 public class Visitor extends BaseEntity {
 
     //用户认证信息
-    @ManyToOne(fetch= FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name="usercode")
     private UserSecurity userSecurity;
 
     @Column(name = "shopcode")
     private String shopcode;
+
+    @Column(name = "status")
+    private int status=0;
 }

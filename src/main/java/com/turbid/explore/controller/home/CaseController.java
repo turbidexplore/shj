@@ -100,21 +100,26 @@ public class CaseController {
         Case obj= caseService.caseByCode(code);
         obj.setCommentcount(commentService.listByCount(code));
         try {
-            UserSecurity userSecurity= userSecurityService.findByPhone(principal.getName());
-            obj.getBrowsersInfo().add(userSecurity);
-            data.put("data",caseService.save(obj));
-            data.put("isstar",obj.getStarsInfo().contains(userSecurity));
-            if(0<followService.findByCount(principal.getName(),obj.getUserSecurity().getPhonenumber())){
-                data.put("isfollow",true);
-            }else{
-                data.put("isfollow",false);
+            if(null!=principal) {
+                UserSecurity userSecurity = userSecurityService.findByPhone(principal.getName());
+                obj.getBrowsersInfo().add(userSecurity);
+                data.put("isstar",obj.getStarsInfo().contains(userSecurity));
             }
-           int ccount= collectionService.findByCount(principal.getName(),code);
-            data.put("collectioncount",ccount);
-            if(0<ccount){
-                data.put("iscollection",true);
-            }else{
-                data.put("iscollection",false);
+            data.put("data",caseService.save(obj));
+            if(null!=principal) {
+                if (0 < followService.findByCount(principal.getName(), obj.getUserSecurity().getPhonenumber())) {
+                    data.put("isfollow", true);
+                } else {
+                    data.put("isfollow", false);
+                }
+               int ccount= collectionService.findByCount(principal.getName(),code);
+                data.put("collectioncount",ccount);
+
+                if(0<ccount){
+                    data.put("iscollection",true);
+                }else{
+                    data.put("iscollection",false);
+                }
             }
             return Mono.just(Info.SUCCESS(data));
         }catch (Exception e){

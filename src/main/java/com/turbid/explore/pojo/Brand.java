@@ -59,6 +59,10 @@ public class Brand extends BaseEntity{
     }
 
     public String getContent() {
-        return content.replace("<img","<br><img");
+        return content.replace("<br>","")
+                .replace("<br />","")
+                .replace("<br/>","") .replace("&nbsp;","")
+                .replace("<div style='width:100%;height:5px;'></div>","")
+                .replace("<img","<div style='width:100%;height:5px;'></div><img");
     }
 }

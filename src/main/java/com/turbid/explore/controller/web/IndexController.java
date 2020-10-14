@@ -78,6 +78,12 @@ public class IndexController {
         return "manage/case";
     }
 
+    @RequestMapping("/manageeditscase")
+    public String editscase(@RequestParam("code")String code, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
+        httpServletRequest.setAttribute("code",code);
+        return "system/scase";
+    }
+
     @RequestMapping("/managenativecontent")
     public String nativecontent(){
         return "system/nativecontent";
@@ -172,8 +178,6 @@ public class IndexController {
         return "system/study";
     }
 
-
-
     @RequestMapping("/managebanners")
     public String managebanners(){
         return "system/banners";
@@ -238,6 +242,16 @@ public class IndexController {
     public String managescaseinfo(@RequestParam("code")String code, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
         httpServletRequest.setAttribute("code",code);
         return "system/case";
+    }
+
+    @RequestMapping("/managescases")
+    public String managescases(){
+        return "system/scases";
+    }
+
+    @RequestMapping("/managescase")
+    public String managescase(){
+        return "system/scase";
     }
 
 }

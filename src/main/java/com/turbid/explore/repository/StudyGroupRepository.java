@@ -20,4 +20,6 @@ public interface StudyGroupRepository extends JpaRepository<StudyGroup,String> {
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
     @Query("SELECT s from StudyGroup s where (s.type =:style or :style is null ) and s.status is null ")
     Page<StudyGroup> grouplist(Pageable pageable,@Param("style") String style);
+
+
 }

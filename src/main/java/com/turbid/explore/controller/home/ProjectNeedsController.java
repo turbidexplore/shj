@@ -1,6 +1,7 @@
 package com.turbid.explore.controller.home;
 
 import com.turbid.explore.pojo.*;
+import com.turbid.explore.push.api.client.push.PushV3Client;
 import com.turbid.explore.repository.NeedsRelationRepositroy;
 import com.turbid.explore.repository.NoticeRepository;
 import com.turbid.explore.service.CallService;
@@ -35,6 +36,7 @@ public class ProjectNeedsController {
     @Autowired
     private NoticeRepository noticeRepository;
 
+
     @ApiOperation(value = "新需求添加", notes="新需求添加")
     @PutMapping(value = "/addneeds")
     public Mono<Info> addneeds(Principal principal, @RequestBody ProjectNeeds projectNeeds) {
@@ -47,8 +49,9 @@ public class ProjectNeedsController {
         c.add(Calendar.DAY_OF_MONTH, projectNeeds.getTimeout());
         projectNeeds.setOvertime(sdf.format(c.getTime()));
         noticeRepository.save(new Notice(principal.getName(),"您的需求添加成功","系统通知",0,0));
-
-        return Mono.just(Info.SUCCESS(projectNeedsService.save(projectNeeds)));
+        projectNeeds=projectNeedsService.save(projectNeeds);
+        PushV3Client.pushByTags(projectNeeds.getCode(),projectNeeds.getTitle(),projectNeeds.getContext(),"code",projectNeeds.getCode(),"企业");
+        return Mono.just(Info.SUCCESS(projectNeeds));
     }
 
     @ApiOperation(value = "修改需求", notes="修改需求")

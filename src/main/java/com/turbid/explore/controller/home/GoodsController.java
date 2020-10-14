@@ -67,6 +67,12 @@ public class GoodsController {
     }
 
     @ApiOperation(value = "特卖品列表", notes="特卖品列表")
+    @PostMapping("/newlistByPage")
+    public Mono<Info> newlistByPage() {
+        return Mono.just(Info.SUCCESS( goodsService.newlistByPage()));
+    }
+
+    @ApiOperation(value = "特卖品列表", notes="特卖品列表")
     @PostMapping("/listByPage")
     public Mono<Info> listByPage(@RequestParam(value = "label",required = false)String label,@RequestParam("page")Integer page) {
         return Mono.just(Info.SUCCESS( goodsService.listByPage(label,page)));
@@ -75,7 +81,19 @@ public class GoodsController {
     @ApiOperation(value = "新品推荐", notes="新品推荐")
     @GetMapping("/newGoods")
     public Mono<Info> newGoods(@RequestParam(value = "shopcode")String shopcode) {
-        return Mono.just(Info.SUCCESS( goodsService.newGoods(shopcode)));
+        return Mono.just(Info.SUCCESS( goodsService.newGoods(shopcode, null)));
+    }
+
+    @ApiOperation(value = "获取标签列表", notes="获取标签列表")
+    @GetMapping("/goodsclassByShopcode")
+    public Mono<Info> goodsclassByShopcode(@RequestParam(value = "shopcode")String shopcode) {
+        return Mono.just(Info.SUCCESS( goodsService.goodsclassByShopcode(shopcode)));
+    }
+
+    @ApiOperation(value = "通过shopcode", notes="通过shopcode")
+    @GetMapping("/goodsByShopcode")
+    public Mono<Info> goodsByShopcode(@RequestParam(value = "shopcode")String shopcode,@RequestParam(value = "label",required = false)String label) {
+        return Mono.just(Info.SUCCESS( goodsService.newGoods(shopcode,label)));
     }
 
 

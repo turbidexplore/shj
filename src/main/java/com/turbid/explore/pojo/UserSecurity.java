@@ -59,7 +59,7 @@ public class UserSecurity extends BaseEntity {
 
     //用户认证信息
     @Column(name = "balance")
-    private Integer balance;
+    private String balance;
 
 
 
