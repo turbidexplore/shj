@@ -5,6 +5,7 @@ import com.turbid.explore.pojo.*;
 import com.turbid.explore.push.api.client.push.PushV3Client;
 import com.turbid.explore.repository.*;
 import com.turbid.explore.service.StudyService;
+import com.turbid.explore.service.UserSecurityService;
 import com.turbid.explore.tools.CodeLib;
 import com.turbid.explore.tools.Info;
 import io.swagger.annotations.Api;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import java.security.Principal;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Api(description = "达人研习社")
@@ -71,6 +73,7 @@ public class StudyController {
     @ApiOperation(value = "添加课程", notes="添加课程")
     @PutMapping("/addgroup")
     public Mono<Info> addgroup(@RequestBody StudyGroup studyGroup) {
+        studyGroup.setSeecount(0);
         studyGroup=studyGroupRepository.saveAndFlush(studyGroup);
         asyncTaskA.addgroup(studyGroup);
         return Mono.just(Info.SUCCESS(studyGroup));
@@ -86,7 +89,12 @@ public class StudyController {
             Page<StudyGroup> pages=  studyGroupRepository.grouplist(pageable,style);
             List<StudyGroup> list=new ArrayList<>();
             pages.getContent().forEach(v->{
-                v.setSeecount(studyService.countByGroup(v.getCode()));
+                try {
+                    v.setSeecount(studyService.countByGroup(v.getCode()));
+                }catch (Exception e){
+                    v.setSeecount(0);
+                }
+
                 list.add(v);
             });
             return Mono.just(Info.SUCCESS(list ));
@@ -142,7 +150,7 @@ public class StudyController {
 
     @ApiOperation(value = "获取课程视频url", notes="获取课程视频url")
     @GetMapping("/getVideo")
-    public Mono<Info> getVideo(Principal principal,@RequestParam(name = "code")String code) {
+    public Mono<Info> getVideo(@RequestParam(name = "code")String code) {
         Study study=studyService.get(code);
         Map data=new HashMap();
         data.put("audio", study.getAudiourl());
@@ -183,7 +191,6 @@ public class StudyController {
                           v.setPricetype("3");
                        }
                    }
-
                }
                 list.add(v);
             });
@@ -225,7 +232,11 @@ public class StudyController {
         try {
             List<StudyGroup> list=studyService.free(page);
             list.forEach(v->{
-                v.setSeecount(studyService.countByGroup(v.getCode()));
+                try {
+                    v.setSeecount(studyService.countByGroup(v.getCode()));
+                }catch (Exception e){
+                    v.setSeecount(0);
+                }
             });
             return Mono.just(Info.SUCCESS(list ));
         }catch (Exception e){
@@ -279,12 +290,31 @@ public class StudyController {
         }
     }
 
+    @Autowired
+    private DayTaskReposity dayTaskReposity;
+
+    @Autowired
+    private UserSecurityService userSecurityService;
 
     @ApiOperation(value = "是否可看", notes="是否可看")
     @PostMapping(value = "/issee")
     public Mono<Info> issee(Principal principal,@RequestParam("studycode")String studycode) {
         try {
             if(0<studyRelationRepository.issee(principal.getName(),studycode)){
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                String dateStr = sdf.format(new Date());
+                DayTask dayTask=dayTaskReposity.findByDay(principal.getName(),dateStr);
+                UserSecurity userSecurity=userSecurityService.findByPhone(principal.getName());
+                if(null==dayTask){
+                    dayTask=new DayTask();
+                }
+                dayTask.setUserSecurity(userSecurity);
+                dayTask.setTaskb();
+                if(dayTask.getTaskb()==3){
+                    userSecurity.setShb(userSecurity.getShb()+10);
+                    userSecurityService.save(userSecurity);
+                }
+                dayTask=dayTaskReposity.saveAndFlush(dayTask);
                 return Mono.just(Info.SUCCESS(true));
             }else {
                 return Mono.just(Info.SUCCESS(false));

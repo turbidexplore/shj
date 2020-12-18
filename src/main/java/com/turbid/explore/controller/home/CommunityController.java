@@ -6,7 +6,9 @@ import com.turbid.explore.configuration.AsyncTaskA;
 import com.turbid.explore.pojo.*;
 import com.turbid.explore.push.api.client.push.PushV3Client;
 import com.turbid.explore.repository.CommunityReposity;
+import com.turbid.explore.repository.DayTaskReposity;
 import com.turbid.explore.repository.DiscussRepository;
+import com.turbid.explore.service.ShopService;
 import com.turbid.explore.service.UserSecurityService;
 import com.turbid.explore.service.VisitorService;
 import com.turbid.explore.tools.Info;
@@ -20,7 +22,9 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import java.security.Principal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Api(description = "社区接口")
@@ -49,9 +53,27 @@ public class CommunityController {
     @Autowired
     private AsyncTaskA asyncTaskA;
 
+    @Autowired
+    private DayTaskReposity dayTaskReposity;
+
     @PutMapping("/add")
     public Mono<Info> add(Principal principal, @RequestBody Community community) {
+
         UserSecurity userSecurity=userSecurityService.findByPhone(principal.getName());
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String dateStr = sdf.format(new Date());
+        DayTask dayTask=dayTaskReposity.findByDay(principal.getName(),dateStr);
+        if(null==dayTask){
+            dayTask=new DayTask();
+        }
+        dayTask.setUserSecurity(userSecurity);
+        dayTask.setTaska();
+        if(dayTask.getTaska()==1){
+            userSecurity.setShb(userSecurity.getShb()+10);
+            userSecurityService.save(userSecurity);
+        }
+        dayTask=dayTaskReposity.saveAndFlush(dayTask);
         community.setUserSecurity(userSecurity);
         community.setIsstar(false);
         community.setStar(0);
@@ -69,6 +91,19 @@ public class CommunityController {
     @PutMapping("/star")
     public Mono<Info> star(Principal principal, @RequestParam("code") String code) {
         UserSecurity userSecurity=userSecurityService.findByPhone(principal.getName());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String dateStr = sdf.format(new Date());
+        DayTask dayTask=dayTaskReposity.findByDay(principal.getName(),dateStr);
+        if(null==dayTask){
+            dayTask=new DayTask();
+        }
+        dayTask.setUserSecurity(userSecurity);
+        dayTask.setTaskd();
+        if(dayTask.getTaskf()==3){
+            userSecurity.setShb(userSecurity.getShb()+10);
+            userSecurityService.save(userSecurity);
+        }
+        dayTask=dayTaskReposity.saveAndFlush(dayTask);
         Community community= communityReposity.getOne(code);
         community.setStar(community.getStar()+1);
         communityReposity.save(community);
@@ -110,6 +145,9 @@ public class CommunityController {
             if(null!=principal) {
                 v.setIsstar(visitorService.countByName(principal.getName(),v.getCode()));
             }
+            if(null!=v.getUserSecurity().getShopcode()) {
+                v.setShop(shopService.getByCode(v.getUserSecurity().getShopcode()));
+            }
             v.setCommentcount(discussRepository.countByCommunityCode(v.getCode()));
             communities.add(v);
         });
@@ -126,13 +164,16 @@ public class CommunityController {
         return Mono.just(Info.SUCCESS(community));
     }
 
+    @Autowired
+    private ShopService shopService;
+
     @PostMapping("/listByPage")
     public Mono<Info> listByPage(Principal principal,@RequestParam(value = "label",required = false)String label,@RequestParam("page")Integer page) {
         Pageable pageable = null;
         if(null==label){
-             pageable = new PageRequest(page,10, Sort.Direction.DESC,"create_time");
+             pageable = new PageRequest(page,5, Sort.Direction.DESC,"create_time");
         }else {
-            pageable=  new PageRequest(page,10, Sort.Direction.DESC,"create_time");
+            pageable=  new PageRequest(page,5, Sort.Direction.DESC,"create_time");
         }
         List<Community> communities=new ArrayList<>();
         Page<Community> pages=  communityReposity.listByPage(pageable, label,null);
@@ -140,7 +181,11 @@ public class CommunityController {
             if(null!=principal) {
                 v.setIsstar(visitorService.countByName(principal.getName(),v.getCode()));
             }
+            if(null!=v.getUserSecurity().getShopcode()) {
+                v.setShop(shopService.getByCode(v.getUserSecurity().getShopcode()));
+            }
             v.setCommentcount(discussRepository.countByCommunityCode(v.getCode()));
+            v.setRecommends(shopService.recommenda(v.getStyle()+","+v.getLocal(),3));
             communities.add(v);
         });
         return Mono.just(Info.SUCCESS(communities));
@@ -148,6 +193,19 @@ public class CommunityController {
     @PutMapping("/discuss")
     public Mono<Info> discuss(Principal principal, @RequestBody Discuss discuss) {
         UserSecurity userSecurity=userSecurityService.findByPhone(principal.getName());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String dateStr = sdf.format(new Date());
+        DayTask dayTask=dayTaskReposity.findByDay(principal.getName(),dateStr);
+        if(null==dayTask){
+            dayTask=new DayTask();
+        }
+        dayTask.setUserSecurity(userSecurity);
+        dayTask.setTaske();
+        if(dayTask.getTaske()==1){
+            userSecurity.setShb(userSecurity.getShb()+5);
+            userSecurityService.save(userSecurity);
+        }
+        dayTask=dayTaskReposity.saveAndFlush(dayTask);
         discuss.setDiscussUserSecurity(userSecurity);
         asyncTaskA.pushdiscuss(discuss);
         return Mono.just(Info.SUCCESS(discussRepository.save(discuss)));

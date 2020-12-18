@@ -1,8 +1,10 @@
 package com.turbid.explore.controller.home;
 
+import com.turbid.explore.pojo.DayTask;
 import com.turbid.explore.pojo.Feedback;
 import com.turbid.explore.pojo.UserSecurity;
 import com.turbid.explore.repository.CommunityReposity;
+import com.turbid.explore.repository.DayTaskReposity;
 import com.turbid.explore.repository.FeedbackRepository;
 import com.turbid.explore.repository.ShopFansRepository;
 import com.turbid.explore.service.*;
@@ -140,8 +142,78 @@ public class UserCenterController {
         return Mono.just(Info.SUCCESS(userSecurityService.issignin(principal.getName(),dateStr)));
     }
 
+    @Autowired
+    private DayTaskReposity dayTaskReposity;
 
 
+    @ApiOperation(value = "每日签到信息", notes="每日签到信息")
+    @PostMapping(value = "/daytask")
+    public Mono<Info> daytask(Principal principal)  {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String dateStr = sdf.format(new Date());
+        DayTask dayTask=dayTaskReposity.findByDay(principal.getName(),dateStr);
+        if(null==dayTask){
+            dayTask=new DayTask();
+        }
+        dayTask.setUserSecurity(userSecurityService.findByPhone(principal.getName()));
+        dayTask=dayTaskReposity.saveAndFlush(dayTask);
+        Map data=new HashMap();
+        data.put("info",dayTask);
+        Map base=new HashMap();
+            Map a=new HashMap();
+            a.put("count",1);
+            a.put("shb",10);
+            a.put("ok",dayTask.getTaska()>=1?true:false);
+            base.put("a",a);
+            Map b=new HashMap();
+            b.put("count",3);
+            b.put("shb",10);
+            a.put("ok",dayTask.getTaskb()>=3?true:false);
+            base.put("b",b);
+            Map c=new HashMap();
+            c.put("count",3);
+            c.put("shb",5);
+            a.put("ok",dayTask.getTaskc()>=3?true:false);
+            base.put("c",c);
+            Map d=new HashMap();
+            d.put("count",3);
+            d.put("shb",5);
+            a.put("ok",dayTask.getTaskd()>=3?true:false);
+            base.put("d",d);
+            Map e=new HashMap();
+            e.put("count",1);
+            e.put("shb",3);
+            a.put("ok",dayTask.getTaske()>=1?true:false);
+            base.put("e",e);
+            Map f=new HashMap();
+            f.put("count",3);
+            f.put("shb",10);
+            a.put("ok",dayTask.getTaskf()>=3?true:false);
+            base.put("f",f);
+        data.put("base",base);
+        return Mono.just(Info.SUCCESS(data));
+    }
 
+
+    @ApiOperation(value = "分享统计", notes="分享统计")
+    @PostMapping(value = "/sharecount")
+    public Mono<Info> sharecount(Principal principal)  {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String dateStr = sdf.format(new Date());
+        DayTask dayTask=dayTaskReposity.findByDay(principal.getName(),dateStr);
+        if(null==dayTask){
+            dayTask=new DayTask();
+        }
+        UserSecurity userSecurity=userSecurityService.findByPhone(principal.getName());
+        dayTask.setUserSecurity(userSecurity);
+        dayTask.setTaskf();
+        if(dayTask.getTaskf()==3){
+            userSecurity.setShb(userSecurity.getShb()+10);
+            userSecurityService.save(userSecurity);
+        }
+        dayTask=dayTaskReposity.saveAndFlush(dayTask);
+
+        return Mono.just(Info.SUCCESS(dateStr));
+    }
 
 }

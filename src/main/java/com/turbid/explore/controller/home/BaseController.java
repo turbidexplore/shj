@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.turbid.explore.pojo.Configinfo;
 import com.turbid.explore.pojo.Shop;
+import com.turbid.explore.repository.City_CNReposity;
 import com.turbid.explore.repository.ConfiginfoRepository;
 import com.turbid.explore.service.*;
 import com.turbid.explore.tools.CodeLib;
@@ -125,10 +126,33 @@ public class BaseController {
         return Mono.just(Info.SUCCESS(districtService.getAreaByPid(id)));
     }
 
+    @Autowired
+    City_CNReposity city_cnReposity;
+
+    @ApiOperation(value = "获取城市信息", notes="获取城市信息")
+    @GetMapping(value = "/citys")
+    public Mono<Info> citys(@RequestParam("type")Integer type,@RequestParam(value = "text",required = false)String text)  {
+
+        switch (type){
+            case 0:
+                return Mono.just(Info.SUCCESS(city_cnReposity.countrys()));
+
+            case 1:
+                return Mono.just(Info.SUCCESS(city_cnReposity.states(text)));
+            case 2:
+                return Mono.just(Info.SUCCESS(city_cnReposity.citys(text)));
+            case 3:
+                return Mono.just(Info.SUCCESS(city_cnReposity.citys1(text)));
+            default:
+                return Mono.just(Info.SUCCESS(null));
+        }
+
+    }
+
     @ApiOperation(value = "获取产品风格", notes="获取产品风格")
     @GetMapping(value = "/styles")
     public Mono<Info> styles()  {
-        return Mono.just(Info.SUCCESS(new String[]{"新古典","美式","轻奢","极简","北欧","现代","新中式","原创","定制"}));
+        return Mono.just(Info.SUCCESS(new String[]{"极简","轻奢","中式","美式","欧式","北欧","其它"}));
     }
 
 
@@ -197,7 +221,7 @@ public class BaseController {
     @ApiOperation(value = "获取案例主题", notes="获取案例主题")
     @GetMapping(value = "/casesubject")
     public Mono<Info> casesubject()  {
-        return Mono.just(Info.SUCCESS(new String[]{"优选设计案例"}));
+        return Mono.just(Info.SUCCESS(new String[]{"住宅","餐厅","店面","酒店","办公","其他"}));
     }
 
     @ApiOperation(value = "获取品牌馆信息", notes="获取品牌馆信息")
@@ -458,6 +482,40 @@ public class BaseController {
     public Mono<Info> sh() {
         return Mono.just(Info.SUCCESS(true));
     }
+
+
+    @ApiOperation(value = "imgbanner", notes="imgbanner")
+    @GetMapping(value = "/imgbanner")
+    public Mono<Info> imgbanner() {
+        Map<String,Object> data=new HashMap<>();
+        data.put("case",caseService.listByPage(0,null,null,null).get(0).getIndexurl());
+        data.put("nativecontent",nativeContentService.listByPageLabel(0,null,null).get(0).getFirstimage().split(",")[0]);
+        return Mono.just(Info.SUCCESS(data));
+    }
+
+    @ApiOperation(value = "图库类别", notes="图库类别")
+    @GetMapping(value = "/imgclass")
+    public Mono<Info> imgclass()  {
+        List<Map> data=new ArrayList<>();
+        Map item=new HashMap();
+        item.put("name","家具");
+        item.put("items",new String[]{"床","沙发","茶几","桌子","椅子","柜子","置物架","其他"});
+        data.add(item);
+         item=new HashMap();
+        item.put("name","家纺");
+        item.put("items",new String[]{"窗帘","床品","靠垫","抱枕","其他"});
+        data.add(item);
+         item=new HashMap();
+        item.put("name","配饰");
+        item.put("items",new String[]{"摆件","挂画","墙纸","地毯","其他"});
+        data.add(item);
+         item=new HashMap();
+        item.put("name","灯具");
+        item.put("items",new String[]{"吊灯","壁灯","落地灯","台灯"});
+        data.add(item);
+        return Mono.just(Info.SUCCESS(data));
+    }
+
 
 }
 

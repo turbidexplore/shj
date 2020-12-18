@@ -45,4 +45,8 @@ public interface CaseRepositroy extends JpaRepository<Case,String> {
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
     @Query("SELECT c from Case c where c.label LIKE CONCAT('%',:text,'%') or c.content LIKE CONCAT('%',:text,'%') or c.title LIKE CONCAT('%',:text,'%') or c.name LIKE CONCAT('%',:text,'%') or c.company LIKE CONCAT('%',:text,'%') or c.subject LIKE CONCAT('%',:text,'%') or c.address LIKE CONCAT('%',:text,'%') or c.team LIKE CONCAT('%',:text,'%')  ")
     Page<Case> search(Pageable pageable,@Param("text") String text);
+
+    @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
+    @Query("SELECT c from Case c where c.label LIKE CONCAT('%',:text,'%') or c.city LIKE CONCAT('%',:text,'%') or c.subject LIKE CONCAT('%',:text,'%')  ")
+    Page<Case> casebylabel(Pageable pageable, String text);
 }

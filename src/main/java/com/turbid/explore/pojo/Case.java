@@ -45,6 +45,10 @@ public class Case extends BaseEntity {
     @Column(name = "label")
     private String label;
 
+    @ApiModelProperty(value = "city")
+    @Column(name = "city")
+    private String city;
+
     @ApiModelProperty(value = "标题")
     @Column(name = "title")
     private String title;

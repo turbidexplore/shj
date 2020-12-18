@@ -33,4 +33,6 @@ public interface ShopService {
     Long countAll();
 
     List<Shop> getByIndexChoose(String label);
+
+    List<Shop> recommenda(  String likes,Integer size);
 }

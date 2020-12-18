@@ -2,7 +2,9 @@ package com.turbid.explore.controller.home;
 
 import com.turbid.explore.pojo.Case;
 import com.turbid.explore.pojo.Comment;
+import com.turbid.explore.pojo.DayTask;
 import com.turbid.explore.pojo.UserSecurity;
+import com.turbid.explore.repository.DayTaskReposity;
 import com.turbid.explore.service.*;
 import com.turbid.explore.tools.Info;
 import io.swagger.annotations.Api;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 import java.security.Principal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,8 +31,8 @@ public class CaseController {
 
     @ApiOperation(value = "新增案例", notes="新增案例")
     @PutMapping("/addcase")
-    public Mono<Info> addcase(Principal principal, @RequestBody Case obj) {
-        obj.setUserSecurity(userSecurityService.findByPhone(principal.getName()));
+    public Mono<Info> addcase(@RequestBody Case obj) {
+        obj.setUserSecurity(userSecurityService.findByPhone("administrator"));
         obj.setCreate_time(new Date());
         return Mono.just(Info.SUCCESS(caseService.save(obj)));
     }
@@ -93,6 +96,9 @@ public class CaseController {
     @Autowired
     private FollowService followService;
 
+    @Autowired
+    private DayTaskReposity dayTaskReposity;
+
     @ApiOperation(value = "查询案例信息", notes="查询案例信息")
     @PostMapping("/caseByCode")
     public Mono<Info> caseByCode(Principal principal,@RequestParam(name = "code")String code) {
@@ -121,6 +127,21 @@ public class CaseController {
                     data.put("iscollection",false);
                 }
             }
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String dateStr = sdf.format(new Date());
+            DayTask dayTask=dayTaskReposity.findByDay(principal.getName(),dateStr);
+            UserSecurity userSecurity=userSecurityService.findByPhone(principal.getName());
+            if(null==dayTask){
+                dayTask=new DayTask();
+            }
+            dayTask.setUserSecurity(userSecurity);
+            dayTask.setTaskc();
+            if(dayTask.getTaskc()==3){
+                userSecurity.setShb(userSecurity.getShb()+5);
+                userSecurityService.save(userSecurity);
+            }
+            dayTask=dayTaskReposity.saveAndFlush(dayTask);
             return Mono.just(Info.SUCCESS(data));
         }catch (Exception e){
             e.getStackTrace();
@@ -136,6 +157,19 @@ public class CaseController {
            UserSecurity userSecurity= userSecurityService.findByPhone(principal.getName());
            obj.getStarsInfo().add(userSecurity);
            caseService.save(obj);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String dateStr = sdf.format(new Date());
+            DayTask dayTask=dayTaskReposity.findByDay(principal.getName(),dateStr);
+            if(null==dayTask){
+                dayTask=new DayTask();
+            }
+            dayTask.setUserSecurity(userSecurity);
+            dayTask.setTaskd();
+            if(dayTask.getTaskf()==3){
+                userSecurity.setShb(userSecurity.getShb()+10);
+                userSecurityService.save(userSecurity);
+            }
+            dayTask=dayTaskReposity.saveAndFlush(dayTask);
            return Mono.just(Info.SUCCESS(""));
         }catch (Exception e){
            return Mono.just(Info.ERROR(e.getMessage()));
@@ -177,5 +211,15 @@ public class CaseController {
         data.put("casecount",caseService.casecount(userSecurity.getCode()));
         data.put("commentcount",caseService.commentcount(userSecurity.getCode()));
         return Mono.just(Info.SUCCESS(data));
+    }
+
+    @ApiOperation(value = "通过标签获取案例", notes="通过标签获取案例")
+    @PostMapping("/casebylabel")
+    public Mono<Info> casebylabel(@RequestParam(name = "page")Integer page,@RequestParam(name = "text")String text) {
+        try {
+            return Mono.just(Info.SUCCESS(caseService.casebylabel(page,text)));
+        }catch (Exception e){
+            return Mono.just(Info.SUCCESS(e.getMessage()));
+        }
     }
 }

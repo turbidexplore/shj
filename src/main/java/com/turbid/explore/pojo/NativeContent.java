@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.turbid.explore.tools.CodeLib;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -36,9 +37,23 @@ public class NativeContent extends BaseEntity{
     @Column(name = "content",length = 66666)
     private String content;
 
+    @ApiModelProperty(value = "主题")
+    @Column(name = "subject")
+    private String subject;
+
+    @ApiModelProperty(value = "自由标签")
+    @Column(name = "freesubject")
+    private String freesubject;
+
     //软文内容
-    @Column(name = "label",length = 66666)
+    @Column(name = "label",length = 60000)
     private String label;
+
+    @Column(name = "hat",length = 10)
+    private Integer hat;
+
+    @Column(name = "fromv",length = 2)
+    private String fromv;
 
     @Column(name = "firstimage",length = 1000)
     private String firstimage;
@@ -50,6 +65,11 @@ public class NativeContent extends BaseEntity{
     //评论信息
     @OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
     private Set<Comment> comments;
+
+
+    @ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH},fetch= FetchType.EAGER)
+    @JoinColumn(name="company_code")
+    private Shop company;
 
 
     public int seecount;

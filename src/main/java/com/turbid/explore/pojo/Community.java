@@ -7,6 +7,7 @@ import org.apache.http.util.TextUtils;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Entity
@@ -20,6 +21,9 @@ public class Community extends BaseEntity {
 
     @Column(name = "label")
     private String label;
+
+    @Column(name = "style")
+    private String style;
 
     @Column(name = "content")
     private String content;
@@ -53,6 +57,12 @@ public class Community extends BaseEntity {
     public String getUcontent() {
         return Community.unicode2String(content);
     }
+
+    @ManyToOne
+    private Shop shop;
+
+    @OneToMany
+    private List<Shop> recommends;
 
     /**
      * 过滤emoji 或者 其他非文字类型的字符

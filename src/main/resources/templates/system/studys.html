@@ -165,24 +165,24 @@
     var index=0;
     list(index);
 
-    $(window).scroll(function () {
-
-      var scrollTop = $(this).scrollTop();
-      //console.log(scrollTop);
-      var scrollHeight = $(document).height();
-      //console.log('['+scrollHeight+']');
-      var windowHeight = screen.availHeight;
-      //console.log('【'+windowHeight+'】');
-      if (scrollTop+ windowHeight >= scrollHeight) {
-        if (stop == true && ipage <= totalPage) {
-          stop = false;
-        } else {
-          index++;
-          console.log(index);
-          list(index)
-        }
-      }
-    });
+    // $(window).scroll(function () {
+    //
+    //   var scrollTop = $(this).scrollTop();
+    //   //console.log(scrollTop);
+    //   var scrollHeight = $(document).height();
+    //   //console.log('['+scrollHeight+']');
+    //   var windowHeight = screen.availHeight;
+    //   //console.log('【'+windowHeight+'】');
+    //   if (scrollTop+ windowHeight >= scrollHeight) {
+    //     if (stop == true && ipage <= totalPage) {
+    //       stop = false;
+    //     } else {
+    //       index++;
+    //       console.log(index);
+    //       list(index)
+    //     }
+    //   }
+    // });
     function list(page) {
       var settings = {
         "async": true,

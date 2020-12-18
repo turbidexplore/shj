@@ -473,11 +473,17 @@
 
                   });
 
-                  var vrweb= result.data.vrweb.split(",");
-                  var vrtitle=  result.data.vrtitle.split(",");
+                  var vrweb="";
+                  var vrtitle= "";
                   var vrimage="";
                   if( result.data.vrimage!=null) {
-                    var vrimage = result.data.vrimage.split(",");
+                     vrimage = result.data.vrimage.split(",");
+                  }
+          if( result.data.vrimage!=null) {
+            vrimage = result.data.vrimage.split(",");
+          }
+                  if( result.data.vrtitle!=null) {
+                    result.data.vrtitle.split(",")
                   }
                   for (var i=0;i<vrweb.length;i++){
                     vrinit(vrtitle[i],vrweb[i],vrimage[i]);

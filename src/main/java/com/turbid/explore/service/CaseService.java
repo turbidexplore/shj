@@ -31,4 +31,6 @@ public interface CaseService {
     int commentcount(String usercode);
 
     List<Case> search(String text, Integer page);
+
+    List<Case>  casebylabel(Integer page, String text);
 }

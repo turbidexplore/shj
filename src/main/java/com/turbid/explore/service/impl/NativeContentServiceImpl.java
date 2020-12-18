@@ -4,7 +4,6 @@ import com.turbid.explore.pojo.NativeContent;
 import com.turbid.explore.repository.NativeContentRepositroy;
 import com.turbid.explore.service.NativeContentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -29,9 +28,9 @@ public class NativeContentServiceImpl implements NativeContentService {
 
     @Override
 //    @Cacheable(cacheNames = {"redis_cache"}, key = "'NativeContentlistByPage'+#page")
-    public List<NativeContent> listByPageLabel(Integer page,String label) {
+    public List<NativeContent> listByPageLabel(Integer page,  String label,String from) {
         Pageable pageable = new PageRequest(page,size, Sort.Direction.DESC,"create_time");
-        Page<NativeContent> pages=  nativeContentRepositroy.listByPageLabel(pageable,label);
+        Page<NativeContent> pages=  nativeContentRepositroy.listByPageLabel(pageable,label,from);
         return pages.getContent();
     }
 
@@ -60,5 +59,13 @@ public class NativeContentServiceImpl implements NativeContentService {
     @Transactional
     public void del(String code) {
         nativeContentRepositroy.deleteById(code);
+    }
+
+    @Override
+    public List<NativeContent> allbypage(Integer page, String freesubject, String subject, Integer abroad, Integer isshop,String label) {
+        Pageable pageable = new PageRequest(page,size, Sort.Direction.DESC,"create_time");
+
+        Page<NativeContent> pages=  nativeContentRepositroy.allbypage(pageable,freesubject,subject,abroad,label);
+        return pages.getContent();
     }
 }

@@ -232,7 +232,7 @@ public class ShopController {
     public Mono<Info> update(Principal principal,@RequestBody Shop shop) {
         Shop old=shopService.getByCode(shop.getCode());
         shop.setUserSecurity(old.getUserSecurity());
-        shop.setCreate_time(new Date());
+//        shop.setCreate_time(new Date());
         shop.setIschoose(old.getIschoose());
         shop.setStatus(old.getStatus());
         shop.setHat(old.getHat());
@@ -518,6 +518,13 @@ public class ShopController {
         return Mono.just(Info.SUCCESS(shopService.save(shop)));
     }
 
+
+    @ApiOperation(value = "推荐", notes="推荐")
+    @PostMapping("/recommend")
+    public Mono<Info> recommend(@RequestParam("likes")String likes,@RequestParam("size")Integer size) {
+
+        return Mono.just(Info.SUCCESS(shopService.recommenda(likes,size)));
+    }
 
 }
 

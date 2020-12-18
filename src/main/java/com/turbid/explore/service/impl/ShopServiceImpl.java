@@ -122,4 +122,36 @@ public class ShopServiceImpl implements ShopService {
         Page<Shop> pages=   shopRepositroy.getByChoose(pageable,label);
         return pages.getContent();
     }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Shop> recommenda(  String likes,Integer size) {
+
+        StringBuilder dataSql = new StringBuilder("SELECT * FROM SHOP WHERE status=1 and (  ");
+        StringBuffer sb=new StringBuffer();
+        int i=0;
+        for (String v : likes.split(",")) {
+            if(null!=v&&!v.equals(null)&&v!=""&&!v.equals("")&&!v.isEmpty()) {
+                if(i==0){
+                    sb.append("  label LIKE '%" + v + "%' ");
+                    i++;
+                }else {
+                    sb.append(" OR label LIKE '%" + v + "%' ");
+                }
+                sb.append(" OR city LIKE '%" + v + "%' ");
+            }
+        }
+        if(sb.toString()==""||sb.toString().equals("")){
+            sb.append(" 1=1 ");
+        }
+        //组装sql语句
+        dataSql.append(sb+")  limit 0,"+size);
+
+        //创建本地sql查询实例
+        Query dataQuery = entityManager.createNativeQuery(dataSql.toString(), Shop.class);
+        List data= dataQuery.getResultList();
+        return data;
+    }
+
+
 }

@@ -3,6 +3,8 @@ package com.turbid.explore;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.ImmutableMap;
+import com.turbid.explore.pojo.DayTask;
+import com.turbid.explore.repository.DayTaskReposity;
 import com.turbid.explore.repository.UserSecurityRepository;
 import com.turbid.explore.service.NeedsRelationService;
 import com.turbid.explore.service.UserSecurityService;
@@ -14,6 +16,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
@@ -36,46 +40,24 @@ public class ExploreApplicationTests {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    DayTaskReposity dayTaskReposity;
+
+    @Autowired
+    UserSecurityService userSecurityService;
+
     @Test
     public void contextLoads() {
-//       userSecurityRepository.aaaaa().forEach(userSecurity->{
-//               String typename = "";
-//               switch (userSecurity.getType()) {
-//                   case 0:
-//                       typename = "设计师";
-//                       break;
-//                   case 1:
-//                       typename = "经销商";
-//                       break;
-//                   case 2:
-//                       typename = "工厂";
-//                       break;
-//                   case 3:
-//                       typename = "设计公司";
-//                       break;
-//               }
-//               Map<String, Object> requestBody = ImmutableMap.of(
-//                       "Identifier", userSecurity.getCode(),
-//                       "Nick", userSecurity.getUserBasic().getNikename(),
-//                       "FaceUrl", userSecurity.getUserBasic().getHeadportrait());
-//           System.out.println( restTemplate.postForObject(baseUrl + "v4/im_open_login_svc/account_import" + config()
-//                       , requestBody, JSONObject.class));
-//
-//               JSONArray data = new JSONArray();
-//               JSONObject item = new JSONObject();
-//               item.put("Tag", "Tag_Profile_Custom_usertype");
-//               item.put("Value", typename);
-//               data.add(item);
-//
-//               requestBody = ImmutableMap.of(
-//                       "From_Account", userSecurity.getCode(),
-//                       "ProfileItem", data
-//               );
-//           System.out.println( restTemplate.postForObject(baseUrl + portrait_set + config()
-//                       , requestBody, JSONObject.class));
-//           System.out.println("----------------");
-//
-//       });
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String dateStr = sdf.format(new Date());
+       DayTask dayTask=  dayTaskReposity.findByDay("17312460001",dateStr);
+        if(null==dayTask){
+            dayTask=new DayTask();
+            System.out.println(dayTask.getCreate_time());
+        }
+        dayTask.setUserSecurity(userSecurityService.findByPhone("17312460001"));
+        dayTask=dayTaskReposity.saveAndFlush(dayTask);
+        System.out.println(dayTask.getCreate_time());
     }
 
 }
