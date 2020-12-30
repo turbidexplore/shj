@@ -16,6 +16,7 @@ import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Api(description = "案例相关接口")
@@ -31,8 +32,12 @@ public class CaseController {
 
     @ApiOperation(value = "新增案例", notes="新增案例")
     @PutMapping("/addcase")
-    public Mono<Info> addcase(@RequestBody Case obj) {
-        obj.setUserSecurity(userSecurityService.findByPhone("administrator"));
+    public Mono<Info> addcase(Principal principal,@RequestBody Case obj) {
+        if(principal==null) {
+            obj.setUserSecurity(userSecurityService.findByPhone("administrator"));
+        }else {
+            obj.setUserSecurity(userSecurityService.findByPhone(principal.getName()));
+        }
         obj.setCreate_time(new Date());
         return Mono.just(Info.SUCCESS(caseService.save(obj)));
     }
@@ -138,7 +143,11 @@ public class CaseController {
             dayTask.setUserSecurity(userSecurity);
             dayTask.setTaskc();
             if(dayTask.getTaskc()==3){
-                userSecurity.setShb(userSecurity.getShb()+5);
+                if(null!=userSecurity.getShb()) {
+                    userSecurity.setShb(userSecurity.getShb() + 5);
+                }else {
+                    userSecurity.setShb(5);
+                }
                 userSecurityService.save(userSecurity);
             }
             dayTask=dayTaskReposity.saveAndFlush(dayTask);
@@ -220,6 +229,29 @@ public class CaseController {
             return Mono.just(Info.SUCCESS(caseService.casebylabel(page,text)));
         }catch (Exception e){
             return Mono.just(Info.SUCCESS(e.getMessage()));
+        }
+    }
+
+    @ApiOperation(value = "设置场景", notes="设置场景")
+    @PostMapping("/cj")
+    public Mono<Info> cj(@RequestParam(name = "code")String code,@RequestParam(name = "type")Integer type) {
+        try {
+            Case obj=caseService.caseByCode(code);
+            obj.set_cj(type);
+            return Mono.just(Info.SUCCESS(caseService.save(obj)));
+        }catch (Exception e){
+            return Mono.just(Info.SUCCESS(e.getMessage()));
+        }
+    }
+
+    @ApiOperation(value = "通过企业code获取场景", notes="通过企业code获取场景")
+    @PostMapping("/getcj")
+    public Mono<Info> getcj(@RequestParam(name = "code")String code) {
+        try {
+            List cases=caseService.getcj(code);
+            return Mono.just(Info.SUCCESS(cases.get(0)));
+        }catch (Exception e){
+            return Mono.just(Info.SUCCESS(null));
         }
     }
 }

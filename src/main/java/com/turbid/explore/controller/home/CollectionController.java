@@ -2,20 +2,18 @@ package com.turbid.explore.controller.home;
 
 import com.turbid.explore.pojo.*;
 import com.turbid.explore.pojo.bo.CollectionType;
+import com.turbid.explore.repository.ProductReposity;
 import com.turbid.explore.service.*;
 import com.turbid.explore.tools.Info;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
 
 @Api(description = "收藏接口")
 @RestController
@@ -72,16 +70,28 @@ public class CollectionController {
     @Autowired
     private StudyService studyService;
 
+    @Autowired
+    private ShopService shopService;
+
+    @Autowired
+    private ProductReposity productReposity;
+
     @ApiOperation(value = "我的收藏", notes="我的收藏")
     @PostMapping("/my")
     public Mono<Info> my(Principal principal, @RequestParam("page")Integer page, @RequestParam("type")CollectionType collectionType) {
         List<Object> data=new ArrayList<>();
         collectionService.listByPagePhone(principal.getName(),page,collectionType).forEach(v->{
                 switch (collectionType){
-                    case goods:
-                      Goods goods= goodsService.get(v.getRelation());
-                        if(null!=goods){
-                            data.add(goods);
+                    case product:
+                        Product product=productReposity.getOne(v.getRelation());
+                        if(null!=product){
+                            data.add(product);
+                        }
+                        break;
+                    case shop:
+                      Shop shop= shopService.getByCode(v.getRelation());
+                        if(null!=shop){
+                            data.add(shop);
                         }
                         break;
                     case nativecontent:

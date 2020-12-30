@@ -345,9 +345,17 @@
                       <input type="file" id="company_show"  />
                     </a>
                   </div>
-                </div>
-              </div>
 
+                  <div class="card-header border-bottom text-center">
+                  <div class="mb-3 mx-auto">
+                    <div id="videoview"></div>
+                  </div>
+                  <a href="javascript:;" class="file">企业宣传视频
+                    <input type="file" id="video"  />
+                  </a>
+                </div>
+
+                </div>
 
 
             </div>
@@ -445,6 +453,11 @@
             "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
           }
         }).done(function(result) {
+
+                  if(result.data.videourl!=null&&result.data.videourl!=''){
+                    $("#videoview").html(" <video id='videourl' controls='controls' src='"+result.data.videourl+"' style='width: 300px;'  '>您的浏览器不支持 video 标签。</video>");
+
+                  }
                    $("#city").val(result.data.city);
                    $("#name").val(result.data.name);
                    $("#shopcreatetime").val(result.data.shopcreatetime);
@@ -479,11 +492,11 @@
                   if( result.data.vrimage!=null) {
                      vrimage = result.data.vrimage.split(",");
                   }
-          if( result.data.vrimage!=null) {
-            vrimage = result.data.vrimage.split(",");
-          }
                   if( result.data.vrtitle!=null) {
-                    result.data.vrtitle.split(",")
+                    vrtitle = result.data.vrtitle.split(",");
+                  }
+                  if( result.data.vrtitle!=null) {
+                    vrweb= result.data.vrweb.split(",")
                   }
                   for (var i=0;i<vrweb.length;i++){
                     vrinit(vrtitle[i],vrweb[i],vrimage[i]);
@@ -1073,13 +1086,14 @@
                   "idcard": $("#idcard").val(),
                   "idcardpositive": $("#idcardpositiveimg").attr('src'),
                   "idcardreverse": $("#idcardreverseimg").attr('src'),
-                  "unifiedcreditcode": $("#unifiedcreditcode").val()
-                  ,"vrtitle": vrtitle
-                  ,"vrweb": vrweb
-                  ,"vrimage":vrimage
-                  ,"bzj": $("#bzj").val()
-                  ,"shopcreatetime": $("#shopcreatetime").val()
-                  ,"jmcount": $("#jmcount").val()
+                  "unifiedcreditcode": $("#unifiedcreditcode").val(),
+                  "vrtitle": vrtitle,
+                  "vrweb": vrweb,
+                  "vrimage":vrimage,
+                  "bzj": $("#bzj").val(),
+                  "shopcreatetime": $("#shopcreatetime").val(),
+                  "jmcount": $("#jmcount").val(),
+                  "videourl":$("#videourl").attr('src')
                 }),
                 processData: false,
                 contentType: "application/json; charset=UTF-8",
@@ -1094,6 +1108,57 @@
               });
 
         };
-     </script>
+
+
+        $("#video").on("change",function(){
+          function getObjectURL(file) {
+            var url = null;
+            if (window.createObjcectURL != undefined) {
+              url = window.createOjcectURL(file);
+            } else if (window.URL != undefined) {
+              url = window.URL.createObjectURL(file);
+            } else if (window.webkitURL != undefined) {
+              url = window.webkitURL.createObjectURL(file);
+            }
+            return url;
+          }
+          var blobURL = getObjectURL(this.files[0]);
+          var imgUTL = '';
+
+          var xhr = new XMLHttpRequest();
+          xhr.open('GET', blobURL);
+          xhr.responseType = 'blob';
+
+          xhr.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+              var imageBlob = this.response;
+              var imageType = imageBlob.type;
+              var imageName = null;
+              if (imageType.includes('png')) {
+                imageName = 'uploaded-image.mp4';
+              } else if (imageType.includes('gif')) {
+                imageName = 'uploaded-image.mp4';
+              } else if (imageType.includes('bmp')) {
+                imageName = 'uploaded-image.mp4';
+              } else {
+                imageName = 'uploaded-image.mp4';
+              }
+              var form = new FormData();
+              form.append('file', imageBlob, imageName); // 第三个参数为文件名
+              $.ajax({
+                type: 'POST',
+                url : "/file/upload",
+                data: form ,
+                processData: false,
+                contentType: false,
+              }).done(function(result) {
+                $("#videoview").html(" <video id='videourl' controls='controls' src='"+result.data+"' style='width: 300px;' name='showimage' onclick='remove(this)'>您的浏览器不支持 video 标签。</video>");
+              });
+            }
+          };
+          xhr.send();
+        })
+
+      </script>
   </body>
 </html>

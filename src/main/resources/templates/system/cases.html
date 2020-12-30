@@ -4,9 +4,12 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>设汇家 ｜ 泛家居行业供应链平台</title>
+    <meta name="renderer" content="webkit">
+    <meta name="referrer" content="never">
     <meta name="keywords" content="浑浊探索,苏州浑浊信息科技有限公司,turbid,explore,科技">
     <meta name="description" content="设汇家官网">
-    <meta name="author" content="设汇家">    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="设汇家">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="../styles/all.css" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
@@ -196,10 +199,15 @@
       }
       $.ajax(settings).done(function (response) {
         response.data.forEach(function (v,i) {
+          var _cj = '<button type="button"  id="cj'+v.code+'"  class="layui-btn ayui-btn-xs layui-btn-danger" onclick="cj(\''+v.code+'\',2)">置顶</button>';
+          if(v._cj==2){
+            _cj= '<button type="button"  id="cj'+v.code+'"  class="layui-btn ayui-btn-xs layui-btn-warm" onclick="cj(\''+v.code+'\',0)">取消置顶</button>';
+          }
           var html= '<div class="col-lg-3 col-md-6 col-sm-12 mb-4" id="'+v.code+'">'+
                   '<div class="card card-small card-post card-post--1">'+
-                  '<div class="card-post__image" style="background-image: url('+v.indexurl+');">'+
+                  '<div class="card-post__image" style="background-image: url('+v.indexurl+');"  id="view'+v.code+'">'+
                   '<a href="#" class="card-post__category badge badge-pill badge-dark">'+v.subject+'|'+v.label+'</a>'+
+                  _cj+
                   '</div>'+
                   '<div class="card-body" style="margin-top: -10px!important;">'+
                   '<p class="card-title" style="font-weight: bold;font-size: 16px;margin-bottom: 3px;">'+v.name+'<br>'+
@@ -212,6 +220,32 @@
 
     }
 
+    function cj(code,type) {
+
+      var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": "/cj?code="+code+"&type="+type,
+        "method": "POST",
+        "processData": false,
+        "headers": {
+          "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
+          "cache-control": "no-cache",
+          "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
+        }
+      }
+      $.ajax(settings).done(function (response) {
+        if(type==0){
+          $("#cj"+code).remove();
+          $("#view"+code).append('<button id="cj'+code+'"  class="layui-btn ayui-btn-xs layui-btn-danger" onclick="cj(\''+code+'\',2)">置顶</button>');
+        }else {
+          $("#cj"+code).remove();
+          $("#view"+code).append('<button id="cj'+code+'" class="layui-btn ayui-btn-xs layui-btn-warm" onclick="cj(\''+code+'\',0)">取消置顶</button>');
+        }
+      });
+
+
+    }
 function xj(code) {
   var settings = {
     "async": true,

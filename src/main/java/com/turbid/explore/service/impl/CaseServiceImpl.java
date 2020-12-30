@@ -103,4 +103,11 @@ public class CaseServiceImpl implements CaseService {
         Page<Case> pages=  caseRepositroy.casebylabel(pageable,text);
         return pages.getContent();
     }
+
+    @Override
+    public List<Case> getcj(String code) {
+        Pageable pageable = new PageRequest(0,1, Sort.Direction.DESC,"create_time");
+        Page<Case> pages=  caseRepositroy.getcj(pageable,code);
+        return pages.getContent();
+    }
 }

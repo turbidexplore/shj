@@ -163,6 +163,12 @@ public class Shop extends BaseEntity{
     @Column(name = "vipday",length = 32)
     private String vipday;
 
+    @Column(name = "videourl",length = 255)
+    private String videourl;
+
+    @Column(name = "homeimg",length = 255)
+    private String homeimg;
+
     public Shop(String code,String companyname,String logo) {
         super();
         this.setCode(code);

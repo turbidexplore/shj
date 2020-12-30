@@ -35,7 +35,7 @@ public class CommunityController {
 
     @GetMapping(value = "/style")
     public Mono<Info> style()  {
-        return Mono.just(Info.SUCCESS(new String[]{"产品","设计","好物","趣事","知识","佳作"}));
+        return Mono.just(Info.SUCCESS(new String[]{"课程","设计","人才"}));
     }
 
     @Autowired
@@ -275,6 +275,8 @@ public class CommunityController {
         discuss.setStar(discuss.getStar()-1);
         discussRepository.save(discuss);
         visitorService.removestar(principal.getName(),code);
-        return Mono.just(Info.SUCCESS( null));
+        return Mono.just(Info.SUCCESS(null));
     }
+
+
 }

@@ -504,7 +504,6 @@ public class ShopController {
     @PostMapping("/bzjandvip")
     public Mono<Info> bzjandvip(Principal principal,@RequestParam("code")String code,@RequestParam(value = "m",required = false)Integer m,@RequestParam(value = "bzj",required = false)Integer bzj) throws ParseException {
         Shop shop=shopService.getByCode(code);
-
         if(m!=null){
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             if (shop.getVipday()==null||new Date().compareTo(sdf.parse(shop.getVipday()))>0) {
@@ -522,7 +521,6 @@ public class ShopController {
     @ApiOperation(value = "推荐", notes="推荐")
     @PostMapping("/recommend")
     public Mono<Info> recommend(@RequestParam("likes")String likes,@RequestParam("size")Integer size) {
-
         return Mono.just(Info.SUCCESS(shopService.recommenda(likes,size)));
     }
 

@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>设汇家 ｜ 泛家居行业供应链平台</title>
+    <meta name="renderer" content="webkit">
+    <meta name="referrer" content="never">
     <meta name="keywords" content="浑浊探索,苏州浑浊信息科技有限公司,turbid,explore,科技">
     <meta name="description" content="设汇家官网">
     <meta name="author" content="设汇家">    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -42,64 +44,58 @@
           </form>
           <div class="nav-wrapper">
             <ul class="nav flex-column">
-              <li class="nav-item ">
-                <a class="nav-link " href="/managehtindex">
-                  <i class="material-icons">vertical_split</i>
+              <li class="nav-item">
+                <a class="nav-link" href="/manageindex">
+                  <i class="material-icons">edit</i>
                   <span>首页</span>
                 </a>
               </li>
-              <li class="nav-item ">
-                <a class="nav-link " href="/manageuser">
-                  <i class="material-icons">table_chart</i>
-                  <span>企业管理</span>
-                </a>
-              </li>
-              <li class="nav-item ">
-                <a class="nav-link " href="/manageuserinfos">
+              <li class="nav-item">
+                <a class="nav-link " href="/managebrands">
                   <i class="material-icons">vertical_split</i>
-                  <span>用户管理</span>
+                  <span>我的品牌</span>
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link " href="/manageintegralgoods">
+                <a class="nav-link " href="/managecases">
                   <i class="material-icons">vertical_split</i>
-                  <span>积分商品管理</span>
-                </a>
-              </li>
-              <li class="nav-item ">
-                <a class="nav-link " href="/manageshopingmanage">
-                  <i class="material-icons">table_chart</i>
-                  <span>积分商品发货管理</span>
-                </a>
-              </li>
-              <li class="nav-item ">
-                <a class="nav-link " href="/managebanners">
-                  <i class="material-icons">vertical_split</i>
-                  <span>广告管理</span>
+                  <span>案例管理</span>
                 </a>
               </li>
               <li class="nav-item active">
-                <a class="nav-link " href="/managenativecontent">
-                  <i class="material-icons">note_add</i>
-                  <span>内容中心</span>
+                <a class="nav-link " href="/managegoods">
+                  <i class="material-icons">vertical_split</i>
+                  <span>产品管理</span>
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link " href="/managestudysgroup">
-                  <i class="material-icons">vertical_split</i>
-                  <span>课程管理</span>
+                <a class="nav-link " href="/managecomments">
+                  <i class="material-icons">note_add</i>
+                  <span>评论管理</span>
                 </a>
               </li>
-              <li class="nav-item ">
-                <a class="nav-link " href="/managescaseauth">
-                  <i class="material-icons">vertical_split</i>
-                  <span>案例审查</span>
+              <li class="nav-item">
+                <a class="nav-link " href="/manageshopfans">
+                  <i class="material-icons">table_chart</i>
+                  <span>粉丝管理</span>
                 </a>
               </li>
-              <li class="nav-item ">
-                <a class="nav-link " href="/managescases">
-                  <i class="material-icons">vertical_split</i>
-                  <span>案例管理</span>
+              <li class="nav-item">
+                <a class="nav-link " href="/managecount">
+                  <i class="material-icons">view_module</i>
+                  <span>数据中心</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="/managetables">
+                  <i class="material-icons">table_chart</i>
+                  <span>子账号管理</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="/manageusercenter">
+                  <i class="material-icons">person</i>
+                  <span>账户信息</span>
                 </a>
               </li>
             </ul>
@@ -135,7 +131,7 @@
                   <div class="card-body " >
                     <h5>图文属性标签</h5>
                     <p style="font-size: 12px;color: #8a8a8a;margin-bottom: 3px;">风格分类</p>
-                   <select id="label" >
+                   <select id="label">
                      <option value="极简">极简</option>
                      <option value="轻奢">轻奢</option>
                      <option value="中式">中式</option>
@@ -144,14 +140,14 @@
                      <option value="其他">其他</option>
                    </select>
 
+
                     <p style="font-size: 12px;color: #8a8a8a;margin-bottom: 3px;">功能分类</p>
-                    <select id="subject" lay-filter="subjecta">
+                    <select id="subject" lay-filter="subjecta" lay-verify="required">
                       <option value="家具">家具</option>
                       <option value="家纺">家纺</option>
                       <option value="配饰">配饰</option>
                       <option value="灯具">灯具</option>
                     </select>
-                    <br/>
                     <select id="freesubject">
                       <option value="床">床</option>
                       <option value="沙发">沙发</option>
@@ -169,6 +165,12 @@
                     <select id="fromv" class="form-control">
                       <option value="0">国内</option>
                       <option value="1">国外</option>
+                    </select>
+                  </div>
+
+                  <div class="card-body " >
+                    <h5>选择图文所属品牌</h5>
+                    <select id="brandcode" class="form-control">
                     </select>
                   </div>
                 </div>
@@ -192,13 +194,33 @@
 
 
 
+    $.ajax({
+      type: 'GET',
+      url : "/brand/mybrands",
+      async: true,
+      crossDomain: true,
+      headers: {
+        "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
+        "cache-control": "no-cache",
+        "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
+      }
+    }).done(function(result) {
+      if(result.data.length!=0){
+      result.data.forEach(function (v) {
+        $("#brandcode").append("<option value='"+v.code+"'>"+v.name+"</option>");
+      })
+      }else {
+        $("#brandcode").append("<option >无品牌</option>");
+      }
+
+
 
     layui.use(['form', 'jquery'], function(){
-      var form = layui.form;
-      $=layui.jquery;
+      var form = layui.form,
+       jq=layui.jquery;
       form.on('select(subjecta)', function(data){
         if(data.value=='家具'){
-          $("#freesubject").html('<option value="床">床</option>\n' +
+          jq("#freesubject").html('<option value="床">床</option>\n' +
                   '                      <option value="沙发">沙发</option>\n' +
                   '                      <option value="茶几">茶几</option>\n' +
                   '                      <option value="桌子">桌子</option>\n' +
@@ -208,26 +230,27 @@
                   '                      <option value="其他">其他</option>');
         }
         if(data.value=='家纺'){
-          $("#freesubject").html('<option value="窗帘">窗帘</option>\n' +
+          jq("#freesubject").html('<option value="窗帘">窗帘</option>\n' +
                   '                      <option value="床品">床品</option>\n' +
                   '                      <option value="靠垫">靠垫</option>\n' +
                   '                      <option value="抱枕">抱枕</option>\n' +
                   '                      <option value="其他">其他</option>');
         }
         if(data.value=='配饰'){
-          $("#freesubject").html('<option value="摆件">摆件</option>\n' +
+          jq("#freesubject").html('<option value="摆件">摆件</option>\n' +
                   '                      <option value="挂画">挂画</option>\n' +
                   '                      <option value="墙纸">墙纸</option>\n' +
                   '                      <option value="其他">其他</option>');
         }
         if(data.value=='灯具'){
-          $("#freesubject").html('<option value="吊灯">吊灯</option>\n' +
+          jq("#freesubject").html('<option value="吊灯">吊灯</option>\n' +
                   '                      <option value="壁灯">壁灯</option>\n' +
                   '                      <option value="落地灯">落地灯</option>\n' +
                   '                      <option value="台灯">台灯</option>');
         }
         form.render();
       });
+    });
 
     });
     CKEDITOR.replace('newsMatter', {
@@ -294,6 +317,7 @@
             "label":  $("#label").val(),
             "subject":  $("#subject").val(),
             "freesubject":  $("#freesubject").val(),
+            "brandcode":  $("#brandcode").val()
           }),
           processData: false,
           contentType: "application/json; charset=UTF-8",
@@ -309,7 +333,7 @@
               , closeBtn: 0
               , anim: 4 //动画类型
             }, function () {
-              window.location.replace("/managenativecontent");
+              window.location.replace("/managegoods");
             });
           });
         });
@@ -326,6 +350,7 @@
             "label":  $("#label").val(),
             "subject":  $("#subject").val(),
             "freesubject":  $("#freesubject").val(),
+            "brandcode":  $("#brandcode").val()
           }),
           processData: false,
           contentType: "application/json; charset=UTF-8",
@@ -341,7 +366,7 @@
               , closeBtn: 0
               , anim: 4 //动画类型
             }, function () {
-              window.location.replace("/managenativecontent");
+              window.location.replace("/managegoods");
             });
           });
         });

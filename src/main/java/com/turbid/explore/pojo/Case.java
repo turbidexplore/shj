@@ -69,6 +69,9 @@ public class Case extends BaseEntity {
     @Column(name = "words",length = 800)
     private String words;
 
+    @Column(name = "_cj")
+    private int _cj=0;
+
     @ApiModelProperty(value = "发布者")
     @OneToOne(fetch=FetchType.LAZY)
     private UserSecurity userSecurity;
@@ -108,7 +111,7 @@ public class Case extends BaseEntity {
 
     public int getSeecount() {
         if (null!=browsers){
-        int count=browsers.size();
+            int count=browsers.size();
         return count;}else {
             return 0;
         }

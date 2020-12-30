@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>设汇家 ｜ 泛家居行业供应链平台</title>
+    <meta name="renderer" content="webkit">
+    <meta name="referrer" content="never">
     <meta name="keywords" content="浑浊探索,苏州浑浊信息科技有限公司,turbid,explore,科技">
     <meta name="description" content="设汇家官网">
     <meta name="author" content="设汇家">    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -176,11 +178,8 @@
                         </div>
                         <div class="form-group col-md-9">
                           <div class="mb-3 mx-auto">
-                            <div id="imgview"></div>
-                            <a href="javascript:;" class="file">上传展示图片
-                            <input type="file" id="logo" />
-                          </a>
-                        </div>
+                            <textarea class="easyui-validatebox" name="newsMatter" id="newsMatter" rows="60" cols="70" data-options="required:true">  </textarea>
+                          </div>
                         </div>
                       </div>
 
@@ -199,12 +198,20 @@
       </div>
     </div>
      <input type="hidden" id="code" value="" th:value="${code}">
+     <script src="../ckeditor/ckeditor.js"></script>
     <script src="../js/jquery-3.3.1.min.js" ></script>
      <script src="../layui/layui.js"></script>
      <script src="../scripts/popper.min.js"></script>
      <script src="../scripts/bootstrap.min.js"></script>
      <script src="../js/jquery.cookie.min.js"></script>
   <script>
+
+    CKEDITOR.replace('newsMatter', {
+      height : 600,
+      filebrowserImageUploadUrl :  "/file/image",
+      disallowedContent:'img{width,height};img[width,height]'
+    });
+
     if($("#code").val()!=""&&$("#code").val()!=null&&$("#code").val()!=undefined){
       $.ajax({
         type: 'POST',
@@ -226,11 +233,12 @@
         $("#team").val(result.data.team);
         $("#area").val(result.data.area);
         $("#address").val(result.data.address);
-
+      var imgs="";
         result.data.urls.split(",").forEach(function (v) {
-          $("#imgview").append("<img src='"+v+"' style='width: 200px;' name='showimage' onclick='remove(this)'>");
-
+          imgs=imgs+"<img src='"+v+"' style='width:100%'  >";
         })
+
+        CKEDITOR.instances.newsMatter.setData(imgs);
         $.ajax({
           type: 'GET',
           url : "/base/casesubject",
@@ -395,22 +403,32 @@
     });
 
 
+    $('#newsMatter').each(function () {
+      var $textarea = $(this);
+      var data=CKEDITOR.instances[$textarea.attr('name')].getData();
+      data=data.replace(/&ldquo;/g,'\"');//转义&ldquo; 左双引号
+      data=data.replace(/&rdquo;/g,'\"');//转义&ldquo; 右双引号
+      $textarea.val(data);
+    });
 
     function savaData(){
-
-
-      var i=0
-
+      var content = CKEDITOR.instances.newsMatter.getData();
+      content=content.replace(/&ldquo;/g,'\"');//转义&ldquo; 左双引号
+      content=content.replace(/&rdquo;/g,'\"');//转义&ldquo; 右双引号
+      content=content.replace(new RegExp("height",("gm")),'width');//转义&ldquo; 右双引号
       var imgs='';
-      $('*[name="showimage"]').each(function(i,v){
+      var i=0
+      var reg = /<img[^>]*src[=\'\"\s]+([^\"\']*)[\"\']?[^>]*>/gi;
+          while (reg.exec(content))
+      {
         if(i==0) {
-          imgs=$(v).attr('src');
+          imgs=RegExp.$1;
           i++;
         }else {
-          imgs=imgs+","+$(v).attr('src');
+          imgs=imgs+","+RegExp.$1;
         }
+      }
 
-      })
       if (imgs == '') {
         layui.use("layer",function() {
           layer.msg('请至少上传一张展示图片');

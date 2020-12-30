@@ -1,6 +1,7 @@
 package com.turbid.explore.repository;
 
 import com.turbid.explore.pojo.Community;
+import com.turbid.explore.pojo.NativeContent;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -28,8 +29,13 @@ public interface CommunityReposity extends JpaRepository<Community,String> {
     Page<Community> listByPageb(Pageable pageable,@Param("usercode") String usercode);
 
     @Query("select count(c) from Community c where c.userSecurity.code =:usercode ")
-   int countbyuser(@Param("usercode") String usercode);
+    int countbyuser(@Param("usercode") String usercode);
 
     Community findByCode(String code);
+
+    @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
+    @Query("SELECT n from Community n where ( n.content LIKE CONCAT('%',:text,'%') or n.label LIKE CONCAT('%',:text,'%') or n.style LIKE CONCAT('%',:text,'%') or n.userSecurity.userBasic.nikename LIKE CONCAT('%',:text,'%') or n.shop.name LIKE CONCAT('%',:text,'%') ) ")
+    Page<Community> search(Pageable pageable, @Param("text") String text);
+
 
 }

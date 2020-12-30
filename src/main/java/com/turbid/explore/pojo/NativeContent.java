@@ -26,7 +26,7 @@ public class NativeContent extends BaseEntity{
     private String title;
 
     //发布者信息
-    @OneToOne(cascade=CascadeType.ALL,fetch= FetchType.EAGER)
+    @OneToOne(cascade=CascadeType.REFRESH)
     UserSecurity userSecurity;
 
     //浏览者信息
@@ -53,7 +53,7 @@ public class NativeContent extends BaseEntity{
     private Integer hat;
 
     @Column(name = "fromv",length = 2)
-    private String fromv;
+    private Integer fromv;
 
     @Column(name = "firstimage",length = 1000)
     private String firstimage;
@@ -70,6 +70,9 @@ public class NativeContent extends BaseEntity{
     @ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH},fetch= FetchType.EAGER)
     @JoinColumn(name="company_code")
     private Shop company;
+
+    @Column(name="brandcode")
+    private String brandcode;
 
 
     public int seecount;

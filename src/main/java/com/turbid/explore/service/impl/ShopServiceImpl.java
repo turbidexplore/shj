@@ -69,7 +69,7 @@ public class ShopServiceImpl implements ShopService {
 
         StringBuilder dataSql = new StringBuilder("SELECT * FROM SHOP WHERE status=1 and ( 1=1 ");
         for (String v : likes.split(",")) {
-            dataSql.append(" OR label LIKE '%"+v+"%' ");
+            dataSql.append(" OR label LIKE '%"+v+"%' OR city LIKE '%"+v+"%'" );
         }
         //组装sql语句
         dataSql.append(") order by ischoose desc limit 0,4");

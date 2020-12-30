@@ -3,6 +3,7 @@ package com.turbid.explore.controller.home;
 import com.turbid.explore.pojo.Brand;
 import com.turbid.explore.pojo.Shop;
 import com.turbid.explore.pojo.Visitor;
+import com.turbid.explore.repository.NativeContentRepositroy;
 import com.turbid.explore.service.BrandService;
 import com.turbid.explore.service.ShopService;
 import com.turbid.explore.service.UserSecurityService;
@@ -11,6 +12,9 @@ import com.turbid.explore.tools.Info;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -73,10 +77,21 @@ public class BrandController {
         return Mono.just(Info.SUCCESS( brandService.get(code)));
     }
 
+    @Autowired
+    private NativeContentRepositroy nativeContentRepositroy;
+
     @ApiOperation(value = "通过商铺code获取品牌", notes="通过商铺code获取品牌")
     @GetMapping("/getByShop")
     public Mono<Info> getByShop(@RequestParam("code") String code) {
-        return Mono.just(Info.SUCCESS( brandService.getByShop(code)));
+        List data=new ArrayList();
+        brandService.getByShop(code).forEach(a->{
+            Map i=new HashMap();
+            i.put("data",a);
+            Pageable pageable=  new PageRequest(0,5, Sort.Direction.DESC,"create_time");
+            i.put("cp",nativeContentRepositroy.findByBrandcode(pageable,a.getCode()).getContent());
+            data.add(i);
+        });
+        return Mono.just(Info.SUCCESS(data ));
     }
 
     @ApiOperation(value = "通过label获取品牌信息", notes="通过label获取品牌信息")

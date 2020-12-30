@@ -58,14 +58,27 @@ public class NativeContentServiceImpl implements NativeContentService {
     @Override
     @Transactional
     public void del(String code) {
-        nativeContentRepositroy.deleteById(code);
+        NativeContent nativeContent=nativeContentRepositroy.getOne(code);
+        nativeContent.setDel(true);
+        nativeContentRepositroy.saveAndFlush(nativeContent);
     }
 
     @Override
     public List<NativeContent> allbypage(Integer page, String freesubject, String subject, Integer abroad, Integer isshop,String label) {
-        Pageable pageable = new PageRequest(page,size, Sort.Direction.DESC,"create_time");
+        Pageable pageable = new PageRequest(page, size, Sort.Direction.DESC, "create_time");
+        Page<NativeContent> pages=null;
+        if(null==isshop||isshop.equals(null)||0==isshop) {
+          pages = nativeContentRepositroy.allbypage(pageable, freesubject, subject, abroad, label);
+      }else {
+         pages = nativeContentRepositroy.allbypageandshop(pageable, freesubject, subject, abroad, label);
+      }
+        return pages.getContent();
+    }
 
-        Page<NativeContent> pages=  nativeContentRepositroy.allbypage(pageable,freesubject,subject,abroad,label);
+    @Override
+    public List<NativeContent> infobyshopcode(String shopcode) {
+        Pageable pageable = new PageRequest(0,4, Sort.Direction.DESC,"create_time");
+        Page<NativeContent> pages=  nativeContentRepositroy.infobyshopcode(pageable,shopcode);
         return pages.getContent();
     }
 }

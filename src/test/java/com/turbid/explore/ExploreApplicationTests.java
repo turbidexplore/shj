@@ -50,7 +50,7 @@ public class ExploreApplicationTests {
     public void contextLoads() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String dateStr = sdf.format(new Date());
-       DayTask dayTask=  dayTaskReposity.findByDay("17312460001",dateStr);
+        DayTask dayTask=  dayTaskReposity.findByDay("17312460001",dateStr);
         if(null==dayTask){
             dayTask=new DayTask();
             System.out.println(dayTask.getCreate_time());

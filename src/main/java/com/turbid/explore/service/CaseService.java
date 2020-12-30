@@ -33,4 +33,6 @@ public interface CaseService {
     List<Case> search(String text, Integer page);
 
     List<Case>  casebylabel(Integer page, String text);
+
+    List<Case> getcj(String code);
 }

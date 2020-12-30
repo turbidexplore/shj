@@ -45,67 +45,60 @@
           </form>
           <div class="nav-wrapper">
             <ul class="nav flex-column">
-            <li class="nav-item ">
-              <a class="nav-link " href="/managehtindex">
-                <i class="material-icons">vertical_split</i>
-                <span>首页</span>
-              </a>
-            </li>
-            <li class="nav-item ">
-              <a class="nav-link " href="/manageuser">
-                <i class="material-icons">table_chart</i>
-                <span>企业管理</span>
-              </a>
-            </li>
-            <li class="nav-item ">
-              <a class="nav-link " href="/manageuserinfos">
-                <i class="material-icons">vertical_split</i>
-                <span>用户管理</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link " href="/manageintegralgoods">
-                <i class="material-icons">vertical_split</i>
-                <span>积分商品管理</span>
-              </a>
-            </li>
-            <li class="nav-item ">
-              <a class="nav-link " href="/manageshopingmanage">
-                <i class="material-icons">table_chart</i>
-                <span>积分商品发货管理</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link " href="/managebanners">
-                <i class="material-icons">vertical_split</i>
-                <span>广告管理</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link " href="/managenativecontent">
-                <i class="material-icons">note_add</i>
-                <span>内容中心</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link " href="/managestudysgroup">
-                <i class="material-icons">vertical_split</i>
-                <span>课程管理</span>
-              </a>
-            </li>
-            <li class="nav-item ">
-              <a class="nav-link " href="/managescaseauth">
-                <i class="material-icons">vertical_split</i>
-                <span>案例审查</span>
-              </a>
-            </li>
-            <li class="nav-item active">
-              <a class="nav-link " href="/managescases">
-                <i class="material-icons">vertical_split</i>
-                <span>案例管理</span>
-              </a>
-            </li>
-
+              <li class="nav-item">
+                <a class="nav-link " href="/manageindex">
+                  <i class="material-icons">edit</i>
+                  <span>首页</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="/managebrands">
+                  <i class="material-icons">vertical_split</i>
+                  <span>我的品牌</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="/managecases">
+                  <i class="material-icons">vertical_split</i>
+                  <span>案例管理</span>
+                </a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link " href="/managegoods">
+                  <i class="material-icons">vertical_split</i>
+                  <span>产品管理</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="/managecomments">
+                  <i class="material-icons">note_add</i>
+                  <span>评论管理</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="/manageshopfans">
+                  <i class="material-icons">table_chart</i>
+                  <span>粉丝管理</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="/managecount">
+                  <i class="material-icons">view_module</i>
+                  <span>数据中心</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="/managetables">
+                  <i class="material-icons">table_chart</i>
+                  <span>子账号管理</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="/manageusercenter">
+                  <i class="material-icons">person</i>
+                  <span>账户信息</span>
+                </a>
+              </li>
             </ul>
           </div>
         </aside>
@@ -147,7 +140,7 @@
             <!-- Page Header -->
             <div class="page-header row no-gutters py-4">
               <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
-                <a  class="mb-2 btn btn-sm btn-primary mr-1" href="/managescase">添加案例</a>
+                <a  class="mb-2 btn btn-sm btn-primary mr-1" href="/managegood">新建图文</a>
               </div>
             </div>
             <div class="row" id="content">
@@ -162,35 +155,48 @@
     <script src="../layui/layui.js"></script>
     <script src="../scripts/popper.min.js"></script>
     <script src="../scripts/bootstrap.min.js"></script>
+    <script src="../scripts/shards-dashboards.1.1.0.min.js"></script>
     <script src="../js/jquery.cookie.min.js"></script>
+    <script src="../scripts/extras.1.1.0.min.js"></script>
 
   <script>
-    var index=0;
-    list(index);
-
-    $(window).scroll(function () {
-
-      var scrollTop = $(this).scrollTop();
-      //console.log(scrollTop);
-      var scrollHeight = $(document).height();
-      //console.log('['+scrollHeight+']');
-      var windowHeight = screen.availHeight;
-      //console.log('【'+windowHeight+'】');
-      if (scrollTop+ windowHeight >= scrollHeight) {
-        if (stop == true && ipage <= totalPage) {
-          stop = false;
-        } else {
-          index++;
-          list(index)
-        }
+    var settings = {
+      "async": true,
+      "crossDomain": true,
+      "url": "/nativecontent/mynews?page="+0,
+      "method": "GET",
+      "processData": false,
+      "headers": {
+        "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
+        "cache-control": "no-cache",
+        "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
       }
+    }
+    $.ajax(settings).done(function (response) {
+      response.data.forEach(function (v,i) {
+        var img=v.firstimage.split(",")[0];
+     var html= '<div class="col-lg-3 col-md-6 col-sm-12 mb-4" id="'+v.code+'">'+
+                '<div class="card card-small card-post card-post--1">'+
+                '<div class="card-post__image" style="background-image: url('+img+');">'+
+                '<a href="#" class="card-post__category badge badge-pill badge-dark" onclick="preview(\''+v.code+'\')">预览</a>'+
+                '<div class="card-post__author d-flex">'+
+                '<a href="#" class="card-post__author-avatar card-post__author-avatar--small" style="background-image: url('+v.userSecurity.userBasic.headportrait+');">Written by Anna Kunis</a> &nbsp;<strong style="margin-top: 15px;">'+v.userSecurity.userBasic.nikename+
+                '</strong></div></div>'+
+                '<div class="card-body">'+
+                '<p class="card-title">'+
+                '<a class="text-fiord-blue" href="#">'+v.title+'</a></p>'+
+                '<span style="font-size: 12px;">'+v.addftime+'  发布    <button type="button" class="mb-1 btn btn-sm btn-info mr-1" onclick="xj(\''+v.code+'\')"> 删除</button><a href="/manageintegralgood?code='+v.code+'" class="mb-1 btn btn-sm btn-info mr-1" >修改</a></span>'+
+                '</div></div></div>';
+        $("#content").append(html);
+      })
     });
-    function list(page) {
+
+    function xj(code) {
       var settings = {
         "async": true,
         "crossDomain": true,
-        "url": "/mycases?page="+page,
-        "method": "POST",
+        "url": "/nativecontent/del?code="+code,
+        "method": "PUT",
         "processData": false,
         "headers": {
           "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
@@ -199,35 +205,18 @@
         }
       }
       $.ajax(settings).done(function (response) {
-        response.data.forEach(function (v,i) {
-          var _cj = '<button type="button"  id="cj'+v.code+'"  class="layui-btn ayui-btn-xs layui-btn-danger" onclick="cj(\''+v.code+'\',2)">置顶</button>';
-          if(v._cj==2){
-            _cj= '<button type="button"  id="cj'+v.code+'"  class="layui-btn ayui-btn-xs layui-btn-warm" onclick="cj(\''+v.code+'\',0)">取消置顶</button>';
-          }
-          var html= '<div class="col-lg-3 col-md-6 col-sm-12 mb-4" id="'+v.code+'">'+
-                  '<div class="card card-small card-post card-post--1">'+
-                  '<div class="card-post__image" style="background-image: url('+v.indexurl+');"  id="view'+v.code+'">'+
-                  '<a href="#" class="card-post__category badge badge-pill badge-dark">'+v.subject+'|'+v.label+'</a>'+
-                  _cj+
-                  '</div>'+
-                  '<div class="card-body" style="margin-top: -10px!important;">'+
-                  '<p class="card-title" style="font-weight: bold;font-size: 16px;margin-bottom: 3px;">'+v.name+'<br>'+
-                  '<span style="font-size: 12px;color: #c69500;">'+v.title+'</span></p>'+
-                  '<span class="text-muted" style="font-size: 12px;">'+v.addftime+'  发布     <button type="button" class="mb-1 btn btn-sm btn-info mr-1" onclick="xj(\''+v.code+'\')"> 删除</button> <a href="/manageeditscase?code='+v.code+'" >修改</a></span>'+
-                  '</div></div></div>';
-          $("#content").append(html);
-        })
+        alert("下架成功！")
+        $("#"+code).remove();
       });
 
     }
-
-    function cj(code,type) {
-
+    
+    function preview(code) {
       var settings = {
         "async": true,
         "crossDomain": true,
-        "url": "/cj?code="+code+"&type="+type,
-        "method": "POST",
+        "url": "/nativecontent/newsByCode?code="+code,
+        "method": "GET",
         "processData": false,
         "headers": {
           "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
@@ -236,36 +225,19 @@
         }
       }
       $.ajax(settings).done(function (response) {
-        if(type==0){
-          $("#cj"+code).remove();
-          $("#view"+code).append('<button id="cj'+code+'"  class="layui-btn ayui-btn-xs layui-btn-danger" onclick="cj(\''+code+'\',2)">置顶</button>');
-        }else {
-          $("#cj"+code).remove();
-          $("#view"+code).append('<button id="cj'+code+'" class="layui-btn ayui-btn-xs layui-btn-warm" onclick="cj(\''+code+'\',0)">取消置顶</button>');
-        }
+        layui.use("layer", function () {
+          layer.open({
+            type: 1,
+            title: response.data.title,
+            skin: 'layui-layer-rim', //加上边框
+            area: ['500px', '700px'], //宽高
+            content: response.data.content
+          });
+        });
       });
+
+
     }
-
-function xj(code) {
-  var settings = {
-    "async": true,
-    "crossDomain": true,
-    "url": "/remove?code="+code,
-    "method": "Delete",
-    "processData": false,
-    "headers": {
-      "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
-      "cache-control": "no-cache",
-      "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
-    }
-  }
-  $.ajax(settings).done(function (response) {
-    alert("删除成功！")
-      $("#"+code).remove();
-  });
-
-}
-
   </script>
   </body>
 </html>

@@ -79,10 +79,15 @@ public class AutoNewsCrawler extends BreadthCrawler {
         }else if (contentType.contains("html")) {
              title = page.select("h2#activity-name").first().text();//获取url标题
              content = page.select("div[id=js_content]>p").text();
+             if(content==""){
+                 content=page.select("div[id=js_content]>*>span").text();
+             }
             //如果是网页，则抽取其中包含图片的URL，放入后续任务
-            Elements imgs = page.select("div[id=js_content]>*>img");
+            Elements imgs = page.select("img");
             for (Element img : imgs) {
-                images.add(img.attributes().get("data-src"));
+                if(img.attributes().get("data-src")!=""&&!"".equals(img.attributes().get("data-src"))) {
+                    images.add(img.attributes().get("data-src"));
+                }
             }
 
         } else if (contentType.startsWith("image")) {
@@ -93,11 +98,9 @@ public class AutoNewsCrawler extends BreadthCrawler {
 
     public static void main(String[] args) throws Exception {
 
-        AutoNewsCrawler crawler = new AutoNewsCrawler("crawl", true,"https://mp.weixin.qq.com/s?__biz=MzA4MTE1ODQzOQ==&mid=2649924986&idx=1&sn=40091237ccf5dbb6010196b261fad891&chksm=879f4d32b0e8c424293ed344879fcd8e1f822e4f14f6b2707a064202aafa50f1602dcd209ffa&mpshare=1&scene=23&srcid=1207PN5Cmgvx1sMox0z9lNOh&sharer_sharetime=1607307489709&sharer_shareid=ea117f4cd18a273a7b4b167bcb120e39#rd");
-
+        AutoNewsCrawler crawler = new AutoNewsCrawler("crawl", true,"https://mp.weixin.qq.com/s?src=11&timestamp=1608881809&ver=2787&signature=--kpA1ASy5l1*VYGiy4VnCFb3WCCcXyHxY3CY2XTfXBVkexzpwO4qeI5Ube-jVCIZ4q8i0s9fHIWF5nB9ePI0IBf*THbQKZH5FZ32rf8mTbcW5nJ3e3hkhIMpSJiZfTl&new=1");
         crawler.start(4);//启动爬虫
-
-        System.out.println(crawler.images);
+        System.out.println(crawler.images.size());
     }
 
 }

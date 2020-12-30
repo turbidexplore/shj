@@ -183,10 +183,10 @@ public class IMController {
     private CallCountRepository callCountRepository;
 
 
-    @ApiOperation(value = "联系", notes="联系 0需求查看 \n" +
-            "1需求企业推荐\n" +
-            "2新品招商\n" +
-            "3特价仓详情\n" +
+    @ApiOperation(value = "联系", notes="联系 0需求 \n" +
+            "1社区\n" +
+            "2案例\n" +
+            "3图库\n" +
             "4企业主页")
     @PostMapping(value = "/call")
     public Mono<Info> call(Principal principal,@RequestParam(name = "usercode")String usercode,@RequestParam(name = "type")String type,@RequestParam("shopcode")String shopcode) {

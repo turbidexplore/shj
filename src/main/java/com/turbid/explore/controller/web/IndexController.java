@@ -132,12 +132,12 @@ public class IndexController {
 
     @RequestMapping("/managegoods")
     public String goods(){
-        return "manage/goods";
+        return "manage/nativecontent";
     }
 
     @RequestMapping("/managegood")
     public String good(){
-        return "manage/good";
+        return "manage/content";
     }
 
     @RequestMapping("/managecount")
@@ -214,8 +214,9 @@ public class IndexController {
     }
 
     @RequestMapping("/manageintegralgood")
-    public String manageintegralgood(){
-        return "system/integralgood";
+    public String manageintegralgood(@RequestParam("code")String code, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
+        httpServletRequest.setAttribute("code",code);
+        return "manage/content";
     }
 
     @RequestMapping("/manageshopingmanage")

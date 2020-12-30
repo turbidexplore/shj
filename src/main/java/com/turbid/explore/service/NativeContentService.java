@@ -20,4 +20,6 @@ public interface NativeContentService {
     void del(String code);
 
     List<NativeContent> allbypage(Integer page, String freesubject, String subject, Integer abroad, Integer isshop,String label);
+
+    List<NativeContent> infobyshopcode(String shopcode);
 }

@@ -60,7 +60,7 @@ public class UserCenterController {
             data.put("star",caseService.starcount(principal.getName()));
             data.put("needing",projectNeedsService.countByStatus(principal.getName(),0));
             data.put("needed",projectNeedsService.countByStatus(principal.getName(),1));
-            data.put("myneed",callService.mycallcount(userSecurity.getCode()));
+            data.put("myneed",1);
             data.put("needme",callService.callmecount(userSecurity.getCode()));
             data.put("casecount",caseService.casecount(principal.getName()));
             data.put("communitycount",communityReposity.countbyuser(userSecurity.getCode()));
@@ -216,4 +216,14 @@ public class UserCenterController {
         return Mono.just(Info.SUCCESS(dateStr));
     }
 
+    @ApiOperation(value = "用户信息", notes="用户信息")
+    @PostMapping(value = "/userinfo")
+    public Mono<Info> userinfo(@RequestParam("usercode")String usercode)  {
+        Map<String,Object> data=new HashMap<>();
+        UserSecurity userSecurity= userSecurityService.findByCode(usercode);
+        data.put("follow",followService.myfollowCount(usercode));
+        data.put("fans",followService.followmeCount(usercode));
+        data.put("userinfo",userSecurity);
+        return Mono.just(Info.SUCCESS(data));
+    }
 }

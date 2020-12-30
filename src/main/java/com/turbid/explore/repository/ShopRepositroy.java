@@ -10,7 +10,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.QueryHint;
-import java.security.Principal;
 import java.util.List;
 
 @Repository
@@ -47,4 +46,8 @@ public interface ShopRepositroy extends JpaRepository<Shop,String> {
 
     @Query("select count(s) from Shop s where (s.name LIKE CONCAT('%',:text,'%') or s.label LIKE CONCAT('%',:text,'%') or s.introduce LIKE CONCAT('%',:text,'%')  or s.brandgroup LIKE CONCAT('%',:text,'%')  or s.companyname LIKE CONCAT('%',:text,'%') or s.businesslicense LIKE CONCAT('%',:text,'%') or s.businessscope LIKE CONCAT('%',:text,'%')) ")
     int searchcount(String text);
+
+    @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
+    @Query("select s from Shop s where  s.status=1 and (s.name LIKE CONCAT('%',:a,'%') or s.name LIKE CONCAT('%',:b,'%') or s.name LIKE CONCAT('%',:c,'%') or :a is null  or :b is null  or :c is null )")
+    Page<Shop> getshops(Pageable pageable,@Param("a") String a,@Param("b") String b,@Param("c") String c);
 }
