@@ -36,7 +36,7 @@ public class Product extends BaseEntity {
     @JoinColumn(name = "user_id",referencedColumnName = "code")
     private UserSecurity userSecurity;
 
-    @ManyToOne(cascade={CascadeType.REFRESH})
+    @ManyToOne
     @JoinColumn(name="company_code")
     private Shop company;
 

@@ -22,6 +22,12 @@ public class LoginHis extends BaseEntity {
     @Column(name = "os")
     private String os;
 
+    @Column(name = "device")
+    private String device;
+
+    @Column(name = "version")
+    private String version;
+
     @Column(name = "status")
     private Integer status;
 }

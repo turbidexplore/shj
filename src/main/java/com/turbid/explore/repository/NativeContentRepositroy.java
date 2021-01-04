@@ -22,7 +22,7 @@ public interface NativeContentRepositroy extends JpaRepository<NativeContent,Str
     Page<NativeContent> listByPageLabel(Pageable pageable,@Param("label")String label,@Param("fromv")String fromv);
 
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
-    @Query("SELECT n from NativeContent n where ( n.del is null or n.del=false ) and n.userSecurity.phonenumber =:username or :username ='administrator'")
+    @Query("SELECT n from NativeContent n where ( n.del is null or n.del=false ) and (n.userSecurity.phonenumber =:username or :username ='administrator')")
     Page<NativeContent> listByPage(Pageable pageable, @Param(value = "username")String username);
 
     @Query("SELECT n from NativeContent n where ( n.del is null or n.del=false ) and n.code=:code  ")

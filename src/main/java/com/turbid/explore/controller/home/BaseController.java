@@ -2,14 +2,8 @@ package com.turbid.explore.controller.home;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.turbid.explore.pojo.Community;
-import com.turbid.explore.pojo.Configinfo;
-import com.turbid.explore.pojo.NativeContent;
-import com.turbid.explore.pojo.Shop;
-import com.turbid.explore.repository.City_CNReposity;
-import com.turbid.explore.repository.CommunityReposity;
-import com.turbid.explore.repository.ConfiginfoRepository;
-import com.turbid.explore.repository.ProductReposity;
+import com.turbid.explore.pojo.*;
+import com.turbid.explore.repository.*;
 import com.turbid.explore.service.*;
 import com.turbid.explore.tools.CodeLib;
 import com.turbid.explore.tools.Info;
@@ -36,6 +30,35 @@ import java.util.Map;
 @RequestMapping("/base")
 @CrossOrigin
 public class BaseController {
+
+    @Autowired
+    private TJReposity tjReposity;
+
+    @Autowired
+    private UserSecurityService userSecurityService;
+
+    @Autowired
+    private LoginHisRepository loginHisRepository;
+
+    @PutMapping(value = "/datainfo")
+    public Mono<Info> datainfo(Principal principal,@RequestParam("type") Integer type,@RequestParam(value = "code",required = false) String code)  {
+       TJ tj=new TJ();
+       tj.setUserSecurity(userSecurityService.findByPhone(principal.getName()));
+       tj.setType(type);
+       tj.setRelationcode(code);
+        return Mono.just(Info.SUCCESS(tjReposity.saveAndFlush(tj)));
+    }
+
+    @PutMapping(value = "/setdevice")
+    public Mono<Info> setdevice(Principal principal,@RequestParam("device") String device,@RequestParam(value = "os") String os,@RequestParam("version")String version)  {
+        LoginHis loginHis=new LoginHis();
+       loginHis.setLogintype("setdevice");
+       loginHis.setOs(os);
+       loginHis.setPhone(principal.getName());
+       loginHis.setDevice(device);
+       loginHis.setVersion(version);
+        return Mono.just(Info.SUCCESS(loginHisRepository.saveAndFlush(loginHis)));
+    }
 
     @GetMapping(value = "/share")
     public Mono<Info> share()  {
@@ -160,7 +183,7 @@ public class BaseController {
     @ApiOperation(value = "获取产品风格", notes="获取产品风格")
     @GetMapping(value = "/styles")
     public Mono<Info> styles()  {
-        return Mono.just(Info.SUCCESS(new String[]{"极简","轻奢","中式","美式","欧式","其它"}));
+        return Mono.just(Info.SUCCESS(new String[]{"极简","轻奢","中式","美式","欧式","轻奢","其它"}));
     }
 
 
@@ -320,16 +343,10 @@ public class BaseController {
     public Mono<Info> classgroup()  {
         List<Map<String,String>> list=new ArrayList<>();
         Map<String,String> map =new HashMap<>();
-        map.put("name","极简");
+        map.put("name","现代");
         map.put("name_en","Neoclassical");
         map.put("banner","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E5%93%81%E7%89%8C%E9%A6%86/%E4%B8%89%E7%BA%A7/%E6%96%B0%E5%8F%A4%E5%85%B8.png");
         map.put("logo","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E5%93%81%E7%89%8C%E9%A6%86/%E9%A3%8E%E6%A0%BC/%E6%96%B0%E5%8F%A4%E5%85%B8.png");
-        list.add(map);
-        map=new HashMap<>();
-        map.put("name","轻奢");
-        map.put("name_en","New Chinese style");
-        map.put("banner","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E5%93%81%E7%89%8C%E9%A6%86/%E4%B8%89%E7%BA%A7/%E6%96%B0%E4%B8%AD%E5%BC%8F.png");
-        map.put("logo","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E5%93%81%E7%89%8C%E9%A6%86/%E9%A3%8E%E6%A0%BC/%E6%96%B0%E4%B8%AD%E5%BC%8F.png");
         list.add(map);
         map=new HashMap<>();
         map.put("name","中式");
@@ -343,8 +360,20 @@ public class BaseController {
         map.put("banner","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E5%93%81%E7%89%8C%E9%A6%86/%E4%B8%89%E7%BA%A7/%E8%BD%BB%E5%A5%A2.png");
         map.put("logo","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E5%93%81%E7%89%8C%E9%A6%86/%E9%A3%8E%E6%A0%BC/%E8%BD%BB%E5%A5%A2.png");
         list.add(map);
+        map =new HashMap<>();
+        map.put("name","古典");
+        map.put("name_en","Neoclassical");
+        map.put("banner","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E5%93%81%E7%89%8C%E9%A6%86/%E4%B8%89%E7%BA%A7/%E6%96%B0%E5%8F%A4%E5%85%B8.png");
+        map.put("logo","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E5%93%81%E7%89%8C%E9%A6%86/%E9%A3%8E%E6%A0%BC/%E6%96%B0%E5%8F%A4%E5%85%B8.png");
+        list.add(map);
+        map =new HashMap<>();
+        map.put("name","工业");
+        map.put("name_en","Neoclassical");
+        map.put("banner","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E5%93%81%E7%89%8C%E9%A6%86/%E4%B8%89%E7%BA%A7/%E6%96%B0%E5%8F%A4%E5%85%B8.png");
+        map.put("logo","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E5%93%81%E7%89%8C%E9%A6%86/%E9%A3%8E%E6%A0%BC/%E6%96%B0%E5%8F%A4%E5%85%B8.png");
+        list.add(map);
         map=new HashMap<>();
-        map.put("name","欧式");
+        map.put("name","北欧");
         map.put("name_en","Minimalism");
         map.put("banner","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E5%93%81%E7%89%8C%E9%A6%86/%E4%B8%89%E7%BA%A7/%E6%9E%81%E7%AE%80.png");
         map.put("logo","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E5%93%81%E7%89%8C%E9%A6%86/%E9%A3%8E%E6%A0%BC/%E6%9E%81%E7%AE%80.png");
@@ -517,12 +546,22 @@ public class BaseController {
     @Autowired
     private CommunityReposity communityReposity;
 
+    @Autowired
+    private CaseRepositroy caseRepositroy;
 
-    @ApiOperation(value = "搜索2", notes="搜索 0案例 1图库 2找产品 3社区 4all")
+    @Autowired
+    private NativeContentRepositroy nativeContentRepositroy;
+
+    @Autowired
+    private ShopRepositroy shopRepositroy;
+
+
+
+    @ApiOperation(value = "搜索2", notes="搜索 0案例 1图库 2找产品 3社区 4企业 5学习 6all")
     @PostMapping(value = "/search2")
     public Mono<Info> search2(@RequestParam("text")String text,@RequestParam("type")Integer type,@RequestParam("page")Integer page)  {
         Map data =new HashMap();
-        Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
+        Pageable pageable = new PageRequest(page,10, Sort.Direction.DESC,"create_time");
         switch (type){
             case 0:
                 data.put("case",caseService.search(text,page));
@@ -531,7 +570,7 @@ public class BaseController {
                 data.put("tk",nativeContentService.search(text,page));
                 break;
             case 2:
-                Page<Community> zcp=  communityReposity.search(pageable,text);
+                Page<Product> zcp=  productReposity.search(pageable,text);
                 data.put("zcp",zcp.getContent());
                 break;
             case 3:
@@ -539,10 +578,19 @@ public class BaseController {
                 data.put("sq",sq.getContent());
                 break;
             case 4:
-                data.put("case",caseService.search(text,page));
-                data.put("tk",nativeContentService.search(text,page));
-                data.put("zcp",communityReposity.search(pageable,text).getContent());
-                data.put("sq",communityReposity.search(pageable,text).getContent());
+                data.put("company",shopService.search(text,page));
+                break;
+            case 5:
+                data.put("study",studyService.search(text,page));
+                break;
+            case 6:
+                Pageable pageablea =  PageRequest.of(page,2, Sort.Direction.DESC,"create_time");
+                data.put("case",caseRepositroy.search(pageablea,text).getContent());
+                data.put("tk",nativeContentRepositroy.search(pageablea,text).getContent());
+                data.put("zcp",productReposity.search(pageable,text).getContent());
+                data.put("sq", communityReposity.search(pageable,text).getContent());
+                data.put("company",shopRepositroy.search(pageablea,text).getContent());
+                data.put("study",shopRepositroy.search(pageablea,text).getContent());
                 break;
         }
         return Mono.just(Info.SUCCESS(data));

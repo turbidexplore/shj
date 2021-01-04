@@ -77,6 +77,7 @@ public class AutoNewsCrawler extends BreadthCrawler {
         if(contentType==null){
             return;
         }else if (contentType.contains("html")) {
+
              title = page.select("h2#activity-name").first().text();//获取url标题
              content = page.select("div[id=js_content]>p").text();
              if(content==""){

@@ -35,4 +35,6 @@ public interface CaseService {
     List<Case>  casebylabel(Integer page, String text);
 
     List<Case> getcj(String code);
+
+    int max();
 }

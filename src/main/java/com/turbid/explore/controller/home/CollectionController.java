@@ -2,6 +2,7 @@ package com.turbid.explore.controller.home;
 
 import com.turbid.explore.pojo.*;
 import com.turbid.explore.pojo.bo.CollectionType;
+import com.turbid.explore.repository.NativeContentRepositroy;
 import com.turbid.explore.repository.ProductReposity;
 import com.turbid.explore.service.*;
 import com.turbid.explore.tools.Info;
@@ -61,7 +62,7 @@ public class CollectionController {
     private GoodsService goodsService;
 
     @Autowired
-    private NativeContentService nativeContentService;
+    private NativeContentRepositroy nativeContentRepositroy;
 
 
     @Autowired
@@ -95,7 +96,7 @@ public class CollectionController {
                         }
                         break;
                     case nativecontent:
-                       NativeContent nativeContent= nativeContentService.newsByCode(v.getRelation());
+                       NativeContent nativeContent= nativeContentRepositroy.getOne(v.getRelation());
                         if(null!=nativeContent){
                             data.add(nativeContent);
                         }
@@ -116,6 +117,5 @@ public class CollectionController {
         });
         return Mono.just(Info.SUCCESS(data ));
     }
-
 
 }

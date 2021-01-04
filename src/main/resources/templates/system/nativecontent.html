@@ -164,37 +164,60 @@
     <script src="../scripts/extras.1.1.0.min.js"></script>
 
   <script>
-    var settings = {
-      "async": true,
-      "crossDomain": true,
-      "url": "/nativecontent/mynews?page="+0,
-      "method": "GET",
-      "processData": false,
-      "headers": {
-        "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
-        "cache-control": "no-cache",
-        "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
+
+    var index=0;
+    list(index);
+
+    $(window).scroll(function () {
+
+      var scrollTop = $(this).scrollTop();
+      //console.log(scrollTop);
+      var scrollHeight = $(document).height();
+      //console.log('['+scrollHeight+']');
+      var windowHeight = screen.availHeight;
+      //console.log('【'+windowHeight+'】');
+      if (scrollTop+ windowHeight >= scrollHeight) {
+        if (stop == true && ipage <= totalPage) {
+          stop = false;
+        } else {
+          index++;
+          list(index)
+        }
       }
-    }
-    $.ajax(settings).done(function (response) {
-      response.data.forEach(function (v,i) {
-        var img=v.firstimage.split(",")[0];
-     var html= '<div class="col-lg-3 col-md-6 col-sm-12 mb-4" id="'+v.code+'">'+
-                '<div class="card card-small card-post card-post--1">'+
-                '<div class="card-post__image" style="background-image: url('+img+');">'+
-                '<a href="#" class="card-post__category badge badge-pill badge-dark" onclick="preview(\''+v.code+'\')">预览</a>'+
-                '<div class="card-post__author d-flex">'+
-                '<a href="#" class="card-post__author-avatar card-post__author-avatar--small" style="background-image: url('+v.userSecurity.userBasic.headportrait+');">Written by Anna Kunis</a> &nbsp;<strong style="margin-top: 15px;">'+v.userSecurity.userBasic.nikename+
-                '</strong></div></div>'+
-                '<div class="card-body">'+
-                '<p class="card-title">'+
-                '<a class="text-fiord-blue" href="#">'+v.title+'</a></p>'+
-                '<span style="font-size: 12px;">'+v.addftime+'  发布    <button type="button" class="mb-1 btn btn-sm btn-info mr-1" onclick="xj(\''+v.code+'\')"> 删除</button><a href="/manageeditcontent?code='+v.code+'" class="mb-1 btn btn-sm btn-info mr-1" >修改</a></span>'+
-                '</div></div></div>';
-        $("#content").append(html);
-      })
     });
 
+   function list(count) {
+     var settings = {
+       "async": true,
+       "crossDomain": true,
+       "url": "/nativecontent/mynews?page=" + count,
+       "method": "GET",
+       "processData": false,
+       "headers": {
+         "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
+         "cache-control": "no-cache",
+         "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
+       }
+     }
+     $.ajax(settings).done(function (response) {
+       response.data.forEach(function (v, i) {
+         var img = v.firstimage.split(",")[0];
+         var html = '<div class="col-lg-3 col-md-6 col-sm-12 mb-4" id="' + v.code + '">' +
+                 '<div class="card card-small card-post card-post--1">' +
+                 '<div class="card-post__image" style="background-image: url(' + img + ');">' +
+                 '<a href="#" class="card-post__category badge badge-pill badge-dark" onclick="preview(\'' + v.code + '\')">预览</a>' +
+                 '<div class="card-post__author d-flex">' +
+                 '<a href="#" class="card-post__author-avatar card-post__author-avatar--small" style="background-image: url(' + v.userSecurity.userBasic.headportrait + ');">Written by Anna Kunis</a> &nbsp;<strong style="margin-top: 15px;">' + v.userSecurity.userBasic.nikename +
+                 '</strong></div></div>' +
+                 '<div class="card-body">' +
+                 '<p class="card-title">' +
+                 '<a class="text-fiord-blue" href="#">' + v.title + '</a></p>' +
+                 '<span style="font-size: 12px;">' + v.addftime + '  发布    <button type="button" class="mb-1 btn btn-sm btn-info mr-1" onclick="xj(\'' + v.code + '\')"> 删除</button><a href="/manageeditcontent?code=' + v.code + '" class="mb-1 btn btn-sm btn-info mr-1" >修改</a></span>' +
+                 '</div></div></div>';
+         $("#content").append(html);
+       })
+     });
+   }
     function xj(code) {
       var settings = {
         "async": true,

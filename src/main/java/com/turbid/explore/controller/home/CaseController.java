@@ -237,7 +237,11 @@ public class CaseController {
     public Mono<Info> cj(@RequestParam(name = "code")String code,@RequestParam(name = "type")Integer type) {
         try {
             Case obj=caseService.caseByCode(code);
-            obj.set_cj(type);
+            if(type==2){
+                obj.set_cj(caseService.max()+1);
+            }else {
+                obj.set_cj(type);
+            }
             return Mono.just(Info.SUCCESS(caseService.save(obj)));
         }catch (Exception e){
             return Mono.just(Info.SUCCESS(e.getMessage()));

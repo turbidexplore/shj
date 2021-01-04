@@ -110,4 +110,12 @@ public class CaseServiceImpl implements CaseService {
         Page<Case> pages=  caseRepositroy.getcj(pageable,code);
         return pages.getContent();
     }
+
+    @Override
+    public int max() {
+        Pageable pageable = new PageRequest(0,1, Sort.Direction.DESC,"_cj");
+        Page<Integer> pages=  caseRepositroy.max(pageable);
+        return pages.getContent().get(0);
+
+    }
 }
