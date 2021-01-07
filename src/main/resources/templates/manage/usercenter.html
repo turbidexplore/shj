@@ -9,7 +9,7 @@
     <meta name="author" content="设汇家">    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="../styles/all.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/allcss.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" id="main-stylesheet" data-version="1.1.0" href="../styles/shards-dashboards.1.1.0.min.css">
     <link rel="stylesheet" href="../styles/extras.1.1.0.min.css">
     <link rel="stylesheet" href="../layui/css/layui.css">
@@ -347,6 +347,15 @@
                   </div>
 
                   <div class="card-header border-bottom text-center">
+                    <div class="mb-3 mx-auto">
+                      <div id="zszcview"></div>
+                    </div>
+                    <a href="javascript:;" class="file">招商政策展示图
+                      <input type="file" id="zszc_show"  />
+                    </a>
+                  </div>
+
+                  <div class="card-header border-bottom text-center">
                   <div class="mb-3 mx-auto">
                     <div id="videoview"></div>
                   </div>
@@ -371,6 +380,56 @@
       <script src="../scripts/bootstrap.min.js"></script>
       <script src="../js/jquery.cookie.min.js"></script>
       <script>
+
+        $("#zszc_show").on("change",function(){
+          function getObjectURL(file) {
+            var url = null;
+            if (window.createObjcectURL != undefined) {
+              url = window.createOjcectURL(file);
+            } else if (window.URL != undefined) {
+              url = window.URL.createObjectURL(file);
+            } else if (window.webkitURL != undefined) {
+              url = window.webkitURL.createObjectURL(file);
+            }
+            return url;
+          }
+          var blobURL = getObjectURL(this.files[0]);
+          var imgUTL = '';
+
+          var xhr = new XMLHttpRequest();
+          xhr.open('GET', blobURL);
+          xhr.responseType = 'blob';
+
+          xhr.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+              var imageBlob = this.response;
+              var imageType = imageBlob.type;
+              var imageName = null;
+              if (imageType.includes('png')) {
+                imageName = 'uploaded-image.png';
+              } else if (imageType.includes('gif')) {
+                imageName = 'uploaded-image.gif';
+              } else if (imageType.includes('bmp')) {
+                imageName = 'uploaded-image.bmp';
+              } else {
+                imageName = 'uploaded-image.jpg';
+              }
+              var form = new FormData();
+              form.append('file', imageBlob, imageName); // 第三个参数为文件名
+              $.ajax({
+                type: 'POST',
+                url : "/file/upload",
+                data: form ,
+                processData: false,
+                contentType: false,
+              }).done(function(result) {
+                console.log(result);
+                $("#zszcview").html("<img src='"+result.data+"' id='zszc' onclick='remove(this)' style='width:80px;'>");
+              });
+            }
+          };
+          xhr.send();
+        })
 
         var idc=0;
         function vrinit(title,web,img){
@@ -476,6 +535,7 @@
                    $("#idcardpositiveimg").attr('src',result.data.idcardpositive);
                    $("#idcardreverseimg").attr('src',result.data.idcardreverse);
                    $("#unifiedcreditcode").val(result.data.unifiedcreditcode);
+                  $("#zszcview").html("<img src='"+result.data.zszc+"' id='zszc' onclick='remove(this)' style='width:80px;'>");
                   $("#bzj").val(result.data.bzj);
                    code=result.data.code;
                   result.data.banner.split(",").forEach(function (v) {
@@ -1093,7 +1153,8 @@
                   "bzj": $("#bzj").val(),
                   "shopcreatetime": $("#shopcreatetime").val(),
                   "jmcount": $("#jmcount").val(),
-                  "videourl":$("#videourl").attr('src')
+                  "videourl":$("#videourl").attr('src'),
+                  "zszc":$("#zszc").attr("src")
                 }),
                 processData: false,
                 contentType: "application/json; charset=UTF-8",

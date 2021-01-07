@@ -43,6 +43,10 @@ public class Brand extends BaseEntity{
     @Column(name = "brandgroup",length = 255)
     private String brandgroup;
 
+    @ApiModelProperty(value = "所属品牌馆")
+    @Column(name = "idx",length = 255)
+    private int idx;
+
     @ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH},optional=false)
     @JoinColumn(name="company_code")
     private Shop company;

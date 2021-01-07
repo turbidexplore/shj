@@ -5,10 +5,7 @@ package com.turbid.explore.push.api.builder;
 import com.turbid.explore.push.api.model.*;
 import com.turbid.explore.push.api.utils.SetUtil;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class PushWorkBuilder {
@@ -42,6 +39,24 @@ public class PushWorkBuilder {
 
     }
 
+    public void fillParams1(String workNo, String title, String content,String key,String value,String url){
+        if (push.getPushTarget() == null) {
+            push.setPushTarget(new PushTarget());
+        }
+        push.setWorkno(UUID.randomUUID().toString().replace("-",""));
+       // push.getPushNotify().setTitle(title);
+        push.getPushNotify().setContent(content);
+        push.getPushNotify().setType(2);
+//        PushForward pushForward=new PushForward();
+//        pushForward.setNextType(2);
+//        pushForward.setScheme(url);
+//        List<PushMap> schemeDataList = new ArrayList<>();
+//        schemeDataList.add(new PushMap(key,value));
+//        pushForward.setSchemeDataList(schemeDataList);
+//        push.setPushForward(pushForward);
+//
+    }
+
 
     public PushWorkBuilder setTargetAll(String workNo, String title, String content,String key,String value,String url) {
         this.fillParams(workNo,title,content,key,value,url);
@@ -50,7 +65,7 @@ public class PushWorkBuilder {
     }
 
     public PushWorkBuilder setTargetByAlias(String workNo, String title, String content,String key,String value,String url, String ... alias) {
-        this.fillParams(workNo,title,content,key,value,url);
+        this.fillParams1(workNo,title,content,key,value,url);
         push.getPushTarget().setTarget(TARGET_ALIAS);
         push.getPushTarget().setAlias(SetUtil.newSet(alias));
         return this;

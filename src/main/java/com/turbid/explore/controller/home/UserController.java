@@ -3,6 +3,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.ImmutableMap;
 import com.turbid.explore.pojo.*;
+import com.turbid.explore.push.api.client.push.PushV3Client;
 import com.turbid.explore.repository.*;
 import com.turbid.explore.service.*;
 import com.turbid.explore.service.impl.SMSServiceImpl;
@@ -827,6 +828,14 @@ public class UserController {
             data.put("yx",shopService.getByCode(userSecurity.getShopcode()).getIschoose());
         }
         return Mono.just(Info.SUCCESS(data));
+    }
+
+    @ApiOperation(value = "获取im资料")
+    @GetMapping(value = "/test")
+    public Mono<Info> test(@RequestParam(value = "p")String p)  {
+
+
+        return Mono.just(Info.SUCCESS(PushV3Client.pushByAlias(UUID.randomUUID().toString().replace("-",""),  "用户【"+"】关注了您", "1", "floow","a","b",p)));
     }
 }
 

@@ -3,6 +3,7 @@ package com.turbid.explore.controller.home;
 import com.turbid.explore.pojo.Follow;
 import com.turbid.explore.pojo.Notice;
 import com.turbid.explore.pojo.UserSecurity;
+import com.turbid.explore.push.api.client.push.PushV3Client;
 import com.turbid.explore.repository.NoticeRepository;
 import com.turbid.explore.service.FollowService;
 import com.turbid.explore.service.UserSecurityService;
@@ -47,7 +48,7 @@ public class FollowController {
         follow.setUserFollow(userSecurityService.findByPhone(phone));
 
         noticeRepository.save(new Notice(phone,"用户【"+user.getUserBasic().getNikename()+"】关注了您","关注通知",1,0));
-
+        PushV3Client.pushByAlias(phone,  "用户【"+user.getUserBasic().getNikename()+"】关注了您", "1", "floow",phone,"",phone);
         return Mono.just(Info.SUCCESS( followService.save(follow)));
     }
 

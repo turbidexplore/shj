@@ -43,6 +43,9 @@ public class Product extends BaseEntity {
     @Column(name = "starcount")
     private int starcount;
 
+    @Column(name = "remove")
+    private int remove;
+
     @Column(name = "isstar")
     private boolean isstar;
 

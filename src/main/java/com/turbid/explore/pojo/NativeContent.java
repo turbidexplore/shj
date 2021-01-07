@@ -52,6 +52,9 @@ public class NativeContent extends BaseEntity{
     @Column(name = "hat",length = 10)
     private Integer hat;
 
+    @Column(name = "idx",length = 10)
+    private Integer idx;
+
     @Column(name = "fromv",length = 2)
     private Integer fromv;
 

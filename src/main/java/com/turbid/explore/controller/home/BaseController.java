@@ -183,7 +183,7 @@ public class BaseController {
     @ApiOperation(value = "获取产品风格", notes="获取产品风格")
     @GetMapping(value = "/styles")
     public Mono<Info> styles()  {
-        return Mono.just(Info.SUCCESS(new String[]{"极简","轻奢","中式","美式","欧式","轻奢","其它"}));
+        return Mono.just(Info.SUCCESS(new String[]{"极简","轻奢","中式","美式","欧式","原创","其他"}));
     }
 
 
@@ -261,76 +261,28 @@ public class BaseController {
     public Mono<Info> brandgroup()  {
         List<Map<String,String>> list=new ArrayList<>();
         Map<String,String> map =new HashMap<>();
-        map.put("name","家具馆");
+        map.put("name","家具");
+        map.put("name_en","furniture");
+        map.put("banner","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E5%93%81%E7%89%8C%E9%A6%86/%E4%BA%8C%E7%BA%A7/%E5%AE%B6%E5%85%B7%E9%A6%86.png");
+        map.put("logo","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/icon/%E5%93%81%E7%89%8C%E9%A6%86/%E5%AE%B6%E5%85%B7%E9%A6%86.png");
+        list.add(map);
+         map =new HashMap<>();
+        map.put("name","家纺");
         map.put("name_en","furniture");
         map.put("banner","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E5%93%81%E7%89%8C%E9%A6%86/%E4%BA%8C%E7%BA%A7/%E5%AE%B6%E5%85%B7%E9%A6%86.png");
         map.put("logo","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/icon/%E5%93%81%E7%89%8C%E9%A6%86/%E5%AE%B6%E5%85%B7%E9%A6%86.png");
         list.add(map);
         map=new HashMap<>();
-        map.put("name","高端定制馆");
+        map.put("name","饰品");
         map.put("name_en","high end customization");
         map.put("banner","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E5%93%81%E7%89%8C%E9%A6%86/%E4%BA%8C%E7%BA%A7/%E9%AB%98%E7%AB%AF%E5%AE%9A%E5%88%B6%E9%A6%86.png");
         map.put("logo","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/icon/%E5%93%81%E7%89%8C%E9%A6%86/%E9%AB%98%E7%AB%AF%E5%AE%9A%E5%88%B6%E9%A6%86.png");
         list.add(map);
         map=new HashMap<>();
-        map.put("name","全屋定制馆");
+        map.put("name","灯具");
         map.put("name_en","all room customization");
         map.put("banner","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E5%93%81%E7%89%8C%E9%A6%86/%E4%BA%8C%E7%BA%A7/%E5%85%A8%E5%B1%8B%E5%AE%9A%E5%88%B6%E9%A6%86.png");
         map.put("logo","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/icon/%E5%93%81%E7%89%8C%E9%A6%86/%E5%85%A8%E5%B1%8B%E5%AE%9A%E5%88%B6%E9%A6%86.png");
-        list.add(map);
-//        map=new HashMap<>();
-//        map.put("name","设计馆");
-//        map.put("name_en","design");
-//        map.put("banner","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E5%93%81%E7%89%8C%E9%A6%86/%E4%BA%8C%E7%BA%A7/%E8%AE%BE%E8%AE%A1%E9%A6%86.png");
-//        map.put("logo","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/icon/%E5%93%81%E7%89%8C%E9%A6%86/%E8%AE%BE%E8%AE%A1%E9%A6%86.png");
-//        list.add(map);
-        map=new HashMap<>();
-        map.put("name","墙布馆");
-        map.put("name_en","wall cloth");
-        map.put("banner","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E5%93%81%E7%89%8C%E9%A6%86/%E4%BA%8C%E7%BA%A7/%E5%A2%99%E5%B8%83%E9%A6%86.png");
-        map.put("logo","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/icon/%E5%93%81%E7%89%8C%E9%A6%86/%E5%A2%99%E5%B8%83%E9%A6%86.png");
-        list.add(map);
-        map=new HashMap<>();
-        map.put("name","灯具馆");
-        map.put("name_en","lamps and lanterns");
-        map.put("banner","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E5%93%81%E7%89%8C%E9%A6%86/%E4%BA%8C%E7%BA%A7/%E7%81%AF%E5%85%B7%E9%A6%86.png");
-        map.put("logo","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/icon/%E5%93%81%E7%89%8C%E9%A6%86/%E7%81%AF%E5%85%B7%E9%A6%86.png");
-        list.add(map);
-        map=new HashMap<>();
-        map.put("name","床品馆");
-        map.put("name_en","bedding");
-        map.put("banner","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E5%93%81%E7%89%8C%E9%A6%86/%E4%BA%8C%E7%BA%A7/%E5%BA%8A%E5%93%81%E9%A6%86.png");
-        map.put("logo","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/icon/%E5%93%81%E7%89%8C%E9%A6%86/%E5%BA%8A%E5%93%81%E9%A6%86.png");
-        list.add(map);
-        map=new HashMap<>();
-        map.put("name","饰品馆");
-        map.put("name_en","ornaments");
-        map.put("banner","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E5%93%81%E7%89%8C%E9%A6%86/%E4%BA%8C%E7%BA%A7/%E9%A5%B0%E5%93%81%E9%A6%86.png");
-        map.put("logo","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/icon/%E5%93%81%E7%89%8C%E9%A6%86/%E9%A5%B0%E5%93%81%E9%A6%86.png");
-        list.add(map);
-        map=new HashMap<>();
-        map.put("name","地毯馆");
-        map.put("name_en","carpet");
-        map.put("banner","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E5%93%81%E7%89%8C%E9%A6%86/%E4%BA%8C%E7%BA%A7/%E5%9C%B0%E6%AF%AF%E9%A6%86.png");
-        map.put("logo","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/icon/%E5%93%81%E7%89%8C%E9%A6%86/%E5%9C%B0%E6%AF%AF%E9%A6%86.png");
-        list.add(map);
-        map=new HashMap<>();
-        map.put("name","窗帘馆");
-        map.put("name_en","window curtains");
-        map.put("banner","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E5%93%81%E7%89%8C%E9%A6%86/%E4%BA%8C%E7%BA%A7/%E7%AA%97%E5%B8%98%E9%A6%86.png");
-        map.put("logo","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/icon/%E5%93%81%E7%89%8C%E9%A6%86/%E7%AA%97%E5%B8%98%E9%A6%86.png");
-        list.add(map);
-        map=new HashMap<>();
-        map.put("name","画品馆");
-        map.put("name_en","quality of paintings");
-        map.put("banner","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E5%93%81%E7%89%8C%E9%A6%86/%E4%BA%8C%E7%BA%A7/%E7%94%BB%E5%93%81%E9%A6%86.png");
-        map.put("logo","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/icon/%E5%93%81%E7%89%8C%E9%A6%86/%E7%94%BB%E5%93%81%E9%A6%86.png");
-        list.add(map);
-        map=new HashMap<>();
-        map.put("name","综合馆");
-        map.put("name_en","comprehensive");
-        map.put("banner","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E5%93%81%E7%89%8C%E9%A6%86/%E4%BA%8C%E7%BA%A7/%E7%BB%BC%E5%90%88%E9%A6%86.png");
-        map.put("logo","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/icon/%E5%93%81%E7%89%8C%E9%A6%86/%E7%BB%BC%E5%90%88%E9%A6%86.png");
         list.add(map);
 
         return Mono.just(Info.SUCCESS(list));
@@ -595,8 +547,6 @@ public class BaseController {
         }
         return Mono.just(Info.SUCCESS(data));
     }
-
-
 }
 
 

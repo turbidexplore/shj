@@ -30,6 +30,9 @@ public class Shop extends BaseEntity{
     @Column(name = "jmcount",   length = 32)
     private int jmcount;
 
+    @Column(name = "zszc",   length = 255)
+    private String zszc;
+
 //    public String getJmcount() {
 //        if (!jmcount.contains("+")){
 //            jmcount=jmcount+"家";

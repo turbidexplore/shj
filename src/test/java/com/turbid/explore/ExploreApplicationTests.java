@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.ImmutableMap;
 import com.turbid.explore.pojo.DayTask;
+import com.turbid.explore.push.api.client.push.PushV3Client;
 import com.turbid.explore.repository.DayTaskReposity;
 import com.turbid.explore.repository.UserSecurityRepository;
 import com.turbid.explore.service.NeedsRelationService;
@@ -59,5 +60,9 @@ public class ExploreApplicationTests {
         dayTask=dayTaskReposity.saveAndFlush(dayTask);
         System.out.println(dayTask.getCreate_time());
     }
+
+
+
+
 
 }

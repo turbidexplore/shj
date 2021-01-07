@@ -1,6 +1,7 @@
 package com.turbid.explore.controller.home;
 
 import com.turbid.explore.pojo.*;
+import com.turbid.explore.push.api.client.push.PushV3Client;
 import com.turbid.explore.repository.DiscussRepository;
 import com.turbid.explore.repository.ProductReposity;
 import com.turbid.explore.service.ShopService;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import java.security.Principal;
+import java.util.UUID;
 
 @Api(description = "找产品模块")
 @RestController
@@ -43,8 +45,30 @@ public class ProductController {
             product.setCompany(shopService.getByCode(product.getCompany().getCode()));
         }
         product= productReposity.save(product);
-//      PushV3Client.pushAll(product.getCode(),  "(｡･∀･)ﾉﾞ嗨  有新的"+community.getLabel()+"需求，快去看看吧", community.getContent()+" 详情>>", "code", community.getCode(),"shehuijia://com.shehuijia.explore/communitydemand");
-        return Mono.just(Info.SUCCESS(product));
+        String tag[]={"1","2"};
+        String type="代理";
+        if(product.getType()==1){
+            tag[0]="1";
+            type="代理";
+        }else if(product.getType()==2){
+            tag[0]="1";
+            tag[1]="0";
+            type="出货";
+        }else if(product.getType()==3){
+            tag[0]="1";
+            tag[1]="0";
+            type="生产";
+        }else if(product.getType()==4){
+            tag[0]="2";
+            type="开店";
+        }else if(product.getType()==5){
+            tag[0]="2";
+            type="拿货";
+        }else if(product.getType()==6){
+            tag[0]="2";
+            type="定制";
+        }
+        return Mono.just(Info.SUCCESS(PushV3Client.pushByTags(UUID.randomUUID().toString().replace("-",""),  "(｡･∀･)ﾉﾞ嗨  有新的"+type+"需求，快去看看吧", product.getWord()+" 详情>>", "code", product.getCode(),"shehuijia://com.shehuijia.explore/product",tag)));
     }
 
 
@@ -124,7 +148,7 @@ public class ProductController {
 
     @ApiOperation(value = "usercode获取详情", notes="usercode获取详情")
     @GetMapping("/getbyusercode")
-    public Mono<Info> getbyusercode(Principal principal,@RequestParam(value = "usercode")String usercode,@RequestParam("page")Integer page) {
+    public Mono<Info> getbyusercode(Principal principal,@RequestParam(value = "usercode",required = false)String usercode,@RequestParam("page")Integer page) {
         Pageable pageable = new PageRequest(page, 10, Sort.Direction.DESC, "create_time");
         Page<Product> productList = productReposity.allByPage(pageable,usercode);
         if (null != principal) {
@@ -136,6 +160,19 @@ public class ProductController {
             });
         }
         return Mono.just(Info.SUCCESS(productList.getContent()));
+    }
+
+    @PostMapping("/remove")
+    public Mono<Info> remove(Principal principal, @RequestParam("code") String code) {
+        Product product= productReposity.getOne(code);
+        product.setRemove(1);
+        productReposity.save(product);
+        return Mono.just(Info.SUCCESS(null));
+    }
+
+    @GetMapping("/count")
+    public Mono<Info> count() {
+        return Mono.just(Info.SUCCESS( productReposity.counta()));
     }
 
 }

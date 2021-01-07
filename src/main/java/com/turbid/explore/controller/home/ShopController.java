@@ -1,6 +1,7 @@
 package com.turbid.explore.controller.home;
 
 import com.turbid.explore.pojo.*;
+import com.turbid.explore.push.api.client.push.PushV3Client;
 import com.turbid.explore.repository.ShopFansRepository;
 import com.turbid.explore.service.*;
 import com.turbid.explore.tools.CodeLib;
@@ -74,14 +75,16 @@ public class ShopController {
     public Mono<Info> follow(Principal principal,@RequestParam("shopcode")String shopcode) {
         try {
             ShopFans shopFans=new ShopFans();
-            shopFans.setUserSecurity(userSecurityService.findByPhone(principal.getName()));
+            UserSecurity userSecurity=userSecurityService.findByPhone(principal.getName());
+            shopFans.setUserSecurity(userSecurity);
             Shop shop=shopService.getByCode(shopcode);
             shopFans.setShop(shop);
-            shopFansRepository.saveAndFlush(shopFans);
+           shopFans=  shopFansRepository.saveAndFlush(shopFans);
             if (shop.getFanscount()==null) {
             shop.setFanscount(1);
             }else { shop.setFanscount(shop.getFanscount()+1); }
             shopService.save(shopFans.getShop());
+            PushV3Client.pushByAlias(shopFans.getCode(),  "用户【"+userSecurity.getUserBasic().getNikename()+"】关注了您", "1", "floow",shop.getUserSecurity().getPhonenumber(),"",shop.getUserSecurity().getPhonenumber());
             return Mono.just(Info.SUCCESS(null));
         }catch (Exception e){
             return Mono.just(Info.ERROR(null));
@@ -309,11 +312,17 @@ public class ShopController {
                 }
             }
             item.put("brand",brand);
-            item.put("desc",brands.get(0).getContent());
+
         }catch (Exception e){
             item.put("brand",null);
-            item.put("desc","");
+
         }
+        if(null!=v.getZszc()&&""!=v.getZszc()) {
+            item.put("desc", "<img alt=\"\" src=\"" + v.getZszc() + "\" style=\"width: 100%;\" />");
+        }else {
+            item.put("desc", "");
+        }
+
         item.put("investmentamount",v.getBzj());
         item.put("showimg",v.getCompany_show());
         item.put("shopcode",v.getCode());

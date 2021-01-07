@@ -255,4 +255,16 @@ public class IndexController {
         return "system/scase";
     }
 
+    @RequestMapping("/managesproducts")
+    public String managesproducts(){
+        return "system/products";
+    }
+
+    @RequestMapping("/abcs")
+    public String abcs(){
+        return "system/integralgood";
+    }
+
+
+
 }

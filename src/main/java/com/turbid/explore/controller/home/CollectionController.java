@@ -84,33 +84,53 @@ public class CollectionController {
         collectionService.listByPagePhone(principal.getName(),page,collectionType).forEach(v->{
                 switch (collectionType){
                     case product:
+                        try {
                         Product product=productReposity.getOne(v.getRelation());
-                        if(null!=product){
+                        if(null!=product.getCode()){
                             data.add(product);
+                        }
+                        }catch (Exception e){
+
                         }
                         break;
                     case shop:
+                        try {
                       Shop shop= shopService.getByCode(v.getRelation());
-                        if(null!=shop){
+                        if(null!=shop.getCode()){
                             data.add(shop);
+                        }
+                        }catch (Exception e){
+
                         }
                         break;
                     case nativecontent:
+                        try {
                        NativeContent nativeContent= nativeContentRepositroy.getOne(v.getRelation());
-                        if(null!=nativeContent){
+                        if(null!=nativeContent.getCode()){
                             data.add(nativeContent);
+                        }
+                        }catch (Exception e){
+
                         }
                         break;
                     case books:
+                        try {
                         Study study=studyService.get(v.getRelation());
-                        if(null!=study){
+                        if(null!=study.getCode()){
                             data.add(study);
+                        }
+                        }catch (Exception e){
+
                         }
                         break;
                     case caseinfo:
+                        try {
                         Case caseinfo=caseService.caseByCode(v.getRelation());
-                        if(null!=caseinfo){
+                        if(null!=caseinfo.getCode()){
                             data.add(caseinfo);
+                        }
+                        }catch (Exception e){
+
                         }
                         break;
                 }

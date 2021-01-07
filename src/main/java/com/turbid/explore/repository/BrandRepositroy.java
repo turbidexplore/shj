@@ -34,4 +34,5 @@ public interface BrandRepositroy extends JpaRepository<Brand,String> {
     @Modifying
     @Query("update Brand p set p.del=:del where p.code=:code")
     int updataDelete(@Param("del")Boolean del,@Param("code") String code);
+
 }
