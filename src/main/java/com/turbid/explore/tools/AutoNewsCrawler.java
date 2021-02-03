@@ -98,7 +98,6 @@ public class AutoNewsCrawler extends BreadthCrawler {
     }
 
     public static void main(String[] args) throws Exception {
-
         AutoNewsCrawler crawler = new AutoNewsCrawler("crawl", true,"https://mp.weixin.qq.com/s?src=11&timestamp=1608881809&ver=2787&signature=--kpA1ASy5l1*VYGiy4VnCFb3WCCcXyHxY3CY2XTfXBVkexzpwO4qeI5Ube-jVCIZ4q8i0s9fHIWF5nB9ePI0IBf*THbQKZH5FZ32rf8mTbcW5nJ3e3hkhIMpSJiZfTl&new=1");
         crawler.start(4);//启动爬虫
         System.out.println(crawler.images.size());

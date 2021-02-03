@@ -40,6 +40,12 @@ public class HomeController {
     @Autowired
     private StudyGroupRepository studyGroupRepository;
 
+    @Autowired
+    private LiveInfoReposity liveInfoReposity;
+
+    @Autowired
+    private StudyRepository studyRepository;
+
 
     @ApiOperation(value = "获取首页信息", notes="获取首页信息")
     @GetMapping("/info")
@@ -81,8 +87,18 @@ public class HomeController {
         data.put("nativeContents",nativeContents.getContent());
 
         Page<StudyGroup> studyGroups=  studyGroupRepository.grouplist(pageable,null);
-        data.put("studyGroups",studyGroups.getContent());
-
+        List sgs =new ArrayList<>();
+        studyGroups.getContent().forEach(sg->{
+            sg.setImga(studyRepository.findByGroup(sg.getCode()).get(0).getIndeximgurl());
+            sgs.add(sg);
+        });
+        data.put("studyGroups",sgs);
+       List<LiveInfo> liveInfos= liveInfoReposity.findlive(principal.getName());
+       if(liveInfos.size()>0) {
+           data.put("live",liveInfos.get(0));
+       }else {
+           data.put("live",null);
+       }
         return Mono.just(Info.SUCCESS(data));
     }
 

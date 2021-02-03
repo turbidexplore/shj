@@ -34,6 +34,21 @@ public class StudyGroup extends BaseEntity {
     @Column(name = "seecount")
     private Integer seecount;
 
+    @Column(name = "balance",   length = 32)
+    private String balance;
+
+    @Column(name = "shb",   length = 32)
+    private String shb;
+
+    @Column(name = "price",   length = 32)
+    private String price;
+
+    @Column(name = "pricetype",   length = 32)
+    private String pricetype;
+
+    @Column(name = "kscount",   length = 32)
+    private Integer kscount;
+
     @Column(name = "teachername")
     private String teachername;
 
@@ -43,9 +58,18 @@ public class StudyGroup extends BaseEntity {
     @Column(name = "teacherdesc",  length = 2000)
     private String teacherdesc;
 
+    @Column(name = "teacherslogan")
+    private String teacherslogan;
+
+    @Column(name = "indextype")
+    private int indextype;
+
+    @Column(name="imga")
+    private String imga;
+
+
     public StudyGroup() {
 
     }
-
 
 }

@@ -61,6 +61,20 @@ public class UserSecurity extends BaseEntity {
     @Column(name = "balance")
     private String balance;
 
+    @Column(name = "qdtime")
+    private String qdtime;
+
+    @Column(name = "qdcount")
+    private Integer qdcount;
+
+    @Column(name = "info")
+    private Integer info;
+
+    @Column(name = "auth")
+    private Integer auth;
+
+    @Column(name = "newuser")
+    private Integer newuser;
 
 
 }

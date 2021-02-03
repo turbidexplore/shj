@@ -1,9 +1,11 @@
 package com.turbid.explore.controller.home;
 
+import com.turbid.explore.pojo.DayTask;
 import com.turbid.explore.pojo.Follow;
 import com.turbid.explore.pojo.Notice;
 import com.turbid.explore.pojo.UserSecurity;
 import com.turbid.explore.push.api.client.push.PushV3Client;
+import com.turbid.explore.repository.DayTaskReposity;
 import com.turbid.explore.repository.NoticeRepository;
 import com.turbid.explore.service.FollowService;
 import com.turbid.explore.service.UserSecurityService;
@@ -11,15 +13,12 @@ import com.turbid.explore.tools.Info;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 
 @Api(description = "关注接口")
@@ -38,18 +37,36 @@ public class FollowController {
     @Autowired
     private NoticeRepository noticeRepository;
 
+    @Autowired
+    private DayTaskReposity dayTaskReposity;
+
     @ApiOperation(value = "关注", notes="关注")
     @PutMapping("/add")
     public Mono<Info> add(Principal principal, @RequestParam("phone") String phone) {
-
-        Follow follow=new Follow();
-        UserSecurity user=userSecurityService.findByPhone(principal.getName());
-        follow.setUser(user);
-        follow.setUserFollow(userSecurityService.findByPhone(phone));
-
-        noticeRepository.save(new Notice(phone,"用户【"+user.getUserBasic().getNikename()+"】关注了您","关注通知",1,0));
-        PushV3Client.pushByAlias(phone,  "用户【"+user.getUserBasic().getNikename()+"】关注了您", "1", "floow",phone,"",phone);
-        return Mono.just(Info.SUCCESS( followService.save(follow)));
+        UserSecurity userSecurity=userSecurityService.findByPhone(principal.getName());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String dateStr = sdf.format(new Date());
+        DayTask dayTask=dayTaskReposity.findByDay(principal.getName(),dateStr);
+        if(null==dayTask){
+            dayTask=new DayTask();
+        }
+        dayTask.setUserSecurity(userSecurity);
+        dayTask.setTaskl();
+        if(dayTask.getTaskl()==10){
+            userSecurity.setShb(userSecurity.getShb()+10);
+            userSecurityService.save(userSecurity);
+        }
+        dayTask=dayTaskReposity.saveAndFlush(dayTask);
+        Follow follow = new Follow();
+        if (!isf(principal.getName(), phone)) {
+            UserSecurity user = userSecurityService.findByPhone(principal.getName());
+            follow.setUser(user);
+            follow.setUserFollow(userSecurityService.findByPhone(phone));
+            noticeRepository.save(new Notice(phone, "用户【" + user.getUserBasic().getNikename() + "】关注了您", "关注通知", 1, 0));
+           PushV3Client.pushByAlias(phone, "用户【" + user.getUserBasic().getNikename() + "】关注了您", "1", "floow", phone, "", phone);
+          follow=  followService.save(follow);
+        }
+        return Mono.just(Info.SUCCESS( follow));
     }
 
     @ApiOperation(value = "关注我的", notes="关注我的")

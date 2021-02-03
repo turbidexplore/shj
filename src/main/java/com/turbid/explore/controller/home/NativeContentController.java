@@ -36,9 +36,11 @@ public class NativeContentController {
     @PostMapping(value = "/add")
     public Mono<Info> add(Principal principal,@RequestBody NativeContent nativeContent) {
         nativeContent.setCreate_time(new Date());
-        nativeContent.setUserSecurity(userSecurityService.findByPhone(principal.getName()));
-        if(null!=nativeContent.getUserSecurity().getShopcode()&&""!=nativeContent.getUserSecurity().getShopcode()&&!"".equals(nativeContent.getUserSecurity().getShopcode())&&!nativeContent.getUserSecurity().getShopcode().equals(null)){
-            nativeContent.setCompany(shopRepositroy.getOne(nativeContent.getUserSecurity().getShopcode()));
+        if(null!=principal) {
+            nativeContent.setUserSecurity(userSecurityService.findByPhone(principal.getName()));
+            if(null!=nativeContent.getUserSecurity().getShopcode()&&""!=nativeContent.getUserSecurity().getShopcode()&&!"".equals(nativeContent.getUserSecurity().getShopcode())&&!nativeContent.getUserSecurity().getShopcode().equals(null)){
+                nativeContent.setCompany(shopRepositroy.getOne(nativeContent.getUserSecurity().getShopcode()));
+            }
         }
         List<String> imgs= CodeLib.listImgSrc(nativeContent.getContent());
         if(imgs.size()>2) {

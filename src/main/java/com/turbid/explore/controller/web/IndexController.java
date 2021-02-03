@@ -16,6 +16,11 @@ public class IndexController {
         return "index";
     }
 
+    @RequestMapping("/a")
+    public String aaa(){
+        return "aaa";
+    }
+
     @RequestMapping("/index")
     public String index(){
         return "index";
@@ -70,6 +75,12 @@ public class IndexController {
     public String editcontent(@RequestParam("code")String code, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
         httpServletRequest.setAttribute("code",code);
         return "system/content";
+    }
+
+    @RequestMapping("/manageeditcontenta")
+    public String editcontenta(@RequestParam("code")String code, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
+        httpServletRequest.setAttribute("code",code);
+        return "manage/content";
     }
 
     @RequestMapping("/manageeditcase")
@@ -172,6 +183,13 @@ public class IndexController {
         return "system/study";
     }
 
+
+    @RequestMapping("/managechangestudy")
+    public String managechangestudy(@RequestParam("code")String code, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
+        httpServletRequest.setAttribute("code",code);
+        return "system/studygroup";
+    }
+
     @RequestMapping("/manageeditstudy")
     public String manageeditstudy(@RequestParam("code")String code, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
         httpServletRequest.setAttribute("xcode",code);
@@ -265,6 +283,12 @@ public class IndexController {
         return "system/integralgood";
     }
 
+    @RequestMapping("/managesstudynotice")
+    public String managesstudynotice(){
+        return "system/studynotice";
+    }
+
 
 
 }
+

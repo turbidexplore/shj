@@ -2,6 +2,7 @@ package com.turbid.explore.controller.home;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.ImmutableMap;
+import com.turbid.explore.configuration.AsyncTaskA;
 import com.turbid.explore.pojo.*;
 import com.turbid.explore.push.api.client.push.PushV3Client;
 import com.turbid.explore.repository.*;
@@ -78,6 +79,8 @@ public class UserController {
                     userSecurity.setLikes(jo.getString("likes"));
                     userSecurity.setPhonenumber(jo.getString("username"));
                     userSecurity.setType(jo.getInteger("type"));
+                    userSecurity.setShb(100);
+
                     String typename="";
                     switch (jo.getInteger("type")){
                         case 0:
@@ -93,7 +96,6 @@ public class UserController {
                             typename="设计公司";
                             break;
                     }
-
                     UserBasic userBasic=new UserBasic();
                     userBasic.setNikename(CodeLib.getNikeName(stringRedisTemplate));
                     userBasic.setHeadportrait(CodeLib.getHeadimg());
@@ -183,6 +185,9 @@ public class UserController {
     @Autowired
     private LoginHisRepository loginHisRepository;
 
+    @Autowired
+    private AsyncTaskA asyncTask;
+
     @ApiOperation(value = "登陆", notes="login_type为sms或password")
     @PostMapping("/login")
     public Mono<Info> login(@RequestBody JSONObject jsonObject){
@@ -206,7 +211,9 @@ public class UserController {
                 return Mono.just(Info.ERROR("登录失败"));
             }
             loginHis.setStatus(1);
-            object.put("userinfo",userSecurityService.findByPhone(jsonObject.getString("username")));
+            UserSecurity userSecurity=userSecurityService.findByPhone(jsonObject.getString("username"));
+            object.put("userinfo",userSecurity);
+            asyncTask.checkOrderStatus(userSecurity.getPhonenumber());
             loginHisRepository.saveAndFlush(loginHis);
             return Mono.just(Info.SUCCESS(object));
         }catch (Exception e){
@@ -518,6 +525,12 @@ public class UserController {
             userAuth.setIdcardpositive(idcardpositive);
             userAuth.setIdcardreverse(idcardreverse);
             userAuth.setStatus(1);
+
+            if(userSecurity.getAuth()==0) {
+                userSecurity.setShb(userSecurity.getShb()+100);
+                userSecurity.setAuth(1);
+            }
+
             userSecurity.setUserAuth(userAuthService.save(userAuth));
             return Mono.just(Info.SUCCESS(userSecurityService.save(userSecurity)));
         }catch (Exception e){
@@ -533,7 +546,6 @@ public class UserController {
             @ApiImplicitParam(paramType="query", name="sms", dataType="String", required=true, value="验证码"),
     })
     public Mono<Info> check(@RequestParam(name = "phone")String phone,@RequestParam(name = "sms")String sms)  {
-        System.out.println(checkService.findCodeByPhone(phone));
         return Mono.just(Info.SUCCESS(checkService.findMessagesByMebileAndAuthode(phone,sms)));
     }
 
@@ -541,7 +553,6 @@ public class UserController {
     @ApiOperation(value = "获取用户信息", notes="通过token获取用户信息")
     @PostMapping(value = "/userinfo")
     public Mono<Info> userinfo(Principal principal,HttpServletRequest request)  {
-        System.out.println(getIpAddress(request));
         return Mono.just(Info.SUCCESS(userSecurityService.findByPhone(principal.getName())));
     }
 
@@ -668,6 +679,10 @@ public class UserController {
                 "From_Account", userSecurity.getCode(),
                 "ProfileItem",data
         );
+        if(userSecurity.getInfo()==0) {
+            userSecurity.setShb(userSecurity.getShb()+100);
+            userSecurity.setInfo(1);
+        }
         restTemplate.postForObject(baseUrl+portrait_set+config()
                 ,requestBody, JSONObject.class);
         return Mono.just(Info.SUCCESS(userSecurityService.save(userSecurity)));
@@ -830,13 +845,22 @@ public class UserController {
         return Mono.just(Info.SUCCESS(data));
     }
 
-    @ApiOperation(value = "获取im资料")
-    @GetMapping(value = "/test")
-    public Mono<Info> test(@RequestParam(value = "p")String p)  {
 
+    @ApiOperation(value = "推荐新用户")
+    @GetMapping(value = "/newuser")
+    public Mono<Info> newuser(Principal principal)  {
 
-        return Mono.just(Info.SUCCESS(PushV3Client.pushByAlias(UUID.randomUUID().toString().replace("-",""),  "用户【"+"】关注了您", "1", "floow","a","b",p)));
+        UserSecurity userSecurity=userSecurityService.findByPhone(principal.getName());
+        if(userSecurity.getNewuser()==0) {
+            userSecurity.setShb(userSecurity.getShb() + 100);
+            userSecurity.setNewuser(1);
+            userSecurity= userSecurityService.save(userSecurity);
+        }
+        return Mono.just(Info.SUCCESS(userSecurity));
     }
+
+
+
 }
 
 

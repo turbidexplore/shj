@@ -2,7 +2,6 @@ package com.turbid.explore.controller.home;
 
 import com.turbid.explore.configuration.AsyncTaskA;
 import com.turbid.explore.pojo.*;
-import com.turbid.explore.push.api.client.push.PushV3Client;
 import com.turbid.explore.repository.*;
 import com.turbid.explore.service.StudyService;
 import com.turbid.explore.service.UserSecurityService;
@@ -40,12 +39,19 @@ public class StudyController {
 
     @ApiOperation(value = "添加课程", notes="添加课程")
     @PutMapping("/add")
-    public Mono<Info> add(@RequestBody Study study,@RequestParam("code")String code) {
-        study.setShb(String.valueOf(Double.valueOf(study.getPrice())*100));
-        study.setBalance(study.getPrice());
+    public Mono<Info> add(@RequestBody Study study,@RequestParam("code") String code) {
         study.setSeecount(0);
-        study.setStudyGroup(studyGroupRepository.getOne(code));
+        StudyGroup studyGroup=studyGroupRepository.getOne(code);
+        studyGroup.setKscount(studyGroup.getKscount()+1);
+        studyGroup= studyGroupRepository.saveAndFlush(studyGroup);
+        study.setStudyGroup(studyGroup);
         return Mono.just(Info.SUCCESS(studyService.save(study)));
+    }
+
+    @ApiOperation(value = "添加课程", notes="添加课程")
+    @PutMapping("/addnotice")
+    public Mono<Info> addnotice(@RequestBody StudyNotice studyNotice) {
+        return Mono.just(Info.SUCCESS(noticeRepository.saveAndFlush(studyNotice)));
     }
 
     @ApiOperation(value = "课程记录", notes="课程记录")
@@ -73,9 +79,19 @@ public class StudyController {
     @ApiOperation(value = "添加课程", notes="添加课程")
     @PutMapping("/addgroup")
     public Mono<Info> addgroup(@RequestBody StudyGroup studyGroup) {
+        studyGroup.setShb(String.valueOf(Double.parseDouble(studyGroup.getPrice())*100));
+        if(studyGroup.getShb().contains(".")){
+            studyGroup.setShb(studyGroup.getShb().split("\\.")[0]);
+        }
+        studyGroup.setBalance(studyGroup.getPrice());
         studyGroup.setSeecount(0);
+        studyGroup.setKscount(0);
+        if(null==studyGroup.getCode()){
+            asyncTaskA.addgroup(studyGroup);
+        }
         studyGroup=studyGroupRepository.saveAndFlush(studyGroup);
-        asyncTaskA.addgroup(studyGroup);
+
+
         return Mono.just(Info.SUCCESS(studyGroup));
     }
 
@@ -94,13 +110,19 @@ public class StudyController {
                 }catch (Exception e){
                     v.setSeecount(0);
                 }
-
                 list.add(v);
             });
             return Mono.just(Info.SUCCESS(list ));
         }catch (Exception e){
             return Mono.just(Info.SUCCESS(e.getMessage()));
         }
+    }
+
+    @ApiOperation(value = "删除", notes="删除")
+    @PutMapping("/delnotice")
+    public Mono<Info> delnotice(@RequestParam("code") String code) {
+        noticeRepository.deleteById(code);
+        return Mono.just(Info.SUCCESS(null));
     }
 
     @ApiOperation(value = "删除", notes="删除")
@@ -114,6 +136,11 @@ public class StudyController {
     @ApiOperation(value = "删除", notes="删除")
     @PutMapping("/del")
     public Mono<Info> del(@RequestParam("code") String code) {
+        Study study=studyService.get(code);
+        StudyGroup studyGroup= study.getStudyGroup();
+        studyGroup.setKscount(studyGroup.getKscount()-1);
+        study.setStudyGroup(studyGroupRepository.saveAndFlush(studyGroup));
+
         return Mono.just(Info.SUCCESS(studyService.del(code)));
     }
 
@@ -123,9 +150,6 @@ public class StudyController {
         Study study= studyService.get(code);
         study.setSeecount(study.getSeecount()+1);
         study=studyService.save(study);
-        if(study.getPricetype()=="1"||study.getPricetype().equals("1")) {
-            study.setVideourl(null);
-        }
         return Mono.just(Info.SUCCESS(study));
     }
 
@@ -135,16 +159,14 @@ public class StudyController {
         StudyGroup studyGroup= studyGroupRepository.getOne(code);
         try {
             if(null==studyGroup.getSeecount()){
-                studyGroup.setSeecount(1);
+                studyGroup.setSeecount(0);
             }else {
-                studyGroup.setSeecount(studyGroup.getSeecount() + 1);
+                studyGroup.setSeecount( studyService.countByGroup(studyGroup.getCode()));
             }
             studyGroup=studyGroupRepository.saveAndFlush(studyGroup);
         }catch (Exception e){
 
         }
-
-
         return Mono.just(Info.SUCCESS(studyGroup));
     }
 
@@ -185,16 +207,8 @@ public class StudyController {
             List<Study> list=new ArrayList<>();
             studyService.list(page,style,code).forEach(v->{
                 v.setCommentcount(discussRepository.countByCommunityCode(v.getCode()));
-               if(v.getPricetype().equals("1")||v.getPricetype()=="1"){
-                   if(null!=principal){
-                       if(0<studyRelationRepository.issee(principal.getName(),v.getCode())){
-                          v.setPricetype("3");
-                       }
-                   }
-               }
                 list.add(v);
             });
-
             return Mono.just(Info.SUCCESS(list));
         }catch (Exception e){
             return Mono.just(Info.SUCCESS(e.getMessage()));
@@ -265,7 +279,7 @@ public class StudyController {
     @PostMapping(value = "/notice")
     public Mono<Info> notice() {
         try {
-            return Mono.just(Info.SUCCESS(noticeRepository.findAll()));
+            return Mono.just(Info.SUCCESS(noticeRepository.find()));
         }catch (Exception e){
             return Mono.just(Info.SUCCESS(e.getMessage()));
         }
@@ -325,5 +339,52 @@ public class StudyController {
     }
 
 
+    @ApiOperation(value = "获取课程组分页列表", notes="获取课程组分页列表")
+    @PostMapping(value = "/allgrouplist")
+    public Mono<Info> allgrouplist() {
+        try {
+            Map data=new HashMap();
+            Pageable pageable = new PageRequest(0,3, Sort.Direction.DESC,"create_time");
+            Page<StudyGroup> pages=  studyGroupRepository.grouplist(pageable,"色彩风格课");
+            List<StudyGroup> list=new ArrayList<>();
+            pages.getContent().forEach(v->{
+                try {
+                    v.setSeecount(studyService.countByGroup(v.getCode()));
+                }catch (Exception e){
+                    v.setSeecount(0);
+                }
 
+                list.add(v);
+            });
+            data.put("sga",list);
+            pages=  studyGroupRepository.grouplist(pageable,"意式品牌课");
+            List<StudyGroup> list1=new ArrayList<>();
+            pages.getContent().forEach(v->{
+                try {
+                    v.setSeecount(studyService.countByGroup(v.getCode()));
+                }catch (Exception e){
+                    v.setSeecount(0);
+                }
+
+                list1.add(v);
+            });
+            data.put("sgb",list1);
+            pages=  studyGroupRepository.grouplist(pageable,"软装搭配课");
+            List<StudyGroup> list2=new ArrayList<>();
+            pages.getContent().forEach(v->{
+                try {
+                    v.setSeecount(studyService.countByGroup(v.getCode()));
+                }catch (Exception e){
+                    v.setSeecount(0);
+                }
+                list2.add(v);
+            });
+            data.put("sgc",list2);
+            data.put("notice",noticeRepository.find());
+            data.put("zn","<p><img src=\"http://anoax-1258088094.cos.accelerate.myqcloud.com/public/20210121085834721539586357061552.gif\" width=\"1500\" /><img  src=\"http://anoax-1258088094.cos.accelerate.myqcloud.com/public/20210121085831113976182449485450.gif\" width=\"1500\" /><img src=\"http://anoax-1258088094.cos.accelerate.myqcloud.com/public/202101210858391028371375934597717.gif\" width=\"1500\" /><img src=\"http://anoax-1258088094.cos.accelerate.myqcloud.com/public/202101210858324477066422341874702.gif\" width=\"1500\" /><img src=\"http://anoax-1258088094.cos.accelerate.myqcloud.com/public/202101210858383131302150546475591.gif\" width=\"1500\" /><img  src=\"http://anoax-1258088094.cos.accelerate.myqcloud.com/public/202101210858368713189176227394840.jpg\" width=\"1500\" /></p>\n");
+            return Mono.just(Info.SUCCESS(data));
+        }catch (Exception e){
+            return Mono.just(Info.SUCCESS(e.getMessage()));
+        }
+    }
 }

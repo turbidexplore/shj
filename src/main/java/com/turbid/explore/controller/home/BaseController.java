@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.turbid.explore.pojo.*;
 import com.turbid.explore.repository.*;
 import com.turbid.explore.service.*;
-import com.turbid.explore.tools.CodeLib;
 import com.turbid.explore.tools.Info;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -52,11 +51,11 @@ public class BaseController {
     @PutMapping(value = "/setdevice")
     public Mono<Info> setdevice(Principal principal,@RequestParam("device") String device,@RequestParam(value = "os") String os,@RequestParam("version")String version)  {
         LoginHis loginHis=new LoginHis();
-       loginHis.setLogintype("setdevice");
-       loginHis.setOs(os);
-       loginHis.setPhone(principal.getName());
-       loginHis.setDevice(device);
-       loginHis.setVersion(version);
+        loginHis.setLogintype("setdevice");
+        loginHis.setOs(os);
+        loginHis.setPhone(principal.getName());
+        loginHis.setDevice(device);
+        loginHis.setVersion(version);
         return Mono.just(Info.SUCCESS(loginHisRepository.saveAndFlush(loginHis)));
     }
 
@@ -84,11 +83,11 @@ public class BaseController {
         Map<String,Object> data=new HashMap<>();
 
         Map<String,Object> info=new HashMap<>();
-       if (version!=configinfo.getAndroidversion()&&!version.equals(configinfo.getAndroidversion())){
+        if (version!=configinfo.getAndroidversion()&&!version.equals(configinfo.getAndroidversion())){
            info.put("isupdate",true);
-       }else {
+        }else {
            info.put("isupdate",false);
-       }
+        }
         info.put("version",configinfo.getAndroidversion());
         info.put("desc",configinfo.getAndroidcontent());
         info.put("forceupdate",configinfo.isAndroidupdate());
@@ -163,11 +162,9 @@ public class BaseController {
     @ApiOperation(value = "获取城市信息", notes="获取城市信息")
     @GetMapping(value = "/citys")
     public Mono<Info> citys(@RequestParam("type")Integer type,@RequestParam(value = "text",required = false)String text)  {
-
         switch (type){
             case 0:
                 return Mono.just(Info.SUCCESS(city_cnReposity.countrys()));
-
             case 1:
                 return Mono.just(Info.SUCCESS(city_cnReposity.states(text)));
             case 2:
@@ -177,7 +174,6 @@ public class BaseController {
             default:
                 return Mono.just(Info.SUCCESS(null));
         }
-
     }
 
     @ApiOperation(value = "获取产品风格", notes="获取产品风格")
@@ -190,7 +186,7 @@ public class BaseController {
     @ApiOperation(value = "获取产品品类", notes="获取产品品类")
     @GetMapping(value = "/categorys")
     public Mono<Info> categorys()  {
-        return Mono.just(Info.SUCCESS(new String[]{"窗帘","墙布","画品","灯具","床品","饰品"}));
+        return Mono.just(Info.SUCCESS(new String[]{"窗帘","墙布","画品","灯具","床品","饰品","定制"}));
     }
 
     @ApiOperation(value = "获取特价仓产品品类", notes="获取特价仓产品品类")
@@ -253,7 +249,7 @@ public class BaseController {
     @ApiOperation(value = "获取案例主题", notes="获取案例主题")
     @GetMapping(value = "/casesubject")
     public Mono<Info> casesubject()  {
-        return Mono.just(Info.SUCCESS(new String[]{"住宅","餐厅","店面","酒店","办公","其他"}));
+        return Mono.just(Info.SUCCESS(new String[]{"住宅","餐厅","展厅","酒店","办公","其他"}));
     }
 
     @ApiOperation(value = "获取品牌馆信息", notes="获取品牌馆信息")
@@ -284,7 +280,6 @@ public class BaseController {
         map.put("banner","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E5%93%81%E7%89%8C%E9%A6%86/%E4%BA%8C%E7%BA%A7/%E5%85%A8%E5%B1%8B%E5%AE%9A%E5%88%B6%E9%A6%86.png");
         map.put("logo","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/icon/%E5%93%81%E7%89%8C%E9%A6%86/%E5%85%A8%E5%B1%8B%E5%AE%9A%E5%88%B6%E9%A6%86.png");
         list.add(map);
-
         return Mono.just(Info.SUCCESS(list));
     }
 
@@ -346,38 +341,17 @@ public class BaseController {
     public Mono<Info> studysubject()  {
         List data=new ArrayList();
         Map<String,String> map =new HashMap<>();
-        map.put("name","材料工艺");
+        map.put("name","色彩风格课");
         map.put("img","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E8%BE%BE%E4%BA%BA%E7%A0%94%E4%B9%A0%E7%A4%BE/%E6%9D%90%E6%96%99%E5%B7%A5%E8%89%BA.png");
         data.add(map);
         map =new HashMap<>();
-        map.put("name","风格解析");
+        map.put("name","意式品牌课");
         map.put("img","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E8%BE%BE%E4%BA%BA%E7%A0%94%E4%B9%A0%E7%A4%BE/%E9%A3%8E%E6%A0%BC%E8%A7%A3%E6%9E%90.png");
         data.add(map);
         map =new HashMap<>();
-        map.put("name","色彩搭配");
+        map.put("name","软装搭配课");
         map.put("img","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E8%BE%BE%E4%BA%BA%E7%A0%94%E4%B9%A0%E7%A4%BE/%E8%89%B2%E5%BD%A9%E6%90%AD%E9%85%8D.png");
         data.add(map);
-        map =new HashMap<>();
-        map.put("name","布艺软装");
-        map.put("img","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E8%BE%BE%E4%BA%BA%E7%A0%94%E4%B9%A0%E7%A4%BE/%E5%B8%83%E8%89%BA%E8%BD%AF%E8%A3%85.png");
-        data.add(map);
-        map =new HashMap<>();
-        map.put("name","运营思维");
-        map.put("img","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E8%BE%BE%E4%BA%BA%E7%A0%94%E4%B9%A0%E7%A4%BE/%E8%BF%90%E8%90%A5%E6%80%9D%E7%BB%B4.png");
-        data.add(map);
-        map =new HashMap<>();
-        map.put("name","空间方案");
-        map.put("img","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E8%BE%BE%E4%BA%BA%E7%A0%94%E4%B9%A0%E7%A4%BE/%E7%A9%BA%E9%97%B4%E6%96%B9%E6%A1%88.png");
-        data.add(map);
-        map =new HashMap<>();
-        map.put("name","销售技巧");
-        map.put("img","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E8%BE%BE%E4%BA%BA%E7%A0%94%E4%B9%A0%E7%A4%BE/%E9%94%80%E5%94%AE%E6%8A%80%E5%B7%A7.png");
-        data.add(map);
-        map =new HashMap<>();
-        map.put("name","风水设计");
-        map.put("img","https://anoax-1258088094.cos.ap-chengdu.myqcloud.com/banner/%E8%BE%BE%E4%BA%BA%E7%A0%94%E4%B9%A0%E7%A4%BE/%E9%A3%8E%E6%B0%B4%E8%AE%BE%E8%AE%A1.png");
-        data.add(map);
-
         return Mono.just(Info.SUCCESS(data));
     }
 
@@ -444,7 +418,7 @@ public class BaseController {
                 data.put("needs",projectNeedsService.search(text,page));
                 data.put("company",shopService.search(text,page));
                 data.put("goods",goodsService.search(text,page));
-                data.put("qaaInfo",qaaInfoService.search(text,page));
+                data.put("qaaInfo",qaaInfoService.search(text,page ));
                 data.put("study",studyService.search(text,page));
                 data.put("case",caseService.search(text,page));
                 break;
@@ -507,6 +481,8 @@ public class BaseController {
     @Autowired
     private ShopRepositroy shopRepositroy;
 
+    @Autowired
+    private StudyGroupRepository studyGroupRepository;
 
 
     @ApiOperation(value = "搜索2", notes="搜索 0案例 1图库 2找产品 3社区 4企业 5学习 6all")
@@ -533,7 +509,7 @@ public class BaseController {
                 data.put("company",shopService.search(text,page));
                 break;
             case 5:
-                data.put("study",studyService.search(text,page));
+                data.put("studygroup",studyGroupRepository.search(pageable,text).getContent());
                 break;
             case 6:
                 Pageable pageablea =  PageRequest.of(page,2, Sort.Direction.DESC,"create_time");
@@ -542,7 +518,7 @@ public class BaseController {
                 data.put("zcp",productReposity.search(pageable,text).getContent());
                 data.put("sq", communityReposity.search(pageable,text).getContent());
                 data.put("company",shopRepositroy.search(pageablea,text).getContent());
-                data.put("study",shopRepositroy.search(pageablea,text).getContent());
+                data.put("studygroup",studyGroupRepository.search(pageable,text).getContent());
                 break;
         }
         return Mono.just(Info.SUCCESS(data));

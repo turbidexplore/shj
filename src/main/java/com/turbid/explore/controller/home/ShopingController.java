@@ -113,8 +113,14 @@ public class ShopingController {
     @PostMapping(value = "/integralgoodslist")
     public Mono<Info> integralgoodslist(@RequestParam("page")Integer page) {
         Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
-        Page<String> pages=  integralGoodsRepository.listbypage(pageable);
-        return Mono.just(Info.SUCCESS( pages.getContent()));
+        return Mono.just(Info.SUCCESS( integralGoodsRepository.listbypage(pageable).getContent()));
+    }
+
+    @ApiOperation(value = "积分商品列表a")
+    @PostMapping(value = "/integralgoodslista")
+    public Mono<Info> integralgoodslista(@RequestParam("page")Integer page) {
+        Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
+        return Mono.just(Info.SUCCESS( integralGoodsRepository.listbypagea(pageable).getContent()));
     }
 
     @ApiOperation(value = "获取积分商品详情")

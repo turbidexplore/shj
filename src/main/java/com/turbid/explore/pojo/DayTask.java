@@ -34,6 +34,18 @@ public class DayTask extends BaseEntity{
 
     private Integer taskf;
 
+    private Integer taskg;
+
+    private Integer taskh;
+
+    private Integer taski;
+
+    private Integer taskj;
+
+    private Integer taskk;
+
+    private Integer taskl;
+
     private String time;
 
     public Integer getTaska() {
@@ -69,6 +81,31 @@ public class DayTask extends BaseEntity{
         this.taskf = this.taskf+1;
     }
 
+    public void setTaskg() {
+        this.taskg = this.taskg+1;
+    }
+
+
+    public void setTaskh() {
+        this.taskh = this.taskh+1;
+    }
+
+
+    public void setTaski() {
+        this.taski = this.taski+1;
+    }
+
+    public void setTaskj() {
+        this.taskj = this.taskj+1;
+    }
+    public void setTaskk() {
+        this.taskk = this.taskk+1;
+    }
+
+    public void setTaskl() {
+        this.taskl = this.taskl+1;
+    }
+
     public DayTask() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String dateStr = sdf.format(new Date());
@@ -84,6 +121,18 @@ public class DayTask extends BaseEntity{
         this.taske=0;
 
         this.taskf=0;
+
+        this.taskg=0;
+
+        this.taskh=0;
+
+        this.taski=0;
+
+        this.taskj=0;
+
+        this.taskk=0;
+
+        this.taskl=0;
     }
 }
 

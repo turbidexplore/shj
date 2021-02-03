@@ -239,6 +239,7 @@ public class ShopController {
         shop.setIschoose(old.getIschoose());
         shop.setStatus(old.getStatus());
         shop.setHat(old.getHat());
+        shop.setCreate_time(old.getCreate_time());
         shop.setFanscount(old.getFanscount());
         shop.setSeecount(old.getSeecount());
         return Mono.just(Info.SUCCESS( shopService.save(shop)));

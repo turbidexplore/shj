@@ -30,6 +30,10 @@ public class IntegralGoods extends BaseEntity {
     @Column(name = "title")
     private String title;
 
+    @ApiModelProperty(value = "标题")
+    @Column(name = "type")
+    private Integer type;
+
     @ApiModelProperty(value = "标签")
     @Column(name = "lable")
     private String lable;

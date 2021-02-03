@@ -3,7 +3,9 @@ package com.turbid.explore.controller.home;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.turbid.explore.pojo.*;
+import com.turbid.explore.push.api.client.push.PushV3Client;
 import com.turbid.explore.repository.DiscussRepository;
+import com.turbid.explore.repository.ProductReposity;
 import com.turbid.explore.repository.VisitorRepository;
 import com.turbid.explore.service.CommentService;
 import com.turbid.explore.service.ShopService;
@@ -22,10 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import java.security.Principal;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @Api(description = "评论接口")
@@ -40,10 +39,20 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
 
+    @Autowired
+    private ProductReposity productReposity;
+
     @ApiOperation(value = "评论", notes="评论")
     @PutMapping("/addcomment")
     public Mono<Info> addcomment(Principal principal, @RequestBody Comment comment) {
         comment.setUserSecurity(userSecurityService.findByPhone(principal.getName()));
+//        try {
+//        Product product=  productReposity.getOne(comment.getRelation());
+//        if(null!=product){
+//            PushV3Client.pushByAlias(UUID.randomUUID().toString().replace("-",""),  "(｡･∀･)ﾉﾞ嗨  有人回复了您的需求，快去看看吧", product.getWord()+" 详情>>", "code", product.getCode(),"shehuijia://com.shehuijia.explore/product",product.getUserSecurity().getPhonenumber());
+//        }
+//        }catch (Exception e){
+//        }
         return Mono.just(Info.SUCCESS( commentService.save(comment)));
     }
 
@@ -97,7 +106,7 @@ public class CommentController {
     public Mono<Info> discuss(Principal principal, @RequestBody Discuss discuss) {
         UserSecurity userSecurity=userSecurityService.findByPhone(principal.getName());
         discuss.setDiscussUserSecurity(userSecurity);
-//        asyncTaskA.pushdiscuss(discuss);
+//        PushV3Client.pushByAlias(UUID.randomUUID().toString().replace("-",""),  "(｡･∀･)ﾉﾞ嗨  有人回复了您的评论，快去看看吧","", "code", "","",discuss.getReplyUserSecurity().getPhonenumber());
         return Mono.just(Info.SUCCESS(discussRepository.save(discuss)));
     }
 

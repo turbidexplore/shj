@@ -8,6 +8,7 @@ import com.turbid.explore.push.api.client.push.PushV3Client;
 import com.turbid.explore.repository.CommunityReposity;
 import com.turbid.explore.repository.DayTaskReposity;
 import com.turbid.explore.repository.DiscussRepository;
+import com.turbid.explore.repository.ProductReposity;
 import com.turbid.explore.service.ShopService;
 import com.turbid.explore.service.UserSecurityService;
 import com.turbid.explore.service.VisitorService;
@@ -26,6 +27,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Api(description = "社区接口")
 @RestController
@@ -99,7 +101,7 @@ public class CommunityController {
         }
         dayTask.setUserSecurity(userSecurity);
         dayTask.setTaskd();
-        if(dayTask.getTaskf()==3){
+        if(dayTask.getTaskd()==10){
             userSecurity.setShb(userSecurity.getShb()+10);
             userSecurityService.save(userSecurity);
         }
@@ -190,6 +192,10 @@ public class CommunityController {
         });
         return Mono.just(Info.SUCCESS(communities));
     }
+
+    @Autowired
+    private ProductReposity productReposity;
+
     @PutMapping("/discuss")
     public Mono<Info> discuss(Principal principal, @RequestBody Discuss discuss) {
         UserSecurity userSecurity=userSecurityService.findByPhone(principal.getName());
@@ -201,13 +207,23 @@ public class CommunityController {
         }
         dayTask.setUserSecurity(userSecurity);
         dayTask.setTaske();
-        if(dayTask.getTaske()==1){
-            userSecurity.setShb(userSecurity.getShb()+5);
+        if(dayTask.getTaske()==10){
+            userSecurity.setShb(userSecurity.getShb()+10);
             userSecurityService.save(userSecurity);
         }
         dayTask=dayTaskReposity.saveAndFlush(dayTask);
         discuss.setDiscussUserSecurity(userSecurity);
         asyncTaskA.pushdiscuss(discuss);
+        try {
+            Product product=  productReposity.getOne(discuss.getCommunityCode());
+            if(null!=product){
+                PushV3Client.pushByAliasa(UUID.randomUUID().toString().replace("-",""),  "(｡･∀･)ﾉﾞ嗨  有人回复了您的需求，快去看看吧", discuss.getUcontent()+" 详情>>", "code", product.getCode(),"shehuijia://com.shehuijia.explore/product",product.getUserSecurity().getPhonenumber());
+            }else if(null!=discuss.getReplyUserSecurity()){
+                PushV3Client.pushByAliasa(UUID.randomUUID().toString().replace("-",""),  "(｡･∀･)ﾉﾞ嗨  有人回复了您的需求，快去看看吧", discuss.getUcontent()+" 详情>>", "code", product.getCode(),"shehuijia://com.shehuijia.explore/product",discuss.getReplyUserSecurity().getPhonenumber());
+
+            }
+        }catch (Exception e){
+        }
         return Mono.just(Info.SUCCESS(discussRepository.save(discuss)));
     }
 

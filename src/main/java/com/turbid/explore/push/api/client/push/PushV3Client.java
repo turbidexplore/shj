@@ -45,6 +45,13 @@ public class PushV3Client {
                 .build());
     }
 
+
+    public static Result<PushV3Res> pushByAliasa(String workNo, String title, String content,String key, String value,String url, String... alias) {
+        return pushTaskV3(new PushWorkBuilder()
+                .setTargetByAliasa(workNo,title,content,key,value,url,alias)
+                .build());
+    }
+
     public static Result<PushV3Res> pushByAlias(String workNo, String title, String content,String key, String value,String url, String... alias) {
         return pushTaskV3(new PushWorkBuilder()
                 .setTargetByAlias(workNo,title,content,key,value,url,alias)

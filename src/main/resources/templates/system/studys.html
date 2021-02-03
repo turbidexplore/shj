@@ -7,7 +7,31 @@
     <meta name="keywords" content="浑浊探索,苏州浑浊信息科技有限公司,turbid,explore,科技">
     <meta name="description" content="设汇家官网">
     <meta name="author" content="设汇家">    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <style>
+        /* fallback */
+        @font-face {
+            font-family: 'Material Icons';
+            font-style: normal;
+            font-weight: 400;
+            src: url(../css/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2) format('woff2');
+        }
+
+        .material-icons {
+            font-family: 'Material Icons';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+        }
+    </style>
     <link href="../styles/all.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/allcss.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" id="main-stylesheet" data-version="1.1.0" href="../styles/shards-dashboards.1.1.0.min.css">
@@ -205,17 +229,14 @@
       $.ajax(settings).done(function (response) {
         response.data.forEach(function (v,i) {
           console.log(v);
-          var pricetype=v.pricetype?'免费':'付费';
+
           var html= '<div class="col-lg-3 col-md-6 col-sm-12 mb-4" id="'+v.code+'">'+
                   '<div class="card card-small card-post card-post--1">'+
                   '<div class="card-post__image" style="background-image: url('+v.indeximgurl+');">'+
-                  '<a href="#" class="card-post__category badge badge-pill badge-dark">'+v.type+'</a>'+
                   '</div>'+
                   '<div class="card-body">'+
-                  '<p class="card-title"><button type="button" class="mb-1 btn btn-sm btn-outline-danger mr-1">'+pricetype+'</button>'+
                   '<span>'+v.title+'</span></p>'+
-                  '<p></strong> 价格:<strong style="color: #c69500;">'+v.price+'元</strong> </p>'+
-                  '<span class="text-muted" style="font-size: 12px;">'+v.addftime+'  发布  <button type="button" class="mb-1 btn btn-sm btn-info mr-1" onclick="xj(\''+v.code+'\')"> 下架</button><a href="/manageeditstudy?code='+v.code+'" class="mb-1 btn btn-sm btn-info mr-1" >修改</a></span>'+
+                  '<span class="text-muted" style="font-size: 12px;">'+v.addftime+'  <button type="button" class="mb-1 btn btn-sm btn-info mr-1" onclick="xj(\''+v.code+'\')"> 下架</button><a href="/manageeditstudy?code='+v.code+'" class="mb-1 btn btn-sm btn-info mr-1" >修改</a></span>'+
                   '</div></div></div>';
           $("#content").append(html);
         })

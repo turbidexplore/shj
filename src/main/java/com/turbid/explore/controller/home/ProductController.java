@@ -41,8 +41,8 @@ public class ProductController {
     @PutMapping("/add")
     public Mono<Info> add(Principal principal, @RequestBody Product product) {
         product.setUserSecurity(userSecurityService.findByPhone(principal.getName()));
-        if(null!=product.getCompany()&&null!=product.getCompany().getCode()){
-            product.setCompany(shopService.getByCode(product.getCompany().getCode()));
+        if(null!=product.getUserSecurity().getShopcode()&&""!=product.getUserSecurity().getShopcode()){
+            product.setCompany(shopService.getByCode(product.getUserSecurity().getShopcode()));
         }
         product= productReposity.save(product);
         String tag[]={"1","2"};

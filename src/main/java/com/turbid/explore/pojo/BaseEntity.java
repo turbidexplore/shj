@@ -1,5 +1,4 @@
 package com.turbid.explore.pojo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.turbid.explore.tools.CodeLib;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;

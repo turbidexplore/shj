@@ -122,16 +122,40 @@ public class UserCenterController {
     public Mono<Info> signin(Principal principal)  {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String dateStr = sdf.format(new Date());
-        UserSecurity userSecurity=userSecurityService.findByPhone(principal.getName());
-        if(null==userSecurity.getShb()){
-            userSecurity.setShb(1);
-            userSecurity.setSignintime(dateStr);
+        if(userSecurityService.issignin(principal.getName(),dateStr)==0) {
+            UserSecurity userSecurity = userSecurityService.findByPhone(principal.getName());
+
+            Calendar calendar = new GregorianCalendar();
+            calendar.setTime(new Date());
+            calendar.add(calendar.DATE, -1); //把日期往后增加一天,整数  往后推,负数往前移动
+            if (null == userSecurity.getQdcount()) {
+                userSecurity.setQdcount(0);
+            }
+            if (null == userSecurity.getQdtime()) {
+                userSecurity.setQdtime("");
+            }
+            if (userSecurity.getQdcount() < 7 && (userSecurity.getQdtime().equals(sdf.format(calendar.getTime())) || userSecurity.getQdtime() == sdf.format(calendar.getTime()))) {
+                userSecurity.setQdcount(userSecurity.getQdcount() + 1);
+            } else {
+                userSecurity.setQdcount(1);
+            }
+
+            userSecurity.setQdtime(dateStr);
+            if (null == userSecurity.getShb()) {
+                userSecurity.setShb(10);
+                userSecurity.setSignintime(dateStr);
+            } else if (userSecurity.getQdcount() == 7) {
+                userSecurity.setShb(userSecurity.getShb() + 30);
+                userSecurity.setSignintime(dateStr);
+            } else {
+                userSecurity.setShb(userSecurity.getShb() + 10);
+                userSecurity.setSignintime(dateStr);
+            }
+            userSecurity = userSecurityService.save(userSecurity);
+            return Mono.just(Info.SUCCESS(userSecurity.getQdcount()));
         }else {
-            userSecurity.setShb(userSecurity.getShb()+1);
-            userSecurity.setSignintime(dateStr);
+            return Mono.just(Info.ERROR("已经签到"));
         }
-        userSecurityService.save(userSecurity);
-        return Mono.just(Info.SUCCESS("签到成功"));
     }
 
     @ApiOperation(value = "是否签到", notes="是否签到")
@@ -168,28 +192,60 @@ public class UserCenterController {
             Map b=new HashMap();
             b.put("count",3);
             b.put("shb",10);
-            a.put("ok",dayTask.getTaskb()>=3?true:false);
+            b.put("ok",dayTask.getTaskb()>=3?true:false);
             base.put("b",b);
             Map c=new HashMap();
             c.put("count",3);
             c.put("shb",5);
-            a.put("ok",dayTask.getTaskc()>=3?true:false);
+            c.put("ok",dayTask.getTaskc()>=3?true:false);
             base.put("c",c);
             Map d=new HashMap();
-            d.put("count",3);
-            d.put("shb",5);
-            a.put("ok",dayTask.getTaskd()>=3?true:false);
+            d.put("count",10);
+            d.put("shb",10);
+            d.put("ok",dayTask.getTaskd()>=10?true:false);
             base.put("d",d);
             Map e=new HashMap();
-            e.put("count",1);
-            e.put("shb",3);
-            a.put("ok",dayTask.getTaske()>=1?true:false);
+            e.put("count",10);
+            e.put("shb",10);
+            e.put("ok",dayTask.getTaske()>=10?true:false);
             base.put("e",e);
             Map f=new HashMap();
-            f.put("count",3);
+            f.put("count",10);
             f.put("shb",10);
-            a.put("ok",dayTask.getTaskf()>=3?true:false);
+            f.put("ok",dayTask.getTaskf()>=10?true:false);
             base.put("f",f);
+        Map g=new HashMap();
+        g.put("count",3);
+        g.put("shb",10);
+        g.put("ok",dayTask.getTaskg()>=2?true:false);
+        base.put("g",g);
+        Map h=new HashMap();
+        h.put("count",3);
+        h.put("shb",10);
+        h.put("ok",dayTask.getTaskh()>=2?true:false);
+        base.put("h",h);
+        Map i=new HashMap();
+        i.put("count",3);
+        i.put("shb",10);
+        i.put("ok",dayTask.getTaski()>=2?true:false);
+        base.put("i",i);
+        Map j=new HashMap();
+        j.put("count",3);
+        j.put("shb",10);
+        j.put("ok",dayTask.getTaskj()>=2?true:false);
+        base.put("j",j);
+        Map k=new HashMap();
+        k.put("count",3);
+        k.put("shb",10);
+        k.put("ok",dayTask.getTaskk()>=5?true:false);
+        base.put("k",k);
+
+        Map l=new HashMap();
+        l.put("count",10);
+        l.put("shb",10);
+        l.put("ok",dayTask.getTaskl()>=10?true:false);
+        base.put("l",l);
+
         data.put("base",base);
         return Mono.just(Info.SUCCESS(data));
     }
@@ -197,7 +253,7 @@ public class UserCenterController {
 
     @ApiOperation(value = "分享统计", notes="分享统计")
     @PostMapping(value = "/sharecount")
-    public Mono<Info> sharecount(Principal principal)  {
+    public Mono<Info> sharecount(Principal principal,@RequestParam("type")String type)  {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String dateStr = sdf.format(new Date());
         DayTask dayTask=dayTaskReposity.findByDay(principal.getName(),dateStr);
@@ -206,10 +262,43 @@ public class UserCenterController {
         }
         UserSecurity userSecurity=userSecurityService.findByPhone(principal.getName());
         dayTask.setUserSecurity(userSecurity);
-        dayTask.setTaskf();
-        if(dayTask.getTaskf()==3){
-            userSecurity.setShb(userSecurity.getShb()+10);
-            userSecurityService.save(userSecurity);
+
+
+        switch (type){
+            case "g":
+                dayTask.setTaskg();
+                if(dayTask.getTaskg()==3){
+                    userSecurity.setShb(userSecurity.getShb()+10);
+                    userSecurityService.save(userSecurity);
+                }
+                break;
+            case "h":
+                dayTask.setTaskh();
+                if(dayTask.getTaskh()==2){
+                    userSecurity.setShb(userSecurity.getShb()+20);
+                    userSecurityService.save(userSecurity);
+                }
+                break;
+            case "i":
+                dayTask.setTaski();
+                if(dayTask.getTaski()==2){
+                    userSecurity.setShb(userSecurity.getShb()+20);
+                    userSecurityService.save(userSecurity);
+                }
+            case "j":
+                dayTask.setTaskj();
+                if(dayTask.getTaskj()==2){
+                    userSecurity.setShb(userSecurity.getShb()+20);
+                    userSecurityService.save(userSecurity);
+                }
+                break;
+            case "k":
+                dayTask.setTaskk();
+                if(dayTask.getTaskk()==5){
+                    userSecurity.setShb(userSecurity.getShb()+50);
+                    userSecurityService.save(userSecurity);
+                }
+                break;
         }
         dayTask=dayTaskReposity.saveAndFlush(dayTask);
 

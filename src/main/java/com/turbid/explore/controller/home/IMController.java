@@ -9,22 +9,17 @@ import com.turbid.explore.repository.CallCountRepository;
 import com.turbid.explore.repository.CallPhonehisRepository;
 import com.turbid.explore.repository.NoticeRepository;
 import com.turbid.explore.service.UserSecurityService;
-import com.turbid.explore.tools.CodeLib;
+import com.turbid.explore.sokect.WebSocketServer;
 import com.turbid.explore.tools.Info;
 import com.turbid.explore.tools.TLSSigAPIv2;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.*;
 
@@ -47,11 +42,31 @@ public class IMController {
 
     private String portrait_set="v4/profile/portrait_set";
 
-    private long appid=1400334582;
+    private long appid=1400475685;
 
     public String config(){
         return "?sdkappid="+appid+"&identifier=administrator"+"&usersig="+TLSSigAPIv2.genSig("administrator",680000000)
                 +"&random="+ UUID.randomUUID().toString().replace("-", "").toLowerCase()+"&contenttype=json";
+    }
+
+    public Object createGroup(String usercode,String title){
+        Map<String, Object> requestBody = ImmutableMap.of(
+                "Owner_Account", usercode,
+                "Type","AVChatRoom",
+                "Owner_Account",title
+        );
+        JSONObject jsonObject= restTemplate.postForObject(baseUrl+"v4/group_open_http_svc/create_group"+config()
+                ,requestBody, JSONObject.class);
+        return jsonObject;
+    }
+
+    public Object removeGroup(String usercode){
+        Map<String, Object> requestBody = ImmutableMap.of(
+                "GroupId", usercode
+        );
+        JSONObject jsonObject= restTemplate.postForObject(baseUrl+"v4/group_open_http_svc/destroy_group"+config()
+                ,requestBody, JSONObject.class);
+        return jsonObject;
     }
 
     @ApiOperation(value = "签名", notes="签名")
@@ -222,5 +237,16 @@ public class IMController {
         callPhonehis.setShopcode(shopcode);
         return Mono.just(Info.SUCCESS(callPhonehisRepository.saveAndFlush(callPhonehis)));
     }
+
+    @GetMapping("/push/{toUserId}")
+    public  Mono<Info> pushToWeb(@RequestParam("message")String message, @PathVariable String toUserId) throws IOException {
+        WebSocketServer.sendInfo(message,toUserId);
+        return  Mono.just(Info.SUCCESS("ok"));
+    }
+
+
+
+
+
 
 }

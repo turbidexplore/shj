@@ -5,7 +5,8 @@ public enum CollectionType {
     nativecontent(1),
     shop(2),
     books(3),
-    product(4);
+    product(4),
+    studygroup(5);
 
     CollectionType(int value){
 

@@ -22,4 +22,10 @@ public interface StudyGroupRepository extends JpaRepository<StudyGroup,String> {
     Page<StudyGroup> grouplist(Pageable pageable,@Param("style") String style);
 
 
+    @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
+    @Query("SELECT s from StudyGroup s where (s.title  LIKE CONCAT('%',:text,'%') or s.type  LIKE CONCAT('%',:text,'%')) and s.status is null ")
+    Page<StudyGroup> search(Pageable pageable, @Param("text") String text);
+
+    @Query("select s from StudyGroup s where s.code in(select sr.studycode from StudyRelation sr where sr.orderno=:orderno) and s.status is null")
+    StudyGroup getByOrder(@Param("orderno") String orderno);
 }

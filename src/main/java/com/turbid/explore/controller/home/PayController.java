@@ -135,6 +135,9 @@ public class PayController {
         return Mono.just(Info.SUCCESS( orderService.findByUserIos(principal.getName(),page)));
     }
 
+    @Autowired
+    private StudyGroupRepository studyGroupRepository;
+
     @ApiOperation(value = "查询我的订单", notes="查询我的订单")
     @PostMapping("/order/my")
     @ResponseBody
@@ -151,7 +154,7 @@ public class PayController {
                     item.put("body",needsRelationService.getByOrder(v.getOrderno()));
                     break;
                 case "SEE_STUDY":
-                    item.put("body",studyService.getByOrder(v.getOrderno()));
+                    item.put("body",studyGroupRepository.getByOrder(v.getOrderno()));
                     break;
                 case "JF_GOODS":
                     item.put("body",integralGoodsOrderRepository.findByOrderno(v.getOrderno()));
@@ -940,6 +943,7 @@ public class PayController {
                     orderinfo(webpayBo.getOut_trade_no(),webpayBo.getProduct_code(),webpayBo.getTotal_amount(),"balance",webpayBo.getBody(),principal.getName(),1);
                     studyService.updateSTUDY(webpayBo.getOut_trade_no());
                     noticeRepository.save(new Notice(webpayBo.getOut_trade_no(),principal.getName(), "您的课程订单已支付成功。", "支付通知", 1, 0));
+                    break;
             }
             return Mono.just(Info.SUCCESS("支付成功"));
         }else {
@@ -1045,7 +1049,7 @@ public class PayController {
     private StudyRelationRepository studyRelationRepository;
 
     @Autowired
-    private StudyRepository studyRepository;
+    private StudyGroupRepository studyRepository;
 
     @Autowired
     private ShopService shopService;
@@ -1110,7 +1114,7 @@ public class PayController {
                         map.put("type",0);
                         return Mono.just(Info.SUCCESS(map));
                     }else {
-                        Study study=studyRepository.getOne(code);
+                        StudyGroup study=studyRepository.getOne(code);
                         Map map=new HashMap<>();
                         map.put("type",1);
                         map.put("key","课程购买");
@@ -1135,12 +1139,39 @@ public class PayController {
                         map.put("balance","1");
                         return Mono.just(Info.SUCCESS(map));
                     }
+                case 3:
+                    if(0<studyRelationRepository.issee(principal.getName(),code)){
+                        Map map=new HashMap<>();
+                        map.put("type",0);
+                        return Mono.just(Info.SUCCESS(map));
+                    }else {
+                        StudyGroup study=studyRepository.getOne(code);
+                        Map map=new HashMap<>();
+                        map.put("type",1);
+                        map.put("key","课程购买");
+                        map.put("value","SEE_STUDY");
+                        map.put("price",study.getPrice());
+                        map.put("shb",study.getShb());
+                        map.put("balance",study.getBalance());
+                        return Mono.just(Info.SUCCESS(map));
+                    }
             }
             return Mono.just(Info.SUCCESS(true));
         }catch (Exception e){
             return Mono.just(Info.SUCCESS(e.getMessage()));
         }
+    }
 
-
+    @PostMapping("/download")
+    @ResponseBody
+    public Mono<Info> download(Principal principal) {
+        UserSecurity userSecurity=userSecurityService.findByPhone(principal.getName());
+        if(null!=userSecurity.getShb()&&userSecurity.getShb()>50){
+            userSecurity.setShb(userSecurity.getShb()-50);
+            userSecurityService.save(userSecurity);
+            return Mono.just(Info.SUCCESS("支付成功"));
+        }else {
+            return Mono.just(Info.ERROR("积分不足"));
+        }
     }
 }

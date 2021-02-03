@@ -17,9 +17,6 @@ public class Study extends BaseEntity {
     @Column(name = "title",   length = 32)
     private String title;
 
-    @Column(name = "price",   length = 32)
-    private String price;
-
     @Column(name = "balance",   length = 32)
     private String balance;
 
@@ -28,6 +25,9 @@ public class Study extends BaseEntity {
 
     @Column(name = "status",   length = 32)
     private Integer status;
+
+    @Column(name = "price",   length = 32)
+    private String price;
 
     @Column(name = "pricetype",   length = 32)
     private String pricetype;
@@ -40,7 +40,6 @@ public class Study extends BaseEntity {
 
     @Column(name = "videourl",   length = 2000)
     private String videourl;
-
 
     @Column(name = "seecount",  length = 32)
     private Integer seecount;

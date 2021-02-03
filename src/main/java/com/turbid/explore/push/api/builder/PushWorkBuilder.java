@@ -63,6 +63,12 @@ public class PushWorkBuilder {
         push.getPushTarget().setTarget(TARGET_ALL);
         return this;
     }
+    public PushWorkBuilder setTargetByAliasa(String workNo, String title, String content,String key,String value,String url, String ... alias) {
+        this.fillParams(workNo,title,content,key,value,url);
+        push.getPushTarget().setTarget(TARGET_ALIAS);
+        push.getPushTarget().setAlias(SetUtil.newSet(alias));
+        return this;
+    }
 
     public PushWorkBuilder setTargetByAlias(String workNo, String title, String content,String key,String value,String url, String ... alias) {
         this.fillParams1(workNo,title,content,key,value,url);

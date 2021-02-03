@@ -35,7 +35,7 @@ public interface StudyRepository extends JpaRepository<Study,String> {
     Study getByOrder(@Param("orderno") String orderno);
 
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
-    @Query("SELECT new Study (s.code,s.create_time,s.indeximgurl,s.seecount,s.price,s.pricetype,s.shb,s.title,s.type,s.studyGroup,s.videourl) from Study s where (s.type =:style or :style is null ) and s.status is null and s.studyGroup.code=:code")
+    @Query("SELECT s from Study s where (s.type =:style or :style is null ) and s.status is null and s.studyGroup.code=:code")
     Page<Study> list(Pageable pageable,@Param("style") String style,@Param("code") String code);
 
     @Modifying

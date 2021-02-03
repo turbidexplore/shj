@@ -1,22 +1,17 @@
 package com.turbid.explore.controller.home;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.google.common.collect.ImmutableMap;
 import com.turbid.explore.configuration.AsyncTaskA;
 import com.turbid.explore.pojo.Banner;
-import com.turbid.explore.pojo.Brand;
 import com.turbid.explore.pojo.FileInfo;
-import com.turbid.explore.pojo.UserSecurity;
 import com.turbid.explore.repository.AdRepository;
 import com.turbid.explore.repository.FileInfoRepositroy;
 import com.turbid.explore.service.BannerService;
-import com.turbid.explore.service.FileService;
 import com.turbid.explore.service.UserSecurityService;
 import com.turbid.explore.tools.Info;
 import com.turbid.explore.tools.TLSSigAPIv2;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.attoparser.util.TextUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;

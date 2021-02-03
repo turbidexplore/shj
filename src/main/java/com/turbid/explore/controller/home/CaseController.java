@@ -38,6 +38,9 @@ public class CaseController {
         }else {
             obj.setUserSecurity(userSecurityService.findByPhone(principal.getName()));
         }
+        if(null==obj.getCity()||""==obj.getCity()){
+            obj.setCity(obj.getAddress());
+        }
         obj.setCreate_time(new Date());
         return Mono.just(Info.SUCCESS(caseService.save(obj)));
     }

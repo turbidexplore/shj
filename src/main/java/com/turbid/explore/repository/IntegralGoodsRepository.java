@@ -14,6 +14,12 @@ import javax.persistence.QueryHint;
 public interface IntegralGoodsRepository extends JpaRepository<IntegralGoods,String> {
 
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
-    @Query("select g from IntegralGoods g where g.status=0 ")
-    Page<String> listbypage(Pageable pageable);
+    @Query("select g from IntegralGoods g where g.status=0 and (g.type is null  or g.type=0)")
+    Page<IntegralGoods> listbypage(Pageable pageable);
+
+    @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
+    @Query("select g from IntegralGoods g where g.status=0 and g.type=1")
+    Page<IntegralGoods> listbypagea(Pageable pageable);
+
+
 }

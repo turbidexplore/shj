@@ -1,14 +1,12 @@
 package com.turbid.explore.controller.home;
 
 import com.turbid.explore.pojo.CallCount;
-import com.turbid.explore.pojo.Shop;
 import com.turbid.explore.repository.CallCountRepository;
 import com.turbid.explore.repository.ShopFansRepository;
 import com.turbid.explore.service.*;
 import com.turbid.explore.tools.Info;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

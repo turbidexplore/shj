@@ -4,6 +4,7 @@ import com.turbid.explore.pojo.*;
 import com.turbid.explore.pojo.bo.CollectionType;
 import com.turbid.explore.repository.NativeContentRepositroy;
 import com.turbid.explore.repository.ProductReposity;
+import com.turbid.explore.repository.StudyGroupRepository;
 import com.turbid.explore.service.*;
 import com.turbid.explore.tools.Info;
 import io.swagger.annotations.Api;
@@ -77,6 +78,9 @@ public class CollectionController {
     @Autowired
     private ProductReposity productReposity;
 
+    @Autowired
+    private StudyGroupRepository studyGroupRepository;
+
     @ApiOperation(value = "我的收藏", notes="我的收藏")
     @PostMapping("/my")
     public Mono<Info> my(Principal principal, @RequestParam("page")Integer page, @RequestParam("type")CollectionType collectionType) {
@@ -129,6 +133,16 @@ public class CollectionController {
                         if(null!=caseinfo.getCode()){
                             data.add(caseinfo);
                         }
+                        }catch (Exception e){
+
+                        }
+                        break;
+                    case studygroup:
+                        try {
+                            StudyGroup study=studyGroupRepository.getOne(v.getRelation());
+                            if(null!=study.getCode()){
+                                data.add(study);
+                            }
                         }catch (Exception e){
 
                         }
