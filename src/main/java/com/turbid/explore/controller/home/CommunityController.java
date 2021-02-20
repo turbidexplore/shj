@@ -101,9 +101,11 @@ public class CommunityController {
         }
         dayTask.setUserSecurity(userSecurity);
         dayTask.setTaskd();
-        if(dayTask.getTaskd()==10){
+        String i="点赞成功!";
+        if(dayTask.getTaskd()<=10){
             userSecurity.setShb(userSecurity.getShb()+10);
             userSecurityService.save(userSecurity);
+            i=i+"您已成功获得10积分。";
         }
         dayTask=dayTaskReposity.saveAndFlush(dayTask);
         Community community= communityReposity.getOne(code);
@@ -113,7 +115,8 @@ public class CommunityController {
         visitor.setUserSecurity(userSecurity);
         visitor.setShopcode(code);
         visitorService.save(visitor);
-        return Mono.just(Info.SUCCESS( null));
+
+        return Mono.just(Info.SUCCESS( i,null));
     }
 
     @PostMapping("/removestar")
@@ -207,9 +210,11 @@ public class CommunityController {
         }
         dayTask.setUserSecurity(userSecurity);
         dayTask.setTaske();
-        if(dayTask.getTaske()==10){
+        String i="评论成功!";
+        if(dayTask.getTaske()<=10){
             userSecurity.setShb(userSecurity.getShb()+10);
             userSecurityService.save(userSecurity);
+            i=i+"您已成功获得10积分。";
         }
         dayTask=dayTaskReposity.saveAndFlush(dayTask);
         discuss.setDiscussUserSecurity(userSecurity);
@@ -224,7 +229,7 @@ public class CommunityController {
             }
         }catch (Exception e){
         }
-        return Mono.just(Info.SUCCESS(discussRepository.save(discuss)));
+        return Mono.just(Info.SUCCESS(i,discussRepository.save(discuss)));
     }
 
     @PostMapping("/hotdiscuss")
@@ -276,7 +281,16 @@ public class CommunityController {
         visitor.setUserSecurity(userSecurity);
         visitor.setShopcode(code);
         visitorService.save(visitor);
-        return Mono.just(Info.SUCCESS( null));
+        String i="点赞成功!";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String dateStr = sdf.format(new Date());
+        DayTask dayTask=dayTaskReposity.findByDay(principal.getName(),dateStr);
+        if(dayTask.getTaskd()<=10){
+            userSecurity.setShb(userSecurity.getShb()+10);
+            userSecurityService.save(userSecurity);
+            i=i+"您已成功获得10积分。";
+        }
+        return Mono.just(Info.SUCCESS( i,null));
     }
 
     @PostMapping("/removediscuss")

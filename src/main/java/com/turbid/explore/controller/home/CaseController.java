@@ -157,7 +157,7 @@ public class CaseController {
             return Mono.just(Info.SUCCESS(data));
         }catch (Exception e){
             e.getStackTrace();
-            return Mono.just(Info.ERROR(e.getMessage()));
+            return Mono.just(Info.SUCCESS(obj));
         }
     }
 
@@ -177,12 +177,14 @@ public class CaseController {
             }
             dayTask.setUserSecurity(userSecurity);
             dayTask.setTaskd();
-            if(dayTask.getTaskf()==3){
+            String i="点赞成功!";
+            if(dayTask.getTaskd()<=10){
                 userSecurity.setShb(userSecurity.getShb()+10);
                 userSecurityService.save(userSecurity);
+                i=i+"您已成功获得10积分。";
             }
             dayTask=dayTaskReposity.saveAndFlush(dayTask);
-           return Mono.just(Info.SUCCESS(""));
+           return Mono.just(Info.SUCCESS(i,""));
         }catch (Exception e){
            return Mono.just(Info.ERROR(e.getMessage()));
         }

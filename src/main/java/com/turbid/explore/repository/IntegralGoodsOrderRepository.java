@@ -20,8 +20,13 @@ public interface IntegralGoodsOrderRepository extends JpaRepository<IntegralGood
     IntegralGoodsOrder findByOrderno(String orderno);
 
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
-    @Query("select i from IntegralGoodsOrder i where i.status =:status ")
+    @Query("select i from IntegralGoodsOrder i where i.status =:status and i.integralGoods.type=0")
     Page<IntegralGoodsOrder> findByPage(Pageable pageable, @Param("status")Integer status);
+
+    @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
+    @Query("select i from IntegralGoodsOrder i where (i.status =:status or :status is null ) and i.integralGoods.type=1 and i.userSecurity.phonenumber=:phone")
+    Page<IntegralGoodsOrder> findByPagea(Pageable pageable, @Param("status")Integer status, @Param("phone")String phone);
+
 
     @Query("select count(i) from IntegralGoodsOrder i where  i.status =:status ")
     int integralgoodsordercount( @Param("status")Integer status);

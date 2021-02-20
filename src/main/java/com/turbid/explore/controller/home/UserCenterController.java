@@ -58,10 +58,10 @@ public class UserCenterController {
             data.put("follow",followService.myfollowCount(principal.getName()));
             data.put("fans",followService.followmeCount(principal.getName()));
             data.put("star",caseService.starcount(principal.getName()));
-            data.put("needing",projectNeedsService.countByStatus(principal.getName(),0));
-            data.put("needed",projectNeedsService.countByStatus(principal.getName(),1));
+            data.put("needing",0);
+            data.put("needed",0);
             data.put("myneed",1);
-            data.put("needme",callService.callmecount(userSecurity.getCode()));
+            data.put("needme",1);
             data.put("casecount",caseService.casecount(principal.getName()));
             data.put("communitycount",productReposity.countbyuser(userSecurity.getCode())+communityReposity.countbyuser(userSecurity.getCode()));
         return Mono.just(Info.SUCCESS(data));
@@ -262,47 +262,53 @@ public class UserCenterController {
         }
         UserSecurity userSecurity=userSecurityService.findByPhone(principal.getName());
         dayTask.setUserSecurity(userSecurity);
+        String i="分享成功!";
 
 
         switch (type){
             case "g":
                 dayTask.setTaskg();
-                if(dayTask.getTaskg()==3){
+                if(dayTask.getTaskg()<=3){
                     userSecurity.setShb(userSecurity.getShb()+10);
                     userSecurityService.save(userSecurity);
+                    i=i+"您已成功获得10积分。";
                 }
                 break;
             case "h":
                 dayTask.setTaskh();
-                if(dayTask.getTaskh()==2){
-                    userSecurity.setShb(userSecurity.getShb()+20);
+                if(dayTask.getTaskh()<=2){
+                    userSecurity.setShb(userSecurity.getShb()+10);
                     userSecurityService.save(userSecurity);
+                    i=i+"您已成功获得10积分。";
                 }
                 break;
             case "i":
                 dayTask.setTaski();
-                if(dayTask.getTaski()==2){
-                    userSecurity.setShb(userSecurity.getShb()+20);
+                if(dayTask.getTaski()<=2){
+                    userSecurity.setShb(userSecurity.getShb()+10);
                     userSecurityService.save(userSecurity);
+                    i=i+"您已成功获得10积分。";
                 }
             case "j":
                 dayTask.setTaskj();
-                if(dayTask.getTaskj()==2){
-                    userSecurity.setShb(userSecurity.getShb()+20);
+                if(dayTask.getTaskj()<=2){
+                    userSecurity.setShb(userSecurity.getShb()+10);
                     userSecurityService.save(userSecurity);
+                    i=i+"您已成功获得10积分。";
                 }
                 break;
             case "k":
                 dayTask.setTaskk();
-                if(dayTask.getTaskk()==5){
-                    userSecurity.setShb(userSecurity.getShb()+50);
+                if(dayTask.getTaskk()<=5){
+                    userSecurity.setShb(userSecurity.getShb()+10);
                     userSecurityService.save(userSecurity);
+                    i=i+"您已成功获得10积分。";
                 }
                 break;
         }
         dayTask=dayTaskReposity.saveAndFlush(dayTask);
 
-        return Mono.just(Info.SUCCESS(dateStr));
+        return Mono.just(Info.SUCCESS(i,dateStr));
     }
 
     @ApiOperation(value = "用户信息", notes="用户信息")

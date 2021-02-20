@@ -52,4 +52,11 @@ public class Product extends BaseEntity {
     @Column(name = "commentcount")
     private int commentcount;
 
+    @Column(name = "ucontent")
+    private String ucontent;
+
+    public String getUcontent() {
+        return Community.unicode2String(word);
+    }
+
 }

@@ -52,9 +52,11 @@ public class FollowController {
         }
         dayTask.setUserSecurity(userSecurity);
         dayTask.setTaskl();
-        if(dayTask.getTaskl()==10){
+        String i="关注成功!";
+        if(dayTask.getTaskl()<=10){
             userSecurity.setShb(userSecurity.getShb()+10);
             userSecurityService.save(userSecurity);
+            i=i+"您已成功获得10积分。";
         }
         dayTask=dayTaskReposity.saveAndFlush(dayTask);
         Follow follow = new Follow();
@@ -66,7 +68,7 @@ public class FollowController {
            PushV3Client.pushByAlias(phone, "用户【" + user.getUserBasic().getNikename() + "】关注了您", "1", "floow", phone, "", phone);
           follow=  followService.save(follow);
         }
-        return Mono.just(Info.SUCCESS( follow));
+        return Mono.just(Info.SUCCESS( i,follow));
     }
 
     @ApiOperation(value = "关注我的", notes="关注我的")

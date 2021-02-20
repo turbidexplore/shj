@@ -76,5 +76,8 @@ public class UserSecurity extends BaseEntity {
     @Column(name = "newuser")
     private Integer newuser;
 
+    @Column(name = "level")
+    private Integer level;
+
 
 }

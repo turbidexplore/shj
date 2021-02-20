@@ -23,7 +23,9 @@ import reactor.core.publisher.Mono;
 
 import java.security.Principal;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Api(description = "积分商城模块")
 @RestController
@@ -118,9 +120,9 @@ public class ShopingController {
 
     @ApiOperation(value = "积分商品列表a")
     @PostMapping(value = "/integralgoodslista")
-    public Mono<Info> integralgoodslista(@RequestParam("page")Integer page) {
+    public Mono<Info> integralgoodslista(@RequestParam("page")Integer page,@RequestParam("type")Integer type) {
         Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
-        return Mono.just(Info.SUCCESS( integralGoodsRepository.listbypagea(pageable).getContent()));
+        return Mono.just(Info.SUCCESS( integralGoodsRepository.listbypagea(pageable,type).getContent()));
     }
 
     @ApiOperation(value = "获取积分商品详情")
@@ -144,12 +146,22 @@ public class ShopingController {
         return Mono.just(Info.SUCCESS( pages.getContent()));
     }
 
+    @ApiOperation(value = "查询代金券")
+    @GetMapping(value = "/getintegralgoodsordera")
+    public Mono<Info> getintegralgoodsordera(Principal principal,@RequestParam("page")Integer page,@RequestParam(value = "status",required = false)Integer status) {
+        Pageable pageable = new PageRequest(page,15, Sort.Direction.DESC,"create_time");
+        Page<IntegralGoodsOrder> pages=  integralGoodsOrderRepository.findByPagea(pageable,status,principal.getName());
+        return Mono.just(Info.SUCCESS(pages.getContent()));
+    }
+
     @ApiOperation(value = "查询发货信息")
     @GetMapping(value = "/getintegralgoodsordercount")
     public Mono<Info> getintegralgoodsordercount(Principal principal,@RequestParam("status")Integer status) {
 
         return Mono.just(Info.SUCCESS( integralGoodsOrderRepository.integralgoodsordercount(status)));
     }
+
+
 
 
     @ApiOperation(value = "发货")
@@ -176,7 +188,7 @@ public class ShopingController {
             integralGoodsOrder.setUserSecurity(userSecurity);
             integralGoodsOrder.setAddress(new Address(addresscode));
             integralGoodsOrder.setIntegralGoods(new IntegralGoods(integralgoodscode));
-            integralGoodsOrder.setOrderno("JF:"+CodeLib.randomCode(12,1));
+            integralGoodsOrder.setOrderno("JF-"+CodeLib.randomCode(6,1));
             integralGoodsOrder.setStatus(1);
             integralGoodsOrder=integralGoodsOrderRepository.saveAndFlush(integralGoodsOrder);
             integralGoods.setSkucount(integralGoods.getSkucount()-1);
@@ -207,6 +219,29 @@ public class ShopingController {
         orderService.save(order);
     }
 
+    @Autowired
+    private StudyGroupRepository studyGroupRepository;
+
+    @Autowired
+    private StudyRelationRepository studyRelationRepository;
+
+    @ApiOperation(value = "获取课程组分页列表", notes="获取课程组分页列表")
+    @PostMapping(value = "/grouplist")
+    public Mono<Info> grouplist(Principal principal,@RequestParam(name = "page")Integer page,
+                                @RequestParam(name = "style", required = false)String style) {
+        try {
+            Pageable pageable = new PageRequest(page,10, Sort.Direction.DESC,"create_time");
+            Page<StudyGroup> pages=  studyGroupRepository.grouplist(pageable,style);
+            List data=new ArrayList();
+            pages.getContent().forEach(a->{
+                a.setDel(0<studyRelationRepository.issee(principal.getName(),a.getCode()));
+                data.add(a);
+            });
+            return Mono.just(Info.SUCCESS(data ));
+        }catch (Exception e){
+            return Mono.just(Info.SUCCESS(e.getMessage()));
+        }
+    }
 
 
 }

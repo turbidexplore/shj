@@ -2,6 +2,7 @@ package com.turbid.explore.controller.home;
 
 import com.turbid.explore.pojo.*;
 import com.turbid.explore.push.api.client.push.PushV3Client;
+import com.turbid.explore.repository.DayTaskReposity;
 import com.turbid.explore.repository.DiscussRepository;
 import com.turbid.explore.repository.ProductReposity;
 import com.turbid.explore.service.ShopService;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import java.security.Principal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 @Api(description = "找产品模块")
@@ -107,6 +110,8 @@ public class ProductController {
         return Mono.just(Info.SUCCESS(productList.getContent()));
     }
 
+    @Autowired
+    private DayTaskReposity dayTaskReposity;
     @PutMapping("/star")
     public Mono<Info> star(Principal principal, @RequestParam("code") String code) {
         UserSecurity userSecurity=userSecurityService.findByPhone(principal.getName());
@@ -117,7 +122,16 @@ public class ProductController {
         visitor.setUserSecurity(userSecurity);
         visitor.setShopcode(code);
         visitorService.save(visitor);
-        return Mono.just(Info.SUCCESS( null));
+        String i="点赞成功!";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String dateStr = sdf.format(new Date());
+        DayTask dayTask=dayTaskReposity.findByDay(principal.getName(),dateStr);
+        if(dayTask.getTaskd()<=10){
+            userSecurity.setShb(userSecurity.getShb()+10);
+            userSecurityService.save(userSecurity);
+            i=i+"您已成功获得10积分。";
+        }
+        return Mono.just(Info.SUCCESS( i,null));
     }
 
     @PostMapping("/removestar")

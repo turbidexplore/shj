@@ -38,6 +38,7 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
@@ -1162,16 +1163,33 @@ public class PayController {
         }
     }
 
+
     @PostMapping("/download")
     @ResponseBody
-    public Mono<Info> download(Principal principal) {
+    public Mono<Info> download(Principal principal, @RequestParam("code")String code) {
         UserSecurity userSecurity=userSecurityService.findByPhone(principal.getName());
-        if(null!=userSecurity.getShb()&&userSecurity.getShb()>50){
-            userSecurity.setShb(userSecurity.getShb()-50);
-            userSecurityService.save(userSecurity);
-            return Mono.just(Info.SUCCESS("支付成功"));
+        if(needsRelationRepositroy.findneedsR(principal.getName(),code)==0) {
+            if (null != userSecurity.getShb() && userSecurity.getShb() > 50) {
+                userSecurity.setShb(userSecurity.getShb() - 50);
+                userSecurityService.save(userSecurity);
+                NeedsRelation needsRelation=new NeedsRelation();
+                needsRelation.setPhone(principal.getName());
+                needsRelation.setNeedsorderno(code);
+                needsRelation.setStatus(1);
+                needsRelationRepositroy.save(needsRelation);
+                return Mono.just(Info.SUCCESS("支付成功"));
+            } else {
+                return Mono.just(Info.ERROR("积分不足"));
+            }
         }else {
-            return Mono.just(Info.ERROR("积分不足"));
+            return Mono.just(Info.SUCCESS("下载成功"));
         }
+    }
+
+    @PostMapping("/isdownload")
+    @ResponseBody
+    public Mono<Info> isdownload(Principal principal, @RequestParam("code")String code) {
+            return Mono.just(Info.SUCCESS(needsRelationRepositroy.findneedsR(principal.getName(),code)==0));
+
     }
 }

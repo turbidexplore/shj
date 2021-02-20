@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.turbid.explore.pojo.*;
 import com.turbid.explore.push.api.client.push.PushV3Client;
+import com.turbid.explore.repository.DayTaskReposity;
 import com.turbid.explore.repository.DiscussRepository;
 import com.turbid.explore.repository.ProductReposity;
 import com.turbid.explore.repository.VisitorRepository;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import java.security.Principal;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -42,10 +44,14 @@ public class CommentController {
     @Autowired
     private ProductReposity productReposity;
 
+    @Autowired
+    private DayTaskReposity dayTaskReposity;
+
     @ApiOperation(value = "评论", notes="评论")
     @PutMapping("/addcomment")
     public Mono<Info> addcomment(Principal principal, @RequestBody Comment comment) {
-        comment.setUserSecurity(userSecurityService.findByPhone(principal.getName()));
+        UserSecurity userSecurity=userSecurityService.findByPhone(principal.getName());
+        comment.setUserSecurity(userSecurity);
 //        try {
 //        Product product=  productReposity.getOne(comment.getRelation());
 //        if(null!=product){
@@ -53,7 +59,16 @@ public class CommentController {
 //        }
 //        }catch (Exception e){
 //        }
-        return Mono.just(Info.SUCCESS( commentService.save(comment)));
+        String i="评论成功!";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String dateStr = sdf.format(new Date());
+        DayTask dayTask=dayTaskReposity.findByDay(principal.getName(),dateStr);
+        if(dayTask.getTaske()<=10){
+            userSecurity.setShb(userSecurity.getShb()+10);
+            userSecurityService.save(userSecurity);
+            i=i+"您已成功获得10积分。";
+        }
+        return Mono.just(Info.SUCCESS( i,commentService.save(comment)));
     }
 
     @ApiOperation(value = "查看相关评论", notes="查看相关评论")
@@ -106,8 +121,17 @@ public class CommentController {
     public Mono<Info> discuss(Principal principal, @RequestBody Discuss discuss) {
         UserSecurity userSecurity=userSecurityService.findByPhone(principal.getName());
         discuss.setDiscussUserSecurity(userSecurity);
+        String i="评论成功!";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String dateStr = sdf.format(new Date());
+        DayTask dayTask=dayTaskReposity.findByDay(principal.getName(),dateStr);
+        if(dayTask.getTaske()<=10){
+            userSecurity.setShb(userSecurity.getShb()+10);
+            userSecurityService.save(userSecurity);
+            i=i+"您已成功获得10积分。";
+        }
 //        PushV3Client.pushByAlias(UUID.randomUUID().toString().replace("-",""),  "(｡･∀･)ﾉﾞ嗨  有人回复了您的评论，快去看看吧","", "code", "","",discuss.getReplyUserSecurity().getPhonenumber());
-        return Mono.just(Info.SUCCESS(discussRepository.save(discuss)));
+        return Mono.just(Info.SUCCESS(i,discussRepository.save(discuss)));
     }
 
     @PostMapping("/hotdiscuss")
