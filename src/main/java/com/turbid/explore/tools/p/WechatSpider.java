@@ -248,11 +248,8 @@ public class WechatSpider extends BreadthCrawler {
     public static void main(String[] args) throws Exception {
 
         WechatSpider crawler = new WechatSpider("crawl_weixin", "wx_history.txt");
-
         crawler.addAccount("苏州本地宝");
-
-//        crawler.addAccount("ZEALER订阅号");
-
+//      crawler.addAccount("ZEALER订阅号");
         crawler.setThreads(5);
 
         crawler.start(10);

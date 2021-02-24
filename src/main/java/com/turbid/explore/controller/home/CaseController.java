@@ -147,8 +147,10 @@ public class CaseController {
             dayTask.setTaskc();
             if(dayTask.getTaskc()==3){
                 if(null!=userSecurity.getShb()) {
+                    userSecurity.setExperience(userSecurity.getExperience()+10);
                     userSecurity.setShb(userSecurity.getShb() + 5);
                 }else {
+                    userSecurity.setExperience(userSecurity.getExperience()+10);
                     userSecurity.setShb(5);
                 }
                 userSecurityService.save(userSecurity);
@@ -179,6 +181,7 @@ public class CaseController {
             dayTask.setTaskd();
             String i="点赞成功!";
             if(dayTask.getTaskd()<=10){
+                userSecurity.setExperience(userSecurity.getExperience()+10);
                 userSecurity.setShb(userSecurity.getShb()+10);
                 userSecurityService.save(userSecurity);
                 i=i+"您已成功获得10积分。";

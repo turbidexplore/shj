@@ -13,6 +13,7 @@ import java.util.List;
 @Table(name = "user_security")
 @JsonIgnoreProperties(value = { "hibernateLazyInitializer"})
 public class UserSecurity extends BaseEntity {
+
     public UserSecurity() {
     }
 
@@ -76,8 +77,8 @@ public class UserSecurity extends BaseEntity {
     @Column(name = "newuser")
     private Integer newuser;
 
-    @Column(name = "level")
-    private Integer level;
+    @Column(name = "experience")
+    private Integer experience;
 
 
 }

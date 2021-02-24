@@ -71,6 +71,7 @@ public class BaseController {
         info.put("nativecontent","http://m.deslibs.com/inspirationimgs/");
         info.put("brand","http://m.deslibs.com/brandetail/");
         info.put("share","http://m.deslibs.com/home/toapp");
+        info.put("product","http://m.deslibs.com/productdetail/");
         return Mono.just(Info.SUCCESS(info));
     }
 

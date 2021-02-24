@@ -72,6 +72,7 @@ public class CommunityController {
         dayTask.setUserSecurity(userSecurity);
         dayTask.setTaska();
         if(dayTask.getTaska()==1){
+            userSecurity.setExperience(userSecurity.getExperience()+10);
             userSecurity.setShb(userSecurity.getShb()+10);
             userSecurityService.save(userSecurity);
         }
@@ -80,7 +81,7 @@ public class CommunityController {
         community.setIsstar(false);
         community.setStar(0);
         community=communityReposity.save(community);
-       asyncTaskA.pushcommunity(community);
+//       asyncTaskA.pushcommunity(community);
         return Mono.just(Info.SUCCESS(community ));
     }
 
@@ -103,6 +104,7 @@ public class CommunityController {
         dayTask.setTaskd();
         String i="点赞成功!";
         if(dayTask.getTaskd()<=10){
+            userSecurity.setExperience(userSecurity.getExperience()+10);
             userSecurity.setShb(userSecurity.getShb()+10);
             userSecurityService.save(userSecurity);
             i=i+"您已成功获得10积分。";
@@ -186,8 +188,14 @@ public class CommunityController {
             if(null!=principal) {
                 v.setIsstar(visitorService.countByName(principal.getName(),v.getCode()));
             }
+            try {
+
+
             if(null!=v.getUserSecurity().getShopcode()) {
                 v.setShop(shopService.getByCode(v.getUserSecurity().getShopcode()));
+            }
+            }catch (Exception e){
+
             }
             v.setCommentcount(discussRepository.countByCommunityCode(v.getCode()));
             v.setRecommends(shopService.recommenda(v.getStyle()+","+v.getLocal(),3));
@@ -212,6 +220,7 @@ public class CommunityController {
         dayTask.setTaske();
         String i="评论成功!";
         if(dayTask.getTaske()<=10){
+            userSecurity.setExperience(userSecurity.getExperience()+10);
             userSecurity.setShb(userSecurity.getShb()+10);
             userSecurityService.save(userSecurity);
             i=i+"您已成功获得10积分。";
@@ -286,6 +295,7 @@ public class CommunityController {
         String dateStr = sdf.format(new Date());
         DayTask dayTask=dayTaskReposity.findByDay(principal.getName(),dateStr);
         if(dayTask.getTaskd()<=10){
+            userSecurity.setExperience(userSecurity.getExperience()+10);
             userSecurity.setShb(userSecurity.getShb()+10);
             userSecurityService.save(userSecurity);
             i=i+"您已成功获得10积分。";
@@ -307,6 +317,5 @@ public class CommunityController {
         visitorService.removestar(principal.getName(),code);
         return Mono.just(Info.SUCCESS(null));
     }
-
 
 }

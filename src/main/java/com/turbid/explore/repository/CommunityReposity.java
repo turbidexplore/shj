@@ -34,7 +34,7 @@ public interface CommunityReposity extends JpaRepository<Community,String> {
     Community findByCode(String code);
 
     @QueryHints(value = { @QueryHint(name = "query", value = "a query for pageable")})
-    @Query("SELECT n from Community n where ( n.content LIKE CONCAT('%',:text,'%') or n.label LIKE CONCAT('%',:text,'%') or n.style LIKE CONCAT('%',:text,'%') or n.userSecurity.userBasic.nikename LIKE CONCAT('%',:text,'%') or n.shop.name LIKE CONCAT('%',:text,'%') ) ")
+    @Query("SELECT n from Community n where ( n.content LIKE CONCAT('%',:text,'%') or n.label LIKE CONCAT('%',:text,'%') or n.style LIKE CONCAT('%',:text,'%') or n.userSecurity.userBasic.nikename LIKE CONCAT('%',:text,'%')  ) ")
     Page<Community> search(Pageable pageable, @Param("text") String text);
 
 

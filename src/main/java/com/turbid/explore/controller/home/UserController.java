@@ -860,6 +860,18 @@ public class UserController {
     }
 
 
+    @Autowired
+    private JoincountReposity joincountReposity;
+
+    @ApiOperation(value = "下载渠道")
+    @GetMapping(value = "/join")
+    public Mono<Info> join(@RequestParam("type")String type)  {
+       Joincount joincount=new Joincount();
+       joincount.setType(type);
+       return Mono.just(Info.SUCCESS(joincountReposity.save(joincount)));
+    }
+
+
 
 }
 

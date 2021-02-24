@@ -54,6 +54,7 @@ public class FollowController {
         dayTask.setTaskl();
         String i="关注成功!";
         if(dayTask.getTaskl()<=10){
+            userSecurity.setExperience(userSecurity.getExperience()+10);
             userSecurity.setShb(userSecurity.getShb()+10);
             userSecurityService.save(userSecurity);
             i=i+"您已成功获得10积分。";

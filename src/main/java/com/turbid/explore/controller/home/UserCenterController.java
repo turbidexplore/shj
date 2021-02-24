@@ -1,8 +1,6 @@
 package com.turbid.explore.controller.home;
 
-import com.turbid.explore.pojo.DayTask;
-import com.turbid.explore.pojo.Feedback;
-import com.turbid.explore.pojo.UserSecurity;
+import com.turbid.explore.pojo.*;
 import com.turbid.explore.repository.*;
 import com.turbid.explore.service.*;
 import com.turbid.explore.tools.Info;
@@ -11,6 +9,10 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -48,11 +50,17 @@ public class UserCenterController {
     @Autowired
     private ProductReposity productReposity;
 
+    @Autowired
+    private PlayHisReposity playHisReposity;
+
+    @Autowired
+    private DiscussRepository discussRepository;
+
     @ApiOperation(value = "数据统计", notes="数据统计")
     @PostMapping(value = "/count")
     public Mono<Info> count(Principal principal)  {
         Map<String,Object> data=new HashMap<>();
-       UserSecurity userSecurity= userSecurityService.findByPhone(principal.getName());
+        UserSecurity userSecurity= userSecurityService.findByPhone(principal.getName());
             data.put("balance",userSecurity.getBalance());
             data.put("shb",userSecurity.getShb());
             data.put("follow",followService.myfollowCount(principal.getName()));
@@ -64,6 +72,16 @@ public class UserCenterController {
             data.put("needme",1);
             data.put("casecount",caseService.casecount(principal.getName()));
             data.put("communitycount",productReposity.countbyuser(userSecurity.getCode())+communityReposity.countbyuser(userSecurity.getCode()));
+            data.put("experience",userSecurity.getExperience());
+        Pageable pageable = new PageRequest(0, 1, Sort.Direction.DESC, "create_time");
+        Page<Product> productList = productReposity.allByPage(pageable,userSecurity.getCode());
+            data.put("product",productList.getContent());
+            if(productList.getSize()>0) {
+                Page<Discuss> pages = discussRepository.listByPage(pageable, productList.getContent().get(0).getCode());
+                data.put("discuss", pages.getContent());
+            }else {
+                data.put("discuss",null);
+            }
         return Mono.just(Info.SUCCESS(data));
     }
 
@@ -78,6 +96,16 @@ public class UserCenterController {
         data.put("fans",followService.followmeCount(usercode));
         data.put("star",caseService.starcount(usercode));
         data.put("casecount",caseService.casecount(usercode));
+        data.put("experience",userSecurity.getExperience());
+        Pageable pageable = new PageRequest(0, 1, Sort.Direction.DESC, "create_time");
+        Page<Product> productList = productReposity.allByPage(pageable,userSecurity.getCode());
+        data.put("product",productList.getContent());
+        if(productList.getSize()>0) {
+            Page<Discuss> pages = discussRepository.listByPage(pageable, productList.getContent().get(0).getCode());
+            data.put("discuss", pages.getContent());
+        }else {
+            data.put("discuss",null);
+        }
         return Mono.just(Info.SUCCESS(data));
     }
 
@@ -123,8 +151,9 @@ public class UserCenterController {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String dateStr = sdf.format(new Date());
         if(userSecurityService.issignin(principal.getName(),dateStr)==0) {
-            UserSecurity userSecurity = userSecurityService.findByPhone(principal.getName());
 
+            UserSecurity userSecurity = userSecurityService.findByPhone(principal.getName());
+            userSecurity.setExperience(userSecurity.getExperience()+10);
             Calendar calendar = new GregorianCalendar();
             calendar.setTime(new Date());
             calendar.add(calendar.DATE, -1); //把日期往后增加一天,整数  往后推,负数往前移动
@@ -263,13 +292,12 @@ public class UserCenterController {
         UserSecurity userSecurity=userSecurityService.findByPhone(principal.getName());
         dayTask.setUserSecurity(userSecurity);
         String i="分享成功!";
-
-
         switch (type){
             case "g":
                 dayTask.setTaskg();
                 if(dayTask.getTaskg()<=3){
                     userSecurity.setShb(userSecurity.getShb()+10);
+                    userSecurity.setExperience(userSecurity.getExperience()+10);
                     userSecurityService.save(userSecurity);
                     i=i+"您已成功获得10积分。";
                 }
@@ -278,6 +306,7 @@ public class UserCenterController {
                 dayTask.setTaskh();
                 if(dayTask.getTaskh()<=2){
                     userSecurity.setShb(userSecurity.getShb()+10);
+                    userSecurity.setExperience(userSecurity.getExperience()+10);
                     userSecurityService.save(userSecurity);
                     i=i+"您已成功获得10积分。";
                 }
@@ -286,6 +315,7 @@ public class UserCenterController {
                 dayTask.setTaski();
                 if(dayTask.getTaski()<=2){
                     userSecurity.setShb(userSecurity.getShb()+10);
+                    userSecurity.setExperience(userSecurity.getExperience()+10);
                     userSecurityService.save(userSecurity);
                     i=i+"您已成功获得10积分。";
                 }
@@ -293,6 +323,7 @@ public class UserCenterController {
                 dayTask.setTaskj();
                 if(dayTask.getTaskj()<=2){
                     userSecurity.setShb(userSecurity.getShb()+10);
+                    userSecurity.setExperience(userSecurity.getExperience()+10);
                     userSecurityService.save(userSecurity);
                     i=i+"您已成功获得10积分。";
                 }
@@ -301,14 +332,13 @@ public class UserCenterController {
                 dayTask.setTaskk();
                 if(dayTask.getTaskk()<=5){
                     userSecurity.setShb(userSecurity.getShb()+10);
+                    userSecurity.setExperience(userSecurity.getExperience()+10);
                     userSecurityService.save(userSecurity);
                     i=i+"您已成功获得10积分。";
                 }
                 break;
         }
-        dayTask=dayTaskReposity.saveAndFlush(dayTask);
-
-        return Mono.just(Info.SUCCESS(i,dateStr));
+        return Mono.just(Info.SUCCESS(i,dayTaskReposity.saveAndFlush(dayTask)));
     }
 
     @ApiOperation(value = "用户信息", notes="用户信息")

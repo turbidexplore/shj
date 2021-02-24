@@ -1,12 +1,10 @@
 server:
   port: 10002
-
 rest:
   template:
     conn:
       connect-timeout: 30000
       read-timeout: 30000
-
 spring:
   application:
     name: explore

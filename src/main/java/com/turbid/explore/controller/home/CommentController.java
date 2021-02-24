@@ -126,6 +126,7 @@ public class CommentController {
         String dateStr = sdf.format(new Date());
         DayTask dayTask=dayTaskReposity.findByDay(principal.getName(),dateStr);
         if(dayTask.getTaske()<=10){
+            userSecurity.setExperience(userSecurity.getExperience()+10);
             userSecurity.setShb(userSecurity.getShb()+10);
             userSecurityService.save(userSecurity);
             i=i+"您已成功获得10积分。";

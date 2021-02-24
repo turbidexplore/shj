@@ -325,6 +325,7 @@ public class StudyController {
                 dayTask.setUserSecurity(userSecurity);
                 dayTask.setTaskb();
                 if(dayTask.getTaskb()==3){
+                    userSecurity.setExperience(userSecurity.getExperience()+10);
                     userSecurity.setShb(userSecurity.getShb()+10);
                     userSecurityService.save(userSecurity);
                 }
@@ -386,5 +387,52 @@ public class StudyController {
         }catch (Exception e){
             return Mono.just(Info.SUCCESS(e.getMessage()));
         }
+    }
+
+    @Autowired
+    private PlayHisReposity playHisReposity;
+
+    @ApiOperation(value = "添加播放记录", notes="添加播放记录")
+    @PostMapping(value = "/playhis")
+    @Transactional
+    public Mono<Info> playhis(Principal principal,@RequestParam("studycode")String studycode,@RequestParam("progress")String progress) {
+        try {
+            Pageable pageable = new PageRequest(0,1, Sort.Direction.DESC,"create_time");
+            Page<PlayHis> pages=  playHisReposity.findallByUser(pageable,principal.getName(),studycode);
+            PlayHis playHis = null;
+            if(pages.getContent().size()>0){
+                playHis= pages.getContent().get(0);
+                playHis.setProgress(progress);
+            }else {
+                playHis = new PlayHis();
+                playHis.setUserSecurity(userSecurityService.findByPhone(principal.getName()));
+                playHis.setStudy(studyService.get(studycode));
+                playHis.setProgress(progress);
+            }
+            return Mono.just(Info.SUCCESS(playHisReposity.saveAndFlush(playHis)));
+
+        }catch (Exception e){
+            return Mono.just(Info.SUCCESS(e.getMessage()));
+        }
+    }
+
+    @ApiOperation(value = "添加播放记录", notes="添加播放记录")
+    @PostMapping(value = "/playhislist")
+    @Transactional
+    public Mono<Info> playhislist(Principal principal,@RequestParam("page")Integer page) {
+        Pageable pageable = new PageRequest(page,10, Sort.Direction.DESC,"create_time");
+        Page<PlayHis> pages=  playHisReposity.findallByUser(pageable, principal.getName(), null);
+        return Mono.just(Info.SUCCESS(pages.getContent()));
+
+    }
+
+    @ApiOperation(value = "播放记录", notes="播放记录")
+    @PostMapping(value = "/getplayhis")
+    @Transactional
+    public Mono<Info> getplayhis(Principal principal,@RequestParam("studycode")String studycode) {
+        Pageable pageable = new PageRequest(0,1, Sort.Direction.DESC,"create_time");
+        Page<PlayHis> pages=  playHisReposity.findallByUser(pageable,principal.getName(),studycode);
+        return Mono.just(Info.SUCCESS(pages.getContent()));
+
     }
 }
