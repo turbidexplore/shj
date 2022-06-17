@@ -19,7 +19,7 @@
         <druid>1.0.18</druid>
         <commons-pool2>2.5.0</commons-pool2>
         <mybatis>2.0.1</mybatis>
-        <fastjson>1.2.39</fastjson>
+        <fastjson>1.2.83</fastjson>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <github.global.server>github</github.global.server>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
